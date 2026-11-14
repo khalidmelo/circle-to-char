@@ -53,7 +53,7 @@
       <div class="kpis" id="kpis"></div>
       <h3>Farmed area by season (radar)</h3>
       <div id="classbars"></div>
-      <p class="note">Ranges come from published factors (Method tab). Energy assumes a well-run pump at the 2006 water level, so it is a lower bound.</p>
+      <p class="note">Ranges come from published factors (Method tab). Energy assumes a well-run pump at the 2006 water level, so it is a lower bound. Straw counts only fields farmed in winter alone (assumed wheat): radar's winter scenes end on 31 December, when young wheat is still thin, and some year-round fields may be wheat followed by a summer crop, so straw is a lower bound too.</p>
     </div>
 
     <div id="tab-check" class="tab">
@@ -65,8 +65,10 @@
       <p class="lead">Where should a pyrolysis plant go, and how big can it be? Plants are placed one at a time where the nearest fields can fill them with the least haulage.</p>
       <div class="sizes" role="group" aria-label="Plant size">
         <span>Plant size</span>
-        <button data-size="25" class="on">25 kt/y</button>
-        <button data-size="50">50 kt/y</button>
+        <button data-size="5">5</button>
+        <button data-size="10" class="on">10</button>
+        <button data-size="25">25</button>
+        <button data-size="50">50</button>
         <button data-size="100">100 kt/y</button>
       </div>
       <div id="plantlist"></div>
@@ -75,8 +77,8 @@
     <div id="tab-field" class="tab">
       <p class="lead" id="fieldhint">Click any field on the map to see its radar record.</p>
       <div id="fieldinfo"></div>
-      <canvas id="tschart" height="220"></canvas>
-      <canvas id="tschart2" height="180"></canvas>
+      <div class="chartbox"><canvas id="tschart"></canvas></div>
+      <div class="chartbox"><canvas id="tschart2"></canvas></div>
     </div>
 
     <div id="tab-sources" class="tab">

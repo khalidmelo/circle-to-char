@@ -98,8 +98,13 @@ def evaluate_site(site, pool, cement, p, capacity):
     }
     res["soil_penalty"] = res["soil_transport_tco2"] / soil_removal
     res["cement_penalty"] = res["cement_transport_tco2"] / cem_removal if cem_removal else float("nan")
-    res["best_outlet"] = "soil" if res["soil_penalty"] <= np.nan_to_num(res["cement_penalty"], nan=9e9) else "cement"
-    res["penalty"] = min(res["soil_penalty"], np.nan_to_num(res["cement_penalty"], nan=9e9))
+    # Choose the outlet that removes the most CO2 after its own transport emissions.
+    res["soil_net_tco2"] = soil_removal - res["soil_transport_tco2"]
+    res["cement_net_tco2"] = (cem_removal - res["cement_transport_tco2"]) if not math.isnan(cem_km) else float("nan")
+    cem_better = not math.isnan(res["cement_net_tco2"]) and res["cement_net_tco2"] > res["soil_net_tco2"]
+    res["best_outlet"] = "cement" if cem_better else "soil"
+    res["net_removal_tco2"] = res["cement_net_tco2"] if cem_better else res["soil_net_tco2"]
+    res["penalty"] = res["cement_penalty"] if cem_better else res["soil_penalty"]
     return res, pool.index.values[take]
 
 

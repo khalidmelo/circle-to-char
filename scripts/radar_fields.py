@@ -128,35 +128,51 @@ def main():
         out[f"sm_max_{season}"] = out.id.map(sm_max.get(season, pd.Series(dtype=float))) if len(sm_max) else np.nan
         out[f"hv_{season}"] = out[f"hv_above_desert_db_{season}"] > thr[season]
 
-    # Second witness: 12-day coherence. Bare desert stays coherent; a field being tilled,
-    # sown, irrigated or growing decorrelates. Threshold from desert patches again.
-    coh_thr = {}
-    coh_files = sorted((ND / "GUNW").glob("*_coherenceMagnitude.tif")) if (ND / "GUNW").exists() else []
-    if coh_files:
-        cpatch, cseason = [], []
-        for p in coh_files:
+    # Other witnesses, each with a threshold from field-sized bare-desert patches only:
+    #   coherence: farmed if the field's lowest 12-day coherence falls below desert median - 3 sigma
+    #   soil moisture: farmed if the field's wettest date exceeds desert median + 3 sigma
+    def desert_patches(files, season_files):
+        vals, seas = [], []
+        for p in files:
             a = to_grid(p, ref, Resampling.bilinear)
             a = np.where((a >= 0) & (a <= 1), a, np.nan)
-            with np.errstate(all="ignore"):
-                cpatch.append(np.nanmean(a[:hb * B, :wb * B].reshape(hb, B, wb, B), axis=(1, 3))[okp])
-            cseason.append(season_of(p.name[:10]))
-        cpatch, cseason = np.array(cpatch), np.array(cseason)
-        for season in CFG["seasons"]:
-            if (cseason == season).sum() == 0:
+            if np.isnan(a).mean() > 0.5:
                 continue
-            mn = np.nanmin(cpatch[cseason == season], axis=0)
-            p50, p84 = np.nanpercentile(mn, [50, 84])
-            coh_thr[season] = float(p50 - 3 * (p84 - p50))
-            out[f"coh_{season}"] = out[f"coh_min_{season}"] < coh_thr[season]
+            with np.errstate(all="ignore"):
+                vals.append(np.nanmean(a[:hb * B, :wb * B].reshape(hb, B, wb, B), axis=(1, 3))[okp])
+            seas.append(season_of(p.name[:10]))
+        return np.array(vals), np.array(seas)
+
+    coh_thr, sm_thr = {}, {}
+    coh_files = [p for p in sorted((ND / "GUNW").glob("*_coherenceMagnitude.tif")) if "__wrappedInterferogram" in p.name] \
+        if (ND / "GUNW").exists() else []
+    sm_files = sorted((ND / "SME2").glob("*_soilMoisture.tif")) if (ND / "SME2").exists() else []
+    if coh_files:
+        cp, cs = desert_patches(coh_files, None)
+        for season in CFG["seasons"]:
+            if (cs == season).sum():
+                mn = np.nanmin(cp[cs == season], axis=0)
+                p50, p84 = np.nanpercentile(mn, [50, 84])
+                coh_thr[season] = float(p50 - 3 * (p84 - p50))
+                out[f"coh_{season}"] = out[f"coh_min_{season}"] < coh_thr[season]
+    if sm_files:
+        sp, ss = desert_patches(sm_files, None)
+        for season in CFG["seasons"]:
+            if (ss == season).sum():
+                mx = np.nanmax(sp[ss == season], axis=0)
+                p16, p50 = np.nanpercentile(mx, [16, 50])
+                sm_thr[season] = float(p50 + 3 * (p50 - p16))
+                out[f"sm_{season}"] = out[f"sm_max_{season}"] > sm_thr[season]
+    # Classifier used downstream: backscatter (the physical crop-canopy signal, best kappa).
     for season in CFG["seasons"]:
-        out[f"{season}_active"] = out[f"hv_{season}"] | (out[f"coh_{season}"] if f"coh_{season}" in out else False)
+        out[f"{season}_active"] = out[f"hv_{season}"]
 
     for c in ("s2_winter_check", "s2_summer_check"):
         if c in fields:
             out[c] = fields[c].values
     out.to_csv(FD / "fields_radar.csv", index=False)
     (ROOT / "out").mkdir(exist_ok=True)
-    (ROOT / "out" / "background.json").write_text(json.dumps({"bg_median_db": bg, "hv_threshold_db": thr, "coh_threshold": coh_thr}, indent=1))
+    (ROOT / "out" / "background.json").write_text(json.dumps({"bg_median_db": bg, "hv_threshold_db": thr, "coh_threshold": coh_thr, "sm_threshold": sm_thr}, indent=1))
 
     def agree(m, r, s):
         w = m.area_ha
@@ -171,16 +187,22 @@ def main():
 
     val = {"hv_threshold_db": {k: round(v, 2) for k, v in thr.items()},
            "coh_threshold": {k: round(v, 3) for k, v in coh_thr.items()},
-           "rule": "farmed if EITHER the field's seasonal peak HV beats the bare-desert noise level of the same dates (median + 3 sigma of field-sized desert patches) OR its lowest 12-day coherence falls below the desert's (median - 3 sigma). No Sentinel-2 input.",
+           "sm_threshold": {k: round(v, 3) for k, v in sm_thr.items()},
+           "rule": "farmed if the field's seasonal peak HV, measured against the bare-desert median of the same date, beats the desert noise level (median + 3 sigma of field-sized desert patches). No Sentinel-2 input.",
            "reference": "Sentinel-2 max NDVI > 0.40 over the same date windows as the radar"}
     for season in CFG["seasons"]:
         m = out.dropna(subset=[f"hv_peak_db_{season}"])
         ref_col = f"s2_{season}_check" if f"s2_{season}_check" in m else f"s2_{season}_active"
         s = m[ref_col].astype(bool)
         val[season] = agree(m, m[f"{season}_active"].astype(bool), s)
-        val[season]["by_witness"] = {"backscatter_only": agree(m, m[f"hv_{season}"].astype(bool), s)["area_agreement"]}
+        wit = {"backscatter (used)": m[f"hv_{season}"].astype(bool)}
         if f"coh_{season}" in m:
-            val[season]["by_witness"]["coherence_only"] = agree(m, m[f"coh_{season}"].astype(bool), s)["area_agreement"]
+            wit["coherence"] = m[f"coh_{season}"].astype(bool)
+        if f"sm_{season}" in m:
+            wit["soil moisture"] = m[f"sm_{season}"].astype(bool)
+            wit["backscatter or soil moisture"] = m[f"hv_{season}"].astype(bool) | m[f"sm_{season}"].astype(bool)
+        val[season]["by_witness"] = {k: {kk: agree(m, r, s)[kk] for kk in ("area_agreement", "kappa", "radar_active_ha")}
+                                     for k, r in wit.items()}
     (ROOT / "out").mkdir(exist_ok=True)
     (ROOT / "out" / "validation.json").write_text(json.dumps(val, indent=2))
     print(json.dumps(val, indent=2))

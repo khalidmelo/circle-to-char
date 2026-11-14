@@ -2,21 +2,27 @@
   "_note": "Every value carries its source. 'derived' = unit conversion or arithmetic on the cited values. 'assumption' = modelling choice, shown as such in the app.",
   "plant_sizes_t_dry": {
     "low": [
+      5000,
+      10000,
       25000,
       50000,
       100000
     ],
     "central": [
+      5000,
+      10000,
       25000,
       50000,
       100000
     ],
     "high": [
+      5000,
+      10000,
       25000,
       50000,
       100000
     ],
-    "source": "design choice: three plant scales (25/50/100 kt dry per year) tested as scenarios"
+    "source": "design choice: small distributed units (5, 10 kt dry/y) versus larger central plants (25, 50, 100 kt dry/y), tested as scenarios"
   },
   "min_load_fraction": {
     "low": 0.8,

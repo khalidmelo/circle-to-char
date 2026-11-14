@@ -1,7 +1,7 @@
 /* Circle to Char — front end. Reads precomputed JSON from data/. */
 const COLORS = { winter_only: "#e08a1e", summer_only: "#3b7dd8", year_round: "#2e9e5b", idle: "#9aa0a6" };
 const CLASS_NAME = { winter_only: "Winter only (wheat)", summer_only: "Summer only", year_round: "Year-round (fodder, palms)", idle: "Idle" };
-const state = { level: "central", size: 25, group: null, overlays: [], layer: null, fieldsLayer: null, plantLayer: null,
+const state = { level: "central", size: 10, group: null, overlays: [], layer: null, fieldsLayer: null, plantLayer: null,
   summary: null, ts: null, fields: null, chart: null, chart2: null };
 
 const fmt = (v, d = 0) => (v == null || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
@@ -97,7 +97,7 @@ function renderOverview() {
   ];
   $("kpis").innerHTML = k.map(([n, v, u, r, d]) => `<div class="kpi"><div class="u">${n}</div><div class="v">${fmt(v, d || 0)}</div><div class="u">${u}</div><div class="r">range ${r}</div></div>`).join("");
   const max = Math.max(...Object.values(area), 1);
-  $("classbars").innerHTML = ["winter_only", "summer_only", "year_round"].filter(c => area[c] != null).map(c =>
+  $("classbars").innerHTML = ["winter_only", "summer_only", "year_round", "idle"].filter(c => area[c] != null).map(c =>
     `<div class="bar"><span><span class="swatch" style="background:${COLORS[c]}"></span>${CLASS_NAME[c]}</span>
      <div class="track"><div class="fill" style="width:${100 * area[c] / max}%;background:${COLORS[c]}"></div></div>
      <span class="num">${fmt(area[c])} ha</span></div>`).join("");
@@ -111,9 +111,16 @@ function renderValidation() {
     return `<tr><td>${s}</td><td class="num big">${fmt(100 * v.area_agreement)}%</td><td class="num">${fmt(v.kappa, 2)}</td>
       <td class="num">${fmt(v.radar_active_ha)}</td><td class="num">${fmt(v.s2_active_ha)}</td></tr>`;
   }).join("");
+  const wit = ["winter", "summer"].filter(s => V[s] && V[s].by_witness).map(s =>
+    Object.entries(V[s].by_witness).map(([k, w]) => `<tr><td>${s}</td><td>${k}</td><td class="num">${fmt(100 * w.area_agreement)}%</td>
+      <td class="num">${fmt(w.kappa, 2)}</td><td class="num">${fmt(w.radar_active_ha)}</td></tr>`).join("")).join("");
+  const thr = V.hv_threshold_db || {};
   $("validation").innerHTML = `<table><tr><th>Season</th><th class="num">Area agreement</th><th class="num">Kappa</th>
     <th class="num">Radar farmed ha</th><th class="num">Sentinel-2 farmed ha</th></tr>${rows}</table>
-    <p class="note">Rule: a field is farmed when its seasonal peak HV backscatter exceeds ${V.hv_threshold_db} dB, a break found in the radar data itself (Otsu). Sentinel-2 is used only to check, never to tune.</p>`;
+    <p class="note">Rule: a field is farmed when its seasonal peak HV backscatter stands more than ${fmt(thr.winter, 1)} dB (winter) or ${fmt(thr.summer, 1)} dB (summer) above bare desert on the same dates. That margin is the desert's own noise (median + 3σ of field-sized desert patches), so the rule uses no Sentinel-2 input. Sentinel-2 (same date windows) is only the check.</p>
+    <h3>Three radar witnesses tested</h3>
+    <table><tr><th>Season</th><th>Witness</th><th class="num">Agreement</th><th class="num">Kappa</th><th class="num">Farmed ha</th></tr>${wit}</table>
+    <p class="note">HV backscatter (crop canopy) is the reliable witness here. Twelve-day coherence does not separate fields from desert: sand itself loses coherence (desert median about 0.5). Soil moisture (200 m) catches irrigation but also wet ground around fields, so adding it raises the farmed area towards Sentinel-2's but lowers kappa. Winter agreement is lower because NISAR's winter scenes end on 31 December, when young wheat is still thin at L-band.</p>`;
 }
 
 function renderPlants() {
@@ -128,8 +135,9 @@ function renderPlants() {
     $("plantlist").innerHTML = `<p><span class="big">${plants.length}</span> plant${plants.length > 1 ? "s" : ""} of ${state.size} kt/y using ${fmt(tot / 1e3, 1)} kt dry straw.</p>` +
       plants.map(p => `<div class="plant"><b>Plant ${p.plant}</b> at ${p.lat.toFixed(3)}°N, ${p.lon.toFixed(3)}°E (${p.kind === "cement" ? "at a cement plant" : "grid site"})<br>
         ${fmt(p.fields)} fields, mean haul ${fmt(p.mean_feed_haul_km, 1)} km, load ${fmt(100 * p.load_factor)}%<br>
-        Char: ${fmt(p.char_t)} t/y → carbon removed ${fmt(p.soil_removal_tco2)} t CO₂/y if spread on the fields${p.cement_removal_tco2 && p.cement_km ? `, ${fmt(p.cement_removal_tco2)} t in cement (${fmt(p.cement_km)} km away)` : ""}<br>
-        Transport uses <b>${fmt(100 * p.penalty, 1)}%</b> of the removal (best outlet: ${p.best_outlet}).</div>`).join("");
+        Char: ${fmt(p.char_t)} t/y. Net CO₂ removed after transport: <b>${fmt(p.soil_net_tco2)} t/y</b> spread back on the fields${p.cement_net_tco2 != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest plant (${fmt(p.cement_km)} km)` : ""}<br>
+        Best outlet: <b>${p.best_outlet}</b>; transport uses ${fmt(100 * p.penalty, 1)}% of its removal.</div>`).join("") +
+      `<p class="note">Cement keeps more of the carbon (90% retained in service vs about 71% in hot soil), so it wins even after hauling char further. In this cluster haulage costs well under 1% of the removal: the limit is straw supply, not distance.</p>`;
     plants.forEach(p => {
       L.circleMarker([p.lat, p.lon], { radius: 10, color: "#fff", weight: 2, fillColor: "#0f6e6a", fillOpacity: 1 })
         .bindTooltip(`Plant ${p.plant}: ${state.size} kt/y, transport ${fmt(100 * p.penalty, 1)}% of removal`).addTo(state.plantLayer);
@@ -149,22 +157,27 @@ function showField(p) {
     <tr><th>Pumping electricity</th><td>${fmt(p.elec_kwh_central / 1e3)} MWh/y</td></tr>
     <tr><th>Collectable straw</th><td>${fmt(p.residue_t_dry_central, 1)} t dry/y</td></tr>
     <tr><th>Sentinel-2 says</th><td>winter ${p.s2_winter_active ? "farmed" : "not farmed"}, summer ${p.s2_summer_active ? "farmed" : "not farmed"}</td></tr>
-    ${p.plant_25kt ? `<tr><th>Feeds</th><td>Plant ${p.plant_25kt} (25 kt/y, central)</td></tr>` : ""}</table>`;
+    ${p.plant_10kt ? `<tr><th>Feeds</th><td>Plant ${p.plant_10kt} (10 kt/y, central)</td></tr>` : ""}</table>`;
   const t = (state.ts || {})[String(p.id)] || {};
-  const pts = (arr) => (arr || []).map(([d, v]) => ({ x: d, y: v }));
+  // One sorted date axis shared by the layers; gaps where a layer has no value.
+  const axis = (keys) => [...new Set(keys.flatMap(k => (t[k] || []).map(q => q[0])))].sort();
+  const on = (labels, k) => { const m = new Map(t[k] || []); return labels.map(l => m.has(l) ? m.get(l) : null); };
   if (state.chart) state.chart.destroy();
   if (state.chart2) state.chart2.destroy();
+  const L1 = axis(["hv", "hh"]), L2 = axis(["coh", "sm"]);
+  const opts = (title, y) => ({ spanGaps: true, maintainAspectRatio: false, scales: { y },
+    plugins: { title: { display: true, text: title }, legend: { labels: { boxWidth: 12 } } } });
   state.chart = new Chart($("tschart"), {
-    type: "line", data: { datasets: [
-      { label: "HV backscatter (dB)", data: pts(t.hv), borderColor: "#0f6e6a", tension: .2 },
-      { label: "HH backscatter (dB)", data: pts(t.hh), borderColor: "#9aa0a6", tension: .2 }] },
-    options: { parsing: true, scales: { x: { type: "category" } }, plugins: { title: { display: true, text: "NISAR backscatter: rises with crop canopy" } } },
+    type: "line", data: { labels: L1, datasets: [
+      { label: "HV backscatter (dB)", data: on(L1, "hv"), borderColor: "#0f6e6a", tension: .2 },
+      { label: "HH backscatter (dB)", data: on(L1, "hh"), borderColor: "#9aa0a6", tension: .2 }] },
+    options: opts("NISAR backscatter: rises with crop canopy", {}),
   });
   state.chart2 = new Chart($("tschart2"), {
-    type: "line", data: { datasets: [
-      { label: "12-day coherence", data: pts(t.coh), borderColor: "#7a2e8c", yAxisID: "y", tension: .2 },
-      { label: "Soil moisture (m³/m³)", data: pts(t.sm), borderColor: "#3b7dd8", yAxisID: "y", tension: .2 }] },
-    options: { scales: { x: { type: "category" }, y: { min: 0, max: 1 } }, plugins: { title: { display: true, text: "Coherence drops when the field is worked or irrigated" } } },
+    type: "line", data: { labels: L2, datasets: [
+      { label: "12-day coherence", data: on(L2, "coh"), borderColor: "#7a2e8c", tension: .2 },
+      { label: "Soil moisture (m³/m³)", data: on(L2, "sm"), borderColor: "#3b7dd8", tension: .2 }] },
+    options: opts("Coherence and soil moisture", { min: 0, max: 1 }),
   });
 }
 

@@ -30,7 +30,7 @@ WEB = ROOT / "docs" / "data"
 (WEB / "overlays").mkdir(parents=True, exist_ok=True)
 
 
-def png_overlay(src_path, out_name, vmin, vmax, cmap, to_db=False, max_px=1600):
+def png_overlay(src_path, out_name, vmin, vmax, cmap, to_db=False, max_px=1600, unit_range=False):
     with rasterio.open(src_path) as src:
         dst_crs = "EPSG:3857"
         tf, w, h = calculate_default_transform(src.crs, dst_crs, src.width, src.height, *src.bounds)
@@ -44,6 +44,10 @@ def png_overlay(src_path, out_name, vmin, vmax, cmap, to_db=False, max_px=1600):
         right, bottom = tf2 * (w2, h2)
     if to_db:
         arr = 10 * np.log10(np.where(arr > 0, arr, np.nan))
+    if unit_range:  # coherence / soil moisture: values outside 0..1 are fill
+        arr = np.where((arr >= 0) & (arr <= 1), arr, np.nan)
+    if np.isnan(arr).mean() > 0.6:
+        return None
     norm = np.clip((arr - vmin) / (vmax - vmin), 0, 1)
     rgba = (matplotlib.colormaps[cmap](norm) * 255).astype("uint8")
     rgba[..., 3] = np.where(np.isfinite(arr), 255, 0)
@@ -60,15 +64,19 @@ def main():
                          "bounds": png_overlay(p, f"hv_{p.name[:10]}.png", -28, -12, "gray", to_db=True),
                          "legend": "HV gamma0, -28 dB (dark, bare) to -12 dB (bright, crop canopy)"})
     for p in sorted((nd / "GUNW").glob("*_coherenceMagnitude.tif")):
+        if "__wrappedInterferogram" not in p.name:  # keep the 20 m layer only
+            continue
         d = p.name[:10]
-        overlays.append({"group": "NISAR 12-day coherence", "date": d, "file": f"coh_{d}.png",
-                         "bounds": png_overlay(p, f"coh_{d}.png", 0, 1, "magma"),
-                         "legend": "Coherence 0 (surface changed: tilled, growing, irrigated) to 1 (unchanged)"})
+        b = png_overlay(p, f"coh_{d}.png", 0, 1, "magma", max_px=1000, unit_range=True)
+        if b:
+            overlays.append({"group": "NISAR 12-day coherence", "date": d, "file": f"coh_{d}.png", "bounds": b,
+                             "legend": "Coherence 0 (surface changed) to 1 (unchanged). Note: sand itself decorrelates here (desert median about 0.5)"})
     for p in sorted((nd / "SME2").glob("*_soilMoisture.tif")):
         d = p.name[:10]
-        overlays.append({"group": "NISAR soil moisture", "date": d, "file": f"sm_{d}.png",
-                         "bounds": png_overlay(p, f"sm_{d}.png", 0, 0.4, "Blues"),
-                         "legend": "Volumetric soil moisture 0 to 0.4 m3/m3 (200 m)"})
+        b = png_overlay(p, f"sm_{d}.png", 0, 0.4, "Blues", unit_range=True)
+        if b:
+            overlays.append({"group": "NISAR soil moisture", "date": d, "file": f"sm_{d}.png", "bounds": b,
+                             "legend": "Volumetric soil moisture 0 to 0.4 m3/m3 (200 m)"})
     for season in CFG["seasons"]:
         p = ROOT / "data" / "fields" / f"ndvi_max_{season}.tif"
         if p.exists():
@@ -85,9 +93,9 @@ def main():
     if radar.exists():
         r = pd.read_csv(radar).set_index("id")
         attrs = attrs.join(r[[c for c in r.columns if c.startswith(("hv_peak", "coh_min", "sm_max", "s2_"))]], how="left")
-    assign = ROOT / "out" / "assignments_central_25kt.csv"
+    assign = ROOT / "out" / "assignments_central_10kt.csv"
     if assign.exists():
-        attrs = attrs.join(pd.read_csv(assign).set_index("field_id").rename(columns={"plant": "plant_25kt"}), how="left")
+        attrs = attrs.join(pd.read_csv(assign).set_index("field_id").rename(columns={"plant": "plant_10kt"}), how="left")
     with rasterio.open(fd / "fields_labels.tif") as src:
         lab = src.read(1)
         tr = Transformer.from_crs(src.crs, 4326, always_xy=True).transform
@@ -108,6 +116,8 @@ def main():
     ts_p = fd / "radar_timeseries.csv"
     if ts_p.exists():
         ts = pd.read_csv(ts_p).dropna()
+        # Coherence appears twice per date (80 m and 20 m files, read in that order): keep the 20 m value.
+        ts = ts.drop_duplicates(subset=["field_id", "date", "layer"], keep="last")
         key = {"HVHV": "hv", "HHHH": "hh", "coherenceMagnitude": "coh", "soilMoisture": "sm"}
         out = {}
         for (fid, layer), g in ts.groupby(["field_id", "layer"]):

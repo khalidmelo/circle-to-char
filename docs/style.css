@@ -49,6 +49,7 @@ td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
 .plant { border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; margin: 8px 0; }
 .plant b { color: var(--accent); }
 .big { font-size: 22px; font-weight: 650; }
+.chartbox { position: relative; height: 260px; margin-top: 12px; }
 .swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
 @media (max-width: 860px) {
   header { flex-direction: column; align-items: flex-start; }

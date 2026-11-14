@@ -1,58 +1,150 @@
 {
  "supply": {
-  "source": "s2",
+  "source": "radar",
   "fields": 3244,
   "area_ha_by_class": {
-   "summer_only": 6565.0,
-   "winter_only": 8363.0,
-   "year_round": 19637.0
+   "idle": 9934.0,
+   "summer_only": 10431.0,
+   "winter_only": 2852.0,
+   "year_round": 11348.0
   },
   "water_m3": {
-   "low": 351294044.0,
-   "central": 618585503.0,
-   "high": 1007179405.0
+   "low": 218830592.0,
+   "central": 396762886.0,
+   "high": 651286493.0
   },
   "elec_kwh": {
-   "low": 130537631.0,
-   "central": 291156971.0,
-   "high": 573863384.0
+   "low": 81315430.0,
+   "central": 186749091.0,
+   "high": 371085288.0
   },
   "co2_t_electric": {
-   "low": 90331.88,
-   "central": 201480.15999999997,
-   "high": 403425.79000000004
+   "low": 56270.14,
+   "central": 129230.22,
+   "high": 260872.88999999998
   },
   "co2_t_diesel": {
-   "low": 115223.38,
-   "central": 256999.09999999998,
-   "high": 506539.41
+   "low": 71775.71,
+   "central": 164840.06,
+   "high": 327550.81
   },
   "residue_t_dry": {
-   "low": 19736.1,
-   "central": 26593.9,
-   "high": 56532.1
+   "low": 6730.9,
+   "central": 9070.1,
+   "high": 19281.6
   }
  },
- "validation": null,
+ "validation": {
+  "hv_threshold_db": {
+   "winter": 2.7,
+   "summer": 2.3
+  },
+  "coh_threshold": {
+   "winter": -0.039,
+   "summer": 0.042
+  },
+  "sm_threshold": {
+   "winter": 0.181,
+   "summer": 0.116
+  },
+  "rule": "farmed if the field's seasonal peak HV, measured against the bare-desert median of the same date, beats the desert noise level (median + 3 sigma of field-sized desert patches). No Sentinel-2 input.",
+  "reference": "Sentinel-2 max NDVI > 0.40 over the same date windows as the radar",
+  "winter": {
+   "fields": 3244,
+   "area_agreement": 0.662,
+   "kappa": 0.368,
+   "ha": {
+    "both_active": 13341,
+    "both_inactive": 9530,
+    "radar_only": 859,
+    "s2_only": 10834
+   },
+   "radar_active_ha": 14200,
+   "s2_active_ha": 24175,
+   "by_witness": {
+    "backscatter (used)": {
+     "area_agreement": 0.662,
+     "kappa": 0.368,
+     "radar_active_ha": 14200
+    },
+    "coherence": {
+     "area_agreement": 0.301,
+     "kappa": 0.0,
+     "radar_active_ha": 0
+    },
+    "soil moisture": {
+     "area_agreement": 0.398,
+     "kappa": -0.063,
+     "radar_active_ha": 11561
+    },
+    "backscatter or soil moisture": {
+     "area_agreement": 0.689,
+     "kappa": 0.288,
+     "radar_active_ha": 22806
+    }
+   }
+  },
+  "summer": {
+   "fields": 3244,
+   "area_agreement": 0.767,
+   "kappa": 0.462,
+   "ha": {
+    "both_active": 19904,
+    "both_inactive": 6595,
+    "radar_only": 1874,
+    "s2_only": 6190
+   },
+   "radar_active_ha": 21778,
+   "s2_active_ha": 26095,
+   "by_witness": {
+    "backscatter (used)": {
+     "area_agreement": 0.767,
+     "kappa": 0.462,
+     "radar_active_ha": 21778
+    },
+    "coherence": {
+     "area_agreement": 0.245,
+     "kappa": -0.0,
+     "radar_active_ha": 0
+    },
+    "soil moisture": {
+     "area_agreement": 0.695,
+     "kappa": 0.257,
+     "radar_active_ha": 23349
+    },
+    "backscatter or soil moisture": {
+     "area_agreement": 0.796,
+     "kappa": 0.408,
+     "radar_active_ha": 27761
+    }
+   }
+  }
+ },
  "params": {
   "_note": "Every value carries its source. 'derived' = unit conversion or arithmetic on the cited values. 'assumption' = modelling choice, shown as such in the app.",
   "plant_sizes_t_dry": {
    "low": [
+    5000,
+    10000,
     25000,
     50000,
     100000
    ],
    "central": [
+    5000,
+    10000,
     25000,
     50000,
     100000
    ],
    "high": [
+    5000,
+    10000,
     25000,
     50000,
     100000
    ],
-   "source": "Plant scales tested in Khalid's biochar draft (25/50/100 kt dry/y); design choice"
+   "source": "design choice: small distributed units (5, 10 kt dry/y) versus larger central plants (25, 50, 100 kt dry/y), tested as scenarios"
   },
   "min_load_fraction": {
    "low": 0.8,
@@ -172,109 +264,279 @@
    "low": 0.85,
    "central": 0.9,
    "high": 1.0,
-   "source": "In-service retention envelope from Bartoli et al. 2020 and Zou et al. 2025, as compiled in Khalid's biochar draft"
+   "source": "In-service retention of biochar carbon in cementitious products, envelope from Bartoli et al. 2020 and Zou et al. 2025"
   }
  },
  "siting": {
   "central_100kt": [],
-  "central_25kt": [
+  "central_10kt": [
    {
-    "site": "grid:43.50,26.30",
+    "site": "grid:43.50,26.32",
     "kind": "grid",
     "lon": 43.49555,
-    "lat": 26.30294,
-    "fields": 802,
-    "feed_t_dry": 25000.0,
-    "load_factor": 1.0,
-    "mean_feed_haul_km": 15.3447939447,
-    "feed_transport_tco2": 35.3832895666,
-    "char_t": 8025.0,
-    "soil_removal_tco2": 13370.72,
-    "soil_transport_tco2": 45.0376201249,
-    "cement_km": null,
-    "cement_removal_tco2": 16948.8,
-    "cement_transport_tco2": null,
-    "soil_penalty": 0.0033683766,
-    "cement_penalty": null,
-    "best_outlet": "soil",
-    "penalty": 0.0033683766,
+    "lat": 26.31585,
+    "fields": 284,
+    "feed_t_dry": 9070.1,
+    "load_factor": 0.90701,
+    "mean_feed_haul_km": 14.7950293815,
+    "feed_transport_tco2": 12.3772751128,
+    "char_t": 2911.5021,
+    "soil_removal_tco2": 4850.95069888,
+    "soil_transport_tco2": 15.7544146273,
+    "cement_km": 50.5165147251,
+    "cement_removal_tco2": 6149.0924352,
+    "cement_transport_tco2": 23.9082639074,
+    "soil_penalty": 0.0032476963,
+    "cement_penalty": 0.0038880964,
+    "soil_net_tco2": 4835.1962842527,
+    "cement_net_tco2": 6125.1841712926,
+    "best_outlet": "cement",
+    "net_removal_tco2": 6125.1841712926,
+    "penalty": 0.0038880964,
     "plant": 1
    }
   ],
+  "central_25kt": [],
   "central_50kt": [],
-  "high_100kt": [],
-  "high_25kt": [
+  "central_5kt": [
    {
-    "site": "grid:43.50,26.30",
+    "site": "grid:43.50,26.22",
     "kind": "grid",
     "lon": 43.49555,
-    "lat": 26.30294,
-    "fields": 355,
-    "feed_t_dry": 25000.0,
+    "lat": 26.21585,
+    "fields": 154,
+    "feed_t_dry": 5000.0,
     "load_factor": 1.0,
-    "mean_feed_haul_km": 12.1799289442,
-    "feed_transport_tco2": 34.4388820582,
-    "char_t": 8150.0,
-    "soil_removal_tco2": 14179.6416666667,
-    "soil_transport_tco2": 44.722883263,
-    "cement_km": null,
-    "cement_removal_tco2": 19424.1666666667,
-    "cement_transport_tco2": null,
-    "soil_penalty": 0.0031540207,
-    "cement_penalty": null,
-    "best_outlet": "soil",
-    "penalty": 0.0031540207,
+    "mean_feed_haul_km": 7.5786417499,
+    "feed_transport_tco2": 3.4950912541,
+    "char_t": 1605.0,
+    "soil_removal_tco2": 2674.144,
+    "soil_transport_tco2": 4.4487269028,
+    "cement_km": 55.7911945584,
+    "cement_removal_tco2": 3389.76,
+    "cement_transport_tco2": 10.5154088478,
+    "soil_penalty": 0.0016636078,
+    "cement_penalty": 0.0031021101,
+    "soil_net_tco2": 2669.6952730972,
+    "cement_net_tco2": 3379.2445911522,
+    "best_outlet": "cement",
+    "net_removal_tco2": 3379.2445911522,
+    "penalty": 0.0031021101,
     "plant": 1
    },
    {
-    "site": "grid:43.40,26.40",
+    "site": "grid:43.50,26.42",
     "kind": "grid",
-    "lon": 43.39555,
-    "lat": 26.40294,
-    "fields": 381,
-    "feed_t_dry": 25000.0,
-    "load_factor": 1.0,
-    "mean_feed_haul_km": 25.9703911554,
-    "feed_transport_tco2": 73.4315645113,
-    "char_t": 8150.0,
-    "soil_removal_tco2": 14179.6416666667,
-    "soil_transport_tco2": 95.3594045794,
-    "cement_km": null,
-    "cement_removal_tco2": 19424.1666666667,
-    "cement_transport_tco2": null,
-    "soil_penalty": 0.0067250927,
-    "cement_penalty": null,
-    "best_outlet": "soil",
-    "penalty": 0.0067250927,
+    "lon": 43.49555,
+    "lat": 26.41585,
+    "fields": 130,
+    "feed_t_dry": 4047.5,
+    "load_factor": 0.8095,
+    "mean_feed_haul_km": 18.2294199178,
+    "feed_transport_tco2": 6.8054499365,
+    "char_t": 1299.2475,
+    "soil_removal_tco2": 2164.719568,
+    "soil_transport_tco2": 8.6623169516,
+    "cement_km": 47.312376457,
+    "cement_removal_tco2": 2744.01072,
+    "cement_transport_tco2": 11.624736104,
+    "soil_penalty": 0.0040015885,
+    "cement_penalty": 0.0042364033,
+    "soil_net_tco2": 2156.0572510484,
+    "cement_net_tco2": 2732.385983896,
+    "best_outlet": "cement",
+    "net_removal_tco2": 2732.385983896,
+    "penalty": 0.0042364033,
     "plant": 2
    }
   ],
-  "high_50kt": [
+  "high_100kt": [],
+  "high_10kt": [
    {
-    "site": "grid:43.50,26.30",
+    "site": "grid:43.60,26.32",
+    "kind": "grid",
+    "lon": 43.59555,
+    "lat": 26.31585,
+    "fields": 136,
+    "feed_t_dry": 10000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 15.7175922473,
+    "feed_transport_tco2": 17.7766654675,
+    "char_t": 3260.0,
+    "soil_removal_tco2": 5671.8566666667,
+    "soil_transport_tco2": 23.0850622027,
+    "cement_km": 58.1201934917,
+    "cement_removal_tco2": 7769.6666666667,
+    "cement_transport_tco2": 37.4059471366,
+    "soil_penalty": 0.0040701068,
+    "cement_penalty": 0.0048143567,
+    "soil_net_tco2": 5648.771604464,
+    "cement_net_tco2": 7732.2607195301,
+    "best_outlet": "cement",
+    "net_removal_tco2": 7732.2607195301,
+    "penalty": 0.0048143567,
+    "plant": 1
+   },
+   {
+    "site": "grid:43.40,26.42",
+    "kind": "grid",
+    "lon": 43.39555,
+    "lat": 26.41585,
+    "fields": 148,
+    "feed_t_dry": 9195.9,
+    "load_factor": 0.91959,
+    "mean_feed_haul_km": 21.9565564875,
+    "feed_transport_tco2": 22.8361428521,
+    "char_t": 2997.8634,
+    "soil_removal_tco2": 5215.7826721,
+    "soil_transport_tco2": 29.655380486,
+    "cement_km": 79.9892102206,
+    "cement_removal_tco2": 7144.90777,
+    "cement_transport_tco2": 47.6790836362,
+    "soil_penalty": 0.0056857009,
+    "cement_penalty": 0.0066731559,
+    "soil_net_tco2": 5186.127291614,
+    "cement_net_tco2": 7097.2286863638,
+    "best_outlet": "cement",
+    "net_removal_tco2": 7097.2286863638,
+    "penalty": 0.0066731559,
+    "plant": 2
+   }
+  ],
+  "high_25kt": [],
+  "high_50kt": [],
+  "high_5kt": [
+   {
+    "site": "grid:43.50,26.22",
     "kind": "grid",
     "lon": 43.49555,
-    "lat": 26.30294,
-    "fields": 751,
-    "feed_t_dry": 50000.0,
+    "lat": 26.21585,
+    "fields": 82,
+    "feed_t_dry": 5000.0,
     "load_factor": 1.0,
-    "mean_feed_haul_km": 20.1733905527,
-    "feed_transport_tco2": 114.0809640428,
-    "char_t": 16300.0,
-    "soil_removal_tco2": 28359.2833333333,
-    "soil_transport_tco2": 148.1473652014,
-    "cement_km": null,
-    "cement_removal_tco2": 38848.3333333333,
-    "cement_transport_tco2": null,
-    "soil_penalty": 0.005223946,
-    "cement_penalty": null,
-    "best_outlet": "soil",
-    "penalty": 0.005223946,
+    "mean_feed_haul_km": 5.1500925303,
+    "feed_transport_tco2": 2.9123885706,
+    "char_t": 1630.0,
+    "soil_removal_tco2": 2835.9283333333,
+    "soil_transport_tco2": 3.782074396,
+    "cement_km": 78.1076723817,
+    "cement_removal_tco2": 3884.8333333333,
+    "cement_transport_tco2": 16.1022749904,
+    "soil_penalty": 0.0013336283,
+    "cement_penalty": 0.0041449075,
+    "soil_net_tco2": 2832.1462589373,
+    "cement_net_tco2": 3868.731058343,
+    "best_outlet": "cement",
+    "net_removal_tco2": 3868.731058343,
+    "penalty": 0.0041449075,
     "plant": 1
+   },
+   {
+    "site": "grid:43.60,26.32",
+    "kind": "grid",
+    "lon": 43.59555,
+    "lat": 26.31585,
+    "fields": 60,
+    "feed_t_dry": 5000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 11.7214043482,
+    "feed_transport_tco2": 6.6284797515,
+    "char_t": 1630.0,
+    "soil_removal_tco2": 2835.9283333333,
+    "soil_transport_tco2": 8.607849861,
+    "cement_km": 58.1201934917,
+    "cement_removal_tco2": 3884.8333333333,
+    "cement_transport_tco2": 16.4431205861,
+    "soil_penalty": 0.0030352847,
+    "cement_penalty": 0.0042326451,
+    "soil_net_tco2": 2827.3204834724,
+    "cement_net_tco2": 3868.3902127473,
+    "best_outlet": "cement",
+    "net_removal_tco2": 3868.3902127473,
+    "penalty": 0.0042326451,
+    "plant": 2
+   },
+   {
+    "site": "grid:43.40,26.42",
+    "kind": "grid",
+    "lon": 43.39555,
+    "lat": 26.41585,
+    "fields": 80,
+    "feed_t_dry": 5000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 9.8038521283,
+    "feed_transport_tco2": 5.5440997844,
+    "char_t": 1630.0,
+    "soil_removal_tco2": 2835.9283333333,
+    "soil_transport_tco2": 7.1996566856,
+    "cement_km": 79.9892102206,
+    "cement_removal_tco2": 3884.8333333333,
+    "cement_transport_tco2": 19.0517177359,
+    "soil_penalty": 0.0025387301,
+    "cement_penalty": 0.0049041274,
+    "soil_net_tco2": 2828.7286766478,
+    "cement_net_tco2": 3865.7816155974,
+    "best_outlet": "cement",
+    "net_removal_tco2": 3865.7816155974,
+    "penalty": 0.0049041274,
+    "plant": 3
+   },
+   {
+    "site": "grid:43.50,26.32",
+    "kind": "grid",
+    "lon": 43.49555,
+    "lat": 26.31585,
+    "fields": 62,
+    "feed_t_dry": 4225.9,
+    "load_factor": 0.84518,
+    "mean_feed_haul_km": 33.3713089401,
+    "feed_transport_tco2": 15.9498549967,
+    "char_t": 1377.6434,
+    "soil_removal_tco2": 2396.8699087667,
+    "soil_transport_tco2": 20.7127368964,
+    "cement_km": 70.7231206152,
+    "cement_removal_tco2": 3283.3834366667,
+    "cement_transport_tco2": 26.0437314962,
+    "soil_penalty": 0.0086415774,
+    "cement_penalty": 0.0079319799,
+    "soil_net_tco2": 2376.1571718702,
+    "cement_net_tco2": 3257.3397051704,
+    "best_outlet": "cement",
+    "net_removal_tco2": 3257.3397051704,
+    "penalty": 0.0079319799,
+    "plant": 4
    }
   ],
   "low_100kt": [],
+  "low_10kt": [],
   "low_25kt": [],
-  "low_50kt": []
+  "low_50kt": [],
+  "low_5kt": [
+   {
+    "site": "grid:43.60,26.32",
+    "kind": "grid",
+    "lon": 43.59555,
+    "lat": 26.31585,
+    "fields": 203,
+    "feed_t_dry": 5000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 13.3695341072,
+    "feed_transport_tco2": 4.7422523921,
+    "char_t": 1580.0,
+    "soil_removal_tco2": 2378.9744,
+    "soil_transport_tco2": 6.0160213847,
+    "cement_km": 41.5144239227,
+    "cement_removal_tco2": 2905.3566666667,
+    "cement_transport_tco2": 8.6974976169,
+    "soil_penalty": 0.0025288298,
+    "cement_penalty": 0.0029936075,
+    "soil_net_tco2": 2372.9583786153,
+    "cement_net_tco2": 2896.6591690497,
+    "best_outlet": "cement",
+    "net_removal_tco2": 2896.6591690497,
+    "penalty": 0.0029936075,
+    "plant": 1
+   }
+  ]
  }
 }
