@@ -1,0 +1,34 @@
+{
+  "source": "s2",
+  "fields": 3244,
+  "area_ha_by_class": {
+    "summer_only": 6565.0,
+    "winter_only": 8363.0,
+    "year_round": 19637.0
+  },
+  "water_m3": {
+    "low": 351294044.0,
+    "central": 618585503.0,
+    "high": 1007179405.0
+  },
+  "elec_kwh": {
+    "low": 130537631.0,
+    "central": 291156971.0,
+    "high": 573863384.0
+  },
+  "co2_t_electric": {
+    "low": 90331.88,
+    "central": 201480.15999999997,
+    "high": 403425.79000000004
+  },
+  "co2_t_diesel": {
+    "low": 115223.38,
+    "central": 256999.09999999998,
+    "high": 506539.41
+  },
+  "residue_t_dry": {
+    "low": 19736.1,
+    "central": 26593.9,
+    "high": 56532.1
+  }
+}

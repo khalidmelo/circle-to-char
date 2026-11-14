@@ -1,0 +1,33 @@
+{
+  "hv_threshold_db": {
+    "winter": 2.7,
+    "summer": 2.3
+  },
+  "rule": "field's seasonal peak HV, measured against the bare-desert median of the same date, exceeds the desert noise level (median + 3 sigma of field-sized desert patches)",
+  "winter": {
+    "fields": 3244,
+    "area_agreement": 0.572,
+    "kappa": 0.229,
+    "ha": {
+      "both_active": 13698,
+      "both_inactive": 6063,
+      "radar_only": 502,
+      "s2_only": 14301
+    },
+    "radar_active_ha": 14200,
+    "s2_active_ha": 27999
+  },
+  "summer": {
+    "fields": 3244,
+    "area_agreement": 0.766,
+    "kappa": 0.459,
+    "ha": {
+      "both_active": 19943,
+      "both_inactive": 6527,
+      "radar_only": 1835,
+      "s2_only": 6258
+    },
+    "radar_active_ha": 21778,
+    "s2_active_ha": 26202
+  }
+}

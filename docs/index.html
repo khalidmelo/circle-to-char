@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circle to Char</title>
+<meta name="description" content="NISAR radar audit of Qassim's farm circles: water, pumping energy and where their straw should become biochar.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Circle to Char</h1>
+    <p>NISAR radar reads Qassim's farm circles: which are farmed, what they cost in water and energy, and where their straw should become biochar.</p>
+  </div>
+  <div class="level" role="group" aria-label="Estimate">
+    <span>Estimate</span>
+    <button data-level="low">Low</button>
+    <button data-level="central" class="on">Central</button>
+    <button data-level="high">High</button>
+  </div>
+</header>
+
+<main>
+  <section id="mapwrap">
+    <div id="map"></div>
+    <div class="maptools">
+      <label>Layer
+        <select id="group"></select>
+      </label>
+      <label class="dateline">Date <span id="datelabel">–</span>
+        <input id="date" type="range" min="0" max="0" value="0">
+      </label>
+      <label>Opacity <input id="opacity" type="range" min="0" max="100" value="85"></label>
+      <label class="chk"><input id="showfields" type="checkbox" checked> Fields</label>
+      <label class="chk"><input id="showplants" type="checkbox" checked> Plants</label>
+      <p id="legend" class="legend"></p>
+    </div>
+  </section>
+
+  <aside>
+    <nav class="tabs">
+      <button data-tab="overview" class="on">Overview</button>
+      <button data-tab="check">Radar check</button>
+      <button data-tab="plants">Biochar plants</button>
+      <button data-tab="field">Field</button>
+      <button data-tab="sources">Method</button>
+    </nav>
+
+    <div id="tab-overview" class="tab on">
+      <p class="lead" id="lead"></p>
+      <div class="kpis" id="kpis"></div>
+      <h3>Farmed area by season (radar)</h3>
+      <div id="classbars"></div>
+      <p class="note">Ranges come from published factors (Method tab). Energy assumes a well-run pump at the 2006 water level, so it is a lower bound.</p>
+    </div>
+
+    <div id="tab-check" class="tab">
+      <p class="lead">Does the radar agree with an independent optical satellite? Each field is called farmed or not from NISAR alone, then compared with ESA Sentinel-2 greenness.</p>
+      <div id="validation"></div>
+    </div>
+
+    <div id="tab-plants" class="tab">
+      <p class="lead">Where should a pyrolysis plant go, and how big can it be? Plants are placed one at a time where the nearest fields can fill them with the least haulage.</p>
+      <div class="sizes" role="group" aria-label="Plant size">
+        <span>Plant size</span>
+        <button data-size="25" class="on">25 kt/y</button>
+        <button data-size="50">50 kt/y</button>
+        <button data-size="100">100 kt/y</button>
+      </div>
+      <div id="plantlist"></div>
+    </div>
+
+    <div id="tab-field" class="tab">
+      <p class="lead" id="fieldhint">Click any field on the map to see its radar record.</p>
+      <div id="fieldinfo"></div>
+      <canvas id="tschart" height="220"></canvas>
+      <canvas id="tschart2" height="180"></canvas>
+    </div>
+
+    <div id="tab-sources" class="tab">
+      <h3>How it works</h3>
+      <ol class="steps">
+        <li><b>Fields</b> are mapped from ESA Sentinel-2 greenness (20 m).</li>
+        <li><b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.</li>
+        <li>A field is <b>farmed in a season</b> when its peak HV backscatter clears a threshold set from the data itself (Otsu), then checked against Sentinel-2.</li>
+        <li><b>Water</b> = farmed area × published irrigation depth ÷ pivot efficiency; <b>energy</b> = water × lift ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
+        <li><b>Straw</b> from winter (wheat) fields → <b>biochar plant siting</b>, with transport emissions for straw in and char out (back to the fields, or to a cement plant).</li>
+      </ol>
+      <h3>Factors and sources</h3>
+      <div id="params"></div>
+      <p class="note">Code and data are open source. AI tools (Claude) assisted with code and text.</p>
+    </div>
+  </aside>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

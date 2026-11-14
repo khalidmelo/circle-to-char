@@ -1,0 +1,280 @@
+{
+ "supply": {
+  "source": "s2",
+  "fields": 3244,
+  "area_ha_by_class": {
+   "summer_only": 6565.0,
+   "winter_only": 8363.0,
+   "year_round": 19637.0
+  },
+  "water_m3": {
+   "low": 351294044.0,
+   "central": 618585503.0,
+   "high": 1007179405.0
+  },
+  "elec_kwh": {
+   "low": 130537631.0,
+   "central": 291156971.0,
+   "high": 573863384.0
+  },
+  "co2_t_electric": {
+   "low": 90331.88,
+   "central": 201480.15999999997,
+   "high": 403425.79000000004
+  },
+  "co2_t_diesel": {
+   "low": 115223.38,
+   "central": 256999.09999999998,
+   "high": 506539.41
+  },
+  "residue_t_dry": {
+   "low": 19736.1,
+   "central": 26593.9,
+   "high": 56532.1
+  }
+ },
+ "validation": null,
+ "params": {
+  "_note": "Every value carries its source. 'derived' = unit conversion or arithmetic on the cited values. 'assumption' = modelling choice, shown as such in the app.",
+  "plant_sizes_t_dry": {
+   "low": [
+    25000,
+    50000,
+    100000
+   ],
+   "central": [
+    25000,
+    50000,
+    100000
+   ],
+   "high": [
+    25000,
+    50000,
+    100000
+   ],
+   "source": "Plant scales tested in Khalid's biochar draft (25/50/100 kt dry/y); design choice"
+  },
+  "min_load_fraction": {
+   "low": 0.8,
+   "central": 0.8,
+   "high": 0.8,
+   "source": "assumption: a plant is placed only if it can be filled to 80% of capacity"
+  },
+  "wheat_grain_yield_t_ha": {
+   "low": 5.9,
+   "central": 6.35,
+   "high": 6.8,
+   "source": "FAO via Our World in Data, Saudi wheat yield 2015-2024 (low 2019, central 2024, high 2022) https://ourworldindata.org/grapher/wheat-yields?country=~SAU"
+  },
+  "straw_t_dry_per_ha": {
+   "low": 2.36,
+   "central": 3.18,
+   "high": 6.76,
+   "source": "derived. Low/central: effective baled straw-to-grain ratio 0.4/0.5 (Drever 2021, in Lefebvre et al. 2023, Biochar 5:65, p.14) x grain yield low/central. High: IPCC 2006 Vol.4 Ch.11 Table 11.2 above-ground residue 1.51 x grain DM (0.89) + 0.52 t/ha at 6.80 t/ha, x 0.70 sustainable removal (Lefebvre 2023 s2.2.1)"
+  },
+  "collectable_fraction": {
+   "low": 1.0,
+   "central": 1.0,
+   "high": 1.0,
+   "source": "1.0 because straw_t_dry_per_ha is already the collectable amount (baled ratio or IPCC x 0.70 removal)"
+  },
+  "straw_dry_matter": {
+   "low": 0.85,
+   "central": 0.85,
+   "high": 0.916,
+   "source": "Straw moisture 15% for small-grain bales (Lefebvre 2023 p.14); 8.4% for pellets (Sedmihradska et al. 2020 Table 3)"
+  },
+  "alfalfa_collectable_residue_t_ha": {
+   "low": 0,
+   "central": 0,
+   "high": 0,
+   "source": "IPCC 2006 Table 11.2 footnote k: alfalfa residue is harvest losses and litter only (0.29 x yield), left in field; treated as not collectable"
+  },
+  "irrigation_mm_winter_only": {
+   "low": 299,
+   "central": 675,
+   "high": 1041,
+   "source": "Lopez Valencia et al. 2020, HESS 24:5251, p.5266: seasonal fields Q1/mean/Q3, water reaching the ground (Al Jawf 2015, satellite-model fusion)"
+  },
+  "irrigation_mm_year_round": {
+   "low": 1347,
+   "central": 2007,
+   "high": 2799,
+   "source": "Lopez Valencia et al. 2020, HESS 24:5251, p.5266: perennial (alfalfa/grass) fields Q1/mean/Q3"
+  },
+  "pivot_application_efficiency": {
+   "low": 0.7,
+   "central": 0.8,
+   "high": 0.88,
+   "source": "Multsch et al. 2013, GMD 6:1043 p.1049 (sprinkler 70%); Lopez Valencia et al. 2020 p.5256 (losses 12-20%, study adopts 20%)"
+  },
+  "pumping_lift_m": {
+   "low": 90,
+   "central": 114,
+   "high": 138,
+   "source": "Al-Salamah & Nassar 2009, J. Appl. Sci. 9(19):3555: depth to water in Saq aquifer at Buraydah 90-138 m (2006). Central = midpoint (derived). Lower bound today: excludes later drawdown, pivot pressure and friction"
+  },
+  "pump_wire_to_water_eff": {
+   "low": 0.66,
+   "central": 0.66,
+   "high": 0.66,
+   "source": "UGA Extension C965 Table 1: Nebraska performance standard 0.885 whp-h/kWh = 0.66 (derived). A well-run plant, so energy is a lower bound"
+  },
+  "grid_kgco2e_per_kwh": {
+   "low": 0.692,
+   "central": 0.692,
+   "high": 0.703,
+   "source": "Ember via Our World in Data, Saudi Arabia carbon intensity of electricity, 2024 (691.95 g) and 2018 (702.88 g)"
+  },
+  "diesel_water_kwh_per_litre": {
+   "low": 2.46,
+   "central": 2.46,
+   "high": 2.46,
+   "source": "UGA Extension C965 Table 1: Nebraska standard 12.5 whp-h/gal = 2.46 kWh of water work per litre (derived)"
+  },
+  "diesel_kgco2e_per_litre": {
+   "low": 3.29,
+   "central": 3.29,
+   "high": 3.29,
+   "source": "DESNZ 2026 GHG conversion factors: diesel 2.66155 kg CO2e/L + well-to-tank 0.62409 (derived sum)"
+  },
+  "road_circuity": {
+   "low": 1.0,
+   "central": 1.0,
+   "high": 1.4,
+   "source": "assumption: straight-line distance (lower bound); 1.4 is an unsourced sensitivity, flagged in the app"
+  },
+  "truck_kgco2e_per_tkm": {
+   "low": 0.0603,
+   "central": 0.0784,
+   "high": 0.1036,
+   "source": "DESNZ 2026 GHG conversion factors, freighting goods: articulated HGV >33 t 100% laden / average laden / all HGVs average laden"
+  },
+  "char_yield_dry": {
+   "low": 0.316,
+   "central": 0.321,
+   "high": 0.326,
+   "source": "Sedmihradska et al. 2020, RAE 66(1) Table 4: 28.9% (600 C) and 29.9% (500 C) as received, divided by 0.916 dry matter (derived)"
+  },
+  "char_c_org": {
+   "low": 0.59,
+   "central": 0.64,
+   "high": 0.65,
+   "source": "Woolf et al. 2021, Environ. Sci. Technol., Table 2: wheat straw char organic C, low/medium/high pyrolysis temperature"
+  },
+  "soil_persistence_100y": {
+   "low": 0.696,
+   "central": 0.71,
+   "high": 0.73,
+   "source": "Puro.earth Biochar Methodology 2025 v2, Table 6.1 (PF = M - a x H/Corg) at 25-30 C soil and H/Corg 0.39-0.42 (Sedmihradska Table 7, derived); 200+ year basis. Woolf 2021 at 25 C gives 0.70-0.72"
+  },
+  "cement_retention": {
+   "low": 0.85,
+   "central": 0.9,
+   "high": 1.0,
+   "source": "In-service retention envelope from Bartoli et al. 2020 and Zou et al. 2025, as compiled in Khalid's biochar draft"
+  }
+ },
+ "siting": {
+  "central_100kt": [],
+  "central_25kt": [
+   {
+    "site": "grid:43.50,26.30",
+    "kind": "grid",
+    "lon": 43.49555,
+    "lat": 26.30294,
+    "fields": 802,
+    "feed_t_dry": 25000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 15.3447939447,
+    "feed_transport_tco2": 35.3832895666,
+    "char_t": 8025.0,
+    "soil_removal_tco2": 13370.72,
+    "soil_transport_tco2": 45.0376201249,
+    "cement_km": null,
+    "cement_removal_tco2": 16948.8,
+    "cement_transport_tco2": null,
+    "soil_penalty": 0.0033683766,
+    "cement_penalty": null,
+    "best_outlet": "soil",
+    "penalty": 0.0033683766,
+    "plant": 1
+   }
+  ],
+  "central_50kt": [],
+  "high_100kt": [],
+  "high_25kt": [
+   {
+    "site": "grid:43.50,26.30",
+    "kind": "grid",
+    "lon": 43.49555,
+    "lat": 26.30294,
+    "fields": 355,
+    "feed_t_dry": 25000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 12.1799289442,
+    "feed_transport_tco2": 34.4388820582,
+    "char_t": 8150.0,
+    "soil_removal_tco2": 14179.6416666667,
+    "soil_transport_tco2": 44.722883263,
+    "cement_km": null,
+    "cement_removal_tco2": 19424.1666666667,
+    "cement_transport_tco2": null,
+    "soil_penalty": 0.0031540207,
+    "cement_penalty": null,
+    "best_outlet": "soil",
+    "penalty": 0.0031540207,
+    "plant": 1
+   },
+   {
+    "site": "grid:43.40,26.40",
+    "kind": "grid",
+    "lon": 43.39555,
+    "lat": 26.40294,
+    "fields": 381,
+    "feed_t_dry": 25000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 25.9703911554,
+    "feed_transport_tco2": 73.4315645113,
+    "char_t": 8150.0,
+    "soil_removal_tco2": 14179.6416666667,
+    "soil_transport_tco2": 95.3594045794,
+    "cement_km": null,
+    "cement_removal_tco2": 19424.1666666667,
+    "cement_transport_tco2": null,
+    "soil_penalty": 0.0067250927,
+    "cement_penalty": null,
+    "best_outlet": "soil",
+    "penalty": 0.0067250927,
+    "plant": 2
+   }
+  ],
+  "high_50kt": [
+   {
+    "site": "grid:43.50,26.30",
+    "kind": "grid",
+    "lon": 43.49555,
+    "lat": 26.30294,
+    "fields": 751,
+    "feed_t_dry": 50000.0,
+    "load_factor": 1.0,
+    "mean_feed_haul_km": 20.1733905527,
+    "feed_transport_tco2": 114.0809640428,
+    "char_t": 16300.0,
+    "soil_removal_tco2": 28359.2833333333,
+    "soil_transport_tco2": 148.1473652014,
+    "cement_km": null,
+    "cement_removal_tco2": 38848.3333333333,
+    "cement_transport_tco2": null,
+    "soil_penalty": 0.005223946,
+    "cement_penalty": null,
+    "best_outlet": "soil",
+    "penalty": 0.005223946,
+    "plant": 1
+   }
+  ],
+  "low_100kt": [],
+  "low_25kt": [],
+  "low_50kt": []
+ }
+}

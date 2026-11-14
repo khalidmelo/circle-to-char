@@ -1,0 +1,14 @@
+# Python environments
+.venv/
+.bootstrap/
+__pycache__/
+
+# Raw and intermediate data (large; re-created by the scripts)
+data/nisar/
+data/s2/
+data/fields/*.tif
+data/fields/radar_timeseries.csv
+
+# Local tooling
+.claude/
+.DS_Store

@@ -1,0 +1,2 @@
+site,kind,lon,lat,fields,feed_t_dry,load_factor,mean_feed_haul_km,feed_transport_tco2,char_t,soil_removal_tco2,soil_transport_tco2,cement_km,cement_removal_tco2,cement_transport_tco2,soil_penalty,cement_penalty,best_outlet,penalty,plant
+"grid:43.50,26.30",grid,43.49555,26.302940000000003,802,25000.0,1.0,15.344793944700088,35.38328956660255,8025.0,13370.72,45.03762012485006,,16948.8,,0.0033683765814294265,,soil,0.0033683765814294265,1
