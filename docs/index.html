@@ -3,112 +3,414 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Circle to Char</title>
-<meta name="description" content="NISAR radar audit of Qassim's farm circles: water, pumping energy and where their straw should become biochar.">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css">
-<noscript><style>#loading { display: none; }</style></noscript>
+<title>Circle to Char · Saudi farm fields read by NISAR radar</title>
+<meta name="description" content="NASA Space Apps 2026, Dancing with the SARs: NISAR L-band radar checks which Saudi farm fields are farmed each season, field by field, and what they cost in irrigation water and pumping energy, what residue they leave and where biochar plants could go.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://khalidmelo.github.io/circle-to-char/">
+<meta property="og:title" content="Circle to Char · Saudi farm fields read by NISAR radar">
+<meta property="og:description" content="Which Saudi fields are farmed each season? NISAR radar checks, field by field: farmed area, irrigation water, pumping energy, residues and where biochar plants could go.">
+<meta property="og:image" content="https://khalidmelo.github.io/circle-to-char/img/qassim-hv.jpg">
+<meta property="og:image:alt" content="NISAR L-band radar image of centre-pivot fields in Qassim, Saudi Arabia">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230f6e6a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="style.css?v=2">
+<style>
+  /* landing-only touches (the shared rules are in style.css) */
+  .hero-cap + .hero-cap { margin-top: 6px; }
+  .case-meta a, .why-list a, .land > section > .note a { overflow-wrap: anywhere; }
+  .tile-notes li { overflow-wrap: anywhere; }
+  /* 40 px targets for the stand-alone links and the folds */
+  .skip { display: inline-flex; align-items: center; min-height: 40px; }
+  .land > section > p.note > a:only-child { display: inline-flex; align-items: center; min-height: 40px; }
+  .tile details.more > summary { min-height: 40px; }
+  #why-fodder > a:last-child { display: inline-flex; align-items: center; min-height: 40px; }
+  .case-meta a { display: inline-block; padding: 13px 0; margin: -13px 0; }   /* 40 px hit area, same layout */
+  /* the uncredited upside sits in its own list under a divider, its value in brackets (as on the scenarios page): never read as a credited case */
+  .cases-sub { margin: 14px 0 0; padding-top: 8px; border-top: 1px dashed var(--line-2); font-size: var(--fs-cap); font-weight: 600; color: var(--ink-2); }
+  .cases.cases-up { margin-top: 0; }
+  .cases-up .case:first-child { border-top: 0; }
+  .case-value .hyp { display: block; text-align: right; }
+  .case-value .hyp-l { display: block; text-align: right; font-size: var(--fs-cap); font-weight: 400; line-height: 1.3; color: var(--ink-2); }
+  /* Water and energy side by side; the biochar cases need more room, so that tile spans the row with its notes beside the cases */
+  @media (min-width: 861px) {
+    .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .tile.bio { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); column-gap: 32px; align-items: start; }
+    .tile.bio > .tile-label, .tile.bio > .tile-sub { grid-column: 1 / -1; }
+    .tile.bio > .bio-cases { grid-column: 1; grid-row: 3 / span 2; }
+    .tile.bio > .tile-notes { grid-column: 2; grid-row: 3; margin-top: 12px; }
+    .tile.bio > details.more { grid-column: 2; grid-row: 4; }
+  }
+</style>
 </head>
-<body>
-<header>
-  <div class="brand">
-    <h1>Circle to Char</h1>
-    <p>NISAR radar reads Qassim's farm circles: which are farmed, what they cost in water and energy, and where their straw should become biochar. <a href="national.html">National view →</a> · <a href="scenarios.html">Scenarios →</a></p>
-  </div>
-  <div class="level" role="group" aria-label="Estimate">
-    <span>Estimate</span>
-    <button data-level="low">Low</button>
-    <button data-level="central" class="on">Central</button>
-    <button data-level="high">High</button>
-  </div>
-</header>
+<body class="landing">
+<a class="skip" href="#main">Skip to content</a>
+<nav class="site" aria-label="Circle to Char pages">
+  <a class="home" href="./" aria-current="page">Circle to Char</a>
+  <a href="national.html">National<span class="long"> results</span></a>
+  <a href="scenarios.html">Scenarios</a>
+  <a href="qassim.html">Qassim<span class="long"> deep dive</span></a>
+  <a class="code" href="https://github.com/khalidmelo/circle-to-char">Code ↗</a>
+</nav>
 
-<main>
-  <section id="mapwrap">
-    <div id="map"></div>
-    <p id="loading" class="loading" role="status">Loading the field map and results…</p>
-    <noscript><p class="loading error">This map needs JavaScript to run.</p></noscript>
-    <div class="maptools">
-      <label>Layer
-        <select id="group"></select>
-      </label>
-      <label class="dateline">Date <span id="datelabel">–</span>
-        <input id="date" type="range" min="0" max="0" value="0">
-      </label>
-      <label>Opacity <input id="opacity" type="range" min="0" max="100" value="85"></label>
-      <label class="chk"><input id="showfields" type="checkbox" checked> Fields</label>
-      <label class="chk"><input id="showplants" type="checkbox" checked> Plants</label>
-      <p id="legend" class="legend"></p>
+<main id="main" class="land">
+  <section class="hero" aria-labelledby="title">
+    <div class="hero-text">
+      <p class="eyebrow">NASA Space Apps 2026 · Dancing with the SARs</p>
+      <h1 id="title">Which Saudi fields are farmed each season? NISAR radar checks, field by field.</h1>
+      <p class="deck">Saudi farms pump groundwater from aquifers that do not refill, and much of that pumping is unmetered. The national waste inventory grades its farm-residue figures low confidence. NISAR's L-band radar passes every 12 days, through cloud, dust and darkness, so we read the country's largest farming regions field by field: what is farmed, what it costs in water and energy, what residue it leaves, and where biochar plants could turn that residue into stored carbon.</p>
+      <div class="hero-figure">
+        <p class="hero-num"><span id="farmed">–</span> <span class="hero-unit">ha</span></p>
+        <p class="hero-label">farmed in 2025/26, as the NISAR radar sees it</p>
+        <dl class="facts" id="hero-facts" hidden></dl>
+        <p class="hero-cap" id="hero-cap">Field outlines come from Sentinel-2; the radar decides which fields were farmed in each season.</p>
+        <p class="hero-cap" id="hero-cov" hidden></p>
+      </div>
+      <p><a class="btn primary" href="national.html">Explore the national results →</a></p>
+    </div>
+    <figure class="hero-img">
+      <img src="img/qassim-hv.jpg" width="1000" height="750" fetchpriority="high"
+        alt="NISAR radar image of the Qassim farming area: hundreds of bright and dark circles, centre-pivot fields, on a dark desert background.">
+      <figcaption>NISAR L-band HV backscatter over the Qassim pivot cluster, 27 Oct 2026, about 40 km across. Bright circles are pivots with a crop canopy, dark is bare ground; towns show bright too.</figcaption>
+    </figure>
+  </section>
+
+  <section aria-labelledby="results-h">
+    <h2 id="results-h">Headline results, 2025/26</h2>
+    <p class="note" id="results-lead">Water and energy: central estimates for the fields the radar saw farmed, with the ranges that move them underneath. Biochar: separate cases, not a range. How to read the ranges is under the tiles.</p>
+    <noscript><p class="note loadfail">The figures on this page need JavaScript. The national, scenarios and Qassim pages need it too.</p></noscript>
+    <p class="note loadfail" id="loadfail" hidden>The headline figures could not load. The pages linked below may still work; try reloading.</p>
+    <div class="tiles">
+      <article class="tile" aria-labelledby="w-h">
+        <h3 class="tile-label" id="w-h">Irrigation water pumped</h3>
+        <p class="tile-value"><span id="w-v">–</span><span class="tile-unit">billion m³ / year</span></p>
+        <dl class="tile-rows" id="w-rows"></dl>
+        <p class="tile-note">Likely an underestimate: fields the radar did not detect, and seasons it did not observe, get no water (radar false alarms and the derived summer-crop depth push the other way).</p>
+      </article>
+      <article class="tile" aria-labelledby="e-h">
+        <h3 class="tile-label" id="e-h">Pumping electricity</h3>
+        <p class="tile-value"><span id="e-v">–</span><span class="tile-unit">TWh / year</span></p>
+        <dl class="tile-rows" id="e-rows"></dl>
+        <p class="tile-note" id="e-note">Modelled from pumped water and depth to groundwater, not metered.</p>
+        <details class="more" id="e-more" hidden><summary>About this estimate</summary><div id="e-more-body"></div></details>
+      </article>
+      <article class="tile bio" aria-labelledby="b-h">
+        <h3 class="tile-label" id="b-h">Biochar carbon removal</h3>
+        <p class="tile-sub" id="b-sub">Mt CO₂ a year, net of transport: a technical potential</p>
+        <div class="bio-cases">
+          <ol class="cases" id="b-rows"></ol>
+          <div id="b-up" hidden><p class="cases-sub">Not credited: a hypothetical upper bound, kept out of the cases above</p><ul class="cases cases-up" id="b-up-rows"></ul></div>
+        </div>
+        <ul class="tile-note tile-notes" id="b-note"><li>A technical potential: stored char carbon × the Puro.earth 2025 soil persistence model (also used for char in cement), minus truck emissions only; production and embodied emissions and leakage are not subtracted.</li><li>The rows are separate cases, not a range.</li></ul>
+        <details class="more" id="b-more" hidden><summary>What each row counts</summary><div id="b-more-body"></div></details>
+      </article>
+    </div>
+    <dl class="rangekey" id="ranges-key" aria-label="How to read the ranges" hidden></dl>
+  </section>
+
+  <section aria-labelledby="why-h">
+    <h2 id="why-h">Why it matters</h2>
+    <ul class="why-list">
+      <li id="why-water"><b>Groundwater.</b> Saudi farms pump from aquifers that do not refill, and much of the pumping is unmetered. A field-by-field radar record shows where the water goes, and NISAR's repeat passes can keep it current.</li>
+      <li id="why-residue"><b>Farm residue.</b> The national waste inventory grades its agricultural waste figures low confidence. The radar record gives wheat straw and palm fronds field by field (farmed area × residue factors): a partial check on those figures, and the feed for biochar.</li>
+      <li id="why-fodder"><b>The fodder halt.</b> MEWA is halting perennial fodder cultivation in the sedimentary-shelf regions. The radar's record of year-round fields there is a field-level baseline for screening, not enforcement. <a href="scenarios.html#fodder">The baseline, field by field →</a></li>
+    </ul>
+    <p class="note"><a href="national.html#lenses">More decisions the radar record can inform →</a></p>
+  </section>
+
+  <section aria-labelledby="go-h">
+    <h2 id="go-h">Explore</h2>
+    <div class="entries">
+      <a class="entry main" href="national.html">
+        <span class="entry-eyebrow">Main result</span>
+        <span class="entry-title">National results</span>
+        <span class="entry-text">Farmed area, water, energy, residues and biochar sites for the <span id="c-regions"></span> largest farming regions<span id="c-radar"></span>, checked against Sentinel-2 and 2024 official statistics.</span>
+        <span class="entry-go">Open the national results →</span>
+      </a>
+      <a class="entry" href="scenarios.html">
+        <span class="entry-title">What-if scenarios</span>
+        <span class="entry-text">What-ifs on the national record: uncertainty, the fodder-halt baseline, pivot retrofits, and biochar when farmland and cement take only limited char.</span>
+        <span class="entry-go">Open the scenarios →</span>
+      </a>
+      <a class="entry" href="qassim.html#field">
+        <span class="entry-title">Qassim deep dive</span>
+        <span class="entry-text">One pivot cluster at 20 m, run separately with more radar dates: every field's radar record, and three radar signals tested.</span>
+        <span class="entry-go">Open the deep dive →</span>
+      </a>
     </div>
   </section>
 
-  <aside>
-    <nav class="tabs">
-      <button data-tab="overview" class="on">Overview</button>
-      <button data-tab="check">Radar check</button>
-      <button data-tab="plants">Biochar plants</button>
-      <button data-tab="field">Field</button>
-      <button data-tab="sources">Method</button>
-    </nav>
-
-    <div id="tab-overview" class="tab on">
-      <p class="lead" id="lead"></p>
-      <div class="kpis" id="kpis"></div>
-      <h3>Farmed area by season (radar)</h3>
-      <div id="classbars"></div>
-      <p class="note">Ranges come from published factors (Method tab). Energy assumes a well-run pump at the 2006 water level, so it is a lower bound. Straw counts only fields farmed in winter alone (assumed wheat): radar's winter scenes end on 31 December, when young wheat is still thin, and some year-round fields may be wheat followed by a summer crop, so straw is a lower bound too.</p>
-    </div>
-
-    <div id="tab-check" class="tab">
-      <p class="lead">Does the radar agree with an independent optical satellite? Each field is called farmed or not from NISAR alone, then compared with ESA Sentinel-2 greenness.</p>
-      <div id="validation"></div>
-    </div>
-
-    <div id="tab-plants" class="tab">
-      <p class="lead">Where should a pyrolysis plant go, and how big can it be? Plants are placed one at a time where the nearest fields can fill them with the least haulage.</p>
-      <div class="sizes" role="group" aria-label="Plant size">
-        <span>Plant size</span>
-        <button data-size="5">5</button>
-        <button data-size="10" class="on">10</button>
-        <button data-size="25">25</button>
-        <button data-size="50">50</button>
-        <button data-size="100">100 kt/y</button>
-      </div>
-      <div id="plantlist"></div>
-    </div>
-
-    <div id="tab-field" class="tab">
-      <p class="lead" id="fieldhint">Click any field on the map to see its radar record.</p>
-      <div id="fieldinfo"></div>
-      <div class="chartbox"><canvas id="tschart"></canvas></div>
-      <div class="chartbox"><canvas id="tschart2"></canvas></div>
-    </div>
-
-    <div id="tab-sources" class="tab">
-      <h3>How it works</h3>
-      <ol class="steps">
-        <li><b>Fields</b> are mapped from ESA Sentinel-2 greenness: seasonal maximum NDVI from offset-corrected surface reflectance, 20 m.</li>
-        <li><b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.</li>
-        <li>A field is <b>farmed in a season</b> when its peak HV backscatter, measured above the same date's bare-desert median, beats the desert's own noise (a threshold set from field-sized desert patches, with no Sentinel-2 input); Sentinel-2 is only the check.</li>
-        <li><b>Water</b> = farmed area × irrigation depth (published for winter and year-round fields; summer crops get half the perennial depth) ÷ pivot efficiency; <b>energy</b> = water × lift ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
-        <li><b>Straw</b> from winter (wheat) fields → <b>biochar plant siting</b>, with transport emissions for straw in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets.</li>
-      </ol>
-      <h3>Factors and sources</h3>
-      <div id="params"></div>
-      <p class="note">Code and data are open source. AI tools (Claude) assisted with code and text.</p>
-    </div>
-  </aside>
+  <section class="check" aria-labelledby="check-h">
+    <h2 id="check-h">How sure is the radar?</h2>
+    <p id="check">Each page checks the radar's farmed / not-farmed calls against Sentinel-2 greenness. Sentinel-2 also outlines the fields, so these are consistency checks, not an independent ground truth.</p>
+  </section>
 </main>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="app.js"></script>
+<footer class="site-foot">
+  <div class="in">
+    <p>Data: NASA-ISRO NISAR (ASF DAAC); ESA Sentinel-2 and WorldCover (Microsoft Planetary Computer); FAO GLW4 2020; SFI cement database with OpenStreetMap and Climate TRACE corrections; GASTAT and MEWA 2024 statistics; MWAN national waste inventory; Puro.earth 2025 biochar methodology; geoBoundaries. Map imagery © Esri, Maxar, Earthstar Geographics.</p>
+    <p>Code and data: <a href="https://github.com/khalidmelo/circle-to-char">github.com/khalidmelo/circle-to-char</a>. AI tools (Claude) assisted with code and text.</p>
+  </div>
+</footer>
+
 <script>
-  // app.js sets appStarted on its last line; if a script failed to load or threw first, say so instead of "Loading…"
-  if (!window.appStarted) {
-    var box = document.getElementById("loading");
-    if (box) { box.textContent = "The map could not start because a script did not load. Check your connection or script blocker, then reload."; box.className += " error"; }
+/* Landing figures: every number comes from data/national/summary.json or data/scenarios/scenarios.json.
+   Each block renders on its own; a missing key hides that line or shows "–", and nothing throws. */
+(function () {
+  "use strict";
+  const $ = (id) => document.getElementById(id);
+  const fmt = (v, d = 0) => (v == null || isNaN(v)) ? "–" : Number(v).toLocaleString("en-US", { maximumFractionDigits: d, minimumFractionDigits: d });
+  const pct = (x, d = 0) => (x == null || isNaN(x)) ? "–" : fmt(100 * x, d) + "%";
+  const esc = (t) => String(t == null ? "" : t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const ok = (v) => typeof v === "number" && isFinite(v);
+  const obj = (v) => (v && typeof v === "object" && !Array.isArray(v)) ? v : null;
+  const get = (o, path) => path.split(".").reduce((a, k) => (a == null ? undefined : a[k]), o);
+  const cap = (t) => t ? t.charAt(0).toUpperCase() + t.slice(1) : "";
+  const list = (xs) => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " and " + xs[xs.length - 1];
+  const semis = (xs) => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join("; ") + "; and " + xs[xs.length - 1];
+  const span = (a, b, div, d) => (ok(a) && ok(b)) ? `${fmt(Math.min(a, b) / div, d)}⁠–⁠${fmt(Math.max(a, b) / div, d)}` : null;  // word joiners keep a range on one line
+  const row = (label, value, why) => value == null ? "" :
+    `<div><dt>${label}${why ? `<span class="why">${why}</span>` : ""}</dt><dd>${value}</dd></div>`;
+  const safe = (name, fn) => { try { fn(); } catch (e) { if (window.console) console.error("landing: " + name, e); } };
+  // siting "basis" strings name other runs by their tag; say it in words (as national.js does)
+  const caseText = (t) => String(t || "").replace(/\bcentral_boxes_\d+kt\b/g, "the inside-the-processed-regions case").replace(/\bcentral_\d+kt\b/g, "the whole-Kingdom case").replace(/\b(\d+) C\b/g, "$1 °C");
+  async function j(p) { const r = await fetch(p); if (!r.ok) throw new Error(p + " " + r.status); return r.json(); }
+
+  const SIZE = 50;  // plant size the landing reports, kt/yr (the siting tags carry the figures)
+
+  function regionCounts(N) {
+    const R = Array.isArray(N.regions) ? N.regions : [];
+    const n = (st) => R.filter((r) => r && r.status === st).length;
+    const withRadar = R.filter((r) => r && r.status === "ok" && (Array.isArray(r.seasons_classified) ? r.seasons_classified : ["winter", "summer"]).length).length;
+    return { all: R.length, tried: R.length - n("not run"), withRadar, rejected: n("ok") - withRadar };
   }
+  function thr(cr) {  // "±1 dB", from the stored shifts
+    const sh = obj(cr && cr.shift_db);
+    const d = sh && ok(sh.plus_1db) ? Math.abs(sh.plus_1db) : 1;
+    return `±${fmt(d, d % 1 ? 1 : 0)} dB`;
+  }
+  function tiers(s) {  // classification range (thresholds moved) and the radar + Sentinel-2 tier
+    const cr = obj(s.classification_range);
+    return { cr, lo: cr && obj(cr.plus_1db), hi: cr && obj(cr.minus_1db), s2: obj(get(s, "s2_filled.radar_plus_s2_seasons")) };
+  }
+
+  function renderHero(N) {
+    const s = obj(N.summary) || {}, act = obj(s.active_ha) || {}, cov = obj(s.coverage) || {};
+    const c = regionCounts(N), t = tiers(s);
+    $("farmed").textContent = fmt(s.farmed_ha);
+    const thrRange = t.lo && t.hi ? span(t.lo.farmed_ha, t.hi.farmed_ha, 1, 0) : null;
+    const facts = [
+      thrRange ? row(`If the radar threshold moves ${thr(t.cr)}`, thrRange + " ha") : "",
+      t.s2 && ok(t.s2.farmed_ha) ? row("With Sentinel-2 filling what the radar missed", fmt(t.s2.farmed_ha) + " ha") : "",
+    ].join("");
+    $("hero-facts").innerHTML = facts;
+    $("hero-facts").hidden = !facts;
+    if (ok(act.winter) && ok(act.summer)) $("hero-cap").textContent = `Winter ${fmt(act.winter)} ha, summer ${fmt(act.summer)} ha, out of ${fmt(s.field_ha)} ha of fields mapped from Sentinel-2` +
+      (c.all ? ` in the ${fmt(c.tried)} largest of ${fmt(c.all)} farming regions.` : ".");
+    if (c.all) {
+      // coverage: radar results in N of the processed regions, and the share of WorldCover farmland in all region boxes
+      // that those N hold; each count comes from the same coverage key as the share it is paired with
+      const rr = obj(cov.radar_results), pr = obj(cov.processed), rj = obj(cov.rejected), boxes = ok(cov.boxes) ? cov.boxes : c.all;
+      const nRadar = rr && ok(rr.boxes) ? rr.boxes : c.withRadar, nTried = pr && ok(pr.boxes) ? pr.boxes : c.tried;
+      const nRejected = rj && ok(rj.boxes) ? rj.boxes : c.rejected;
+      const share = rr && ok(rr.share) ? `; those ${fmt(nRadar)} hold ~${pct(rr.share)} of the WorldCover farmland in all ${fmt(boxes)} region boxes${pr && ok(pr.share) ? ` (all ${fmt(nTried)} hold ~${pct(pr.share)})` : ""}` : "";
+      $("hero-cov").textContent = `Coverage: the radar passed its quality check in ${fmt(nRadar)} of the ${fmt(nTried)} regions${share}.` +
+        `${nRejected > 0 ? ` In the other ${fmt(nRejected)} it gives no result.` : ""} Small farming clusters are not boxed.`;
+      $("hero-cov").hidden = false;
+    }
+    if (c.tried) $("c-regions").textContent = fmt(c.tried);
+    if (c.tried && c.withRadar < c.tried) $("c-radar").textContent = ` (radar results in ${fmt(c.withRadar)})`;
+  }
+
+  function renderWater(N) {
+    const s = obj(N.summary) || {}, w = obj(s.water_m3), t = tiers(s);
+    if (!w) return;
+    const mewa = get(s, "vs_official.mewa_agri_groundwater_m3");
+    $("w-v").textContent = fmt(ok(w.central) ? w.central / 1e9 : null, 2);
+    $("w-rows").innerHTML = [
+      row("Factor range", span(w.low, w.high, 1e9, 2)),
+      t.lo && t.hi ? row(`Radar threshold ${thr(t.cr)}`, span(get(t.lo, "water_m3.central"), get(t.hi, "water_m3.central"), 1e9, 2)) : "",
+      t.s2 && ok(get(t.s2, "water_m3.central")) ? row("Radar + Sentinel-2", fmt(t.s2.water_m3.central / 1e9, 2)) : "",
+      ok(mewa) ? row("MEWA official, all farms (2024)", fmt(mewa / 1e9, 2)) : "",
+    ].join("");
+  }
+
+  function renderEnergy(N) {
+    const s = obj(N.summary) || {}, e = obj(s.elec_kwh), mw = obj(s.summer_pumping_avg_mw), t = tiers(s);
+    if (!e) return;
+    $("e-v").textContent = fmt(ok(e.central) ? e.central / 1e9 : null, 2);
+    $("e-rows").innerHTML = [
+      row("Factor range", span(e.low, e.high, 1e9, 2)),
+      t.lo && t.hi ? row(`Radar threshold ${thr(t.cr)}`, span(get(t.lo, "elec_kwh.central"), get(t.hi, "elec_kwh.central"), 1e9, 2)) : "",
+      mw && ok(mw.central) ? row("Average June–September load", `${fmt(mw.central)} MW`, span(mw.low, mw.high, 1, 0) ? `factor range ${span(mw.low, mw.high, 1, 0)} MW` : "") : "",
+      t.s2 && ok(get(t.s2, "elec_kwh.central")) ? row("Radar + Sentinel-2", fmt(t.s2.elec_kwh.central / 1e9, 2)) : "",
+    ].join("");
+    // why it is likely a lower bound (the national page's reasons), what the head includes, and what is left out
+    const P = obj(N.params) || {}, ph = obj(s.pumping_head), sh = obj(s.shield_no_energy);
+    const notes = obj(ph && ph.notes) || obj(N.lift_notes) || {};
+    const pv = (o) => ok(o) ? o : (obj(o) && ok(o.central) ? o.central : null);
+    const eff = pv(P.pump_wire_to_water_eff);
+    const why = [];
+    if (eff != null) why.push(`a well-run pump (${pct(eff)} wire to water)`);
+    if (typeof notes._age === "string" && notes._age) why.push("depths to water from older measurements, while water levels have fallen since");
+    if (sh && ok(sh.field_ha_with_water)) why.push(`no pumping energy for the Arabian Shield regions, although their ${fmt(sh.field_ha_with_water)} ha of watered fields take ${ok(get(sh, "share_of_water.central")) ? pct(sh.share_of_water.central) + " of" : "part of"} the water`);
+    else if (notes._shield) why.push("no pumping energy for the Arabian Shield regions");
+    const head = ph && ph.rule ? `Pumping ${ph.rule}.`
+      : (pv(P.drawdown_m) != null && pv(P.pivot_pressure_head_m) != null) ? "Pumping head = depth to water + drawdown + pivot pressure."
+      : "Pumping head = static depth to water only (no drawdown or pivot pressure).";
+    $("e-note").textContent = `Modelled, not metered${why.length ? `, and likely a lower bound: ${semis(why)}` : ""}. ${head}`;
+    const more = ["_age", "_shield"].map((k) => notes[k]).filter((x) => typeof x === "string" && x);
+    if (more.length) { $("e-more-body").innerHTML = more.map((x) => `<p>${esc(cap(x))}.</p>`.replace(/\.\.<\/p>$/, ".</p>")).join(""); $("e-more").hidden = false; }
+  }
+
+  function renderBiochar(N, SC) {
+    const st = obj(N && N.siting) || {}, tag = (k) => obj(st[k]);
+    const key = `central_${SIZE}kt`;
+    const c50 = tag(key), r50 = tag(`central_radar_${SIZE}kt`), b50 = tag(`central_boxes_${SIZE}kt`), s2b = tag(`central_radar_s2_${SIZE}kt`);
+    const up = Object.keys(st).map((k) => obj(st[k])).find((v) => v && v.credited === false && v.upside_of === key);
+    let sc = obj(get(SC, "scenarios.C1_F3"));
+    if (sc && ok(sc.plant_size_t) && sc.plant_size_t !== SIZE * 1000) sc = null;   // only the same plant size
+    const mt = (t) => fmt(t / 1e6, 2);
+    const credited = (x) => !!x && x.credited !== false && ok(x.net_removal_tco2);
+    const corners = (lo, hi) => (credited(lo) && credited(hi)) ? span(lo.net_removal_tco2, hi.net_removal_tco2, 1e6, 2) : null;
+    const plants = (x) => ok(x.plants) ? `${fmt(x.plants)} plants${ok(x.distinct_sites) && x.distinct_sites < x.plants ? ` on ${fmt(x.distinct_sites)} sites` : ""}` : "";
+    const FEED = { straw: "wheat straw", fronds: "palm fronds", manure: "manure", litter: "poultry litter" };
+    const feedsOf = (x) => {
+      const cb = obj(x.credited_by_feed_tco2);
+      if (cb) return Object.keys(cb).filter((k) => ok(cb[k]) && cb[k] > 0);
+      return Array.isArray(x.feeds) ? x.feeds.slice() : null;
+    };
+    const caseLi = (label, value, meta, cls) => `<li class="case${cls ? " " + cls : ""}"><div class="case-head"><span class="case-label">${label}</span><span class="case-value">${value}</span></div>${meta.filter(Boolean).map((m) => `<div class="case-meta">${m}</div>`).join("")}</li>`;
+    const rows = [], upRows = [], basis = [];
+    const c = regionCounts(N || {}), inside = `the ${c.tried ? fmt(c.tried) + " " : ""}processed regions`;
+    let anyCorners = false, unlimited = false;
+    // corners: the run holds transport at central when each corner's overrides pin road circuity and the truck factor to their central values
+    const P = obj(N && N.params) || {}, TRANSPORT = ["road_circuity", "truck_kgco2e_per_tkm"], cornerTags = [];
+    const transportCentral = (x) => { const o = obj(x && x.overrides); return !!o && TRANSPORT.every((k) => ok(o[k]) && (!ok(get(P, k + ".central")) || o[k] === P[k].central)); };
+    const useCorners = (lo, hi) => { const cr = corners(lo, hi); if (cr) { anyCorners = true; cornerTags.push(lo, hi); } return cr; };
+    // litter is credited only when the per-feed credit says so; without it, the new method's signals (zero litter persistence,
+    // litter listed as uncredited supply, or litter excluded from soil use) mean "all feeds" leaves litter out
+    const litterStatus = get(N || {}, "params._soil_use.litter.status");
+    const litterOut = (x) => get(x, "persistence.litter") === 0 || ok(get(x, "uncredited_supply_by_feed_t.litter")) || litterStatus === "excluded";
+    const credsLitter = (x) => { const fs = feedsOf(x); return fs ? fs.includes("litter") : (x.feeds === "all" && !litterOut(x)); };
+
+    if (credited(r50)) {
+      const cr = useCorners(tag(`low_radar_${SIZE}kt`), tag(`high_radar_${SIZE}kt`));
+      unlimited = true;
+      rows.push(caseLi("Radar-measured wheat straw and palm fronds", mt(r50.net_removal_tco2),
+        [[plants(r50), cr ? `all-low / all-high corners ${cr}` : ""].filter(Boolean).join(" · "),
+         credited(s2b) ? `From the radar + Sentinel-2 record instead (not radar-measured): ${mt(s2b.net_removal_tco2)} Mt, ${plants(s2b)}` : ""]));
+      if (r50.basis) basis.push(["Radar-measured", r50.basis]);
+      if (credited(s2b) && s2b.basis) basis.push(["Radar + Sentinel-2", s2b.basis]);
+    }
+    if (credited(c50)) {
+      const fs = feedsOf(c50), extra = fs ? fs.filter((f) => f !== "straw" && f !== "fronds") : null;
+      const litterIn = credsLitter(c50);
+      const label = (extra && extra.length ? `Adding modelled ${list(extra.map((f) => FEED[f] || esc(f)))} for the whole Kingdom` : "All credited feeds") + (litterIn ? " (credits poultry litter)" : " (poultry litter not credited)");
+      const cr = useCorners(tag(`low_${SIZE}kt`), tag(`high_${SIZE}kt`));
+      unlimited = true;
+      const outside = ok(c50.feed_outside_boxes_t) && ok(c50.feed_used_t) && c50.feed_used_t > 0
+        ? `${ok(c50.plants_outside_boxes) ? `${fmt(c50.plants_outside_boxes)} of the plants and ` : ""}${pct(c50.feed_outside_boxes_t / c50.feed_used_t)} of the feed are outside ${inside}` : "";
+      const within = credited(b50) ? `Manure only from inside ${inside}: ${mt(b50.net_removal_tco2)} Mt, ${plants(b50)}` : "";
+      rows.push(caseLi(label, mt(c50.net_removal_tco2), [[plants(c50), cr ? `all-low / all-high corners ${cr}` : ""].filter(Boolean).join(" · "), outside, within]));
+      if (c50.basis) basis.push(["Whole Kingdom", c50.basis]);
+      if (credited(b50) && b50.basis) basis.push(["Inside the processed regions", b50.basis]);
+    }
+    if (!credited(r50) && !credited(c50)) rows.push(`<li class="case"><span class="case-label">Siting with unlimited outlets is not in this data export; see the national page.</span></li>`);
+    if (sc && ok(sc.credited_tco2)) {
+      const lit = ok(get(sc, "feed_used_by_feed_t.litter")) && sc.feed_used_by_feed_t.litter > 0;
+      rows.push(caseLi(`Outlets limited: farmland and cement take only limited char${lit ? " (includes poultry litter)" : ""}`, mt(sc.credited_tco2),
+        [[ok(sc.plants) ? `${fmt(sc.plants)} plants` : "", `<a href="scenarios.html#biochar">details in Scenarios</a>`].filter(Boolean).join(" · ")]));
+      if (sc.note) basis.push(["Outlets limited", sc.note]);
+    }
+    if (up && ok(up.net_removal_tco2)) {   // never among the credited cases: its own list, value in brackets (as scenarios.js)
+      const inc = credited(c50) ? up.net_removal_tco2 - c50.net_removal_tco2 : null;
+      upRows.push(caseLi("With poultry litter, if its char passed the eligibility gate", `<span class="hyp">(${mt(up.net_removal_tco2)})</span><span class="hyp-l">hypothetical</span>`,
+        [[ok(inc) ? `a hypothetical upper bound: ${inc >= 0 ? "+" : "−"}${mt(Math.abs(inc))} Mt over the whole-Kingdom row` : "a hypothetical upper bound", plants(up)].filter(Boolean).join(" · ")], "upside"));
+      if (up.basis) basis.push(["Litter upside (not credited)", up.basis]);
+    }
+
+    const sz = [c50, r50].map((x) => x && (ok(x.size_t) ? x.size_t : ok(x.plant_size_t) ? x.plant_size_t : null)).find(ok);
+    const sizeKt = ok(sz) ? sz / 1000 : sc && ok(sc.plant_size_t) ? sc.plant_size_t / 1000 : SIZE;
+    $("b-sub").textContent = `Mt CO₂ a year, net of transport, with ${fmt(sizeKt)} kt/yr plants: a technical potential`;
+    $("b-rows").innerHTML = rows.join("");
+    $("b-up-rows").innerHTML = upRows.join("");
+    $("b-up").hidden = !upRows.length;
+
+    const notes = ["A technical potential: stored char carbon × the Puro.earth 2025 soil persistence model (also used for char in cement), minus truck emissions only; production and embodied emissions and leakage are not subtracted."];
+    if (unlimited) notes.push(sc && ok(sc.credited_tco2) ? "Farmland's capacity to absorb char is not limited, except in the outlets-limited row." : "Farmland's capacity to absorb char is not limited.");
+    const fs = credited(c50) ? feedsOf(c50) : null, litterIn = credited(c50) ? credsLitter(c50) : null;
+    if (litterIn === true) notes.push("These rows still credit poultry litter, whose char may fail Puro's H/C eligibility gate.");
+    else if (litterIn === false || litterStatus === "excluded") notes.push("Poultry litter is not credited: on the organic-carbon basis Puro requires, its char fails the H/C eligibility gate.");
+    const manureIn = (fs && fs.includes("manure")) || (sc && ok(get(sc, "feed_used_by_feed_t.manure")) && sc.feed_used_by_feed_t.manure > 0);
+    if (manureIn) notes.push("Manure is modelled from livestock statistics, not measured; straw and fronds come only from the mapped fields.");
+    const cornerTxt = cornerTags.length && cornerTags.every(transportCentral)
+      ? "; corners set supply, char yield and organic carbon, H/C and soil temperature to their low or high bounds at once, with road circuity and the truck emission factor held at central, and are not probability intervals."
+      : "; corners move the factors to their low or high bounds at once and are not probability intervals.";
+    if (rows.length > 1) notes.push("The rows are separate cases, not a range" + (anyCorners ? cornerTxt : "."));
+    $("b-note").innerHTML = notes.map((t) => `<li>${esc(t)}</li>`).join("");
+    if (basis.length) { $("b-more-body").innerHTML = basis.map(([h, t]) => `<p><b>${esc(h)}:</b> ${esc(caseText(t))}</p>`).join(""); $("b-more").hidden = false; }
+  }
+
+  function renderKey(N) {
+    const s = obj(N.summary) || {}, t = tiers(s);
+    const item = (term, def) => `<div><dt>${term}</dt><dd>${def}</dd></div>`;
+    const items = [];
+    if (obj(s.water_m3)) items.push(item("Factor range", "every factor (irrigation depth, pivot efficiency, depth to water, pump efficiency and the rest) at its low or its high bound at once; not a probability interval. The national page lists each factor and its source."));
+    if (t.lo && t.hi) items.push(item(`Radar threshold ${thr(t.cr)}`, "the classification range: the radar's farmed / not-farmed threshold moved looser or stricter in every region, at central factors."));
+    if (t.s2) items.push(item("Radar + Sentinel-2", "Sentinel-2 fills winters the radar missed and seasons it did not observe. The area it adds is measured by Sentinel-2, not by the radar."));
+    $("ranges-key").innerHTML = items.join("");
+    $("ranges-key").hidden = !items.length;
+  }
+
+  function renderWhy(N) {
+    const s = obj(N.summary) || {};
+    const mewa = get(s, "vs_official.mewa_agri_groundwater_m3");
+    if (ok(mewa)) $("why-water").innerHTML = `<b>Groundwater.</b> Saudi farms pump from aquifers that do not refill, and much of the pumping is unmetered; MEWA puts farm groundwater use at ${fmt(mewa / 1e9, 2)} billion m³ a year (2024). A field-by-field radar record shows where the water goes, and NISAR's repeat passes can keep it current.`;
+    const m = obj(N.mwan);
+    if (m && ok(m.agri_total_kt)) $("why-residue").innerHTML = `<b>Farm residue.</b> MWAN's national waste inventory puts agricultural waste at ${fmt(m.agri_total_kt / 1e3, 2)} Mt${m.agri_total_year ? ` (${esc(m.agri_total_year)})` : ""}${m.confidence ? `, graded “${esc(m.confidence)}” confidence${m.confidence_legend ? ` (${esc(m.confidence_legend)})` : ""}` : ""}. The radar record gives wheat straw and palm fronds field by field (farmed area × residue factors): a partial check on those figures, and the feed for biochar.`;
+    const fh = obj(N.fodder_halt), off = Array.isArray(N.official) ? N.official : [];
+    if (fh && Array.isArray(fh.regions) && fh.regions.length) {
+      const inHalt = off.filter((r) => r && fh.regions.includes(r.region));
+      const yr = inHalt.reduce((a, r) => a + (ok(r.radar_year_round_ha) ? r.radar_year_round_ha : 0), 0);
+      const gf = inHalt.reduce((a, r) => a + (ok(r.gastat_fodder_ha) ? r.gastat_fodder_ha : 0), 0);
+      const names = list(fh.regions.map((r) => r === "Eastern" ? "the Eastern Province" : esc(r)));
+      const eff = fh.effective ? new Date(fh.effective + "T00:00:00Z") : null;
+      const date = eff && !isNaN(eff) ? eff.toLocaleDateString("en-GB", { timeZone: "UTC", day: "numeric", month: "long", year: "numeric" }) : "";
+      const lead = !date ? `MEWA is halting perennial fodder cultivation in ${names}`
+        : Date.now() < eff.getTime() ? `MEWA halts perennial fodder cultivation in ${names} from ${date}`
+        : `MEWA has halted perennial fodder cultivation in ${names} since ${date}`;
+      const link = /^https?:\/\//.test(fh.url || "") ? ` (<a href="${esc(fh.url)}" rel="noopener">MEWA announcement</a>)` : "";
+      const base = inHalt.length ? ` The radar's 2025/26 record holds <b>${fmt(yr)} ha</b> of year-round fields there${gf ? `, against GASTAT's ${fmt(gf)} ha of fodder in 2024 (perennial and seasonal)` : ""}: a field-level baseline for screening, not enforcement, and probably an undercount, since the radar did not observe every field in both seasons. NISAR's next passes can show which fields switch.` : "";
+      $("why-fodder").innerHTML = `<b>The fodder halt.</b> ${lead}${link}.${base} <a href="scenarios.html#fodder">The baseline, field by field →</a>`;
+    }
+  }
+
+  function renderCheck(N) {
+    const v = obj(N.validation) || {}, su = obj(v.summer), wi = obj(v.winter);
+    const rp = obj(get(N, "summary.reproducibility")), rw = obj(rp && rp.winter), rs = obj(rp && rp.summer);
+    const out = [];
+    if (su && ok(su.precision) && ok(su.recall)) out.push(`Against Sentinel-2 in summer${ok(su.regions) ? ` (${fmt(su.regions)} regions)` : ""}: ${pct(su.precision)} of the area the radar calls farmed is green in Sentinel-2, and the radar finds ${pct(su.recall)} of the green area${ok(su.kappa) ? ` (kappa ${fmt(su.kappa, 2)})` : ""}.`);
+    if (wi && ok(wi.kappa)) out.push(`Winter is weaker (kappa ${fmt(wi.kappa, 2)}${ok(wi.recall) ? `; the radar finds ${pct(wi.recall)} of the green area` : ""}): NISAR's winter dates fall early in the season, when many crops still have little canopy.`);
+    if (rw && rs && ok(rw.agreement) && ok(rs.agreement)) out.push(`Where two neighbouring regions map the same fields, their radar calls agree on ${pct(rw.agreement, 1)} of the shared area in winter and ${pct(rs.agreement, 1)} in summer` +
+      (ok(get(rw, "s2_control.agreement")) && ok(get(rs, "s2_control.agreement")) ? ` (Sentinel-2 on the same fields: ${pct(rw.s2_control.agreement, 1)} and ${pct(rs.s2_control.agreement, 1)}).` : "."));
+    if (!out.length) return;
+    out.push("Sentinel-2 also outlines the fields, so these are consistency checks, not an independent ground truth.");
+    $("check").innerHTML = out.join(" ");
+  }
+
+  Promise.allSettled([j("data/national/summary.json"), j("data/scenarios/scenarios.json")]).then(([n, s]) => {
+    const N = n.status === "fulfilled" ? obj(n.value) : null, SC = s.status === "fulfilled" ? obj(s.value) : null;
+    if (!N) { $("loadfail").hidden = false; safe("biochar", () => renderBiochar({}, SC)); return; }
+    safe("hero", () => renderHero(N));
+    safe("water", () => renderWater(N));
+    safe("energy", () => renderEnergy(N));
+    safe("biochar", () => renderBiochar(N, SC));
+    safe("key", () => renderKey(N));
+    safe("why", () => renderWhy(N));
+    safe("check", () => renderCheck(N));
+  });
+})();
 </script>
 </body>
 </html>

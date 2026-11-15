@@ -3,54 +3,90 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Circle to Char: National</title>
-<meta name="description" content="NISAR radar audit of the 60 largest farming regions in Saudi Arabia: farmed area, irrigation water and pumping energy, organic residues and where biochar plants could go.">
+<title>National results · Circle to Char</title>
+<meta name="description" content="NISAR radar over the 60 largest farming regions of Saudi Arabia, 2025/26: farmed area, irrigation water and pumping energy, organic residues and where biochar plants could go. Radar results only where the radar passed its quality check; manure and litter are modelled.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:title" content="National results · Circle to Char">
+<meta property="og:description" content="NISAR radar over Saudi Arabia's 60 largest farming regions, 2025/26: farmed area, water, pumping energy, residues and biochar siting potential.">
+<meta property="og:image" content="https://khalidmelo.github.io/circle-to-char/img/qassim-hv.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%230f6e6a'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+<link rel="preconnect" href="https://server.arcgisonline.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
+<link rel="stylesheet" href="national.css?v=4">
 </head>
-<body>
-<header>
+<body class="app">
+<nav class="site" aria-label="Circle to Char pages">
+  <a class="home" href="./">Circle to Char</a>
+  <a href="national.html" aria-current="page">National<span class="long"> results</span></a>
+  <a href="scenarios.html">Scenarios</a>
+  <a href="qassim.html">Qassim<span class="long"> deep dive</span></a>
+  <a class="code" href="https://github.com/khalidmelo/circle-to-char">Code ↗</a>
+</nav>
+<header class="page">
   <div class="brand">
-    <h1>Circle to Char <span class="tag">National</span></h1>
-    <p>NISAR radar reads Saudi Arabia's 60 largest farming regions (~88% of mapped farmland): what is farmed, what it costs in water and energy, what organic residue it leaves, and where biochar plants could go. <a href="index.html">Qassim deep dive →</a></p>
-  </div>
-  <div class="level" role="group" aria-label="Estimate">
-    <span>Estimate</span>
-    <button data-level="low">Low</button>
-    <button data-level="central" class="on">Central</button>
-    <button data-level="high">High</button>
+    <h1>National results</h1>
+    <p>NISAR radar over Saudi Arabia's 60 largest farming regions, 2025/26: what is farmed, what it costs in water and energy, what organic residue it leaves, and where biochar plants could go. Radar results only where the radar passed its quality check; manure and litter are modelled from livestock statistics for the whole Kingdom, not measured.</p>
   </div>
 </header>
 <main>
-  <section id="mapwrap">
+  <section id="mapwrap" aria-label="Map of the farming regions, fields and biochar sites">
     <div id="map"></div>
-    <div class="maptools">
-      <label class="chk"><input id="showregions" type="checkbox" checked> Regions</label>
-      <label class="chk"><input id="showplants" type="checkbox" checked> Biochar plants</label>
-      <label class="chk"><input id="showcement" type="checkbox" checked> Cement plants</label>
-      <label class="chk"><input id="showmanure" type="checkbox"> Manure &amp; litter (modelled)</label>
-      <label>Plant size
-        <select id="size"><option value="10">10 kt/y</option><option value="25">25 kt/y</option><option value="50" selected>50 kt/y</option></select>
-      </label>
-      <p class="legend" id="legend">Click a region to load its fields: <span class="swatch" style="background:#e08a1e"></span>winter only (wheat) <span class="swatch" style="background:#b23a00"></span>wheat then summer crop <span class="swatch" style="background:#3b7dd8"></span>summer only <span class="swatch" style="background:#2e9e5b"></span>year-round <span class="swatch" style="background:#7a4b1d"></span>palm grove <span class="swatch" style="background:#8e6bbf"></span>one season observed: farmed <span class="swatch" style="background:#9aa0a6"></span>not detected by radar <span class="swatch" style="background:#d1c4e9"></span>one season observed: not detected <span class="swatch" style="background:#e0c9a6"></span>radar not usable <span class="swatch" style="background:#d0d0d0"></span>not covered by radar</p>
+    <p id="hint" class="loading" role="status">Loading the national results…</p>
+    <!-- One group per map layer: its checkbox is the heading, its key sits below (keys are built in national.js from the same colours as the marks). -->
+    <div class="maptools layers" id="tools">
+      <div class="grp">
+        <label class="chk"><input id="showregions" type="checkbox" checked autocomplete="off"> Farming regions</label>
+        <ul class="key" id="k-regions"></ul>
+        <label class="pick">Region
+          <select id="region" autocomplete="off" aria-label="Region: load its fields"><option value="">All regions</option></select>
+        </label>
+      </div>
+      <div class="grp">
+        <div class="grp-head">
+          <label class="chk"><input id="showplants" type="checkbox" checked autocomplete="off"> Biochar plants</label>
+          <label class="pick">size
+            <select id="size" autocomplete="off" aria-label="Biochar plant size, feed per year"><option value="10">10 kt/y</option><option value="25">25 kt/y</option><option value="50" selected>50 kt/y</option></select>
+          </label>
+        </div>
+        <ul class="key" id="k-plants"></ul>
+      </div>
+      <div class="grp grp-pair">
+        <div class="grp">
+          <label class="chk"><input id="showcement" type="checkbox" checked autocomplete="off"> Cement plants</label>
+          <ul class="key" id="k-cement"></ul>
+        </div>
+        <div class="grp">
+          <label class="chk"><input id="showmanure" type="checkbox" autocomplete="off"> Manure &amp; litter (modelled)</label>
+          <ul class="key" id="k-manure" hidden></ul>
+        </div>
+      </div>
+      <div class="fieldbar" id="fieldbar" hidden>
+        <span id="fieldstatus" aria-live="polite"></span>
+        <button type="button" id="keybtn" aria-controls="fieldkey" aria-expanded="false" hidden>Show field key</button>
+        <button type="button" id="backbtn" hidden>Back to all regions</button>
+      </div>
+      <div id="fieldkey" hidden></div>
     </div>
   </section>
   <aside>
-    <nav class="tabs">
-      <button data-tab="overview" class="on">Overview</button>
-      <button data-tab="official">vs official</button>
-      <button data-tab="biochar">Biochar</button>
-      <button data-tab="lenses">Problems it answers</button>
-      <button data-tab="method">Method</button>
+    <nav class="tabs" role="tablist" aria-label="National results">
+      <button type="button" role="tab" id="t-overview" data-tab="overview" class="on" aria-selected="true" aria-controls="tab-overview">Overview</button>
+      <button type="button" role="tab" id="t-lenses" data-tab="lenses" aria-selected="false" aria-controls="tab-lenses" tabindex="-1">Why it matters</button>
+      <button type="button" role="tab" id="t-official" data-tab="official" aria-selected="false" aria-controls="tab-official" tabindex="-1">Official stats</button>
+      <button type="button" role="tab" id="t-biochar" data-tab="biochar" aria-selected="false" aria-controls="tab-biochar" tabindex="-1">Biochar</button>
+      <button type="button" role="tab" id="t-method" data-tab="method" aria-selected="false" aria-controls="tab-method" tabindex="-1">Method</button>
     </nav>
-    <div id="tab-overview" class="tab on"><div id="ov"></div></div>
-    <div id="tab-official" class="tab"><div id="off"></div></div>
-    <div id="tab-biochar" class="tab"><div id="bio"></div></div>
-    <div id="tab-lenses" class="tab"><div id="lens"></div></div>
-    <div id="tab-method" class="tab"><div id="meth"></div></div>
+    <div id="tab-overview" class="tab on" role="tabpanel" aria-labelledby="t-overview"><div id="ov"><p class="note">Loading…</p></div></div>
+    <div id="tab-lenses" class="tab" role="tabpanel" aria-labelledby="t-lenses"><div id="lens"><p class="note">Loading…</p></div></div>
+    <div id="tab-official" class="tab" role="tabpanel" aria-labelledby="t-official"><div id="off"><p class="note">Loading…</p></div></div>
+    <div id="tab-biochar" class="tab" role="tabpanel" aria-labelledby="t-biochar"><div id="bio"><p class="note">Loading…</p></div></div>
+    <div id="tab-method" class="tab" role="tabpanel" aria-labelledby="t-method"><div id="meth"><p class="note">Loading…</p></div></div>
   </aside>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="national.js"></script>
+<script src="national.js?v=4"></script>
 </body>
 </html>

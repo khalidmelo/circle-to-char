@@ -1,0 +1,87 @@
+/* scenarios page only: rules for this page, loaded after style.css. Shared tokens and components live in style.css. */
+
+/* ---------- Moved from the page's inline <style> (scenarios.js output). Its .card rules styled the old
+   biochar card, now the .cases list in style.css, so they are gone ---------- */
+td .sub, .sub { display: block; color: var(--muted); font-size: var(--fs-cap); }
+.tab td .sub, .tab .case-meta { color: var(--ink-2); }   /* row notes and sources carry caveats: never in --muted */
+.sub.src { margin-top: 2px; }
+
+/* ---------- Map tools ---------- */
+@media (min-width: 861px) {
+  .maptools { max-width: min(520px, calc(100% - 24px)); }   /* clears the Leaflet attribution at 1280 px */
+}
+.maptools .readout { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; column-gap: 6px; margin: 0; font-size: var(--fs-cap); line-height: 1.5; color: var(--ink-2); }
+#mapkey { flex-basis: 100%; }
+@media (min-width: 960px) {   /* the card at its full width: six tracks, three key entries a row, the watch-list's two
+                                 a row in wider cells, so the card grows less when the watch-list is on */
+  #mapkey { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  #mapkey li { grid-column: span 2; }
+  #mapkey li.watch { grid-column: span 3; }
+}
+#mapkey li.full { grid-column: 1 / -1; }
+.key i + i { margin-left: -2px; }
+/* a used cement ring: the map's pale tint (cement 35%, white 65%) inside the full-strength ring, never a solid dot */
+.key i.ring.used { background: #c6b5d4; background: color-mix(in srgb, var(--c-cement) 35%, #fff); }
+/* watch-list fields from Sentinel-2 alone: angular marks (circles are fields the radar classified) */
+.key i.diamond { width: 9px; height: 9px; margin: 0 1.5px; background: #fff; border: 2px solid var(--c, var(--muted)); border-radius: 0; transform: rotate(45deg); }
+.key i.square { width: 10px; height: 10px; margin: 0 1px; background: #fff; border: 2px solid var(--c, var(--muted)); border-radius: 0; }
+/* the watch-list heading spans the key's row, a heading over its items rather than a fourth key entry beside them */
+#mapkey li.key-sub { grid-column: 1 / -1; margin-top: 2px; line-height: 1.3; font-weight: 600; color: var(--ink); }
+.loading.upside { font-weight: 600; }
+
+/* A button that reads as a link: scenario names in the biochar table, "Details" in the map tools */
+.linkbtn, .pick {
+  display: inline; padding: 0; border: 0; border-radius: 2px; background: none;
+  font: inherit; color: var(--accent); text-align: left; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 2px;
+}
+.linkbtn:hover, .pick:hover { background: none; text-decoration-thickness: 2px; }
+.pick { font-weight: 600; }
+.pick[aria-current="true"] { color: var(--ink); text-decoration: none; cursor: default; }
+
+/* ---------- Side panel ---------- */
+.tab h3:first-child { margin-top: 0; }
+.tab .lead + .lead { margin-top: -4px; }
+.tab ul.items { margin: 0 0 8px; padding-left: 18px; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); }
+.tab ul.items li + li { margin-top: 4px; }
+.tab .callout b { color: var(--ink); }
+.tab .kpis { margin: 12px 0 4px; }
+.tab .cases { margin-top: 4px; }
+.case-label .tag { margin-right: 4px; }
+/* the hypothetical upper bound sits below its own divider, its value in brackets: never read as a credited case */
+.cases-sub { margin: 14px 0 0; padding-top: 8px; border-top: 1px dashed var(--line-2); font-size: var(--fs-cap); font-weight: 600; color: var(--ink-2); }
+.tab .cases.cases-up { margin-top: 0; }
+.cases-up .case:first-child { border-top: 0; }
+.case-value .hyp { display: block; text-align: right; }
+.case-value .hyp-l { display: block; text-align: right; font-size: var(--fs-cap); font-weight: 400; line-height: 1.3; color: var(--ink-2); }
+.sub.pnote b { color: var(--ink); font-weight: 600; }
+.notes { margin: 8px 0 0; padding-left: 18px; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); }
+.notes li + li { margin-top: 4px; }
+
+/* Tables: name columns keep a readable width; the shared rule scrolls the table inside its own box */
+.tab td.name { min-width: 168px; }
+.tab td.name .tag { margin-left: 4px; }
+.tab td.val { min-width: 140px; }
+.tab td.rule { min-width: 120px; }
+.tab td.rule .tag { margin-left: 4px; }
+.tab tr.grp > td { padding: 10px 8px 2px; font-weight: 600; color: var(--ink); border-bottom: 0; }
+.tab td.tier { padding-left: 16px; color: var(--ink-2); }
+.tab tr.total > td { font-weight: 600; border-top: 1px solid var(--line-2); }
+.tab tr.upside > td { color: var(--ink-2); }
+code.path { font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; overflow-wrap: anywhere; }
+.noscript { padding: 0 16px; }
+
+/* Leaflet tooltips: plant tooltips can list several plants and outlets */
+.leaflet-tooltip { white-space: normal; width: max-content; max-width: min(300px, calc(100vw - 48px)); }
+
+@media (max-width: 480px) {
+  .tab td.rule { min-width: 96px; }
+  .tab td.name { min-width: 148px; }
+}
+@media (pointer: coarse) {
+  .linkbtn { display: inline-flex; align-items: center; min-height: 40px; min-width: 40px; padding: 0 6px; }
+  .pick { display: inline-flex; align-items: center; min-height: 40px; }
+}
+@media (pointer: coarse), (max-width: 860px) {
+  .tab details.more > summary { min-height: 40px; }
+}
