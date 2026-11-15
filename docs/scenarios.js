@@ -1,4 +1,4 @@
-/* Circle to Char: what-if scenarios.
+/* SkyMeter: what-if scenarios.
    Data: data/scenarios/scenarios.json, plants_<id>.json and watchlist.json (scripts/export_scenarios.py), plus
    data/national/summary.json for the links to the national page. Every figure on the page comes from these files:
    a missing key hides its line or shows "–", and nothing throws.
@@ -8,7 +8,7 @@
 "use strict";
 
 const S = { data: null, nat: null, ctx: {}, sel: null, plants: {}, sites: null, plantLayer: null, cementLayer: null,
-  watchLayer: null, watch: null, watchCounts: null, drawSeq: 0, fitted: false, autoView: null, mapNote: null };
+  watchLayer: null, watch: null, watchCounts: null, watchErr: null, drawSeq: 0, fitted: false, autoView: null, mapNote: null };
 
 /* ---------- Small helpers ---------- */
 const $ = (id) => document.getElementById(id);
@@ -50,14 +50,42 @@ const hav = (lon1, lat1, lon2, lat2) => {   // great-circle km
 const sentence = (t) => { const s = String(t == null ? "" : t).trim(); return s ? cap(s) + (/[.!?]$/.test(s) ? "" : ".") : ""; };
 /* Record notes are written for the pipeline: drop the script, file and column names a reader cannot use (out/ is not
    published) and name the rows in the page's own words. Only references go; every caveat in the text stays. */
+const FILE = /\b[\w.\/-]+\.(?:py|json|csv)\b/;
 const plain = (t) => String(t == null ? "" : t)
   .replace(/;?\s*full rule:[^;]*?\b(?:out|data)\/[\w.\/-]+\.json\b/gi, "")
+  // constants named in words: "Mirror of national_supply.py constants BG_MAX_DB and THR_MAX_DB" -> the limits themselves
+  .replace(/\bMirror of\s+[\w.\/-]+\.py\s+constants?\s+[A-Z][A-Z0-9_]+(?:\s+and\s+[A-Z][A-Z0-9_]+)?,\s*which the quality check uses\b/g, "A copy of the limits the national model's quality check uses")
+  .replace(/\bMirror of\s+[\w.\/-]+\.py\s+constants?\s+[A-Z][A-Z0-9_]+(?:\s+and\s+[A-Z][A-Z0-9_]+)?/g, "A copy of the national model's quality-check limits")
+  .replace(/\b[\w.\/-]+\.py\s+constants?\s+[A-Z][A-Z0-9_]+(?:\s+and\s+[A-Z][A-Z0-9_]+)?/g, "the model's fixed limits")
   .replace(/\s+(?:of|in|from)\s+model\/[\w.\/-]+\.py\b/gi, "").replace(/\s*\bmodel\/[\w.\/-]+\.py\b/gi, "")
   .replace(/\s*\(s2_tier\)/gi, "")
   .replace(/:\s*family B_s2\b[^.]*?\brows\b,?/gi, ": the radar + Sentinel-2 fodder-halt rows, the Sentinel-2 row of the floor-to-ceiling table and the radar + Sentinel-2 robustness runs,")
   .replace(/\s+that\s+(?:data|out)\/[\w.\/-]+\.(?:csv|json)\s+carries\s+and\b/gi, " that")
   .replace(/\bclass_s2\b/g, "Sentinel-2 class")
+  // the export's own key and row names, in words
+  .replace(/\bvm0044_values:\s*the Verra sensitivity\s+C3_F3_vm0044_cement\b/g, "The Verra VM0044 list is for the Verra sensitivity case")
+  .replace(/\bvalues lists\b/g, "the default list holds").replace(/\bthe C_upside rows\b/g, "the not-credited upper-bound rows")
+  .replace(/\ba row's params\b/g, "a row's parameters")
+  // units and signs as the page writes them: m³, CO₂, a true minus, en dashes in number ranges
+  .replace(/\bm3\b/g, "m³").replace(/\bCO2\b/g, "CO₂").replace(/(^|[\s(~])-(\d)/g, "$1−$2")
+  .replace(/(^|[\s(~])(\d{1,3}(?:\.\d+)?)-(\d{1,3}(?:\.\d+)?)(?![\d-])/g, "$1$2–$3")
+  // the national model's parameter file, in words
+  .replace(/\b(?:each|every)\s+params\.json\s+factor\b/g, "each factor of the national model")
+  .replace(/\bparams\.json\s+([a-z][a-z0-9]*(?:_[a-z0-9]+)+)\b/g, (m, n) => "the national model's " + n.replace(/_(?:m|km|db|t|ha|m3)$/, "").replaceAll("_", " "))
+  .replace(/\bparams\.json's\b/g, "the national model's").replace(/\b(?:model\/)?params\.json\b/g, "the national model's parameters")
+  // files a reader cannot open: a bracketed reference goes, the published field table is named
+  .replace(/\s*\((?:[\w.\/-]+\.(?:py|json|csv))\)/g, "")
+  .replace(/\b(?:data\/national\/)?fields_national\.csv\b/g, "the national field table")
+  .replace(new RegExp("\\s+(?:in|of|from)\\s+" + FILE.source, "g"), "").replace(new RegExp("\\s*" + FILE.source, "g"), "")
   .replace(/\s{2,}/g, " ").replace(/\s+([,.;:)])/g, "$1").trim();
+/* "H/C_org" as the page sets it, in escaped text */
+const subs = (html) => html.replace(/\bH\/C_org\b/g, "H/C<sub>org</sub>");
+/* A source that opens "ASSUMPTION:" is a declared choice: the word becomes a quiet tag, the rest is plain text */
+const srcHtml = (t) => {
+  const s = plain(t), m = /^ASSUMPTION:\s*/i.exec(s);
+  const html = (x) => subs(esc(sentence(x)));
+  return m ? `<span class="tag">Assumption</span> ${html(s.slice(m[0].length))}` : html(s);
+};
 
 /* Map colours: the shared data-colour tokens in style.css (fallbacks are the same values) */
 const css = (name, fb) => safe("css", () => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fb, fb);
@@ -80,8 +108,11 @@ const inSentence = (n) => n === "Eastern Province" ? "the Eastern Province" : n;
 const FEED = { straw: "wheat straw", fronds: "palm fronds", litter: "poultry litter", manure: "manure" };
 const FEEDC = { straw: "straw", fronds: "frond", litter: "litter", manure: "manure" };   // "straw and frond chars"
 const RADAR_FEEDS = ["straw", "fronds"];
+const KEY_CEMENT = "Cement plant. Size shows 2024 output; fill shows the share of its char allowance used; hollow takes none.";
 /* MEWA's halt date, a policy date, used only if data/national/summary.json carries no fodder_halt.effective */
 const HALT_DATE = "2026-11-16";
+const REPO = "https://github.com/khalidmelo/circle-to-char";
+const ico = (id, cls) => `<svg class="ico${cls ? " " + cls : ""}" aria-hidden="true"><use href="img/icons.svg#i-${id}"/></svg>`;
 
 /* ---------- Scenario records ---------- */
 const SC = () => obj(S.data && S.data.scenarios) || {};
@@ -101,22 +132,47 @@ const dose = (x) => share(x && x.dosage);
 const map = (() => {
   if (!window.L) return null;
   try {
-    const m = L.map("map", { preferCanvas: true, zoomSnap: 0.25 }).setView([24.5, 44.5], 5);
+    // the zoom buttons sit top left, as on the national and Qassim pages; on wide screens the map tools card floats
+    // beside them
+    const m = L.map("map", { preferCanvas: true, zoomSnap: 0.25, zoomControl: false }).setView([24.5, 44.5], 5);
+    L.control.zoom({ position: "topleft" }).addTo(m);
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
       maxZoom: 17, attribution: "Imagery © Esri, Maxar, Earthstar Geographics" }).addTo(m);
+    // a round button under the zoom buttons that brings back the page's own framing
+    const Reset = L.Control.extend({
+      options: { position: "topleft" },
+      onAdd() {
+        const b = L.DomUtil.create("button", "map-btn");
+        b.type = "button";
+        b.title = "Show every plant";
+        b.setAttribute("aria-label", "Show every plant");
+        b.innerHTML = '<svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-expand"/></svg>';
+        L.DomEvent.disableClickPropagation(b);
+        L.DomEvent.on(b, "click", () => refit(true));
+        return b;
+      },
+    });
+    new Reset().addTo(m);
     return m;
   } catch (e) { if (window.console) console.error("scenarios: map", e); return null; }
 })();
 
+/* kind: "error", "upside" (a hypothetical scenario is on the map) or "busy" (a spinner while a file loads) */
 function mapNote(text, kind) {
   const el = $("mapnote");
   if (!el) return;
   el.classList.toggle("error", kind === "error");
   el.classList.toggle("upside", kind === "upside");
+  el.classList.toggle("is-busy", kind === "busy");
   el.textContent = text || "";
   el.hidden = !text;
 }
-const plantNote = () => mapNote(S.mapNote ? S.mapNote.text : "", S.mapNote ? S.mapNote.kind : null);
+/* The pill shows every error at once (this scenario's plants, the watch-list), else the upper-bound notice */
+function plantNote() {
+  const errs = [S.mapNote && S.mapNote.kind === "error" ? S.mapNote.text : "", S.watchErr || ""].filter(Boolean);
+  if (errs.length) { mapNote(errs.join(" "), "error"); return; }
+  mapNote(S.mapNote ? S.mapNote.text : "", S.mapNote ? S.mapNote.kind : null);
+}
 
 /* ---------- Tabs: follow the URL hash (#floor, #fodder, #retrofits, #biochar, #assumptions) ---------- */
 const TABS = ["floor", "fodder", "retrofits", "biochar", "assumptions"];
@@ -171,6 +227,7 @@ function setupTabs() {
 /* ---------- Start ---------- */
 async function init() {
   setupTabs();
+  safe("tools", setupTools);
   document.addEventListener("click", onAction);
   if (!map) mapNote("The map could not load; the figures in the panel are not affected.", "error");
   const [s, n] = await Promise.allSettled([j("data/scenarios/scenarios.json"), j("data/national/summary.json")]);
@@ -183,7 +240,7 @@ async function init() {
   [["ta", renderA], ["tb", renderB], ["tr", renderR], ["tc", renderC], ["tp", renderP]].forEach(([id, fn]) => {
     try { fn(); } catch (e) {
       if (window.console) console.error("scenarios: " + id, e);
-      $(id).innerHTML = `<p class="note loadfail">This part could not be drawn from the data export (${esc(e.message)}).</p>`;
+      $(id).innerHTML = alertHtml(`This part could not be drawn from the data export (${e.message}).`);
     }
   });
   safe("select", buildSelect);
@@ -195,11 +252,12 @@ async function init() {
   await drawMap();
 }
 
+const alertHtml = (msg) => `<p class="alert" role="alert">${ico("alert")}<span>${esc(msg)}</span></p>`;
 function failed(e) {
   if (window.console) console.error("scenarios: load", e);
   const msg = `Could not load the scenario data${e && e.message ? ` (${e.message})` : ""}. Reload the page to try again.`;
   mapNote(msg, "error");
-  ["ta", "tb", "tr", "tc", "tp"].forEach((id) => { const el = $(id); if (el) el.innerHTML = `<p class="note loadfail">${esc(msg)}</p>`; });
+  ["ta", "tb", "tr", "tc", "tp"].forEach((id) => { const el = $(id); if (el) el.innerHTML = alertHtml(msg); });
   const sel = $("csel");
   if (sel) { sel.innerHTML = "<option>Not available</option>"; sel.disabled = true; }
 }
@@ -265,24 +323,55 @@ function renderA() {
   const w = (x) => C(x && x.water_m3);
   const h = [];
 
+  // Head: the floor as the tab's one big figure, its two seasons side by side on hairlines (a missing key drops its tile)
+  const facts = [ok(act.winter) ? `<div><dt>Farmed in winter</dt><dd>${fmt(act.winter)} ha</dd></div>` : "",
+    ok(act.summer) ? `<div><dt>Farmed in summer</dt><dd>${fmt(act.summer)} ha</dd></div>` : ""].join("");
+  if (ok(a1.farmed_ha)) {
+    h.push(`<div class="ov-hero"><p class="ov-k">${ico("satellite", "sm")}<span>Radar-verified floor, farmed in 2025/26</span></p>
+      <p class="ov-num">${fmt(a1.farmed_ha)}<span class="ov-unit">ha</span></p>${facts ? `<dl class="ov-facts">${facts}</dl>` : ""}</div>`);
+  }
+  h.push(ok(a1.farmed_ha) ? `<p class="lead">Counted where NISAR's data pass the quality check, with the southwest regions reported apart.</p>`
+    : `<p class="lead">The radar-verified floor counts the farmed area where NISAR's data pass the quality check, with the southwest regions reported apart.</p>`);
   // The national page's headline less the southwest = this floor (shown only where the data add up)
   if (a0 && swl && ok(a0.farmed_ha) && ok(a1.farmed_ha) && ok(swl.farmed_ha) && Math.abs(a0.farmed_ha - a1.farmed_ha - swl.farmed_ha) <= 2
       && ok(w(a0)) && ok(w(a1)) && ok(w(swl)) && Math.abs(w(a0) - w(a1) - w(swl)) <= 1e-3 * w(a0)) {
     const whose = natMatch === true ? `the <a href="national.html">national page</a>'s` : "the published national table's";
-    h.push(`<p class="lead">This floor is ${whose} ${fmt(a0.farmed_ha)} ha and ${bn(w(a0))} bn m³ less the southwest regions${sw.length ? ` of ${esc(list(sw))}` : ""} (${fmt(swl.farmed_ha)} ha, ${bn(w(swl))} bn m³), which are reported apart as low confidence.</p>`);
+    h.push(`<p class="note">This floor is ${whose} ${fmt(a0.farmed_ha)} ha and ${bn(w(a0))} bn m³ less the southwest regions${sw.length ? ` of ${esc(list(sw))}` : ""} (${fmt(swl.farmed_ha)} ha, ${bn(w(swl))} bn m³), which are reported apart as low confidence.</p>`);
   }
-  h.push(`<p class="lead">Where NISAR's data pass the quality check (southwest reported apart), the radar finds <b>${fmt(a1.farmed_ha)} ha</b> farmed in 2025/26: winter ${fmt(act.winter)} ha, summer ${fmt(act.summer)} ha.</p>`);
   if (natMatch === false) h.push(`<p class="callout">The national page currently shows ${fmt(ns.farmed_ha)} ha for the published table: the two pages come from different model runs.</p>`);
 
+  // KPI card: the central value, then a mini range bar drawn from the data on the card's own scale (P5–P95 as the dark
+  // band, the all-low / all-high corners as the whisker, the central value as the tick). The numbers are in the dl
+  // below it, so the bar is hidden from screen readers; with no range, or a range of zero width, it is left out.
+  // The scale's printed ends are left out when they are the corners, which the dl already gives (always the case today).
+  const KPI_ICON = { water_m3: "water", elec_kwh: "energy", summer_pumping_avg_mw: "calendar", co2_t_grid: "flame" };   // as on the national page
+  let anyP90 = false, anyCor = false;
   const kpi = (label, key, div, d, unit) => {
     const v = C(a1[key]);
     if (!ok(v)) return "";
-    const m = obj(mc[key]), r = obj(a1[key]), lines = [];
-    if (m && ok(m.p5) && ok(m.p95)) lines.push(`P5–P95 ${fmt(m.p5 / div, d)}–${fmt(m.p95 / div, d)}`);
-    if (r && ok(r.low) && ok(r.high)) lines.push(`all-low / all-high corners ${fmt(r.low / div, d)}–${fmt(r.high / div, d)}`);
-    return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-value">${fmt(v / div, d)}<span class="kpi-unit">${unit}</span></div>${lines.length ? `<div class="kpi-range">${lines.join("<br>")}</div>` : ""}</div>`;
+    const m = obj(mc[key]), r = obj(a1[key]);
+    const p90 = m && ok(m.p5) && ok(m.p95) ? [Math.min(m.p5, m.p95), Math.max(m.p5, m.p95)] : null;
+    const cor = r && ok(r.low) && ok(r.high) ? [Math.min(r.low, r.high), Math.max(r.low, r.high)] : null;
+    anyP90 = anyP90 || !!p90; anyCor = anyCor || !!cor;
+    const rng = (x) => `${fmt(x[0] / div, d)}–${fmt(x[1] / div, d)}`;
+    const rows = [p90 ? `<div class="r-thr"><dt>P5–P95</dt><dd>${rng(p90)}</dd></div>` : "",
+      cor ? `<div class="r-both"><dt>Corners</dt><dd>${rng(cor)}</dd></div>` : ""].join("");
+    const ends = [v, ...(p90 || []), ...(cor || [])], lo = Math.min(...ends), hi = Math.max(...ends);
+    let bar = "";
+    if ((p90 || cor) && hi > lo) {
+      const pos = (x) => +(100 * (x - lo) / (hi - lo)).toFixed(2);
+      const lane = (cls, x) => x ? `<div class="rb-lane ${cls}"><i style="--a:${pos(x[0])}%;--b:${pos(x[1])}%"></i></div>` : "";
+      const sameAsCorners = cor && lo === cor[0] && hi === cor[1];
+      bar = `<div class="rb" aria-hidden="true">${lane("rb-thr", p90)}${lane("rb-both", cor)}<b class="rb-mid" style="--x:${pos(v)}%"></b></div>`
+        + (sameAsCorners ? "" : `<div class="rb-ends" aria-hidden="true"><span>${fmt(lo / div, d)}</span><span>${fmt(hi / div, d)}</span></div>`);
+    }
+    return `<div class="kpi"><div class="kpi-label">${ico(KPI_ICON[key] || "info", "sm")}<span>${label}</span></div><div class="kpi-value">${fmt(v / div, d)}<span class="kpi-unit">${unit}</span></div>${bar}${rows ? `<dl class="kpi-range">${rows}</dl>` : ""}</div>`;
   };
-  h.push(`<div class="kpis">${kpi("Groundwater pumped", "water_m3", 1e9, 2, "billion m³/yr")}${kpi("Pumping electricity", "elec_kwh", 1e9, 2, "TWh/yr")}${kpi("Average June–September load", "summer_pumping_avg_mw", 1, 0, "MW")}${kpi("Pumping CO₂ (grid)", "co2_t_grid", 1e6, 2, "Mt/yr")}</div>`);
+  const cards = `${kpi("Groundwater pumped", "water_m3", 1e9, 2, "billion m³ a year")}${kpi("Pumping electricity", "elec_kwh", 1e9, 2, "TWh a year")}${kpi("Average Jun–Sep load", "summer_pumping_avg_mw", 1, 0, "MW")}${kpi("Pumping CO₂, grid", "co2_t_grid", 1e6, 2, "Mt a year")}`;
+  // a key to the bars, in the national page's style: which band is which (the corners are not a probability interval)
+  const keyBits = [anyP90 ? `<span class="rk thr"></span>P5–P95, the Monte Carlo interval` : "", anyCor ? `<span class="rk both"></span>the corners, every factor at its low or high bound at once` : ""].filter(Boolean);
+  if (cards && keyBits.length) h.push(`<p class="note kpi-key">Under each central figure, on one small scale: ${keyBits.join(", and ")}, with a tick at the central value. The bar runs from end to end of the widest range.</p>`);
+  if (cards) h.push(`<div class="kpis">${cards}</div>`);
 
   const eff = C(get(N, "params.pump_wire_to_water_eff"));
   const pump = ok(eff) ? `a best-practice ${fmt(eff, 2)} wire-to-water pump` : "a best-practice wire-to-water pump";
@@ -294,7 +383,7 @@ function renderA() {
     : headOld ? `Energy is a lower-bound model (static lift, ${pump}, no sprinkler pressure)`
     : natMatch === true && ph && typeof ph.rule === "string" ? `Energy is modelled, not metered, and likely a lower bound (see below). It uses ${esc(ph.rule)}, and ${pump}`
     : `Energy is modelled, not metered, and likely a lower bound (see below). It uses the national model's pumping head (<a href="national.html#method">national page, Method tab</a>) and ${pump}`;
-  h.push(`<p class="note">Central estimates. P5–P95: Monte Carlo over every factor's low–high range (depths move together, lift moves together across regions). The corners set every factor to its low or high bound at once, so they fall outside P5–P95. Water is estimated from crop water needs, not metered: published irrigation depths for winter and year-round fields and a derived depth${half ? " (half the perennial one)" : ""} for summer crops. ${energy}, so its band is a parameter range, not a full uncertainty.</p>`);
+  h.push(`<p class="note">Central estimates. P5–P95: Monte Carlo over every factor's low–high range (depths move together, lift moves together across regions). The all-low / all-high corners set every factor to its low or high bound at once, so they fall outside P5–P95. Water is estimated from crop water needs, not metered: published irrigation depths for winter and year-round fields and a derived depth${half ? " (half the perennial one)" : ""} for summer crops. ${energy}, so its band is a parameter range, not a full uncertainty.</p>`);
 
   // The radar threshold is a separate uncertainty (national page, southwest in)
   const cr = obj(ns && ns.classification_range), lo = obj(cr && cr.plus_1db), hi = obj(cr && cr.minus_1db);
@@ -302,7 +391,7 @@ function renderA() {
     const sh = Math.abs(Number(get(cr, "shift_db.plus_1db"))) || 1;
     const wl = C(lo.water_m3), wh = C(hi.water_m3);
     const run = natMatch === false ? " This range comes from the national page's current run, not the run behind the figures above." : "";
-    h.push(`<p class="note">These ranges cover the accounting factors, not the radar classification. Moving every region's radar threshold by ±${fmt(sh, sh % 1 ? 1 : 0)} dB gives ${fmt(Math.min(lo.farmed_ha, hi.farmed_ha))}–${fmt(Math.max(lo.farmed_ha, hi.farmed_ha))} ha farmed${ok(wl) && ok(wh) ? ` and ${bn(Math.min(wl, wh))}–${bn(Math.max(wl, wh))} bn m³ of water` : ""} on the national table (southwest in; <a href="national.html">national page</a>).${run}</p>`);
+    h.push(`<p class="note">These ranges cover the accounting factors, not the radar classification. Moving every region's radar threshold by ±${fmt(sh, sh % 1 ? 1 : 0)}&nbsp;dB gives ${fmt(Math.min(lo.farmed_ha, hi.farmed_ha))}–${fmt(Math.max(lo.farmed_ha, hi.farmed_ha))} ha farmed${ok(wl) && ok(wh) ? ` and ${bn(Math.min(wl, wh))}–${bn(Math.max(wl, wh))} bn m³ of water` : ""} on the national table (southwest in; <a href="national.html">national page</a>).${run}</p>`);
   }
 
   if (swl) {
@@ -404,6 +493,10 @@ function tierPanel(runs) {
 }
 
 /* ================================================================ Fodder halt */
+/* Savings columns (fodder halt and retrofits): short heads, the unit on its own line */
+const saveTh = (water) => [[water, "bn m³/yr", "c-water"], ["Electricity saved", "TWh/yr"], ["Summer load cut", "MW"], ["CO₂ avoided", "Mt/yr"]]
+  .map(([t, u, c]) => `<th class="num${c ? " " + c : ""}">${t}<span class="sub">${u}</span></th>`).join("");
+const LOAD_NOTE = "Summer load cut: the fall in the average June to September pumping load.";
 function renderB() {
   const P = S.ctx.P || {}, el = $("tb");
   const radar = fam("B"), s2all = fam("B_s2");
@@ -423,7 +516,19 @@ function renderB() {
   // how the Sentinel-2 fields got their seasons: one season filled, or classified from Sentinel-2 alone
   const byF = obj(t0 && t0.scope_s2_filled_ha_by_fill), fillParts = byF ? [ok(byF.season_fill) && byF.season_fill > 0 ? `${fmt(byF.season_fill)} ha with one season filled` : "",
     ok(byF.s2_only) && byF.s2_only > 0 ? `${fmt(byF.s2_only)} ha classified from Sentinel-2 alone` : ""].filter(Boolean) : [];
-  h.push(`<p class="lead">MEWA ${verb}${names.length ? ` in ${esc(list(names.map(inSentence)))}` : ""}. The 2025/26 radar record is a field-level baseline from the season before: <b>${fmt(s0.scope_fields)} year-round fields, ${fmt(s0.scope_ha)} ha</b>.${t0 ? ` With Sentinel-2 filling what the radar did not observe, the radar + Sentinel-2 record holds <b>${fmt(t0.scope_fields)} fields, ${fmt(t0.scope_ha)} ha</b>, an upper value: the area it adds is measured by Sentinel-2, not by the radar${ok(t0.scope_s2_filled_ha) ? ` (${fmt(t0.scope_s2_filled_ha)} ha${ok(t0.scope_s2_filled_fields) ? ` on ${fmt(t0.scope_s2_filled_fields)} fields` : ""} with a season from Sentinel-2${fillParts.length ? `: ${list(fillParts)}` : ""})` : ""}.` : ""}</p>`);
+  // Head: the baseline in two records side by side, radar against radar + Sentinel-2 (a record with neither key is left out)
+  const tile = (x, label, tag) => {
+    if (!x || (!ok(x.scope_ha) && !ok(x.scope_fields))) return "";
+    // the tag sits under the figures, so the two numbers stay on one line across the columns
+    return `<div class="pair-col"><p class="pair-h">${label}</p>`
+      + (ok(x.scope_ha) ? `<p class="pair-num">${fmt(x.scope_ha)}<span class="ov-unit">ha</span></p>` : "")
+      + (ok(x.scope_fields) ? `<p class="pair-sub">${plural(x.scope_fields, "year-round field", "year-round fields")}</p>` : "")
+      + (tag ? `<p class="pair-tag"><span class="tag">${tag}</span></p>` : "") + "</div>";
+  };
+  const tiles = tile(s0, "Radar") + tile(t0, "Radar + Sentinel-2", "upper value");
+  if (tiles) h.push(`<div class="ov-hero"><p class="ov-k">${ico("leaf", "sm")}<span>Year-round fields in the halt regions, 2025/26 baseline</span></p><div class="pair">${tiles}</div></div>`);
+  h.push(`<p class="lead">MEWA ${verb}${names.length ? ` in ${esc(list(names.map(inSentence)))}` : ""}. The 2025/26 radar record is a field-level baseline from the season before${tiles ? "" : `: ${fmt(s0.scope_fields)} year-round fields, ${fmt(s0.scope_ha)} ha`}.</p>`);
+  if (t0) h.push(`<p class="note">The radar + Sentinel-2 record fills what the radar did not observe, so it is an upper value: the area it adds is measured by Sentinel-2, not by the radar${ok(t0.scope_s2_filled_ha) ? ` (${fmt(t0.scope_s2_filled_ha)} ha${ok(t0.scope_s2_filled_fields) ? ` on ${fmt(t0.scope_s2_filled_fields)} fields` : ""} with a season from Sentinel-2${fillParts.length ? `: ${list(fillParts)}` : ""})` : ""}.</p>`);
 
   // By region, against GASTAT's fodder area (audit sc-2)
   const hr = arr(s0.halt_regions).filter(obj), gas = {};
@@ -462,9 +567,9 @@ function renderB() {
   const cells = (x) => `<td class="num">${bn(saved(x, "water_m3"))}</td><td class="num">${bn(saved(x, "elec_kwh"))}</td><td class="num">${fmt(saved(x, "summer_mw"))}</td><td class="num">${mt(saved(x, "co2_t_grid"))}</td>`;
   const anyS2 = radar.some(([, x]) => pairOf(x));
   h.push(`<h3>If those fields switch (central estimate)</h3>
-    <table><tr><th>${anyS2 ? "What-if and record" : "What-if"}</th><th class="num">Water saved bn m³/yr</th><th class="num">Electricity saved TWh/yr</th><th class="num">Jun–Sep load cut MW</th><th class="num">CO₂ avoided Mt/yr</th></tr>
+    <table><tr><th>${anyS2 ? "What-if and record" : "What-if"}</th>${saveTh("Water saved")}</tr>
     ${radar.map(([, x]) => { const y = pairOf(x); return anyS2 ? `<tr class="grp"><td colspan="5">${esc(what(x))}</td></tr><tr><td class="tier">Radar</td>${cells(x)}</tr>${y ? `<tr><td class="tier">Radar + Sentinel-2</td>${cells(y)}</tr>` : ""}` : `<tr><td>${esc(what(x))}</td>${cells(x)}</tr>`; }).join("")}</table>
-    ${anyS2 ? `<p class="note">Savings on the radar record are a floor for the radar-mapped fields; the radar + Sentinel-2 rows are the upper value. Each record is measured against its own baseline.</p>` : ""}`);
+    <p class="note">${anyS2 ? "Savings on the radar record are a floor for the radar-mapped fields; the radar + Sentinel-2 rows are the upper value. Each record is measured against its own baseline. " : ""}${LOAD_NOTE}</p>`);
 
   const pw = obj(P.press_water_per_ha) || obj(P.mewa_water_per_ha) || {};
   const per = s0.scope_baseline_water_per_ha_m3, gap = ok(per) && ok(pw.perennial_m3) && pw.perennial_m3 > 0 ? 1 - per / pw.perennial_m3 : null;
@@ -501,13 +606,13 @@ function renderR() {
   const first = ((reb(rows[0][1])[0]) || [])[1] || {};
   const low = get(P, "pivot_retrofit.low_pressure_head_m");
   const h = [`<p class="lead">Subsidised low-pressure pivots save pumped water only if the freed water is not used to irrigate more land; the lower pressure still cuts some energy either way. ${fmt(first.pivot_fields)} sprinkler pivots (${fmt(first.pivot_ha)} ha) on the radar-floor table.</p>`];
-  h.push(`<table><tr><th>Retrofit and freed water re-used</th><th class="num">Pumped water saved bn m³/yr</th><th class="num">Electricity saved TWh/yr</th><th class="num">Jun–Sep load cut MW</th><th class="num">CO₂ avoided Mt/yr</th></tr>
+  h.push(`<table><tr><th>Retrofit and freed water re-used</th>${saveTh("Pumped water saved")}</tr>
     ${rows.map(([, x]) => `<tr class="grp"><td colspan="5">${esc(x.name || x.id)}</td></tr>` + reb(x).map(([k, v]) => `<tr><td class="tier">${pct(Number(k))} re-used</td><td class="num">${bn(v.pumped_water_saved_m3)}</td><td class="num">${bn(v.elec_saved_kwh)}</td><td class="num">${fmt(v.summer_mw_saved)}</td><td class="num">${mt(v.co2_saved_t)}</td></tr>`).join("")).join("")}</table>`);
   const head = S.ctx.headNew ? ` The baseline is the headline's own pumping on these pivots (depth to water + drawdown + ${ok(first.baseline_pressure_head_m) ? `a ${fmt(first.baseline_pressure_head_m, 1)} m` : "the"} pivot pressure head); the retrofit lowers only the pressure part${ok(low) ? `, to ${fmt(low, 1)} m` : ""}, so nothing is counted twice.`
     : S.ctx.headOld ? " Energy here includes the sprinkler pressure head that the headline omits."
     : S.ctx.natMatch === true && S.ctx.ph && typeof S.ctx.ph.rule === "string" ? ` The baseline pumps against the national model's head (${esc(S.ctx.ph.rule)}); the retrofit lowers only the pressure part${ok(low) ? `, to ${fmt(low, 1)} m` : ""}.`
     : ` The baseline pumps against the national model's head (<a href="national.html#method">national page, Method tab</a>); the retrofit lowers only the pressure part${ok(low) ? `, to ${fmt(low, 1)} m` : ""}.`;
-  h.push(`<p class="note">Central estimate. Efficiencies and pressures are US values (Amosson et al. 2011); no Saudi figures were found.${head} This is pumped water, not depletion: crop water needs do not change, and how much of today's losses returns to the aquifer is unknown. The "0%" row holds only if allocations are cut to post-retrofit need, or irrigated area and seasons are frozen at the radar baseline (which the radar can check); a volume cap at today's use would leave the freed water free to be re-used.</p>`);
+  h.push(`<p class="note">Central estimate. ${LOAD_NOTE} Efficiencies and pressures are US values (Amosson et al. 2011); no Saudi figures were found.${head} This is pumped water, not depletion: crop water needs do not change, and how much of today's losses returns to the aquifer is unknown. The "0%" row holds only if allocations are cut to post-retrofit need, or irrigated area and seasons are frozen at the radar baseline (which the radar can check); a volume cap at today's use would leave the freed water free to be re-used.</p>`);
   el.innerHTML = h.join("");
 }
 
@@ -543,45 +648,55 @@ function renderC() {
     const sizes = list(xs.map((x) => fmt(x.plant_size_t / 1000)));
     return mt(lo) === mt(hi) ? `about ${mt(lo)} Mt at ${sizes} kt plants` : `${mt(lo)}–${mt(hi)} Mt across ${sizes} kt plants`;
   };
-  const caseLi = (label, value, meta, cls) => `<li class="case${cls ? " " + cls : ""}"><div class="case-head"><span class="case-label">${label}</span><span class="case-value">${value}</span></div>${meta.filter(Boolean).map((m) => `<div class="case-meta">${m}</div>`).join("")}</li>`;
+  // Each case is drawn with a thin bar from zero on one scale shared by every case shown, so the cases read as
+  // separate magnitudes, never as one range; a hypothetical upper bound is an outline, never a filled bar
+  const caseRec = (label, value, num, meta, cls) => ({ label, value, num, meta, cls });
+  const caseLi = (c, top) => {
+    const w = ok(c.num) && c.num > 0 && ok(top) && top > 0 ? +(100 * Math.min(1, c.num / top)).toFixed(2) : null;
+    return `<li class="case${c.cls ? " " + c.cls : ""}"><div class="case-head"><span class="case-label">${c.label}</span><span class="case-value">${c.value}</span></div>`
+      + (w != null ? `<div class="case-bar" aria-hidden="true"><i style="width:${w}%"></i></div>` : "")
+      + c.meta.filter(Boolean).map((m) => `<div class="case-meta">${m}</div>`).join("") + "</li>";
+  };
   const capCount = (x) => { const cu = arr(x && x.cement_use).filter(obj); return { n: cu.filter((c) => c.at_cap).length, of: cu.length }; };
   const atCap = (x) => { const a = capCount(x); return a.of ? `${fmt(a.n)} of the ${fmt(a.of)} cement plants taking char are at their cap` : ""; };
   const cases = [], upCases = [];
-  if (cred(f1)) cases.push(caseLi("Radar-measured wheat straw and palm fronds alone", mt(f1.credited_tco2), [plantsTxt(f1), sizeRange(["C1_F1", "C1_F1_25kt", "C1_F1_10kt"])]));
+  if (cred(f1)) cases.push(caseRec("Radar-measured wheat straw and palm fronds alone", mt(f1.credited_tco2), f1.credited_tco2, [plantsTxt(f1), sizeRange(["C1_F1", "C1_F1_25kt", "C1_F1_10kt"])]));
   if (cred(f3)) {
     const lit0 = modelled.includes("litter") && used(f3, "litter") === 0;
-    cases.push(caseLi(`${modTxt ? `Adding modelled ${esc(modTxt)}` : "Adding modelled feed"}, outlets limited: farmland and cement take only limited char`, mt(f3.credited_tco2),
+    cases.push(caseRec(`${modTxt ? `Adding modelled ${esc(modTxt)}` : "Adding modelled feed"}, outlets limited: farmland and cement take only limited char`, mt(f3.credited_tco2), f3.credited_tco2,
       [plantsTxt(f3), sizeRange(["C1_F3", "C1_F3_25kt", "C1_F3_10kt"]),
        lit0 ? (newEng ? "Poultry litter is in the supply but never drawn (0 t), so the litter gate does not bind here."
          : "Poultry litter is in the supply but never drawn (0 t): plants fill with straw, fronds and manure first, so the litter gate does not bind here.") : ""]));
   }
   if (cred(c0)) {
     const { c0Match, c0Nat } = S.ctx, none = !!(S.nat && !Object.keys(obj(S.nat.siting) || {}).length);
-    cases.push(caseLi(`Outlets unconstrained: ${c0Name()}`, mt(c0.credited_tco2),
-      [[plantsTxt(c0), ok(c0.plant_size_t) ? `${fmt(c0.plant_size_t / 1000)} kt plants` : "", "no limit on soil absorption or cement uptake"].filter(Boolean).join(" · "),
+    cases.push(caseRec(`Outlets unconstrained: ${c0Name()}`, mt(c0.credited_tco2), c0.credited_tco2,
+      [[plantsTxt(c0) && ok(c0.plant_size_t) ? `${plantsTxt(c0)} of ${fmt(c0.plant_size_t / 1000)} kt` : plantsTxt(c0) || (ok(c0.plant_size_t) ? `${fmt(c0.plant_size_t / 1000)} kt plants` : ""),
+        "no limit on soil absorption or cement uptake"].filter(Boolean).join(", "),
        `${cap(c0Tables())}.`,
        c0Match === false && ok(c0Nat) ? `The national page currently shows ${mt(c0Nat)} Mt: the two pages come from different model runs.` : "",
        c0Match === null && none ? "The national page publishes no siting to compare it with at the moment." : ""]));
   }
-  if (cred(un)) cases.push(caseLi("Outlets limited, but soil absorption unlimited", mt(un.credited_tco2), [plantsTxt(un)]));
-  if (cred(vm)) cases.push(caseLi(`<span class="tag">Verra sensitivity</span>VM0044 cement rule: only ${esc(list(arr(vm.cement_feeds).map((f) => FEEDC[f] || f)) || "low-ash")} chars in cement`, mt(vm.credited_tco2), [plantsTxt(vm)]));
+  if (cred(un)) cases.push(caseRec("Outlets limited, but soil absorption unlimited", mt(un.credited_tco2), un.credited_tco2, [plantsTxt(un)]));
+  if (cred(vm)) cases.push(caseRec(`<span class="tag">Verra sensitivity</span>VM0044 cement rule: only ${esc(list(arr(vm.cement_feeds).map((f) => FEEDC[f] || f)) || "low-ash")} chars in cement`, mt(vm.credited_tco2), vm.credited_tco2, [plantsTxt(vm)]));
   if (cred(ac)) {   // older exports only: the Puro default now lets these chars into cement in every row
     const a = capCount(ac), hiAsh = arr(ac.cement_feeds).filter((f) => f === "manure" || f === "litter"), cg = corgTxt(hiAsh.length ? hiAsh : ["manure", "litter"]);
-    cases.push(caseLi(`Manure and litter chars also allowed in cement`, mt(ac.credited_tco2),
+    cases.push(caseRec(`Manure and litter chars also allowed in cement`, mt(ac.credited_tco2), ac.credited_tco2,
       [plantsTxt(ac), [atCap(ac), `it needs high-ash chars${cg ? ` (${cg})` : ""} that Verra's VM0044 keeps out of non-soil uses, at a dose that is a technical ceiling, not likely uptake`,
         a.of && a.n > a.of / 2 ? "with most plants at cap, the figure scales with the dose" : ""].filter(Boolean).join("; ")]));
   }
   if (up3 && ok(up3.credited_tco2)) {   // never among the credited cases (decision: a hypothetical upper bound only)
     const add = cred(f3) ? up3.credited_tco2 - f3.credited_tco2 : null;
     const unUp = upsides.map(([, x]) => x).find((x) => x.upside_of === "C1_F3_soil_unlimited");
-    upCases.push(caseLi("Adding poultry litter, if its char passed the gate", `<span class="hyp">(${mt(up3.credited_tco2)})</span><span class="hyp-l">hypothetical</span>`,
-      [[ok(add) ? `a hypothetical upper bound: ${smt(add)} Mt on the outlets-limited row` : "a hypothetical upper bound", plantsTxt(up3)].filter(Boolean).join(" · "),
+    upCases.push(caseRec("Adding poultry litter, if its char passed the gate", `<span class="hyp">(${mt(up3.credited_tco2)})</span><span class="hyp-l">hypothetical</span>`, up3.credited_tco2,
+      [[ok(add) ? `a hypothetical upper bound: ${smt(add)} Mt on the outlets-limited row` : "a hypothetical upper bound", plantsTxt(up3)].filter(Boolean).join("; "),
        sizeRange(upsides.map(([k]) => k).filter((k) => /^C3_E1_litter_upside(_\d+kt)?$/.test(k)), true),
        unUp && ok(unUp.credited_tco2) ? `with soil absorption unlimited: ${mt(unUp.credited_tco2)} Mt, also hypothetical` : ""], "upside"));
   }
   const sizeKt = f3 && ok(f3.plant_size_t) ? fmt(f3.plant_size_t / 1000) : null;
   if (cases.length || upCases.length) {
-    h.push(`<p class="note">Mt CO₂ a year, net of transport${sizeKt ? `, ${sizeKt} kt/yr plants unless named` : ""}: a technical potential. Separate cases, not a range.</p>${cases.length ? `<ul class="cases">${cases.join("")}</ul>` : ""}${upCases.length ? `<p class="cases-sub">Not credited: a hypothetical upper bound, kept out of the cases above</p><ul class="cases cases-up">${upCases.join("")}</ul>` : ""}`);
+    const top = Math.max(0, ...[...cases, ...upCases].map((c) => c.num).filter(ok));
+    h.push(`<p class="note">Mt CO₂ a year, net of transport${sizeKt ? `, ${sizeKt} kt/yr plants unless named` : ""}: a technical potential. Separate cases, not a range; each bar starts at zero on one scale.</p>${cases.length ? `<ul class="cases">${cases.map((c) => caseLi(c, top)).join("")}</ul>` : ""}${upCases.length ? `<p class="cases-sub">Not credited: a hypothetical upper bound, kept out of the cases above</p><ul class="cases cases-up">${upCases.map((c) => caseLi(c, top)).join("")}</ul>` : ""}`);
   }
 
   // Cement dose (audit sc-3 and sc-5; live check scenarios-8)
@@ -633,29 +748,32 @@ function renderC() {
     const xf = feedsOf(x), xc = arr(x.cement_feeds);
     if (!newEng && !allEligible && x.soil_dose != null && xf.length && xc.length && xf.every((f) => xc.includes(f))) bits.push("its cement / soil split follows the routing rule (cement first while allowance remains), not haul cost");
     const n = noteOf(k, x);
-    if (n && n.length <= 110) bits.push(esc(n));
+    if (n && n.length <= 110) bits.push(subs(esc(n)));
     else if (n) longNotes.push([displayName(k, x), n]);
-    return bits.join(" · ");
+    return bits.join("; ");
   };
   const rad0 = f3 && ok(f3.radius_km) ? f3.radius_km : null;
   const tags = (k, x) => [k === S.sel ? "on map" : "", x.cement_rule === "vm0044" ? "Verra sensitivity" : "", x.credit === "retention" ? "not Puro" : "", k === "C0_published" ? c0Tag() : ""]
     .filter(Boolean).map((t) => `<span class="tag">${t}</span>`).join("");
-  const pick = (k, x) => `<button type="button" class="pick" data-id="${esc(k)}"${k === S.sel ? ' aria-current="true"' : ""}>${esc(displayName(k, x))}</button>`;
-  const sub = (k, x, extra) => [ok(x.plant_size_t) && !/\bkt\b/.test(displayName(k, x)) ? `${fmt(x.plant_size_t / 1000)} kt/yr feed plants` : "", ok(x.radius_km) && ok(rad0) && x.radius_km !== rad0 ? `${fmt(x.radius_km)} km feed haul` : "", extra, rowNote(k, x)].filter(Boolean).join(" · ");
+  const pick = (k, x) => `<button type="button" class="pick" data-id="${esc(k)}"${k === S.sel ? ' aria-current="true"' : ""}>${esc(shortName(k, x))}</button>`;
+  const sub = (k, x, extra) => [ok(x.plant_size_t) && !/\bkt\b/.test(displayName(k, x)) ? `${fmt(x.plant_size_t / 1000)} kt/yr feed plants` : "", ok(x.radius_km) && ok(rad0) && x.radius_km !== rad0 ? `${fmt(x.radius_km)} km feed haul` : "", extra, rowNote(k, x)].filter(Boolean).join("; ");
+  // Five columns at most, so the panel never scrolls the table sideways: the other figures sit on each row's own line
+  const figs = (pairs) => { const xs = pairs.filter(([, v]) => v !== "–"); return xs.length ? `<span class="sub figs">${xs.map(([t, v]) => `${t} ${v}`).join("; ")}</span>` : ""; };
+  const ktu = (v) => ok(v) ? `${kt(v)} kt` : "–";
   if (credited.length) {
-    h.push(`<h3>Credited scenarios</h3><p class="note">Pick a row to show it on the map. Mt CO₂ a year, net of transport.</p>
-      <table><tr><th>Scenario</th><th class="num">Credited Mt CO₂/yr</th><th class="num">Plants</th><th class="num">Char kt/yr</th><th class="num">To cement kt</th><th class="num">To soil kt</th><th class="num">Unplaced kt</th><th class="num">Radar feed</th><th class="num">In-service Mt</th></tr>
-      ${credited.map(([k, x]) => `<tr${k === S.sel ? ' class="sel"' : ""}><td class="name">${pick(k, x)}${tags(k, x)}<span class="sub">${sub(k, x)}</span></td><td class="num"><b>${mt(x.credited_tco2)}</b></td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td><td class="num">${kt(x.char_to_cement_t)}</td><td class="num">${kt(x.char_to_soil_t)}</td><td class="num">${kt(x.char_unplaced_t)}</td><td class="num">${pct(x.radar_feed_share)}</td><td class="num">${mt(x.retained_tco2)}</td></tr>`).join("")}</table>`);
+    h.push(`<h3>Credited scenarios</h3><p class="note">Pick a row to show it on the map. Mt CO₂ a year, net of transport; char in kt a year.</p>
+      <table class="cred"><tr><th>Scenario</th><th class="num">Credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants</th><th class="num">Char<span class="sub">kt/yr</span></th><th class="num">To cement<span class="sub">kt/yr</span></th></tr>
+      ${credited.map(([k, x]) => `<tr${k === S.sel ? ' class="sel"' : ""}><td class="name">${pick(k, x)}${tags(k, x)}${sub(k, x) ? `<span class="sub">${sub(k, x)}</span>` : ""}${figs([["to soil", ktu(x.char_to_soil_t)], ["unplaced", ktu(x.char_unplaced_t)], ["radar feed", pct(x.radar_feed_share)], ["in-service", ok(x.retained_tco2) ? `${mt(x.retained_tco2)} Mt` : "–"]])}</td><td class="num"><b>${mt(x.credited_tco2)}</b></td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td><td class="num">${kt(x.char_to_cement_t)}</td></tr>`).join("")}</table>`);
   }
   // Hypothetical upper bounds: never in a credited column
   if (upsides.length) {
     h.push(`<h3>Not credited: hypothetical upper bounds</h3>
-      <table><tr><th>Scenario</th><th class="num">Hypothetical Mt CO₂/yr</th><th class="num">Above its credited case, Mt</th><th class="num">Plants</th><th class="num">Char kt/yr</th><th class="num">Litter used kt</th><th class="num">Radar feed</th></tr>
+      <table class="cred"><tr><th>Scenario</th><th class="num">Hypothetical<span class="sub">Mt CO₂/yr</span></th><th class="num">Above credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants</th><th class="num">Char<span class="sub">kt/yr</span></th></tr>
       ${upsides.map(([k, x]) => { const b = x.upside_of ? sc(x.upside_of) : null, d = cred(b) && ok(x.credited_tco2) ? x.credited_tco2 - b.credited_tco2 : null;
-        return `<tr class="upside${k === S.sel ? " sel" : ""}"><td class="name">${pick(k, x)}${tags(k, x)}<span class="sub">${sub(k, x, b ? `adds poultry litter to: ${esc(displayName(b.id, b))}` : "")}</span></td><td class="num">${mt(x.credited_tco2)}</td><td class="num">${smt(d)}</td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td><td class="num">${kt(used(x, "litter"))}</td><td class="num">${pct(x.radar_feed_share)}</td></tr>`; }).join("")}</table>`);
+        return `<tr class="upside${k === S.sel ? " sel" : ""}"><td class="name">${pick(k, x)}${tags(k, x)}<span class="sub">${sub(k, x, b ? `adds poultry litter to: ${esc(displayName(b.id, b))}` : "")}</span>${figs([["litter used", ktu(used(x, "litter"))], ["radar feed", pct(x.radar_feed_share)]])}</td><td class="num">${mt(x.credited_tco2)}</td><td class="num">${smt(d)}</td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td></tr>`; }).join("")}</table>`);
   }
   const seen = new Set(), ln = longNotes.filter(([, n]) => !seen.has(n) && seen.add(n));
-  if (ln.length) h.push(`<ul class="notes">${ln.map(([name, n]) => `<li><b>${esc(name)}:</b> ${esc(sentence(n))}</li>`).join("")}</ul>`);
+  if (ln.length) h.push(`<ul class="notes">${ln.map(([name, n]) => `<li><b>${esc(name)}:</b> ${subs(esc(sentence(n)))}</li>`).join("")}</ul>`);
 
   // How the cases are credited and where the char can go
   const ret = S.data.cement_retention, cemTotal = arr(S.data.cement).reduce((a, c) => a + (obj(c) && ok(c.output_mt) ? c.output_mt : 0), 0);
@@ -692,9 +810,9 @@ function renderC() {
       : ` Credited (Puro) ${mt(s.credited_tco2)} Mt CO₂ a year net of transport; in-service ${mt(s.retained_tco2)} Mt.`;
     const av = C(s.avoided_cement_tco2_not_removal);
     if (ok(av)) p += ` Char replacing cement would avoid about ${kt(av)} kt CO₂ a year of cement emissions: an emission reduction, not a removal, shown apart.`;
-    h.push(`<h3 id="onmap">On the map: ${esc(displayName(s.id, s))}${up ? ' <span class="tag">not credited</span>' : ""}</h3><p>${p}</p>`);
+    h.push(`<h3 id="onmap">On the map: ${esc(shortName(s.id, s))}${up ? ' <span class="tag">not credited</span>' : ""}</h3><p>${p}</p>`);
     if (fuTxt.length) h.push(`<p class="note">Feed used, kt dry a year: ${esc(fuTxt.join(", "))}.</p>`);
-    if (noteOf(s.id, s) && s.id !== "C0_published") h.push(`<p class="note">${esc(sentence(noteOf(s.id, s)))}</p>`);   // C0's is in its own note below
+    if (noteOf(s.id, s) && s.id !== "C0_published") h.push(`<p class="note">${subs(esc(sentence(noteOf(s.id, s))))}</p>`);   // C0's is in its own note below
     const cu = arr(s.cement_use).filter(obj);
     if (cu.length) h.push(`<table><tr><th>Cement plant</th><th class="num">Allowance kt</th><th class="num">Char kt</th><th>At cap</th></tr>${cu.map((c) => `<tr><td>${esc(c.plant)}</td><td class="num">${fmt(c.allowance_t / 1e3, 1)}</td><td class="num">${fmt(c.char_t / 1e3, 1)}</td><td>${c.at_cap ? "yes" : ""}</td></tr>`).join("")}</table>`);
     if (s.id === "C0_published") h.push(`<p class="note">C0 is ${c0Name()}, with Puro crediting: each plant sends its char to soil or to the nearest open cement plant, whichever haul is shorter, with no limit on either, so its cement rings show which plants take char, not a share of an allowance. It runs ${c0Tables()}.</p>`);
@@ -721,7 +839,10 @@ const PARAM = {
   pivot_retrofit: ["Pivot retrofit", (v) => [[ok(v.baseline_efficiency) ? `baseline ${share(v.baseline_efficiency)}` : "", ok(v.lesa_efficiency) ? `LESA ${share(v.lesa_efficiency)}` : "", ok(v.lepa_efficiency) ? `LEPA ${share(v.lepa_efficiency)}` : ""].filter(Boolean).join(", ").replace(/^/, "efficiency: "),
     [ok(v.baseline_pressure_head_m) ? `baseline ${auto(v.baseline_pressure_head_m)} m` : "", ok(v.low_pressure_head_m) ? `low-pressure ${auto(v.low_pressure_head_m)} m` : ""].filter(Boolean).join(", ").replace(/^/, "pressure head: ")]],
   rebound_share: ["Freed water re-used (rebound)", (v) => [arr(v.values).map(share).join(", ")]],
-  cement_plants_file: ["Cement plants file", (v) => [v.value ? `<code class="path">${esc(v.value)}</code>` : ""]],
+  cement_plants_file: ["Cement plants", (v) => {   // a repository file: its plant count, and a link to the table itself
+    const n = arr(S.data && S.data.cement).filter(obj).length, f = typeof v.value === "string" && /^[\w.\/-]+\.csv$/.test(v.value) ? v.value : null;
+    return [n ? plural(n, "plant", "plants") : "", f ? `<a href="${REPO}/blob/main/${esc(f)}">the plant table in the code repository<svg class="ico sm" aria-hidden="true"><use href="img/icons.svg#i-external"/></svg></a>` : ""];
+  }],
   cement_dosage_share: ["Cement dose: char as a share of cement mass", (v) => [arr(v.values).map(share).join(", "), ok(v.central) ? `central ${share(v.central)}` : ""]],
   cement_eligible_feeds: ["Chars allowed in cement", (v) => [arr(v.values).length ? (arr(v.vm0044_values).length ? `default (Puro): ${esc(list(arr(v.values).map((f) => FEEDC[f] || f)))} chars that pass the H/C<sub>org</sub> gate` : `${esc(list(arr(v.values).map((f) => FEEDC[f] || f)))} chars`) : "",
     arr(v.vm0044_values).length ? `Verra VM0044 sensitivity: ${esc(list(arr(v.vm0044_values).map((f) => FEEDC[f] || f)))} chars` : ""]],
@@ -729,16 +850,16 @@ const PARAM = {
   soil_dose_t_per_ha: ["Char dose on radar-active farmland", (v) => [arr(v.values).length ? `${arr(v.values).map(auto).join(", ")} t/ha a year${ok(v.central) ? ` (central ${auto(v.central)})` : ""}` : "",
     ok(v.manure_litter_central) ? `manure and litter chars ${auto(v.manure_litter_central)} t/ha` : "", ok(v.return_radius_km) ? `fields within ${fmt(v.return_radius_km)} km` : ""]],
   min_outlet_share: ["Char that must have an outlet before a plant is built", (v) => [ok(v.central) ? share(v.central) : ""]],
-  avoided_cement_tco2_per_t_char: ["Avoided cement emissions (a reduction, not a removal)", (v) => [ok(v.central) ? `${auto(v.low)} · ${auto(v.central)} · ${auto(v.high)} t CO₂ per t char (low · central · high)` : ""]],
+  avoided_cement_tco2_per_t_char: ["Avoided cement emissions (a reduction, not a removal)", (v) => [ok(v.central) ? `${ok(v.low) ? `low ${auto(v.low)}, ` : ""}central ${auto(v.central)}${ok(v.high) ? `, high ${auto(v.high)}` : ""} t CO₂ per t char` : ""]],
   haul_radius_km: ["Feed haul radius, sensitivity", (v) => [arr(v.values).map((x) => `${fmt(x)} km`).join(", ")]],
 };
 function pressWater(v) {
   return [ok(v.perennial_m3) ? `perennial fodder ~${fmt(v.perennial_m3)} m³/ha a year` : "", ok(v.seasonal_max_m3) ? `seasonal fodder at most ~${fmt(v.seasonal_max_m3)} m³/ha` : "",
     /cross-check/i.test(String(v.note || "")) ? "press figures" : "press figures, a cross-check only"];   // the note, printed below, says it otherwise
 }
-function genericParam(v) {   // any input this page does not know yet: low · central · high, lists, then other values
+function genericParam(v) {   // any input this page does not know yet: low, central and high, lists, then other values
   const out = [];
-  if (["low", "central", "high"].some((k) => v[k] !== undefined)) out.push(["low", "central", "high"].filter((k) => v[k] !== undefined).map((k) => `${k} ${auto(v[k])}`).join(" · "));
+  if (["low", "central", "high"].some((k) => v[k] !== undefined)) out.push(["low", "central", "high"].filter((k) => v[k] !== undefined).map((k) => `${k} ${auto(v[k])}`).join(", "));
   if (Array.isArray(v.values)) out.push(v.values.map((x) => ok(x) ? auto(x) : esc(admin(x))).join(", "));
   if (v.value !== undefined && typeof v.value !== "object") out.push(esc(v.value));
   Object.entries(v).forEach(([k, x]) => {
@@ -762,23 +883,25 @@ function runStamp() {
     });
   }
   if (!commit && !pairs.length) return "";
-  return `Run: ${commit ? `commit ${esc(commit)}; ` : ""}${pairs.length ? `input fingerprints (short SHA-256 of each input file set): ${pairs.map(([k, v]) => `${esc(k)} ${esc(v)}`).join(" · ")}` : ""}.`;
+  return `Run: ${commit ? `commit <span class="mono">${esc(commit)}</span>; ` : ""}${pairs.length ? `input fingerprints (short SHA-256 of each input file set): ${pairs.map(([k, v]) => `${esc(String(k).replaceAll("_", " "))} <span class="mono">${esc(v)}</span>`).join(", ")}` : ""}.`;
 }
 function renderP() {
   const P = obj(S.data.params) || {};
   const rows = Object.entries(P).filter(([k, v]) => !k.startsWith("_") && obj(v)).map(([k, v]) => {
     const def = PARAM[k], label = def ? (typeof def[0] === "function" ? safe("label " + k, def[0], cap(k.replaceAll("_", " "))) : def[0]) : cap(k.replaceAll("_", " "));
     const vals = (safe("param " + k, () => def ? def[1](v) : genericParam(v), []) || []).filter((x) => x && !/^(efficiency|pressure head): ?$/.test(x));
-    const src = typeof v.source === "string" && v.source ? esc(sentence(v.source)) : "";
+    const src = typeof v.source === "string" && plain(v.source) ? srcHtml(v.source) : "";
     // every note the input carries ("note", or any "<name>_note"), on its own line so it is not read as the source
-    const nts = Object.entries(v).filter(([kk, x]) => (kk === "note" || /_note$/.test(kk)) && typeof x === "string" && x.trim()).map(([, x]) => esc(sentence(x)));
+    const nts = Object.entries(v).filter(([kk, x]) => (kk === "note" || /_note$/.test(kk)) && typeof x === "string" && plain(x)).map(([, x]) => esc(sentence(plain(x))));
     return `<tr><td>${esc(label)}</td><td class="val">${vals.join("; ") || "–"}${src ? `<span class="sub src">${src}</span>` : ""}${nts.length ? `<span class="sub src pnote"><b>Note:</b> ${nts.join(" ")}</span>` : ""}</td></tr>`;
   });
-  const stamp = runStamp();
-  $("tp").innerHTML = `<p class="lead">Scenario inputs and their sources. Every other factor is the national model's (<a href="national.html#method">national page, Method tab</a>).</p>
-    ${typeof P._note === "string" ? `<p class="note">${esc(P._note)}</p>` : ""}
-    ${rows.length ? `<table><tr><th>Input</th><th>Value and source</th></tr>${rows.join("")}</table>` : `<p class="note">No scenario inputs in this data export.</p>`}
-    ${stamp || S.data.baseline_check ? `<p class="note">${stamp}${S.data.baseline_check ? ` Check: ${esc(S.data.baseline_check)}.` : ""}</p>` : ""}`;
+  const stamp = runStamp(), chk = plain(S.data.baseline_check);
+  // the export's own _note names the pipeline's files; its one reader-facing point (what "ASSUMPTION" means) is the
+  // lead's second sentence, said only when a source carries the tag
+  const anyAssume = Object.values(P).some((v) => obj(v) && /^\s*ASSUMPTION:/i.test(String(v.source || "")));
+  $("tp").innerHTML = `<p class="lead">Scenario inputs and their sources. Every other factor is the national model's (<a href="national.html#method">national page, Method tab</a>).${anyAssume ? ` Inputs tagged <span class="tag">Assumption</span> are declared choices, not sourced values.` : ""}</p>
+    ${rows.length ? `<table class="params"><tr><th>Input</th><th>Value and source</th></tr>${rows.join("")}</table>` : `<p class="note">No scenario inputs in this data export.</p>`}
+    ${stamp || chk ? `<p class="note">${stamp}${chk ? ` Check: ${esc(chk)}.` : ""}</p>` : ""}`;
 }
 
 /* ================================================================ Map: scenario select, plants, cement, watch-list */
@@ -791,7 +914,11 @@ const GROUPS = [
   ["Feed haul radius", (k) => /^C6_radius_/.test(k)],
   [() => S.ctx.c0Match === true ? "Reference: the national page's siting" : "Reference: the published national siting", (k) => k === "C0_published"],
 ];
-const optLabel = (k, x) => { const n = displayName(k, x); return /\bkt\b/.test(n) || !ok(x.plant_size_t) ? n : `${n} · ${fmt(x.plant_size_t / 1000)} kt plants`; };
+/* Names in the select and the readout: an upper bound's "Upside, not credited: + " prefix is said by its group and the
+   readout instead, and the default plant size is left out (the "Plant size" group names the others) */
+const shortName = (k, x) => displayName(k, x).replace(/^Upside,\s*not credited:\s*\+\s*/i, "Adding ");
+const baseSize = () => { const f = sc("C1_F3") || sc(defaultSel()); return f && ok(f.plant_size_t) ? f.plant_size_t : null; };
+const optLabel = (k, x) => { const n = shortName(k, x); return /\bkt\b/.test(n) || !ok(x.plant_size_t) || x.plant_size_t === baseSize() ? n : `${n}, ${fmt(x.plant_size_t / 1000)} kt plants`; };
 
 function buildSelect() {
   const sel = $("csel");
@@ -829,12 +956,17 @@ function choose(id, opt = {}) {
 function renderReadout() {
   const el = $("cread"), btn = document.querySelector('[data-act="open-biochar"]'), x = sc(S.sel);
   if (!el) return;
-  const bits = [];
-  if (x && ok(x.plants)) bits.push(`${plantsTxt(x)}${ok(S.sites) && S.sites > 0 && S.sites < x.plants ? ` on ${fmt(S.sites)} sites` : ""}`);
-  if (x && ok(x.credited_tco2)) bits.push(isUpside(x) ? `${mt(x.credited_tco2)} Mt CO₂/yr net of transport: a hypothetical upper bound, not credited` : `${mt(x.credited_tco2)} Mt CO₂/yr credited, net of transport`);
-  if (x && ok(x.radar_feed_share)) bits.push(`${pct(x.radar_feed_share)} of feed radar-measured`);
-  el.textContent = bits.join(" · ");
-  if (btn) btn.hidden = !bits.length;
+  // the selected scenario's removal as the figure, then its plants and radar share as separate lines
+  const facts = [];
+  if (x && ok(x.plants)) facts.push(`${plantsTxt(x)}${ok(x.plant_size_t) ? ` of ${fmt(x.plant_size_t / 1000)} kt/yr feed` : ""}${ok(S.sites) && S.sites > 0 && S.sites < x.plants ? ` on ${fmt(S.sites)} sites` : ""}`);
+  if (x && ok(x.radar_feed_share)) facts.push(`${pct(x.radar_feed_share)} of feed radar-measured`);
+  const up = isUpside(x), val = x && ok(x.credited_tco2)
+    ? `<p class="ro-fig${up ? " hyp" : ""}"><span class="ro-num">${up ? `(${mt(x.credited_tco2)})` : mt(x.credited_tco2)}</span><span class="ro-unit">Mt CO₂ a year</span></p>`
+      + `<p class="ro-what">${up ? "Net of transport: a hypothetical upper bound, not credited" : "Credited, net of transport"}</p>` : "";
+  const name = x ? `<p class="ro-name">${esc(shortName(x.id, x))}</p>` : "";   // the select may cut the name off
+  el.innerHTML = name + val + (facts.length ? `<ul class="ro-facts">${facts.map((t) => `<li>${esc(t)}</li>`).join("")}</ul>` : "");
+  if (btn) btn.hidden = !(val || facts.length);
+  syncScroll();
 }
 
 function onAction(e) {
@@ -952,8 +1084,8 @@ async function drawMap() {
     if (S.cementLayer) map.removeLayer(S.cementLayer);
     S.cementLayer = cementLayer(x, rows).addTo(map);                 // drawn first: under everything
     const kc = $("key-cement-txt");   // C0 has no allowances: its fill says only which plants take char
-    if (kc) kc.textContent = x && (ok(x.dosage) || arr(x.cement_use).length) ? "cement plant: size = 2024 output; fill = share of its char allowance used (hollow: takes no char)"
-      : "cement plant: size = 2024 output; filled = takes char (no allowance in this siting); hollow = takes none";
+    if (kc) kc.textContent = x && (ok(x.dosage) || arr(x.cement_use).length) ? KEY_CEMENT
+      : "Cement plant. Size shows 2024 output; filled takes char (this siting sets no allowance); hollow takes none.";
     if (S.watchLayer && map.hasLayer(S.watchLayer)) S.watchLayer.bringToFront();
     const sites = siteGroups(rows);
     S.sites = err ? null : sites.length;
@@ -969,42 +1101,139 @@ async function drawMap() {
   safe("clear card", clearCard);
 }
 
+/* ---------- Framing around the floating controls ----------
+   The zoom and reset buttons sit at the map's top left; on wide screens the tools card floats beside them, on phones it
+   is a strip under the map. Every framing the page sets (the first one, the reset button, opening or closing the card,
+   a window resize) keeps the plants clear of them: beside or below, whichever leaves the drawn area larger. */
+const viewNow = () => map ? { c: map.getCenter(), z: map.getZoom() } : null;
+const isAuto = () => {   // the view is still the one this page set: a view the reader moved is left alone
+  if (!map || !S.autoView) return false;
+  const v = viewNow();
+  return v.z === S.autoView.z && map.latLngToContainerPoint(S.autoView.c).distanceTo(map.latLngToContainerPoint(v.c)) <= 2;
+};
+function framePad(b) {
+  const plain = { paddingTopLeft: [24, 24], paddingBottomRight: [24, 24] };
+  const box = $("map");
+  if (!map || !box) return plain;
+  const m = box.getBoundingClientRect();
+  // what floats over the map's top left: the zoom and reset buttons, and on wide screens the tools card
+  const over = [document.querySelector("#map .leaflet-top.leaflet-left"), narrow() ? null : $("tools")].filter(Boolean)
+    .map((el) => el.getBoundingClientRect()).filter((r) => r.width && r.height && r.left < m.right && r.top < m.bottom);
+  if (!over.length) return plain;
+  const right = Math.max(...over.map((r) => r.right)) - m.left + 12, bottom = Math.max(...over.map((r) => r.bottom)) - m.top + 12;
+  let ar = 1.2;   // the bounds' on-screen width over height; Saudi Arabia is about 1.2
+  if (b && b.isValid()) {
+    const z = map.getZoom(), nw = map.project(b.getNorthWest(), z), se = map.project(b.getSouthEast(), z);
+    if (se.y - nw.y > 1 && se.x - nw.x > 1) ar = (se.x - nw.x) / (se.y - nw.y);
+  }
+  const fit = (w, h) => w > 0 && h > 0 ? Math.min(w / ar, h) : 0;
+  // beside the floating column, or below it, whichever leaves the drawn area larger
+  const beside = fit(m.width - right - 24, m.height - 48), below = fit(m.width - 48, m.height - bottom - 24);
+  return beside >= below ? { paddingTopLeft: [right, 24], paddingBottomRight: [24, 24] } : { paddingTopLeft: [24, bottom], paddingBottomRight: [24, 24] };
+}
+function drawnBounds() {
+  const b = L.latLngBounds([]);
+  [S.watchLayer, S.cementLayer, S.plantLayer].filter((l) => l && map.hasLayer(l)).forEach((l) => { const lb = l.getBounds(); if (lb.isValid()) b.extend(lb); });
+  if (!b.isValid()) arr(S.data && S.data.cement).forEach((c) => { if (obj(c) && ok(c.lat) && ok(c.lon)) b.extend([c.lat, c.lon]); });
+  return b;
+}
+/* Frame everything drawn. force: the reset button; otherwise only while the view is still the page's own */
+function refit(force) {
+  if (!map || (!force && !isAuto())) return;
+  const b = drawnBounds();
+  if (!b.isValid()) return;
+  safe("refit", () => map.fitBounds(b, Object.assign(framePad(b), { maxZoom: 7, animate: false })));
+  S.autoView = viewNow();
+}
+
 function fitOnce(rows) {
   if (S.fitted || !map) return;
   const pts = arr(S.data.cement).filter((c) => obj(c) && ok(c.lat) && ok(c.lon)).map((c) => [c.lat, c.lon]);
   rows.forEach((r) => pts.push([r[1], r[0]]));
   if (pts.length < 2) return;
   S.fitted = true;
-  const tools = document.querySelector(".maptools"), below = narrow() || !tools ? 0 : tools.offsetHeight;
-  safe("fit", () => map.fitBounds(L.latLngBounds(pts), { paddingTopLeft: [24, 24], paddingBottomRight: [24, below + 24], maxZoom: 7, animate: false }));
+  const b = L.latLngBounds(pts);
+  safe("fit", () => map.fitBounds(b, Object.assign(framePad(b), { maxZoom: 7, animate: false })));
   S.autoView = viewNow();
 }
 
-/* On wide screens the map tools card floats over the map's lower left, and it grows after the first framing (the
-   watch-list heading and key lines, a longer readout). Re-frame above the card, never zooming in, only when a drawn
-   marker sits under it and the view is still the one this page set: a view the reader moved is left alone. */
-const viewNow = () => map ? { c: map.getCenter(), z: map.getZoom() } : null;
+/* The card grows after the first framing (the watch-list key, a longer readout). Re-frame, never zooming in, only when
+   a drawn marker sits under the card and the view is still the one this page set. */
 function clearCard() {
-  if (!map || narrow() || !S.autoView) return;
-  const v = viewNow();
-  if (v.z !== S.autoView.z || map.latLngToContainerPoint(S.autoView.c).distanceTo(map.latLngToContainerPoint(v.c)) > 2) return;
-  const tools = document.querySelector(".maptools"), box = $("map");
-  if (!tools || !box) return;
-  const pad = tools.offsetHeight + 24, band = box.clientHeight - pad - 24;
-  if (band < Math.max(160, 0.3 * box.clientHeight)) return;   // too little map above the card to frame the country in
-  const t = tools.getBoundingClientRect(), m = box.getBoundingClientRect();
-  const x0 = t.left - m.left, y0 = t.top - m.top, x1 = t.right - m.left, y1 = t.bottom - m.top;
+  if (!map || !isAuto()) return;
+  const box = $("map");
+  if (!box) return;
+  const m = box.getBoundingClientRect();
+  const rects = [document.querySelector("#map .leaflet-top.leaflet-left"), narrow() ? null : $("tools")].filter(Boolean)
+    .map((el) => el.getBoundingClientRect()).filter((r) => r.width && r.height)
+    .map((r) => [r.left - m.left, r.top - m.top, r.right - m.left, r.bottom - m.top]);
   const layers = [S.watchLayer, S.cementLayer, S.plantLayer].filter((l) => l && map.hasLayer(l));
-  const under = layers.some((l) => l.getLayers().some((mk) => {
+  const under = rects.length && layers.some((l) => l.getLayers().some((mk) => {
     const p = map.latLngToContainerPoint(mk.getLatLng());
-    return p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1;
+    return rects.some(([x0, y0, x1, y1]) => p.x >= x0 && p.x <= x1 && p.y >= y0 && p.y <= y1);
   }));
   if (!under) return;
-  const b = L.latLngBounds([]);
-  layers.forEach((l) => { const lb = l.getBounds(); if (lb.isValid()) b.extend(lb); });
+  const b = drawnBounds();
   if (!b.isValid()) return;
-  map.fitBounds(b, { paddingTopLeft: [24, 24], paddingBottomRight: [24, pad], maxZoom: map.getZoom(), animate: false });
+  safe("clear card", () => map.fitBounds(b, Object.assign(framePad(b), { maxZoom: map.getZoom(), animate: false })));
   S.autoView = viewNow();
+}
+
+/* The card opens and closes from its head row (wide screens only; on phones it is always open under the map). It
+   starts closed when the map is too small to frame the country beside or below it. The reader's own choice is kept for
+   the next visit where the browser allows it, but a saved "open" is honoured only when the map is large enough. */
+const TOOLS_KEY = "skymeter.scenarios.tools";
+const roomy = () => {
+  const tools = $("tools"), box = $("map");
+  if (!box || !tools || narrow()) return true;
+  const w = box.clientWidth, h = box.clientHeight, tw = tools.classList.contains("is-closed") ? 300 : tools.offsetWidth;
+  return !(h < 380 || (w - tw - 112 < 300 && h - 260 < 260));
+};
+function setTools(open, remember) {
+  const tools = $("tools"), btn = $("mt-toggle"), wrap = $("mapwrap");
+  if (!tools || !btn) return;
+  tools.classList.toggle("is-closed", !open);
+  if (wrap) wrap.classList.toggle("tools-closed", !open);
+  btn.setAttribute("aria-expanded", open ? "true" : "false");
+  if (remember) { try { localStorage.setItem(TOOLS_KEY, open ? "open" : "closed"); } catch (e) { /* storage blocked */ } }
+  syncScroll();
+}
+function autoTools(saved) {   // the card's state when the reader has not chosen in this visit
+  return saved === "closed" ? false : roomy();
+}
+function setupTools() {
+  const tools = $("tools"), btn = $("mt-toggle");
+  if (!tools || !btn) return;
+  let saved = null, chosen = false;
+  try { saved = localStorage.getItem(TOOLS_KEY); } catch (e) { /* storage blocked */ }
+  setTools(autoTools(saved), false);
+  btn.addEventListener("click", () => {
+    const wasAuto = isAuto();
+    chosen = true;
+    setTools(btn.getAttribute("aria-expanded") !== "true", true);
+    if (wasAuto) refit(false);
+  });
+  const body = $("mt-body");
+  if (body) body.addEventListener("scroll", syncScroll, { passive: true });
+  // a resize (or crossing the phone breakpoint) re-decides the card, unless the reader chose this visit, and re-frames
+  // the map while its view is still the page's own
+  let tm = null;
+  window.addEventListener("resize", () => {
+    clearTimeout(tm);
+    tm = setTimeout(() => {
+      if (map) map.invalidateSize();   // keeps the centre (Leaflet may not have caught up yet), so the view still reads as the page's own
+      const wasAuto = isAuto();
+      if (!chosen) setTools(autoTools(saved), false);
+      syncScroll();
+      if (wasAuto) refit(false);
+    }, 180);
+  });
+}
+/* The card's body scrolls on short windows: a fade at its foot says so, until the reader reaches the end */
+function syncScroll() {
+  const b = $("mt-body");
+  if (!b) return;
+  b.classList.toggle("is-scrollable", !narrow() && b.scrollHeight - b.clientHeight > 2 && b.scrollTop + b.clientHeight < b.scrollHeight - 2);
 }
 
 function setupWatch() {
@@ -1012,6 +1241,7 @@ function setupWatch() {
   if (!cb) return;
   cb.disabled = !map;
   cb.addEventListener("change", async () => {
+    if (S.watchErr) { S.watchErr = null; plantNote(); }   // a new try, or the reader set it aside: the plants' own note returns
     syncWatch();
     if (cb.checked) await drawWatch();
     else if (S.watchLayer && map) map.removeLayer(S.watchLayer);
@@ -1022,11 +1252,12 @@ function setupWatch() {
 async function drawWatch() {
   if (!map) return;
   if (!S.watch) {
-    mapNote("Loading the fodder-halt watch-list…");
+    mapNote("Loading the fodder-halt watch-list…", "busy");
     try { S.watch = arr(await j("data/scenarios/watchlist.json")).filter((r) => Array.isArray(r) && ok(r[0]) && ok(r[1])); }
     catch (e) {
       if (window.console) console.error("scenarios: watch-list", e);
-      mapNote(`Could not load the fodder-halt watch-list (${e.message}).`, "error");
+      S.watchErr = `Could not load the fodder-halt watch-list (${e.message}).`;
+      plantNote();
       $("showwatch").checked = false;
       syncWatch();
       return;
@@ -1105,8 +1336,9 @@ function syncWatch() {
   document.querySelectorAll('[data-act="watch"]').forEach((b) => {
     b.disabled = !map;
     b.setAttribute("aria-pressed", on ? "true" : "false");
-    b.textContent = on ? "Hide the watch-list on the map" : "Show the watch-list on the map";
+    b.innerHTML = `<svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-map"/></svg><span>${on ? "Hide the watch-list on the map" : "Show the watch-list on the map"}</span>`;
   });
+  syncScroll();
 }
 
 init().catch((e) => failed(e));

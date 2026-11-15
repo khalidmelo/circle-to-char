@@ -1,4 +1,4 @@
-/* Circle to Char — national results (docs/national.html).
+/* SkyMeter: national results (docs/national.html).
    Reads data/national/summary.json, plants_<tag>.json, fields/<R>.json and manure.json, data/cement.geojson, and one
    constrained biochar figure from data/scenarios/scenarios.json. Every figure on the page comes from those files:
    a missing or malformed key hides or degrades its own element, and nothing throws. */
@@ -24,10 +24,11 @@ const SIZES = [10, 25, 50];
 const TABS = ["overview", "lenses", "official", "biochar", "method"];
 const NO_HOVER = window.matchMedia ? matchMedia("(hover: none)").matches : false;
 const COARSE = window.matchMedia ? matchMedia("(pointer: coarse)").matches : false;
+const REDUCE = window.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)").matches : false;   // no map zoom or pan animation
 
 const S = { level: "central", size: 50, data: {}, sc: null, manure: [], plants: [], plantsTag: null, plantsFailed: false,
   seq: 0, plantSeq: 0, current: null, fieldState: "idle", fieldsOf: null, rects: {}, base: {}, layers: {}, home: null, hintGone: false,
-  openPopup: null, hadPopup: false, fkOpen: null };
+  openPopup: null, hadPopup: false, fkOpen: null, keysOpen: null };
 
 /* ---------- Small helpers (never throw on missing data) ---------- */
 const $ = (id) => document.getElementById(id);
@@ -48,10 +49,14 @@ const span = (a, b, div = 1, d = 0) => {   // word joiners keep a range on one l
 // data notes for the page: drop parentheticals that only name files, scripts or audit ids
 const plain = (t) => String(t || "").replace(/\s*\((?:[^()]*\.(?:tif|py|csv|json)\b[^()]*|audit [^()]*)\)/g, "");
 // URLs in source notes become links labelled by their host, so a long address never widens a phone page
-const linkify = (t) => esc(t).replace(/https?:\/\/[^\s<]+[^\s<.,;:)]/g, (u) => {
+const linkify = (t) => sub(esc(t).replace(/https?:\/\/[^\s<]+[^\s<.,;:)]/g, (u) => {
   const host = u.replace(/^https?:\/\//, "").split(/[/?#]/)[0].replace(/^www\./, "");
   return `<a href="${u}" rel="noopener" title="${u}">${host}</a>`;
-});
+}).replace(/\s+;/g, ";"));
+// data notes write the H/C ratio on the organic-carbon basis as "H/C_org": show it as the page does, with a subscript
+function sub(h) { return h.replace(/H\/C_org\b/g, "H/C<sub>org</sub>"); }
+// a data string shown as text (never inside an attribute): escaped, with H/C<sub>org</sub>
+const txt = (t) => sub(esc(t));
 const sentence = (t) => { const x = cap(String(t || "").trim()); return x && !/[.!?]$/.test(x) ? x + "." : x; };
 const chk = (id) => { const e = $(id); return !!(e && e.checked); };
 // a renderer that throws logs the error and, given its container id, replaces "Loading…" with a failure line
@@ -59,9 +64,11 @@ const safe = (name, fn, box) => {
   try { return fn(); } catch (e) {
     if (window.console) console.error("national: " + name, e);
     const el = box && $(box);
-    if (el) el.innerHTML = `<p class="loadfail">This section could not be drawn from the data.</p>`;
+    if (el) el.innerHTML = failHtml("This section could not be drawn from the data.");
   }
 };
+// a panel error: the shared alert block (an icon drawn from the sprite, the message beside it)
+function failHtml(msg) { return `<p class="alert loadfail" role="alert"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-alert"/></svg><span>${esc(msg)}</span></p>`; }
 async function j(p) { const r = await fetch(p); if (!r.ok) throw new Error(`${p} (${r.status})`); return r.json(); }
 
 /* ---------- Data accessors ---------- */
@@ -98,9 +105,12 @@ function effDate(iso) {   // the fodder-halt date and whether it is already in f
 let map = null;
 function makeMap() {
   if (typeof L === "undefined") return;
-  map = L.map("map", { zoomSnap: 0.25, renderer: L.canvas({ tolerance: COARSE ? 6 : 1 }) }).setView([24.5, 44.5], 5);
+  map = L.map("map", { zoomSnap: 0.25, zoomAnimation: !REDUCE, fadeAnimation: !REDUCE, markerZoomAnimation: !REDUCE, inertia: !REDUCE,
+    renderer: L.canvas({ tolerance: COARSE ? 6 : 1 }) }).setView([24.5, 44.5], 5);
+  // reduced motion: every pan jumps, including a popup's own autoPan (Leaflet gives it no option for that)
+  if (REDUCE) { const panBy = map.panBy; map.panBy = function (offset, opts) { return panBy.call(this, offset, Object.assign({}, opts, { animate: false })); }; }
   L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-    maxZoom: 17, attribution: "Imagery © Esri, Maxar, Earthstar Geographics" }).addTo(map);
+    maxZoom: 17, className: "nat-base", attribution: "Imagery © Esri, Maxar, Earthstar Geographics" }).addTo(map);
   // A click that closes an open popup only dismisses it. This listener is registered before any popup's own
   // preclick handler (which closes the popup), so it still sees the popup open.
   map.on("preclick", () => { S.hadPopup = !!S.openPopup; });
@@ -108,16 +118,37 @@ function makeMap() {
   map.on("popupopen", (e) => { S.openPopup = e.popup; Object.values(S.rects).forEach((x) => x.closeTooltip && x.closeTooltip()); });
   map.on("popupclose", (e) => { if (S.openPopup === e.popup) S.openPopup = null; });
   // the popup's details element changes its height: re-lay it out and keep it in view
-  document.addEventListener("toggle", (e) => { const p = S.popup; if (e.target.closest && e.target.closest(".leaflet-popup") && p && p.isOpen()) p.update(); }, true);
+  document.addEventListener("toggle", (e) => {
+    const d = e.target, pop = d.closest && d.closest(".leaflet-popup");
+    if (!pop) return;
+    refreshPopup();
+    // a popup that scrolls inside itself: bring the details just opened to its top
+    const c = pop.querySelector(".leaflet-popup-content");
+    if (d.open && c && c.scrollHeight > c.clientHeight) c.scrollTop = Math.max(0, d.getBoundingClientRect().top - c.getBoundingClientRect().top + c.scrollTop - 4);
+  }, true);
 }
 
-function fitOpts() {   // keep the data clear of the floating tools card (desktop only)
-  const tools = $("tools"), floating = window.innerWidth > 860 && tools;
-  return { padding: [16, 16], paddingBottomRight: [16, (floating ? tools.offsetHeight + 30 : 0) + 16] };
+const floatingTools = () => { const t = $("tools"); return window.innerWidth > 860 && t && t.offsetParent ? t : null; };   // desktop: a card over the map
+// Padding for a fit: clear of the status pill while it shows, and of the floating tools card (desktop). top: room asked
+// for above the data (a region's popup). The data always keeps at least 100 px of height, so a short map never fits
+// into a negative space.
+function fitOpts(top) {
+  const tools = floatingTools(), h = !S.hintGone && $("hint");
+  let t = Math.max(16, h && h.offsetParent ? h.offsetTop + h.offsetHeight + 12 : 16, top || 0);
+  let b = (tools ? tools.offsetHeight + 30 : 0) + 16;
+  const y = map ? map.getSize().y : 0;
+  if (y) { t = Math.max(16, Math.min(t, y - b - 100)); b = Math.max(16, Math.min(b, y - t - 100)); }
+  return { paddingTopLeft: [16, t], paddingBottomRight: [16, b], animate: !REDUCE };
 }
-function fit(bounds, after) {   // after: runs once the fitted view has settled
+function fit(bounds, after, opts) {   // after: runs once the fitted view has settled; opts: a function giving the fit options
   if (!map || !bounds) return;
-  const go = () => { if (after) map.once("moveend", after); map.fitBounds(bounds, fitOpts()); };
+  // First stop a pan still running (a popup's autoPan) by holding the current view: stopping it fires its own moveend,
+  // which must not count as this fit's. (map.stop() would start a small animated pan of its own.)
+  const go = () => {
+    map.setView(map.getCenter(), map.getZoom(), { animate: false });
+    if (after) map.once("moveend", after);
+    map.fitBounds(bounds, typeof opts === "function" ? opts() : fitOpts());
+  };
   // a fit started during a zoom animation (a double-click) is dropped: wait until that animation has fully ended
   if (map._animatingZoom) map.once("moveend", () => setTimeout(go, 0)); else go();
 }
@@ -130,6 +161,7 @@ function setHint(text, isError) {
   if (!h) return;
   if (text == null) { h.remove(); S.hintGone = true; return; }
   h.textContent = text;
+  h.classList.remove("is-busy");   // the spinner shows only while the first load runs
   h.classList.toggle("error", !!isError);
 }
 
@@ -141,20 +173,22 @@ function regionTip(r) {
   return `${esc(r.id)} (${esc(STATUS[r.status] || r.status || "not processed")})`;
 }
 function popupHtml(r) {
-  if (r.status !== "ok") return `<b>${esc(r.id)}</b>: ${esc(STATUS[r.status] || r.status || "not processed")}`;
+  if (r.status !== "ok") return `<p class="pop-h">${esc(r.id)}</p><p class="pop-sub">${esc(cap(STATUS[r.status] || r.status || "not processed"))}</p>`;
   const v = obj(r.validation) || {}, sc = seasonsOf(r), n0 = (x) => ok(x) ? x : 0;
   const vs = (k) => obj(v[k]) && sc.includes(k) ? `agreement ${pct(ok(v[k].area_agreement) ? v[k].area_agreement : v[k].agreement)}, kappa ${fmt(v[k].kappa, 2)}` : "not classified";
   const row = (a, b) => `<tr><th scope="row">${a}</th><td>${b}</td></tr>`;
-  return `<b>${esc(r.id)}</b>${isUsed(r) ? "" : " · radar not usable (quality check)"}
-    <table class="pop">${row("Farmed by radar", isUsed(r) ? `${fmt(farmedOf(r))} ha` : "–")}${row("Fields mapped", `${fmt(r.fields)} fields, ${fmt(r.field_ha)} ha`)}
-      ${row("Water", `${ok(r.water_m3) ? fmt(r.water_m3 / 1e6) : "–"} Mm³/y`)}${row("Straw · fronds", `${fmt(r.straw_t)} · ${fmt(r.fronds_t)} t`)}</table>
+  const ha = (x) => `${fmt(x)} ha`;
+  const seen = sc.length === 1 ? `Only the ${esc(sc[0])} season observed` : "";
+  return `<p class="pop-h">${esc(r.id)}</p>${isUsed(r) ? (seen ? `<p class="pop-sub">${seen}</p>` : "") : `<p class="pop-sub warn">Radar not usable (quality check)</p>`}
+    <table class="pop">${row("Farmed by radar", isUsed(r) ? ha(farmedOf(r)) : "–")}${row("Fields mapped", `${fmt(r.fields)} fields, ${ha(r.field_ha)}`)}
+      ${row("Water", `${ok(r.water_m3) ? fmt(r.water_m3 / 1e6) : "–"} Mm³/y`)}${row("Wheat straw", `${fmt(r.straw_t)} t`)}${row("Palm fronds", `${fmt(r.fronds_t)} t`)}</table>
     <details class="pop-more"><summary>Classes, radar check and dates</summary>
-    Wheat ${fmt(n0(r.winter_only_ha) + n0(r.wheat_rotation_ha))} ha (incl. rotation) · summer only ${fmt(r.summer_only_ha)} ha<br>
-    Year-round ${fmt(r.year_round_ha)} ha · palms ${fmt(r.palm_grove_ha)} ha<br>
-    One season observed ${fmt(n0(r.partly_seen_active_ha) + n0(r.partly_seen_inactive_ha))} ha (${fmt(r.partly_seen_active_ha)} ha farmed in the season observed)<br>
-    Not detected by radar ${fmt(r.idle_ha)} ha${r.radar_unusable_ha ? ` · radar not usable ${fmt(r.radar_unusable_ha)} ha` : ""} · not covered by radar ${fmt(r.unseen_ha)} ha<br>
-    Radar vs Sentinel-2${v.basis ? " (this region's own fields)" : ""}: winter ${vs("winter")}; summer ${vs("summer")}<br>
-    Radar dates: ${arr(r.dates).map(esc).join(", ") || "–"}</details>`;
+    <table class="pop">${row("Wheat (incl. rotation)", ha(n0(r.winter_only_ha) + n0(r.wheat_rotation_ha)))}${row("Summer only", ha(r.summer_only_ha))}
+      ${row("Year-round", ha(r.year_round_ha))}${row("Palms", ha(r.palm_grove_ha))}
+      ${row("One season observed", ha(n0(r.partly_seen_active_ha) + n0(r.partly_seen_inactive_ha)))}${row("of which farmed in the season observed", ha(r.partly_seen_active_ha))}
+      ${row("Not detected by radar", ha(r.idle_ha))}${r.radar_unusable_ha ? row("Radar not usable", ha(r.radar_unusable_ha)) : ""}${row("Not covered by radar", ha(r.unseen_ha))}</table>
+    <p>Radar vs Sentinel-2${v.basis ? " (this region's own fields)" : ""}: winter ${vs("winter")}; summer ${vs("summer")}.</p>
+    <p>Radar dates: ${arr(r.dates).map(esc).join(", ") || "–"}</p></details>`;
 }
 function drawRegions() {
   if (!map) return;
@@ -211,12 +245,49 @@ function onMapClick(e) {
   if (!r) return;
   if (r.status === "ok") selectRegion(r); else regionPopup(r);
 }
+// The region popup opens on the box's north edge, so it sits above the fields, not on them. Its autoPan keeps its tip
+// clear of the floating tools card (desktop), and a tall popup scrolls inside itself instead of running under the card.
+const popupPad = () => { const t = floatingTools(); return t ? t.offsetHeight + 44 : 16; };
 function regionPopup(r) {
-  const c = centreOf(r);
+  const c = centreOf(r), b = bboxOf(r);
   if (!map || !c) return;
+  const pad = popupPad();
   const box = document.createElement("div");   // a node, not a string, so update() keeps the details element's open state
   box.innerHTML = popupHtml(r);
-  S.popup = L.popup({ maxWidth: 300, minWidth: 220, maxHeight: Math.max(160, map.getSize().y - 56), autoPanPadding: [16, 16] }).setLatLng(c).setContent(box).openOn(map);
+  S.popup = L.popup({ maxWidth: 300, minWidth: 220, maxHeight: Math.max(160, map.getSize().y - pad - 56),
+    autoPanPaddingTopLeft: [16, 16], autoPanPaddingBottomRight: [16, pad] })
+    .setLatLng(b ? [b[3], (b[0] + b[2]) / 2] : c).setContent(box).openOn(map);
+  refreshPopup();   // now that its width is known: clear of the zoom buttons too
+}
+// The tools card changes height (a region's bar and field key): the open region popup's room and autoPan padding follow.
+function popupRoom() {
+  const p = S.popup;
+  if (!map || !p || !p.isOpen()) return null;
+  const pad = popupPad(), sz = map.getSize(), el = p.getElement();
+  p.options.maxHeight = Math.max(160, sz.y - pad - 56);
+  p.options.autoPanPaddingBottomRight = [16, pad];
+  // clear of the zoom buttons on the left where the map is wide enough for the popup beside them
+  p.options.autoPanPaddingTopLeft = [Math.max(16, Math.min(64, sz.x - (el ? el.offsetWidth : 300) - 16)), 16];
+  return p;
+}
+function refreshPopup() { const p = popupRoom(); if (p) p.update(); }
+// The fit for an open region: room above the box for its popup, and the box clear of the tools card. On desktop the box
+// may instead sit in the free strip right of the card (no bottom pad there). The layout that leaves the popup its full
+// height above the box wins (otherwise its autoPan would push the box under the card); if both do, the larger view.
+function regionFitOpts(bounds) {
+  const pe = S.popup && S.popup.isOpen() && S.popup.getElement();
+  const top = pe ? pe.offsetHeight + 20 : 16;
+  const below = fitOpts(top), tools = floatingTools();
+  if (!tools || !bounds) return below;
+  const sz = map.getSize(), left = tools.offsetLeft + tools.offsetWidth + 16;
+  if (sz.x - left - 16 < 200) return below;
+  const t = Math.max(16, Math.min(top, sz.y - 116));
+  const beside = { paddingTopLeft: [left, t], paddingBottomRight: [16, 16], animate: !REDUCE };
+  const room = (o) => o.paddingTopLeft[1] >= top;
+  if (room(below) !== room(beside)) return room(beside) ? beside : below;
+  const zoomOf = (o) => map.getBoundsZoom(bounds, false, L.point(o.paddingTopLeft).add(o.paddingBottomRight));
+  const zb = zoomOf(below), zs = zoomOf(beside);
+  return ok(zs) && (!ok(zb) || zs > zb) ? beside : below;
 }
 async function selectRegion(r) {
   if (!r) return back();
@@ -227,10 +298,10 @@ async function selectRegion(r) {
   S.current = r;
   highlight(r, true);
   syncRegionSelect(r.id);
-  regionPopup(r);
   if (!S.hintGone) setHint(null);
   S.fieldState = "loading";
-  renderFieldKey();
+  renderFieldKey();   // first, so the popup measures the card as it is while the region is open
+  regionPopup(r);
   let rows;
   try { rows = await j(`data/national/fields/${encodeURIComponent(r.id)}.json`); }
   catch (e) { if (tok === S.seq) { S.fieldState = "error"; renderFieldKey(); } return; }
@@ -238,10 +309,12 @@ async function selectRegion(r) {
   drawFields(r, arr(rows));
   S.fieldState = "loaded";
   renderFieldKey();
+  popupRoom();
   const b = bboxOf(r);
   if (!b) return;
   // after the zoom to the region, pan once more so the region's popup is not cut off at the top
-  fit(L.latLngBounds([[b[1], b[0]], [b[3], b[2]]]), () => { const p = S.popup; if (tok === S.seq && p && p.isOpen()) p.update(); });
+  const bounds = L.latLngBounds([[b[1], b[0]], [b[3], b[2]]]);
+  fit(bounds, () => { if (tok === S.seq) refreshPopup(); }, () => regionFitOpts(bounds));
 }
 function back() {
   S.seq++;   // drop any field load in flight
@@ -260,8 +333,8 @@ function fillRegionSelect() {
   const used = R.filter(isUsed).sort((a, b) => farmedOf(b) - farmedOf(a));
   const rej = R.filter((r) => !isUsed(r)).sort((a, b) => String(a.id).localeCompare(String(b.id)));
   sel.innerHTML = `<option value="">All regions</option>` +
-    (used.length ? `<optgroup label="Radar results (largest farmed area first)">${used.map((r) => `<option value="${esc(r.id)}">${esc(r.id)} · ${fmt(farmedOf(r))} ha farmed</option>`).join("")}</optgroup>` : "") +
-    (rej.length ? `<optgroup label="Radar failed the quality check">${rej.map((r) => `<option value="${esc(r.id)}">${esc(r.id)} · radar not usable</option>`).join("")}</optgroup>` : "");
+    (used.length ? `<optgroup label="Radar results: farmed area, largest first">${used.map((r) => `<option value="${esc(r.id)}">${esc(r.id)} (${fmt(farmedOf(r))} ha)</option>`).join("")}</optgroup>` : "") +
+    (rej.length ? `<optgroup label="Radar failed the quality check">${rej.map((r) => `<option value="${esc(r.id)}">${esc(r.id)} (radar not usable)</option>`).join("")}</optgroup>` : "");
   sel.value = "";
   sel.disabled = !map;
   sel.onchange = () => { const r = R.find((x) => String(x.id) === sel.value); if (r) selectRegion(r); else back(); };
@@ -278,8 +351,8 @@ function fieldStyle(ha, c) {
 const className = (c) => NAME[KEY_OF[c]] || "Field";
 function fieldHtml(f, r) {
   const k = KEY_OF[f.c];
-  const s2 = ok(f.s2) && f.s2 !== f.c ? `<br>Radar + Sentinel-2 tier: ${esc(className(f.s2))}` : "";
-  return `<b>${esc(className(f.c))}</b><br>${fmt(f.ha, 1)} ha · ${esc(r.id)} · ${FARMED.includes(k) ? "in the farmed total" : "not in the farmed total"}${s2}`;
+  const s2 = ok(f.s2) && f.s2 !== f.c ? `<p class="pop-sub">Radar + Sentinel-2 tier: ${esc(className(f.s2))}</p>` : "";
+  return `<p class="pop-h">${esc(className(f.c))}</p><table class="pop"><tr><th scope="row">Area</th><td>${fmt(f.ha, 1)} ha</td></tr><tr><th scope="row">Region</th><td>${esc(r.id)}</td></tr></table><p class="pop-sub">${FARMED.includes(k) ? "In the farmed total" : "Not in the farmed total"}</p>${s2}`;
 }
 function drawFields(r, rows) {
   clearFields();
@@ -294,11 +367,12 @@ function drawFields(r, rows) {
   });
   g.on("click", (e) => {
     const m = e.layer;
-    if (m && m.f) L.popup({ maxWidth: 260, autoPanPadding: [16, 16] }).setLatLng(m.getLatLng()).setContent(fieldHtml(m.f, r)).openOn(map);
+    if (m && m.f) L.popup({ maxWidth: 260, autoPanPaddingTopLeft: [16, 16], autoPanPaddingBottomRight: [16, popupPad()] })   // clear of the tools card
+      .setLatLng(m.getLatLng()).setContent(fieldHtml(m.f, r)).openOn(map);
   });
   if (!NO_HOVER) g.on("mouseover", (e) => {   // tooltips are bound on first hover only (thousands of fields)
     const m = e.layer;
-    if (m && m.f && !m.getTooltip()) m.bindTooltip(`${esc(className(m.f.c))} · ${fmt(m.f.ha, 1)} ha`, { direction: "top", offset: [0, -4] }).openTooltip();
+    if (m && m.f && !m.getTooltip()) m.bindTooltip(`${esc(className(m.f.c))}, ${fmt(m.f.ha, 1)} ha`, { direction: "top", offset: [0, -4] }).openTooltip();
   });
   S.layers.fields = g.addTo(map);
   S.fieldsOf = { id: r.id, n };
@@ -314,14 +388,14 @@ function clearFields() {
 const plantTag = (size) => `central_${size}kt`;
 function plantLine(p, size) {
   const feeds = ["straw", "fronds", "manure", "litter"].filter((f) => ok(p["feed_" + f]) && p["feed_" + f] > 0)
-    .map((f) => `${f} ${fmt(p["feed_" + f])}`).join(" · ");
-  return `Plant ${esc(p.plant)}: ${size} kt/y · ${fmt(p.net_removal_tco2)} t CO₂/y net of transport, via ${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` (${esc(p.cement_name)}, ${fmt(p.cement_km)} km)` : ""}${feeds ? `<br>feed: ${feeds} t` : ""}`;
+    .map((f) => `${f} ${fmt(p["feed_" + f])}`).join(", ");
+  return `<b>Plant ${esc(p.plant)}</b>: ${size}&nbsp;kt/y, ${fmt(p.net_removal_tco2)}&nbsp;t CO₂/y net of transport, via ${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` (${esc(p.cement_name)}, ${fmt(p.cement_km)}&nbsp;km)` : ""}${feeds ? `<br><span class="tt-sub">Feed, t: ${feeds}</span>` : ""}`;
 }
 function plantMarker(ps, size) {
   const top = ps.slice().sort((a, b) => (b.net_removal_tco2 || 0) - (a.net_removal_tco2 || 0))[0];
   const net = ps.reduce((t, p) => t + (ok(p.net_removal_tco2) ? p.net_removal_tco2 : 0), 0);
   const tip = ps.length === 1 ? plantLine(top, size)
-    : `<b>One site, ${ps.length} plants</b> (${fmt(size * ps.length)} kt/y in all, ${fmt(net)} t CO₂/y net of transport)<br>` + ps.map((p) => plantLine(p, size)).join("<br>");
+    : `<b>One site, ${ps.length} plants</b> (${fmt(size * ps.length)}&nbsp;kt/y in all, ${fmt(net)}&nbsp;t CO₂/y net of transport)<br>` + ps.map((p) => plantLine(p, size)).join("<br>");
   return L.circleMarker([top.lat, top.lon], { radius: 4 + Math.sqrt(size * ps.length) / 1.5, color: "#fff", weight: 2, opacity: 1,
     fillColor: top.best_outlet === "cement" ? MARK.cement : MARK.soil, fillOpacity: 0.95 }).bindTooltip(tip);
 }
@@ -361,7 +435,7 @@ function addCement(gj) {
     const who = [p.owner_name, p.city].filter((x) => x).map(esc).join(", ") || "name not listed";
     L.circleMarker(ll, { radius: 7, color: "#fff", weight: 5, opacity: 0.85, fill: false, interactive: false }).addTo(g);
     L.circleMarker(ll, { radius: 7, color: MARK.cement, weight: 2.5, opacity: 1, fill: false })
-      .bindTooltip(`Cement plant: ${who}${ok(p.cap) ? ` · capacity ${fmt(p.cap, p.cap % 1 ? 2 : 0)} Mt/y` : ""}`).addTo(g);
+      .bindTooltip(`<b>Cement plant</b>: ${who}${ok(p.cap) ? `<br><span class="tt-sub">Capacity ${fmt(p.cap, p.cap % 1 ? 2 : 0)} Mt/y</span>` : ""}`).addTo(g);
   });
   S.layers.cement = g;
   if (chk("showcement")) g.addTo(map);
@@ -435,6 +509,22 @@ function renderLegend() {
     .forEach(([c, k]) => { const e = $(k); if (e) e.hidden = !chk(c); });
   renderFieldKey();
 }
+// Layer keys: a toggle in the card's title row (desktop). Short windows start with the keys folded, so the card stays
+// small; while a region's fields are shown they fold away anyway, and the toggle with them.
+function renderLayerKeys() {
+  const tools = $("tools"), btn = $("layerkeybtn");
+  if (!tools) return;
+  if (S.keysOpen == null) S.keysOpen = !(window.innerWidth > 860 && window.innerHeight <= 760);
+  tools.classList.toggle("keys-off", !S.keysOpen);
+  if (!btn) return;
+  btn.hidden = !!S.current;
+  btn.setAttribute("aria-expanded", S.keysOpen ? "true" : "false");
+  btn.textContent = S.keysOpen ? "Hide keys" : "Show keys";
+}
+function toggleLayerKeys() {
+  S.keysOpen = !S.keysOpen;
+  renderLayerKeys();
+}
 function renderFieldKey() {
   const st = $("fieldstatus"), fk = $("fieldkey"), bb = $("backbtn"), kb = $("keybtn"), bar = $("fieldbar"), tools = $("tools"), r = S.current;
   if (!st || !fk) return;
@@ -442,13 +532,14 @@ function renderFieldKey() {
   if (kb) kb.hidden = true;
   if (bar) bar.hidden = !!map && !r && !S.hintGone;   // before the first region, the hint over the map says it
   if (tools) tools.classList.toggle("has-fields", !!r);   // desktop: the layer keys fold away while a region is open
+  renderLayerKeys();
   fk.hidden = true;
   if (!map) { st.textContent = "The map did not load; the figures in the panel do not need it."; return; }
   if (!r) { st.textContent = "Click or tap a yellow box, or choose a region, to load its fields."; return; }
   if (S.fieldState === "loading") { st.textContent = `Loading fields for ${r.id}…`; return; }
   if (S.fieldState === "error") { st.textContent = `Could not load the fields for ${r.id}.`; return; }
   if (!S.fieldsOf || S.fieldsOf.id !== r.id) { st.textContent = ""; return; }
-  st.innerHTML = `<b>Fields in ${esc(r.id)}</b> · ${fmt(S.fieldsOf.n)} fields${isUsed(r) ? "" : " (radar not usable: quality check)"}`;
+  st.innerHTML = `<b>${esc(r.id)}</b><span class="fs-n">${fmt(S.fieldsOf.n)} fields on the map${isUsed(r) ? "" : " (radar not usable: quality check)"}</span>`;
   const item = (k) => `<li>${glyph(CODE[k])}${NAME[k]}</li>`;
   fk.innerHTML = `<p class="key-h">Farmed (in the total)</p><ul class="key">${FARMED.map(item).join("")}</ul>` +
     `<p class="key-h">Not in the total: not detected, or no usable radar view</p><ul class="key">${Object.keys(CODE).filter((k) => !FARMED.includes(k)).map(item).join("")}</ul>`;
@@ -465,6 +556,7 @@ function renderFieldKey() {
 function toggleFieldKey() {
   S.fkOpen = !S.fkOpen;
   renderFieldKey();
+  refreshPopup();   // the card changed height
 }
 
 /* ====================================================================================================
@@ -529,17 +621,34 @@ function setLevel(l, from) {
 /* ====================================================================================================
    Overview
    ==================================================================================================== */
+const ico = (id, cls) => `<svg class="ico${cls ? " " + cls : ""}" aria-hidden="true"><use href="img/icons.svg#i-${id}"/></svg>`;
+const KPI_ICON = { water_m3: "water", elec_kwh: "energy", summer_pumping_avg_mw: "calendar", co2_t_grid: "flame", straw_t_dry: "residue", fronds_t_dry: "leaf" };
+// The mini range bar under a figure: one lane per range shown (factor = light band, threshold = dark band,
+// both at once = whisker) and a tick at the figure shown, all on one scale from the smallest end to the largest.
+// Drawn only when every value is a number and the ends differ; the numbers themselves are in the rows below it.
+function rangeBar(lanes, mid, div, d) {
+  const vals = lanes.reduce((xs, l) => xs.concat([l.a, l.b]), [mid]);
+  if (!lanes.length || !vals.every(ok)) return "";
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  if (!(hi > lo)) return "";
+  const at = (x) => (100 * (x - lo) / (hi - lo)).toFixed(2) + "%";
+  return `<div class="rb" aria-hidden="true">${lanes.map((l) => `<div class="rb-lane ${l.cls}"><i style="--a:${at(Math.min(l.a, l.b))};--b:${at(Math.max(l.a, l.b))}"></i></div>`).join("")}<b class="rb-mid" style="--x:${at(mid)}"></b></div>` +
+    `<div class="rb-ends" aria-hidden="true"><span>${fmt(lo / div, d)}</span><span>${fmt(hi / div, d)}</span></div>`;
+}
 function kpi(label, unit, key, div, d) {
   const s = SUM(), v = obj(s[key]), L_ = S.level, t = tiers();
   if (!v) return "";
   const corn = t.corners && obj(t.corners[key]);
+  // [row class, lane class, label, one end, other end]
   const rows = [
-    ["Factor range", span(v.low, v.high, div, d)],
-    t.lo && t.hi ? [`Threshold<span class="lg"> ${t.thr}</span>`, span(get(t.lo, `${key}.${L_}`), get(t.hi, `${key}.${L_}`), div, d)] : null,
-    corn ? ["Both at once", span(corn.low, corn.high, div, d)] : null,
-  ].filter((x) => x && x[1]);
-  return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-value">${fmt(ok(v[L_]) ? v[L_] / div : null, d)}<span class="kpi-unit">${unit}</span></div>` +
-    (rows.length ? `<dl class="kpi-range">${rows.map(([a, b]) => `<div><dt>${a}</dt><dd>${b}</dd></div>`).join("")}</dl>` : "") + `</div>`;
+    ["r-factor", "rb-factor", "Factor range", v.low, v.high],
+    t.lo && t.hi ? ["r-thr", "rb-thr", `Threshold<span class="lg"> ${t.thr}</span>`, get(t.lo, `${key}.${L_}`), get(t.hi, `${key}.${L_}`)] : null,
+    corn ? ["r-both", "rb-both", "Both at once", corn.low, corn.high] : null,
+  ].filter((x) => x && span(x[3], x[4], div, d));
+  const mid = ok(v[L_]) ? v[L_] : null;
+  const bar = mid == null ? "" : rangeBar(rows.map((x) => ({ cls: x[1], a: x[3], b: x[4] })), mid, div, d);
+  return `<div class="kpi"><div class="kpi-label">${ico(KPI_ICON[key] || "info", "sm")}<span>${label}</span></div><div class="kpi-value">${fmt(mid == null ? null : mid / div, d)}<span class="kpi-unit">${unit}</span></div>${bar}` +
+    (rows.length ? `<dl class="kpi-range">${rows.map((x) => `<div class="${x[0]}"><dt>${x[2]}</dt><dd>${span(x[3], x[4], div, d)}</dd></div>`).join("")}</dl>` : "") + `</div>`;
 }
 function swatch(c) {
   if (RING.has(c)) return `<span class="swatch ring" style="--c:${COL[c]}" aria-hidden="true"></span>`;
@@ -556,8 +665,8 @@ function energyCallout() {
   else if (notes._shield) why.push("the Arabian Shield regions get no pumping energy");
   if (typeof notes._age === "string") why.push("the depths to water are older measurements, and water levels have fallen since");
   const joined = why.length < 2 ? why.join("") : why.slice(0, -1).join("; ") + "; and " + why[why.length - 1];
-  const head = ph && ph.rule ? ` Pumping ${esc(ph.rule)}.` : " Pumping energy uses regional depth to water (no drawdown).";
-  return `<p class="callout">Electricity, summer load and CO₂ are modelled, not metered${why.length ? `, and likely lower bounds: ${joined}` : ""}.${head} (<a href="#method">Method tab</a>)</p>`;
+  const head = ph && ph.rule ? ` Pumping ${txt(ph.rule)}.` : " Pumping energy uses regional depth to water (no drawdown).";
+  return `<p class="callout">${ico("info")}<span>Electricity, summer load and CO₂ are modelled, not metered${why.length ? `, and likely lower bounds: ${joined}` : ""}.${head} (<a href="#method">Method tab</a>)</span></p>`;
 }
 function s2Block() {
   const s = SUM(), t = tiers(), L_ = S.level, f = obj(get(s, "s2_filled")) || {};
@@ -574,7 +683,7 @@ function s2Block() {
     <p class="note">A second tier, published next to the radar-only figures and never replacing them. Sentinel-2 fills winters the radar missed and seasons it did not observe; the area it adds is measured by Sentinel-2, not by the radar.${t.s2all ? " The last column also classifies, from Sentinel-2 alone, fields with no usable radar season, and counts them all as farmed: an upper bound for those fields." : ""}${capped.length ? ` Straw on wheat that only Sentinel-2 sees is capped at GASTAT's 2024 wheat area in each region (the cap binds in ${list(capped.map(esc))})${ok(unc) ? `; uncapped it would be ${fmt(unc / 1e3)} kt` : ""}.` : ""} At the ${esc(L_)} estimate:</p>
     <table class="s2t"><tr><th></th>${cols.map(([h]) => `<th class="num">${h}</th>`).join("")}</tr>
       ${rows.map(([label, key, div, d]) => `<tr><td>${label}</td>${cols.map(([, o]) => cell(o, key, div, d)).join("")}</tr>`).join("")}</table>
-    ${scopes.length || f.rule ? `<details class="more"><summary>How the tier is built</summary>${scopes.map(([h, o]) => `<p><b>${h}:</b> ${esc(sentence(o.scope))}</p>`).join("")}${f.rule ? `<p>${esc(sentence(f.rule))}</p>` : ""}${caps && caps.rule ? `<p><b>Straw cap:</b> ${esc(sentence(caps.rule))}</p>` : ""}</details>` : ""}`;
+    ${scopes.length || f.rule ? `<details class="more"><summary>How the tier is built</summary>${scopes.map(([h, o]) => `<p><b>${h}:</b> ${txt(sentence(o.scope))}</p>`).join("")}${f.rule ? `<p>${txt(sentence(f.rule))}</p>` : ""}${caps && caps.rule ? `<p><b>Straw cap:</b> ${txt(sentence(caps.rule))}</p>` : ""}</details>` : ""}`;
 }
 function reproBlock() {
   const rp = obj(SUM().reproducibility), w = obj(rp && rp.winter), su = obj(rp && rp.summer);
@@ -582,7 +691,7 @@ function reproBlock() {
   const big = [].concat(arr(w.largest_disagreements).map((x) => ["winter", x]), arr(su.largest_disagreements).map((x) => ["summer", x])).filter(([, x]) => obj(x));
   return `<h3>Reproducibility: fields seen by two boxes</h3>
     <p>Where two neighbouring boxes map the same fields (${fmt(rp.field_pairs)} field pairs, ${fmt(rp.field_pairs_ha)} ha), each copy is classified against its own box's desert background and threshold. The two radar calls agree on <b>${pct(w.agreement, 1)}</b> of the shared area in winter (kappa ${fmt(w.kappa, 2)}) and <b>${pct(su.agreement, 1)}</b> in summer (kappa ${fmt(su.kappa, 2)})${ok(get(w, "s2_control.agreement")) && ok(get(su, "s2_control.agreement")) ? `; Sentinel-2's flags for the same fields agree on ${pct(w.s2_control.agreement, 1)} and ${pct(su.s2_control.agreement, 1)}` : ""}.${ok(w.disagreement_over_mean_active) && ok(su.disagreement_over_mean_active) ? ` The area the boxes disagree on equals ${pct(w.disagreement_over_mean_active)} (winter) and ${pct(su.disagreement_over_mean_active)} (summer) of the area they call farmed, so a region's farmed area depends partly on which box classifies it.` : ""} The threshold range under the figures shows how far the national totals move when every region's threshold shifts.</p>
-    ${big.length || rp.rule ? `<details class="more"><summary>Largest disagreements, and the rule</summary>${big.length ? `<table><tr><th>Season</th><th>Boxes</th><th class="num">Shared ha</th><th class="num">Farmed ha, each box</th></tr>${big.map(([k, x]) => `<tr><td>${k}${x.same_radar_dates ? "" : "*"}</td><td>${esc(x.box_a)} / ${esc(x.box_b)}</td><td class="num">${fmt(x.ha)}</td><td class="num">${fmt(x.active_ha_box_a)} / ${fmt(x.active_ha_box_b)}</td></tr>`).join("")}</table><p>* the two boxes used different radar dates; all others used the same scenes.</p>` : ""}${rp.rule ? `<p>${esc(sentence(rp.rule))}</p>` : ""}</details>` : ""}`;
+    ${big.length || rp.rule ? `<details class="more"><summary>Largest disagreements, and the rule</summary>${big.length ? `<table><tr><th>Season</th><th>Boxes</th><th class="num">Shared ha</th><th class="num">Farmed ha, each box</th></tr>${big.map(([k, x]) => `<tr><td>${k}${x.same_radar_dates ? "" : "*"}</td><td>${esc(x.box_a)} / ${esc(x.box_b)}</td><td class="num">${fmt(x.ha)}</td><td class="num">${fmt(x.active_ha_box_a)} / ${fmt(x.active_ha_box_b)}</td></tr>`).join("")}</table><p>* the two boxes used different radar dates; all others used the same scenes.</p>` : ""}${rp.rule ? `<p>${txt(sentence(rp.rule))}</p>` : ""}</details>` : ""}`;
 }
 function renderOverview() {
   const el = $("ov");
@@ -592,7 +701,10 @@ function renderOverview() {
   const c = counts(), t = tiers(), v = obj(D().validation) || {};
   const other = Object.keys(STATUS).filter((k) => k !== "not run" && c.n(k)).map((k) => `${c.n(k)} ${STATUS[k]}`)
     .concat(c.rejected ? [`${c.rejected} where the radar failed the quality check`] : []).join("; ");
+  // the headline figure's companions: each season, the threshold range and the radar + Sentinel-2 tier
   const facts = [
+    ok(act.winter) ? `<div><dt>Farmed in winter</dt><dd>${fmt(act.winter)} ha</dd></div>` : "",
+    ok(act.summer) ? `<div><dt>Farmed in summer</dt><dd>${fmt(act.summer)} ha</dd></div>` : "",
     t.lo && t.hi && span(t.lo.farmed_ha, t.hi.farmed_ha) ? `<div><dt>Radar threshold ${t.thr}</dt><dd>${span(t.lo.farmed_ha, t.hi.farmed_ha)} ha</dd></div>` : "",
     t.s2 && ok(t.s2.farmed_ha) ? `<div><dt>Radar + Sentinel-2</dt><dd>${fmt(t.s2.farmed_ha)} ha</dd></div>` : "",
   ].join("");
@@ -612,22 +724,31 @@ function renderOverview() {
   const ph = obj(s.pumping_head);
   const sw = "in the southwest the threshold fails on rocky ground, and some mapped patches there are rain-greened natural vegetation";
   const seasons = ["winter", "summer"].filter((k) => obj(v[k]) && v[k].agreement != null);
+  // one compact key row above the cards; the full explanation (the caveat) sits under them
+  const rbKey = `<ul class="rb-key" aria-label="Key to the range bars under each figure"><li><span class="rk"></span>Factor range</li>` +
+    (t.lo && t.hi ? `<li><span class="rk thr"></span>Threshold ${t.thr}</li>` : "") + (t.corners ? `<li><span class="rk both"></span>Both at once</li>` : "") +
+    `<li><span class="rk tick"></span>Figure shown</li></ul>`;
   const capTxt = [`<b>Low / Central / High</b> set every factor to its low, central or high bound at once (<a href="#method">Method tab</a>).`,
-    `Under each figure: the factor range (those bounds)` + (t.lo && t.hi ? `, the range with the radar's farmed / not-farmed threshold moved ${t.thr} in every region at this estimate` : "") +
-    (t.corners ? `, and both at once` : "") + `; none is a probability interval.`,
+    `Under each figure, on one small scale: the factor range (those bounds)` + (t.lo && t.hi ? `, the range with the radar's farmed / not-farmed threshold moved ${t.thr} in every region at this estimate` : "") +
+    (t.corners ? `, and both at once` : "") + `, with a tick at the figure shown; none is a probability interval.`,
     `The map, Official stats and the Biochar headline use central values.`].join(" ");
-  el.innerHTML = `<p class="lead">Radar finds <b>${fmt(farmed)} ha</b> farmed in 2025/26 (winter ${fmt(act.winter)} ha, summer ${fmt(act.summer)} ha) out of ${fmt(s.field_ha)} ha of fields mapped from Sentinel-2${c.all ? `, in the ${fmt(c.tried)} largest of ${fmt(c.all)} farming regions (${fmt(c.withRadar)} with radar results${other ? "; " + other : ""})` : ""}.</p>
-    ${facts ? `<dl class="facts ov-facts">${facts}</dl>` : ""}
-    <div class="estimate"><span class="est-label" id="est-ov">Estimate</span>${levelSeg("est-ov")}</div>
-    <p class="note est-cap">${capTxt}</p>
+  el.innerHTML = `<div class="ov-hero">
+      <p class="ov-k">${ico("satellite", "sm")}<span>Farmed in 2025/26, found by radar</span></p>
+      <p class="ov-num">${fmt(farmed)}<span class="ov-unit">ha</span></p>
+      ${facts ? `<dl class="ov-facts">${facts}</dl>` : ""}
+    </div>
+    <p class="lead">That is the farmed part of the ${fmt(s.field_ha)} ha of fields mapped from Sentinel-2${c.all ? `, in the ${fmt(c.tried)} largest of ${fmt(c.all)} farming regions (${fmt(c.withRadar)} with radar results${other ? "; " + other : ""})` : ""}.</p>
+    <div class="estimate"><span class="seg-label" id="est-ov">Estimate</span>${levelSeg("est-ov")}</div>
+    ${rbKey}
     <div class="kpis">
       ${kpi("Irrigation water pumped", "billion m³ / year", "water_m3", 1e9, 2)}
       ${kpi("Pumping electricity", "TWh / year", "elec_kwh", 1e9, 2)}
-      ${kpi("Summer pumping load", "MW average, Jun–Sep", "summer_pumping_avg_mw", 1, 0)}
+      ${kpi("Summer pumping load, June to September", "MW average", "summer_pumping_avg_mw", 1, 0)}
       ${kpi("Pumping CO₂ (grid)", "Mt CO₂e / year", "co2_t_grid", 1e6, 2)}
       ${kpi("Wheat straw (radar)", "kt dry / year", "straw_t_dry", 1e3, 0)}
       ${kpi("Palm fronds (radar + WorldCover)", "kt dry / year", "fronds_t_dry", 1e3, 0)}
     </div>
+    <p class="note kpi-note">${capTxt}</p>
     ${energyCallout()}
     ${covTxt}
     <p class="note"><a href="scenarios.html#floor">Scenarios</a> shows this record with the southwest set apart (the radar floor), Monte Carlo ranges and what-ifs.</p>
@@ -635,10 +756,10 @@ function renderOverview() {
     <h3>Field classes (radar)</h3>
     ${fRows.length ? `<div class="bar-group">Farmed (in the total)</div>${fRows.map(bar).join("")}` : ""}
     ${oRows.length ? `<div class="bar-group sep">Not in the total</div>${oRows.map(bar).join("")}` : ""}
-    <p class="note">"Not detected by radar": green in Sentinel-2 at some point in 2025/26 but below the radar threshold in every season observed. Most are fields the radar missed (winter dates come before the canopy; the threshold is conservative), not idle land${ok(wfIdle) ? `: Sentinel-2 sees ${fmt(wfIdle)} ha of them green in winter and not in summer, which the radar + Sentinel-2 tier counts as winter crops` : ""}${s.quality_check ? "" : `; ${sw}`}. "One season observed": the radar had no usable look at the field in the other season (no pass then, the pass missed the field, or that season failed the quality check); winter is unknown on ${fmt(nob.winter)} ha and summer on ${fmt(nob.summer)} ha of these fields.${s.quality_check ? ` "Radar not usable": the quality check rejected every season the radar had in the region (${esc(s.quality_check_rule)}); ${sw}.` : ""}</p>
+    <p class="note">"Not detected by radar": green in Sentinel-2 at some point in 2025/26 but below the radar threshold in every season observed. Most are fields the radar missed (winter dates come before the canopy; the threshold is conservative), not idle land${ok(wfIdle) ? `: Sentinel-2 sees ${fmt(wfIdle)} ha of them green in winter and not in summer, which the radar + Sentinel-2 tier counts as winter crops` : ""}${s.quality_check ? "" : `; ${sw}`}. "One season observed": the radar had no usable look at the field in the other season (no pass then, the pass missed the field, or that season failed the quality check); winter is unknown on ${fmt(nob.winter)} ha and summer on ${fmt(nob.summer)} ha of these fields.${s.quality_check ? ` "Radar not usable": the quality check rejected every season the radar had in the region (${txt(s.quality_check_rule)}); ${sw}.` : ""}</p>
     <h3>Radar vs Sentinel-2 (pooled over regions)</h3>
     ${seasons.length ? seasons.map((k) => `<p><b>${cap(k)}</b> (${fmt(v[k].regions)} regions, ${fmt(v[k].validated_ha)} ha): agreement ${pct(v[k].agreement)} against ${pct(v[k].chance_agreement)} by chance, kappa <b>${fmt(v[k].kappa, 2)}</b>. Of the area Sentinel-2 saw green, radar found <b>${pct(v[k].recall)}</b>; of the area radar called farmed, <b>${pct(v[k].precision)}</b> was green in Sentinel-2.</p>`).join("") : "<p>No pooled validation in this export.</p>"}
-    <p class="note">Winter is checked against Sentinel-2 over the radar's own winter dates (late November to January); summer against Sentinel-2 for June–October.${s.quality_check ? ` Quality check applied: ${esc(s.quality_check_rule)}.` : ""} The radar threshold needs no training labels: each region's comes from its own bare desert on the same dates. Field outlines, the wheat/fodder split (spring check) and palm groves use Sentinel-2 and ESA WorldCover, so these checks against Sentinel-2 test consistency, not an independent ground truth. Water, energy and straw are likely underestimates: fields the radar did not detect, and seasons it did not observe, get none (radar false alarms and the derived summer-crop depth push the other way). ${ph && ph.rule ? `Pumping ${esc(ph.rule)}; pumping energy is not estimated` : "Pumping energy uses regional depth to water (no drawdown) and is not estimated"} for the Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha).</p>
+    <p class="note">Winter is checked against Sentinel-2 over the radar's own winter dates (late November to January); summer against Sentinel-2 for June to October.${s.quality_check ? ` Quality check applied: ${txt(s.quality_check_rule)}.` : ""} The radar threshold needs no training labels: each region's comes from its own bare desert on the same dates. Field outlines, the wheat/fodder split (spring check) and palm groves use Sentinel-2 and ESA WorldCover, so these checks against Sentinel-2 test consistency, not an independent ground truth. Water, energy and straw are likely underestimates: fields the radar did not detect, and seasons it did not observe, get none (radar false alarms and the derived summer-crop depth push the other way). ${ph && ph.rule ? `Pumping ${txt(ph.rule)}; pumping energy is not estimated` : "Pumping energy uses regional depth to water (no drawdown) and is not estimated"} for the Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha).</p>
     ${reproBlock()}`;
 }
 
@@ -664,7 +785,7 @@ function renderLenses() {
   items.push(["Groundwater accounting", `${lv("water_m3", 1e9, 2)} bn m³/y pumped for the mapped fields the radar saw farmed, likely an underestimate${mewaTxt ? ` (${mewaTxt})` : ""}.${t.s2 && ok(get(t.s2, `water_m3.${L_}`)) ? ` With Sentinel-2 filling the winters and seasons the radar missed (radar + Sentinel-2 tier): ${fmt(t.s2.water_m3[L_] / 1e9, 2)} bn m³.` : ""} Field by field from the radar dates of each season; NISAR revisits every 12 days, so the record can be updated as passes arrive.`]);
 
   // Grid planning
-  items.push(["Grid planning", `Irrigation pumping averages ~${lv("summer_pumping_avg_mw", 1, 0)} MW through June–September, on top of the air-conditioning peak; ${lv("elec_kwh", 1e9, 2)} TWh a year in total. Likely a lower bound: no pumping energy for the Arabian Shield regions, and depths to water from older measurements (<a href="#method">Method tab</a>).`]);
+  items.push(["Grid planning", `Irrigation pumping averages ~${lv("summer_pumping_avg_mw", 1, 0)} MW through June to September, on top of the air-conditioning peak; ${lv("elec_kwh", 1e9, 2)} TWh a year in total. Likely a lower bound: no pumping energy for the Arabian Shield regions, and depths to water from older measurements (<a href="#method">Method tab</a>).`]);
 
   // Food security
   const wheat = ok(s.wheat_ha) ? s.wheat_ha : (ok(a.winter_only) || ok(a.wheat_rotation) ? (a.winter_only || 0) + (a.wheat_rotation || 0) : null);
@@ -700,10 +821,12 @@ function renderLenses() {
   items.push(["Carbon removal deployment", `Where biochar plants can be filled, how big, which outlet, and how much CO₂ they remove net of transport (<a href="#biochar">Biochar tab</a>).${c && c.credited !== false && ok(c.net_removal_tco2) ? ` With ${S.size} kt/y plants: ${fmt(c.plants)} plants, ${fmt(c.net_removal_tco2 / 1e6, 2)} Mt CO₂ a year net of transport${cr ? ` (all-low / all-high corners ${cr})` : ""}, a technical potential${litOut ? " with poultry litter left out" : ""}.` : ""}`]);
 
   items.push(["Next", "Loan and insurance checks that a field was planted; carbon-credit feedstock verification; ground sinking from radar interferometry; alerts when a circle switches on or off."]);
+  const LENS_ICON = { "Groundwater accounting": "water", "Grid planning": "energy", "Food security": "leaf", "Fields to check": "target", "Fodder policy": "calendar",
+    "Waste inventory audit": "table", "Carbon removal deployment": "flame", Next: "satellite" };
   el.innerHTML = `<p class="lead">One radar record, many decisions:</p>
-    <div class="estimate"><span class="est-label" id="est-lens">Estimate</span>${levelSeg("est-lens")}</div>
-    <p class="note est-cap">The water, energy and residue figures below follow the estimate (every factor at its low, central or high bound; <a href="#method">Method tab</a>).</p>` +
-    items.map(([h, txt]) => `<div class="plant"><b>${h}</b><br>${txt}</div>`).join("");
+    <div class="estimate"><span class="seg-label" id="est-lens">Estimate</span>${levelSeg("est-lens")}</div>
+    <p class="note est-cap">The water, energy and residue figures below follow the estimate (every factor at its low, central or high bound; <a href="#method">Method tab</a>).</p>
+    <ul class="lenses">${items.map(([h, txt]) => `<li class="lens"><span class="lens-ico">${ico(LENS_ICON[h] || "info")}</span><div class="lens-body"><h3 class="lens-h">${h}</h3><p>${txt}</p></div></li>`).join("")}</ul>`;
 }
 
 /* ====================================================================================================
@@ -717,7 +840,7 @@ function renderOfficial() {
   const rows = o.map((r) => `<tr><td>${esc(r.region)}</td>
     <td class="num">${fmt(r.radar_wheat_ha)}</td><td class="num">${fmt(r.gastat_wheat_ha)}</td>
     <td class="num">${fmt(r.radar_year_round_ha)}</td><td class="num">${fmt(r.gastat_fodder_ha)}</td>
-    <td class="num">${ok(r.palms_est_low) ? `${fmt(r.palms_est_low / 1e6, 1)}–${fmt(r.palms_est_high / 1e6, 1)}` : "–"}</td><td class="num">${ok(r.gastat_palms) ? fmt(r.gastat_palms / 1e6, 1) : "–"}</td>
+    <td class="num">${ok(r.palms_est_low) ? `${fmt(r.palms_est_low / 1e6, 1)}⁠–⁠${fmt(r.palms_est_high / 1e6, 1)}` : "–"}</td><td class="num">${ok(r.gastat_palms) ? fmt(r.gastat_palms / 1e6, 1) : "–"}</td>
     <td class="num">${ok(r.water_m3_central) ? fmt(r.water_m3_central / 1e9, 2) : "–"}</td><td class="num">${ok(r.mewa_agri_groundwater_m3) ? fmt(r.mewa_agri_groundwater_m3 / 1e9, 2) : "–"}</td>
     <td class="num">${fmt(r.radar_partly_seen_ha)}</td><td class="num">${fmt(r.radar_unusable_ha)}</td></tr>`).join("");
   // National row: radar columns from the summary's own class totals, so every tab shows the same figure
@@ -732,7 +855,7 @@ function renderOfficial() {
   const rounding = Math.abs(sumRows("radar_wheat_ha") - n0(nat.wheat)) + Math.abs(sumRows("radar_year_round_ha") - n0(nat.yr)) +
     Math.abs(sumRows("radar_partly_seen_ha") - n0(nat.part)) + Math.abs(sumRows("radar_unusable_ha") - n0(nat.unus)) > 0;
   const water = Array.isArray(vs.water_m3) ? vs.water_m3[1] : get(s, "water_m3.central");
-  const pal = Array.isArray(vs.palms_est) ? `${fmt(vs.palms_est[0] / 1e6, 1)}–${fmt(vs.palms_est[1] / 1e6, 1)}` : "–";
+  const pal = Array.isArray(vs.palms_est) ? `${fmt(vs.palms_est[0] / 1e6, 1)}⁠–⁠${fmt(vs.palms_est[1] / 1e6, 1)}` : "–";
   const pph = obj(P.palms_per_ha);
   const src = obj(D().official_sources) || {};
   const sources = src.G24 || src.M24 ? `Sources: ${[src.G24, src.M24].filter(Boolean).map(linkify).join("; ")}.`
@@ -788,11 +911,18 @@ function renderBiochar() {
     const radarShare = fu && ok(c.feed_used_t) && c.feed_used_t > 0 ? ((fu.straw || 0) + (fu.fronds || 0)) / c.feed_used_t : null;
     const share = radarShare == null ? "" : radarShare < 0.01 ? fmt(100 * radarShare, 1) + "%" : pct(radarShare);
     const tierTxt = c.residue_tier === "radar_s2" ? "from the radar + Sentinel-2 record, not radar-measured" : "radar-measured";
-    html.push(`<p class="lead"><span class="big">${fmt(c.plants)}</span> plants of ${z} kt/y${ok(c.distinct_sites) && c.distinct_sites < c.plants ? ` on ${fmt(c.distinct_sites)} sites` : ""} could be filled within ${fmt(c.radius_km)} km, using <b>${mt(c.feed_used_t)} Mt</b> of ${mt(c.supply_t)} Mt of dry residue that can be credited, removing <b>${mt(c.net_removal_tco2)} Mt CO₂ a year</b> net of transport${cr ? ` (all-low / all-high corners ${cr} Mt)` : ""}${c.capped ? " (the run stopped at its plant cap)" : ""}.</p>`);
+    // the headline figure: net removal of the case on the map, its all-low / all-high corners drawn on a small scale
+    if (cred(c)) {
+      const bar = cr ? rangeBar([{ cls: "rb-factor", a: lo.net_removal_tco2, b: hi.net_removal_tco2 }], c.net_removal_tco2, 1e6, 2) : "";
+      html.push(`<div class="ov-hero bio-hero"><p class="ov-k">${ico("flame", "sm")}<span>Net CO₂ removal with ${z}&nbsp;kt/y plants, the case on the map</span></p>
+        <p class="ov-num">${mt(c.net_removal_tco2)}<span class="ov-unit">Mt CO₂ a year, net of transport</span></p>${bar}
+        ${cr ? `<dl class="kpi-range"><div class="r-factor"><dt>All-low / all-high corners</dt><dd>${cr}</dd></div></dl>` : ""}</div>`);
+    }
+    html.push(`<p class="lead"><b>${fmt(c.plants)}</b> plants of ${z}&nbsp;kt/y${ok(c.distinct_sites) && c.distinct_sites < c.plants ? ` on ${fmt(c.distinct_sites)} sites` : ""} could be filled within ${fmt(c.radius_km)}&nbsp;km, using <b>${mt(c.feed_used_t)}&nbsp;Mt</b> of ${mt(c.supply_t)}&nbsp;Mt of dry residue that can be credited, removing <b>${mt(c.net_removal_tco2)}&nbsp;Mt CO₂ a year</b> net of transport${cr && !cred(c) ? ` (all-low / all-high corners ${cr}&nbsp;Mt)` : ""}${c.capped ? " (the run stopped at its plant cap)" : ""}.</p>`);
     // the litter upside runs exist only at some sizes: say "below" only when one is listed below
     html.push(`<p>${share ? `<b>${share}</b> of that feed is ${tierTxt} (wheat straw, palm fronds); the rest is modelled ${litterIn(c) ? "manure and litter" : "manure"}. ` : ""}${litterIn(c)
       ? `These figures still credit poultry litter, whose char may fail Puro's H/C<sub>org</sub> eligibility gate on the organic-carbon basis.`
-      : `Poultry litter${ok(unc.litter) && unc.litter > 0 ? ` (${mt(unc.litter)} Mt dry a year in this coverage)` : ""} is not credited: its char fails Puro's H/C<sub>org</sub> eligibility gate on the organic-carbon basis (rule 3.5.1), ${up && ok(up.net_removal_tco2) ? "so it appears below only as a hypothetical upper bound" : upSizes.length ? `and its hypothetical upper bound is computed at ${list(upSizes.map((x) => x + " kt/y"))} only` : "and no hypothetical upper bound is published in this export"}.`}</p>`);
+      : `Poultry litter${ok(unc.litter) && unc.litter > 0 ? ` (${mt(unc.litter)}&nbsp;Mt dry a year in this coverage)` : ""} is not credited: its char fails Puro's H/C<sub>org</sub> eligibility gate on the organic-carbon basis (rule 3.5.1), ${up && ok(up.net_removal_tco2) ? "so it appears below only as a hypothetical upper bound" : upSizes.length ? `and its hypothetical upper bound is computed at ${list(upSizes.map((x) => x + "&nbsp;kt/y"))} only` : "and no hypothetical upper bound is published in this export"}.`}</p>`);
     // the siting corners hold road circuity and the truck factor at central (their basis says so, and overrides pins them)
     const held = [lo, hi].some((x) => x && (/held at central/i.test(String(x.basis || "")) || (obj(x.overrides) && ("road_circuity" in x.overrides || "truck_kgco2e_per_tkm" in x.overrides))));
     const cornerTxt = held ? "The corners set the supply, char-yield and char-carbon, H/C and soil-temperature factors to their least or most favourable values at once, with road circuity and the truck emission factor held at central, so they bracket removal; they are not probability intervals."
@@ -804,40 +934,46 @@ function renderBiochar() {
   }
 
   // Cases at this size
-  const caseLi = (label, value, meta, cls) => `<li class="case${cls ? " " + cls : ""}"><div class="case-head"><span class="case-label">${label}</span><span class="case-value">${value}</span></div>${meta.filter(Boolean).map((x) => `<div class="case-meta">${x}</div>`).join("")}</li>`;
+  // a meta line is a string, or a list of separate facts laid out side by side
+  const metaRow = (x) => {
+    if (!Array.isArray(x)) return x ? `<div class="case-meta">${x}</div>` : "";
+    const xs = x.filter(Boolean);
+    return xs.length ? `<div class="case-meta case-facts">${xs.map((y) => `<span>${y}</span>`).join("")}</div>` : "";
+  };
+  const caseLi = (label, value, meta, cls) => `<li class="case${cls ? " " + cls : ""}"><div class="case-head"><span class="case-label">${label}</span><span class="case-value">${value}</span></div>${meta.map(metaRow).join("")}</li>`;
   const items = [], upItems = [];   // upItems: the uncredited upside, listed apart and never among the credited cases
-  if (cred(r)) { const rc = corners(rlo, rhi); items.push(caseLi("Radar-measured wheat straw and palm fronds only", mt(r.net_removal_tco2), [[plantsTxt(r), rc ? `corners ${rc}` : ""].filter(Boolean).join(" · ")])); }
+  if (cred(r)) { const rc = corners(rlo, rhi); items.push(caseLi("Radar-measured wheat straw and palm fronds only", mt(r.net_removal_tco2), [[cap(plantsTxt(r)), rc ? `Corners ${rc}` : ""]])); }
   if (cred(s2)) items.push(caseLi("Straw and fronds from the radar + Sentinel-2 record", mt(s2.net_removal_tco2), [plantsTxt(s2),
     "Sentinel-2 adds winter crops the radar missed and seasons it did not observe, and counts fields with no usable radar season as farmed (an upper value; straw capped at GASTAT's wheat area, fronds not); not radar-measured"]));
-  if (cred(b)) items.push(caseLi(`Adding modelled ${extra(b)} inside the ${ct.tried ? fmt(ct.tried) + " " : ""}processed regions only`, mt(b.net_removal_tco2), [plantsTxt(b), "every stream on the radar's coverage"]));
+  if (cred(b)) items.push(caseLi(`Adding modelled ${extra(b)} inside the ${ct.tried ? fmt(ct.tried) + " " : ""}processed regions only`, mt(b.net_removal_tco2), [plantsTxt(b), "Every stream on the radar's coverage"]));
   if (cred(c)) {
     // plants_outside_boxes counts plants by where their site lies; feed_outside_boxes_t by where the feed lies
     const outTxt = ok(c.plants_outside_boxes) && ok(c.feed_outside_boxes_t) && ok(c.feed_used_t) && c.feed_used_t > 0
       ? `${fmt(c.plants_outside_boxes)} of the plants are sited outside the processed regions (a plant just outside can still draw its feed from inside), and ${pct(c.feed_outside_boxes_t / c.feed_used_t)} of the feed comes from outside them` : "";
-    items.push(caseLi(`Adding modelled ${extra(c)} for the whole Kingdom <span class="tag">On the map</span>`, mt(c.net_removal_tco2), [[plantsTxt(c), corners(lo, hi) ? `corners ${corners(lo, hi)}` : ""].filter(Boolean).join(" · "), outTxt], "headline"));
+    items.push(caseLi(`Adding modelled ${extra(c)} for the whole Kingdom`, mt(c.net_removal_tco2), [[`<span class="tag">On the map</span>`, cap(plantsTxt(c)), corners(lo, hi) ? `Corners ${corners(lo, hi)}` : ""], outTxt ? cap(outTxt) : ""], "headline"));
   }
   if (up && ok(up.net_removal_tco2)) {   // as on the scenarios page: own list, value in brackets, labelled hypothetical
     const inc = cred(c) ? up.net_removal_tco2 - c.net_removal_tco2 : null;
     upItems.push(caseLi("With poultry litter, if its char passed the gate", `<span class="hyp">(${mt(up.net_removal_tco2)})</span><span class="hyp-l">hypothetical</span>`,
-      [[ok(inc) ? `a hypothetical upper bound: ${inc >= 0 ? "+" : "−"}${mt(Math.abs(inc))} Mt over the case on the map` : "a hypothetical upper bound", plantsTxt(up)].filter(Boolean).join(" · "),
-        upb && ok(upb.net_removal_tco2) ? `inside the processed regions only: ${mt(upb.net_removal_tco2)} Mt, also hypothetical${plantsTxt(upb) ? ` (${plantsTxt(upb)})` : ""}` : ""], "upside"));
+      [[ok(inc) ? `A hypothetical upper bound: ${inc >= 0 ? "+" : "−"}${mt(Math.abs(inc))}&nbsp;Mt over the case on the map` : "A hypothetical upper bound", cap(plantsTxt(up))],
+        upb && ok(upb.net_removal_tco2) ? `Inside the processed regions only: ${mt(upb.net_removal_tco2)}&nbsp;Mt, also hypothetical${plantsTxt(upb) ? ` (${plantsTxt(upb)})` : ""}` : ""], "upside"));
   }
   if (sc && ok(sc.credited_tco2)) {
     const lit = ok(get(sc, "feed_used_by_feed_t.litter")) && sc.feed_used_by_feed_t.litter > 0;
-    items.push(caseLi(`Outlets limited: farmland and cement take only limited char${lit ? " (includes poultry litter)" : ""}`, mt(sc.credited_tco2), [[ok(sc.plants) ? `${fmt(sc.plants)} plants` : "", `<a href="scenarios.html#biochar">details in Scenarios</a>`].filter(Boolean).join(" · ")]));
+    items.push(caseLi(`Outlets limited: farmland and cement take only limited char${lit ? " (includes poultry litter)" : ""}`, mt(sc.credited_tco2), [[ok(sc.plants) ? `${fmt(sc.plants)} plants` : "", `<a href="scenarios.html#biochar">Details in Scenarios</a>`]]));
   }
   if (items.length || upItems.length) {
     // runs made at other sizes only: say where they are
-    const kts = (xs) => list(xs.map((x) => fmt(x))) + " kt/y";
+    const kts = (xs) => list(xs.map((x) => fmt(x))) + "&nbsp;kt/y";
     const absent = [!cred(s2) && s2Sizes.length ? ["radar + Sentinel-2", s2Sizes] : null, !(up && ok(up.net_removal_tco2)) && upSizes.length ? ["litter-upside", upSizes] : null].filter(Boolean);
     const onlyTxt = !absent.length ? "" : absent.length === 2 && kts(absent[0][1]) === kts(absent[1][1])
       ? ` The ${absent[0][0]} and ${absent[1][0]} runs were made at ${kts(absent[0][1])} only.`
       : " " + absent.map(([n, xs]) => `The ${n} ${n === "litter-upside" ? "runs were" : "run was"} made at ${kts(xs)} only.`).join(" ");
     const basis = [["Radar-measured", r], ["Radar + Sentinel-2", s2], ["Inside the processed regions", b], ["Whole Kingdom (on the map)", c], ["All-low corner", lo], ["All-high corner", hi],
       ["Radar-measured, all-low corner", rlo], ["Radar-measured, all-high corner", rhi], ["Litter upside", up], ["Litter upside inside the processed regions", upb]].filter(([, x]) => x && x.basis);
-    html.push(`<h3>Cases at ${z} kt/y <span class="h-sub">Mt CO₂ a year, net of transport</span></h3>${items.length ? `<ul class="cases">${items.join("")}</ul>` : ""}${upItems.length ? `<p class="cases-sub">Not credited: a hypothetical upper bound, kept out of the cases above</p><ul class="cases cases-up">${upItems.join("")}</ul>` : ""}
+    html.push(`<h3>Cases at ${z}&nbsp;kt/y <span class="h-sub">Mt CO₂ a year, net of transport</span></h3>${items.length ? `<ul class="cases">${items.join("")}</ul>` : ""}${upItems.length ? `<p class="cases-sub">Not credited: a hypothetical upper bound, kept out of the cases above</p><ul class="cases cases-up">${upItems.join("")}</ul>` : ""}
       <p class="note">Separate runs, not a range.${onlyTxt}</p>
-      ${basis.length ? `<details class="more"><summary>What each case includes</summary>${basis.map(([h, x]) => `<p><b>${h}:</b> ${esc(caseText(x.basis))}</p>`).join("")}</details>` : ""}`);
+      ${basis.length ? `<details class="more"><summary>What each case includes</summary>${basis.map(([h, x]) => `<p><b>${h}:</b> ${txt(caseText(x.basis))}</p>`).join("")}</details>` : ""}`);
   }
 
   // Residue supply (central, dry)
@@ -852,7 +988,7 @@ function renderBiochar() {
   const birds = get(P, "gastat_2024_totals.values.broilers_produced");
   const SUP = [["straw", "Wheat straw", "Radar wheat fields (winter only, and wheat-then-summer rotations) × baled straw per ha"],
     ["fronds", "Palm fronds", "Radar-active palm groves (WorldCover trees) × palms/ha × fronds/palm; radar groves cover only part of the Kingdom's palms"],
-    ["manure", "Cattle, sheep, goat manure", "Modelled for the whole Kingdom: FAO GLW4 pattern × GASTAT 2024 herds × total solids per head × collectable share"],
+    ["manure", "Cattle, sheep, goat manure", "Modelled: GASTAT 2024 regional herds × total solids per head × collectable share, placed where animals are housed (cattle on fodder fields, others near farms and settlements)"],
     ["litter", "Poultry litter", `Modelled for the whole Kingdom: GASTAT 2024 broilers produced${ok(birds) ? ` (${fmt(birds / 1e9, 2)} bn)` : ""} × bedded litter per bird, plus laying hens × manure per hen, spread by the FAO GLW4 chicken pattern`]];
   html.push(`<h3>Residue supply (central, dry)</h3><table class="stack"><tr><th>Stream</th><th class="num">kt / year</th><th>Credited</th></tr>
     ${SUP.map(([f, label, how]) => `<tr class="main"><td>${label}</td><td class="num">${ok(amount(f)) ? fmt(amount(f) / 1e3) : "–"}</td><td>${credTxt(f)}</td></tr><tr class="src"><td colspan="3">${how}</td></tr>`).join("")}</table>`);
@@ -863,9 +999,9 @@ function renderBiochar() {
     const SU = [["straw", "Wheat straw"], ["fronds", "Palm fronds"], ["cattle_manure", "Cattle manure"], ["sheep_goat_manure", "Sheep and goat manure"], ["litter", "Poultry litter"]];
     const keys = SU.filter(([k]) => obj(su[k])).concat(Object.keys(su).filter((k) => obj(su[k]) && !SU.some(([x]) => x === k)).map((k) => [k, cap(k.replaceAll("_", " "))]));
     html.push(`<h3>Can each char go on farmland?</h3>
-      <table><tr><th>Feed</th><th>Soil use (Puro Table 3.3)</th><th>Outlet</th></tr>${keys.map(([k, label]) => `<tr><td>${label}</td><td>${esc(su[k].status || "–")}${su[k].contaminants ? `; contaminants ${esc(su[k].contaminants)}` : ""}</td><td>${esc(su[k].outlet || "–")}</td></tr>`).join("")}</table>
+      <table><tr><th>Feed</th><th>Soil use (Puro Table 3.3)</th><th>Outlet</th></tr>${keys.map(([k, label]) => `<tr><td>${label}</td><td>${txt(su[k].status || "–")}${su[k].contaminants ? `; contaminants ${txt(su[k].contaminants)}` : ""}</td><td>${txt(su[k].outlet || "–")}</td></tr>`).join("")}</table>
       <p class="note">Status against Puro.earth 2025 Table 3.3 (WBC-Agro limits, rules 3.6.9–3.6.11). Char used in cement or concrete (Table 3.2, BE3) needs only a heavy-metal declaration (WBC-Material; its PAH, PCB and PCDD/F limits still apply) and is credited with the same soil model (rule 6.2.4). The siting applies no contaminant screen: it credits every feed that passes the H/C<sub>org</sub> gate (rule 3.5.1), with the outlet chosen by haul.</p>
-      <details class="more"><summary>Evidence for each feed, and Saudi regulation</summary>${keys.map(([k, label]) => su[k].note ? `<p><b>${label}:</b> ${esc(sentence(caseText(su[k].note)))}</p>` : "").join("")}${su.regulation ? `<p><b>Regulation:</b> ${esc(sentence(su.regulation))}</p>` : ""}</details>`);
+      <details class="more"><summary>Evidence for each feed, and Saudi regulation</summary>${keys.map(([k, label]) => su[k].note ? `<p><b>${label}:</b> ${txt(sentence(caseText(su[k].note)))}</p>` : "").join("")}${su.regulation ? `<p><b>Regulation:</b> ${txt(sentence(su.regulation))}</p>` : ""}</details>`);
   }
 
   html.push(auditTable());
@@ -880,7 +1016,7 @@ function renderBiochar() {
       const f = { straw: p.feed_straw, fronds: p.feed_fronds, litter: p.feed_litter, manure: p.feed_manure };
       const main = Object.entries(f).filter(([, x]) => ok(x)).sort((x, y) => y[1] - x[1])[0];
       const k = ok(p.lat) && ok(p.lon) ? p.lat.toFixed(4) + "," + p.lon.toFixed(4) : null, mates = k && pos.get(k) ? pos.get(k).filter((n) => n !== p.plant) : [];
-      return `<tr><td class="num">${esc(p.plant)}</td><td>${ok(p.lat) ? p.lat.toFixed(2) + "°N " + p.lon.toFixed(2) + "°E" : "–"}${p.kind === "cement" && p.name ? ` (${esc(p.name)})` : ""}${mates.length ? `<br><span class="mate">same site as #${mates.map(esc).join(", #")}</span>` : ""}</td><td class="num">${fmt(p.net_removal_tco2)}</td><td>${esc(p.best_outlet)}${p.best_outlet === "cement" ? " · " + fmt(p.cement_km) + " km" : ""}</td><td>${main ? main[0] : "–"}</td></tr>`;
+      return `<tr><td class="num">${esc(p.plant)}</td><td>${ok(p.lat) ? p.lat.toFixed(2) + "°N " + p.lon.toFixed(2) + "°E" : "–"}${p.kind === "cement" && p.name ? ` (${esc(p.name)})` : ""}${mates.length ? `<br><span class="mate">same site as #${mates.map(esc).join(", #")}</span>` : ""}</td><td class="num">${fmt(p.net_removal_tco2)}</td><td>${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` <span class="mate">${fmt(p.cement_km)}&nbsp;km</span>` : ""}</td><td>${main ? main[0] : "–"}</td></tr>`;
     };
     const head = `<tr><th class="num" title="order placed">#</th><th>Where</th><th class="num">t CO₂/y net of transport</th><th>Outlet</th><th>Main feed</th></tr>`;
     let table = "";
@@ -890,7 +1026,7 @@ function renderBiochar() {
       table = `<table>${head}${first.map(row).join("")}</table>${rest.length ? `<details class="more"><summary>Show the other ${fmt(rest.length)} plants (of ${fmt(plants.length)})</summary><table>${head}${rest.map(row).join("")}</table></details>` : ""}`;
     }
     html.push(`<h3>Plants of the case on the map</h3>
-      <p>Char in cement is credited like char in soil (Puro rule 6.2.4), so a plant sends its char to a cement plant only when that is the shorter haul: ${fmt(c.cement_outlet_plants)} of ${fmt(c.plants)} do.${ok(c.cement_retained_tco2) && c.cement_retained_tco2 > 0 ? ` Their char would hold ${mt(c.cement_retained_tco2)} Mt CO₂ a year in concrete over 60–80 years${ret && ok(ret.central) ? ` (at ${fmt(ret.central, 2)} retention, within a ${fmt(ret.low, 2)}–${fmt(ret.high, 2)} envelope; reported, not credited)` : " (reported, not credited)"}.` : ""} Median transport cost ${ok(c.median_transport_share) ? fmt(100 * c.median_transport_share, 1) + "%" : "–"} of the removal. Plants are numbered in the order the greedy siting placed them; several can share one site, which the map draws as one marker.</p>
+      <p>Char in cement is credited like char in soil (Puro rule 6.2.4), so a plant sends its char to a cement plant only when that is the shorter haul: ${fmt(c.cement_outlet_plants)} of ${fmt(c.plants)} do.${ok(c.cement_retained_tco2) && c.cement_retained_tco2 > 0 ? ` Their char would hold ${mt(c.cement_retained_tco2)}&nbsp;Mt CO₂ a year in concrete over 60–80 years${ret && ok(ret.central) ? ` (at ${fmt(ret.central, 2)} retention, within a ${fmt(ret.low, 2)}–${fmt(ret.high, 2)} envelope; reported, not credited)` : " (reported, not credited)"}.` : ""} Median transport cost ${ok(c.median_transport_share) ? fmt(100 * c.median_transport_share, 1) + "%" : "–"} of the removal. Plants are numbered in the order the greedy siting placed them; several can share one site, which the map draws as one marker.</p>
       ${table}`);
     html.push(persistenceNote(c, up));
   } else {
@@ -911,7 +1047,7 @@ function persistenceNote(c, up) {
   } else {
     litter = `; poultry litter earns nothing: its char's H/C is ${hl && ok(hl.upside) ? fmt(hl.upside, 2) : "below 0.70"} on total carbon but ${lvls.length ? `about ${fmt(Math.min(...lvls), 2)}–${fmt(Math.max(...lvls), 2)}` : "at or above 0.70"} on the organic-carbon basis Puro's gate uses (strictly below 0.70 required, rule 3.5.1)${ok(upe.litter) ? `; the hypothetical upside gives it a persistence of ${fmt(upe.litter, 2)}` : ""}`;
   }
-  return `<p class="note">Persistence follows Puro's soil model (PF = M − a·H/C<sub>org</sub>, 200 years${ok(t30) ? `, ${fmt(t30)} °C soil` : ""}): straw ${fmt(pe.straw, 2)}, fronds ${fmt(pe.fronds, 2)}, manure ${fmt(pe.manure, 2)}${litter}. Manure char's H/C (${ok(hm) ? fmt(hm, 2) : "–"}, an assumed class value) also varies widely across measured chars, so its eligibility is uncertain${ok(cb.manure) ? ` (manure carries ${fmt(cb.manure / 1e6, 2)} Mt of the credited removal before transport)` : ""}. Camels are not included (no gridded data). Plant sizes are scenarios; the ${fmt(c.radius_km)} km haul limit is an assumption. Constrained cases (how much char farmland and cement can absorb, which chars cement may take, cement dosage) are on the <a href="scenarios.html#biochar">scenarios page</a>.</p>`;
+  return `<p class="note">Persistence follows Puro's soil model (PF = M − a × H/C<sub>org</sub>, 200 years${ok(t30) ? `, ${fmt(t30)} °C soil` : ""}): straw ${fmt(pe.straw, 2)}, fronds ${fmt(pe.fronds, 2)}, manure ${fmt(pe.manure, 2)}${litter}. Manure char's H/C (${ok(hm) ? fmt(hm, 2) : "–"}, an assumed class value) also varies widely across measured chars, so its eligibility is uncertain${ok(cb.manure) ? ` (manure carries ${fmt(cb.manure / 1e6, 2)} Mt of the credited removal before transport)` : ""}. Camels are not included (no gridded data). Plant sizes are scenarios; the ${fmt(c.radius_km)}&nbsp;km haul limit is an assumption. Constrained cases (how much char farmland and cement can absorb, which chars cement may take, cement dosage) are on the <a href="scenarios.html#biochar">scenarios page</a>.</p>`;
 }
 function auditTable() {
   const a = obj(D().residue_audit), m = obj(D().mwan);
@@ -927,7 +1063,7 @@ function auditTable() {
   return `<h3>Against the national waste inventory</h3>
     <table class="stack"><tr><th>Stream</th><th class="num">This app, kt dry (central)</th><th class="num">Same factors, national statistics, kt dry</th><th class="num">${m.streams_source ? "KAPSARC DP64 estimate from MWAN data (2030 figure back-cast to 2024)" : "MWAN-based estimate 2024"}, Mt</th></tr>
       ${rows.map(([n, x1, x2, x3, why]) => `<tr class="main"><td>${n}</td><td class="num">${x1}</td><td class="num">${x2}</td><td class="num">${x3}</td></tr><tr class="src"><td colspan="4">${why}</td></tr>`).join("")}</table>
-    <p class="note">Source: ${esc(m.source)}. MWAN puts agricultural waste at ${ok(m.agri_total_kt) ? fmt(m.agri_total_kt / 1e3, 2) : "–"} Mt (${esc(m.agri_total_year)}), graded "${esc(m.confidence)}" (${esc(m.confidence_legend)}). ${m.streams_source ? `The stream figures are not MWAN's own: ${esc(sentence(m.streams_source))}` : `Stream values: ${esc(m.streams_basis)}.`}</p>`;
+    <p class="note">Source: ${txt(m.source)}. MWAN puts agricultural waste at ${ok(m.agri_total_kt) ? fmt(m.agri_total_kt / 1e3, 2) : "–"} Mt (${esc(m.agri_total_year)}), graded "${esc(m.confidence)}" (${esc(m.confidence_legend)}). ${m.streams_source ? `The stream figures are not MWAN's own: ${txt(sentence(m.streams_source))}` : `Stream values: ${txt(m.streams_basis)}.`}</p>`;
 }
 
 /* ====================================================================================================
@@ -942,7 +1078,7 @@ const FACTOR = {
   pumping_lift_m: "Depth to water, Qassim wells (m)", pump_wire_to_water_eff: "Pump wire-to-water efficiency",
   grid_kgco2e_per_kwh: "Grid emission factor (kg CO₂e/kWh)", diesel_water_kwh_per_litre: "Diesel pump work (kWh of water work per litre)",
   diesel_kgco2e_per_litre: "Diesel emission factor (kg CO₂e/L)", road_circuity: "Road circuity (road ÷ straight-line distance)",
-  truck_kgco2e_per_tkm: "Truck emission factor (kg CO₂e per t·km)", char_yield_dry: "Straw char yield (dry)", char_c_org: "Straw char organic carbon",
+  truck_kgco2e_per_tkm: "Truck emission factor (kg CO₂e per tonne-km)", char_yield_dry: "Straw char yield (dry)", char_c_org: "Straw char organic carbon",
   cement_retention: "Char carbon kept in cement (reported, not credited)", palms_per_ha: "Palms per hectare",
   palm_residue_kg_dry_per_palm: "Palm fronds (kg dry per palm a year)", palm_char_yield_dry: "Frond char yield (dry)", palm_char_c_org: "Frond char organic carbon",
   layer_manure_kg_dry_per_hen: "Layer manure (kg dry per hen a year)", cattle_manure_kg_dry_per_head: "Cattle manure (kg dry per head a year)",
@@ -999,22 +1135,23 @@ function renderMethod() {
   const sh = obj(s.shield_no_energy), shKwh = obj(sh && sh.indicative_elec_kwh_at_fallback_lift);
   const shTxt = shKwh && ok(shKwh.central) ? ` At the fallback head (fallback static depth + drawdown + pivot pressure, as for other regions without a depth source) instead of a nominal lift, the same Arabian Shield water would take ${kwhTxt(shKwh)}, also in no total (the figure the Overview gives).` : "";
   el.innerHTML = `<ol class="steps">
-    <li><b>Regions</b>: clusters of at least 1,500 ha of cropland and tree cover in ESA WorldCover 2021, cut into ${c.all ? fmt(c.all) : "–"} boxes; the ${c.tried ? fmt(c.tried) : "–"} largest, processed here, hold ~${pct(procShare)} of the cropland and tree cover in those boxes${RR && ok(RR.share) ? `, and the ${fmt(RR.boxes)} where the radar passed its quality check ~${pct(RR.share)}` : ""}.${cov.rule ? ` <details class="more"><summary>How coverage is counted</summary><p>${esc(sentence(cov.rule))}</p></details>` : ""}</li>
-    <li><b>Fields</b> from ESA Sentinel-2: NDVI above ${fmt(ok(fm.green) ? fm.green : 0.4, 2)} (surface reflectance, offset-corrected) in a seasonal maximum of up to 8 scenes per tile and orbit, on a 40 m grid. ${fsz && fsz.rule ? `${esc(sentence(plain(fsz.rule)))}${ok(fsz.fields_under_3ha) ? ` ${fmt(fsz.fields_under_3ha)} fields, ${pct(fsz.share_of_field_area_under_3ha, 1)} of the field area, are under 3 ha.` : ""}` : "Patches of 3 ha or more."}${fm.lc_filter && fm.lc_filter !== "none" ? ` Patches whose ESA WorldCover majority is shrubland or grassland are dropped${fm.lc_filter === "natural_nonpivot" ? " unless they are centre pivots of 10 ha or more" : ""}.` : ""}${wcf && wcf.rule ? ` ${esc(sentence(plain(wcf.rule)))}${ok(wcf.fields) ? ` That drops ${fmt(wcf.fields)} fields, ${fmt(wcf.ha)} ha.` : ""}` : ""} ${deep}</li>
-    <li><b>NISAR</b> L-band HV backscatter on the best-covering track: up to 3 winter and 4 summer dates; some regions have summer passes only. A field is farmed in a season when its peak, measured above the same scene's bare-desert median, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks, which about 13–14% of bare-desert patches still exceed. A benchmark on these data shows the skill comes from normalising each scene to its own desert: pooled over quality-checked regions and at the same desert false-alarm rate, it beats one national raw-backscatter threshold (benchmark-set kappa 0.24 vs 0.17 in winter, 0.44 vs 0.27 in summer; the winter advantage holds at every threshold, the summer one at this operating point), and it beats NISAR-style temporal variability at every cut.${cr && cr.rule ? ` <b>Threshold range:</b> ${esc(sentence(cr.rule))}` : ""}${cr && cr.corners_rule ? ` <b>Both at once:</b> ${esc(sentence(cr.corners_rule))}` : ""}${obj(s.reproducibility) ? " Fields mapped by two neighbouring boxes are classified by each, as a reproducibility check (Overview tab)." : ""}</li>
+    <li><b>Regions</b>: clusters of at least 1,500 ha of cropland and tree cover in ESA WorldCover 2021, cut into ${c.all ? fmt(c.all) : "–"} boxes; the ${c.tried ? fmt(c.tried) : "–"} largest, processed here, hold ~${pct(procShare)} of the cropland and tree cover in those boxes${RR && ok(RR.share) ? `, and the ${fmt(RR.boxes)} where the radar passed its quality check ~${pct(RR.share)}` : ""}.${cov.rule ? ` <details class="more"><summary>How coverage is counted</summary><p>${txt(sentence(cov.rule))}</p></details>` : ""}</li>
+    <li><b>Fields</b> from ESA Sentinel-2: NDVI above ${fmt(ok(fm.green) ? fm.green : 0.4, 2)} (surface reflectance, offset-corrected) in a seasonal maximum of up to 8 scenes per tile and orbit, on a 40 m grid. ${fsz && fsz.rule ? `${txt(sentence(plain(fsz.rule)))}${ok(fsz.fields_under_3ha) ? ` ${fmt(fsz.fields_under_3ha)} fields, ${pct(fsz.share_of_field_area_under_3ha, 1)} of the field area, are under 3 ha.` : ""}` : "Patches of 3 ha or more."}${fm.lc_filter && fm.lc_filter !== "none" ? ` Patches whose ESA WorldCover majority is shrubland or grassland are dropped${fm.lc_filter === "natural_nonpivot" ? " unless they are centre pivots of 10 ha or more" : ""}.` : ""}${wcf && wcf.rule ? ` ${txt(sentence(plain(wcf.rule)))}${ok(wcf.fields) ? ` That drops ${fmt(wcf.fields)} fields, ${fmt(wcf.ha)} ha.` : ""}` : ""} ${deep}</li>
+    <li><b>NISAR</b> L-band HV backscatter on the best-covering track: up to 3 winter and 4 summer dates; some regions have summer passes only. A field is farmed in a season when its peak, measured above the same scene's bare-desert median, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks, which about 13–14% of bare-desert patches still exceed. A benchmark on these data shows the skill comes from normalising each scene to its own desert: pooled over quality-checked regions and at the same desert false-alarm rate, it beats one national raw-backscatter threshold (benchmark-set kappa 0.24 vs 0.17 in winter, 0.44 vs 0.27 in summer; the winter advantage holds at every threshold, the summer one at this operating point), and it beats NISAR-style temporal variability at every cut.${cr && cr.rule ? ` <b>Threshold range:</b> ${txt(sentence(cr.rule))}` : ""}${cr && cr.corners_rule ? ` <b>Both at once:</b> ${txt(sentence(cr.corners_rule))}` : ""}${obj(s.reproducibility) ? " Fields mapped by two neighbouring boxes are classified by each, as a reproducibility check (Overview tab)." : ""}</li>
     <li><b>Palm groves</b>: fields with at least 30% WorldCover tree cover, radar-active in every season observed.</li>
-    <li><b>Manure and litter</b>: GASTAT 2024 poultry production and herd counts × per-animal factors, spread by the FAO GLW4 livestock pattern (modelled, not radar), for the whole Kingdom.${su && obj(su.litter) && su.litter.status === "excluded" ? " Poultry-litter char fails Puro's H/C<sub>org</sub> gate, so litter is not credited." : ""}</li>
-    <li><b>Water, energy</b>: area × irrigation depth ÷ pivot efficiency, with published depths for winter and year-round fields and a derived depth (half the perennial) for summer crops. ${ph && ph.rule ? `Pumping electricity = water × ρg × head ÷ pump efficiency, with ${esc(ph.rule)}${ph.pivot_rule ? `; ${esc(plain(ph.pivot_rule))}` : ""}${mh && ok(mh.central) ? `; mean head ${fmt(mh.central)} m at central` : ""}.${pgpTxt} Arabian Shield fields get water but no energy.` : "Lift by region."}</li>
-    ${obj(s.s2_filled) ? `<li><b>Radar + Sentinel-2 tier</b>: published next to the radar-only figures and never replacing them; Sentinel-2 fills winters the radar missed and seasons it did not observe, and the area it adds is measured by Sentinel-2, not by the radar.${s.s2_filled.rule ? ` <details class="more"><summary>The full rule</summary><p>${esc(sentence(plain(s.s2_filled.rule)))}</p></details>` : ""}</li>` : ""}
+    <li><b>Manure and litter</b>: Manure and poultry litter are modelled from GASTAT 2024 livestock counts for each administrative region, and only the part that can be collected is placed on the map, where the animals are housed: cattle, most of them in barn-housed dairy projects, on each region's year-round fodder fields, and penned sheep, goats and poultry following the FAO GLW4 livestock map but only within 10 km of a mapped field or an OpenStreetMap settlement. Manure dropped by grazing animals is not placed and feeds no plant.${su && obj(su.litter) && su.litter.status === "excluded" ? " Poultry-litter char fails Puro's H/C<sub>org</sub> gate, so litter is not credited." : ""}</li>
+    <li><b>Water, energy</b>: area × irrigation depth ÷ pivot efficiency, with published depths for winter and year-round fields and a derived depth (half the perennial) for summer crops. ${ph && ph.rule ? `Pumping electricity = water × ρg × head ÷ pump efficiency, with ${txt(ph.rule)}${ph.pivot_rule ? `; ${txt(plain(ph.pivot_rule))}` : ""}${mh && ok(mh.central) ? `; mean head ${fmt(mh.central)} m at central` : ""}.${pgpTxt} Arabian Shield fields get water but no energy.` : "Lift by region."}</li>
+    ${obj(s.s2_filled) ? `<li><b>Radar + Sentinel-2 tier</b>: published next to the radar-only figures and never replacing them; Sentinel-2 fills winters the radar missed and seasons it did not observe, and the area it adds is measured by Sentinel-2, not by the radar.${s.s2_filled.rule ? ` <details class="more"><summary>The full rule</summary><p>${txt(sentence(plain(s.s2_filled.rule)))}</p></details>` : ""}</li>` : ""}
     <li><b>Siting</b>: greedy placement of plants that remove the most CO₂ net of transport. Removal is credited with the Puro.earth 2025 soil persistence model for farmland and for cement alike (H/C<sub>org</sub> below 0.70 required, on the organic-carbon basis${su && obj(su.litter) && su.litter.status === "excluded" ? "; poultry-litter char fails it" : ""}); char goes to farmland or to the nearest operating cement plant, whichever removes more net of transport (with both credited alike, the shorter haul). The all-low and all-high corners set the supply, char-yield and char-carbon, H/C and soil-temperature factors to their least or most favourable values at once, with road circuity and the truck emission factor held at central; they are not probability intervals.</li></ol>
     <h3>Depth to groundwater (m)</h3>${lift ? `<table class="stack"><tr><th>Area</th><th class="num">Low</th><th class="num">Central</th><th class="num">High</th></tr>${lift}</table>` : "<p>No depth table in this export.</p>"}
-    ${liftNotes.length || shTxt ? `<p class="note">${liftNotes.map((x) => esc(sentence(x))).join(" ")}${shTxt}</p>` : ""}
+    ${liftNotes.length || shTxt ? `<p class="note">${liftNotes.map((x) => txt(sentence(x))).join(" ")}${shTxt}</p>` : ""}
     ${ph && ph.rule ? `<p class="note">These are static depths to groundwater: no pumping levels are published, so drawdown and pivot pressure are added from the factors below.</p>`
-      : get(D(), "official_sources.lift") ? `<p class="note">${esc(sentence(plain(D().official_sources.lift)))}</p>` : ""}
+      : get(D(), "official_sources.lift") ? `<p class="note">${txt(sentence(plain(D().official_sources.lift)))}</p>` : ""}
     ${compRows ? `<h3>Pumping electricity by part of the head (TWh / year)</h3><table><tr><th>Part</th><th class="num">Low</th><th class="num">Central</th><th class="num">High</th></tr>${compRows}</table><p class="note">Radar-only electricity for the fields outside the Arabian Shield; the three parts add up to the total.${pgp ? " Pivot pressure is charged on centre pivots other than palm groves." : ""}</p>` : ""}
     <h3>Factors</h3>
     <details class="more" open><summary>All ${fmt(factors.length)} factors with their low, central and high values and sources</summary><table class="stack"><tr><th>Factor</th><th class="num">Low</th><th class="num">Central</th><th class="num">High</th></tr>${rows}</table></details>
-    <p class="note">Data: NASA-ISRO NISAR (ASF DAAC), ESA Sentinel-2 and WorldCover (Microsoft Planetary Computer), FAO GLW4 2020, SFI cement database with OpenStreetMap and Climate TRACE corrections, GASTAT and MEWA 2024 statistics, geoBoundaries. AI tools (Claude) assisted with code and text.</p>`;
+    <p class="note">Data: NASA-ISRO NISAR (ASF DAAC), ESA Sentinel-2 and WorldCover (Microsoft Planetary Computer), FAO GLW4 2020, settlements © OpenStreetMap contributors (ODbL), SFI cement database with OpenStreetMap and Climate TRACE corrections, GASTAT and MEWA 2024 statistics, geoBoundaries.</p>
+    <p class="note ack">Built with AI-assisted coding and writing tools; the team checked the data, sources and results.</p>`;
 }
 
 /* ====================================================================================================
@@ -1039,9 +1176,10 @@ function wireControls() {
     safe("biochar", renderBiochar, "bio");
     safe("lenses", renderLenses, "lens");
   });
-  const bb = $("backbtn"), kb = $("keybtn");
+  const bb = $("backbtn"), kb = $("keybtn"), lk = $("layerkeybtn");
   if (bb) bb.addEventListener("click", back);
   if (kb) kb.addEventListener("click", toggleFieldKey);
+  if (lk) lk.addEventListener("click", () => { toggleLayerKeys(); lk.focus(); });
   document.addEventListener("click", (e) => {
     const b = e.target.closest && e.target.closest(".level button[data-level]");
     if (!b) return;
@@ -1065,18 +1203,20 @@ async function init() {
   let N = null;
   try { N = await j("data/national/summary.json"); } catch (e) {
     setHint(`Could not load the national results (${e.message}).`, true);
-    ["ov", "lens", "off", "bio", "meth"].forEach((id) => { const x = $(id); if (x) x.innerHTML = `<p class="loadfail">Could not load the national results. Reload the page to try again.</p>`; });
+    ["ov", "lens", "off", "bio", "meth"].forEach((id) => { const x = $(id); if (x) x.innerHTML = failHtml("Could not load the national results. Reload the page to try again."); });
     return;
   }
   S.data = obj(N) || {};
+  safe("title", () => { const c = counts(), e = $("h-regions"); if (e && c.tried) e.textContent = `${fmt(c.tried)} largest`; });
   safe("regions", drawRegions);
   safe("select", fillRegionSelect);
   renderAll();
   renderLegend();
   if (map) {
     map.invalidateSize();
+    // first the pill's final text, so the fit pads for its final height (phones: a shorter line, clear of the zoom buttons)
+    setHint(NO_HOVER ? "Tap a yellow box to load its fields" : "Click or tap a yellow box to load its fields");
     if (S.home) map.fitBounds(S.home, fitOpts());
-    setHint("Click or tap a yellow box to load its fields");
   } else setHint("The map library did not load; the figures in the panel do not need it.", true);
   // the rest arrives in parallel and fills in as it lands
   drawPlants().then(() => safe("biochar", renderBiochar, "bio"));

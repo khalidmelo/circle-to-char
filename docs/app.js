@@ -1,4 +1,4 @@
-/* Circle to Char: Qassim deep dive. Reads precomputed JSON from data/ (and data/national/ for the comparison note).
+/* SkyMeter: Qassim deep dive. Reads precomputed JSON from data/ (and data/national/ for the comparison note).
    Every figure on the page comes from those files; a missing key hides or degrades its element instead of throwing. */
 "use strict";
 
@@ -44,8 +44,15 @@ const RAMPS = {
     note: "Read it for broad wet and dry patches, not single fields; diagonal stripes on some dates are not field patterns." },
   "Sentinel-2 greenness (ESA)": { stops: ["#ffffe5", "#d9f0a3", "#78c679", "#238443", "#004529"], lo: "NDVI 0 (bare)", hi: "0.8 (green)" },
 };
-// Field-chart colours: HV (the signal the rule uses) in the accent, HH de-emphasised, single-series charts in ink.
-const CH = { hv: "#0f6e6a", hh: "#848c92", ink: "#46525a", muted: "#5d6870", grid: "#e8e6e0", axis: "#cfccc2" };
+// Field-chart colours, read from the style.css tokens when the first chart is drawn: HV (the signal the rule uses) in
+// the accent, HH de-emphasised in the label grey with open points, single-series charts in secondary ink.
+const CH = { hv: "#1d56a8", hh: "#5a6773", ink: "#3d4b58", muted: "#5a6773", grid: "#e3e7eb", axis: "#cdd4db", title: "#0e1a26", panel: "#ffffff" };
+function chartTokens() {
+  const cs = getComputedStyle(document.body), v = (n) => (cs.getPropertyValue(n) || "").trim();
+  [["hv", "--accent"], ["hh", "--muted"], ["ink", "--ink-2"], ["muted", "--muted"], ["grid", "--line"], ["axis", "--line-2"], ["title", "--ink"], ["panel", "--panel"]]
+    .forEach(([k, n]) => { const c = v(n); if (c) CH[k] = c; });
+}
+const ICO = (id, cls = "") => `<svg class="ico${cls ? " " + cls : ""}" aria-hidden="true"><use href="img/icons.svg#i-${id}"/></svg>`;
 const DAY = 864e5;
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -100,7 +107,7 @@ const plain = (s) => String(s == null ? "" : s)
   .replace(/\bmodel\/national_supply\.s2_tier\b/g, "the national radar + Sentinel-2 rule")
   .replace(/\b(?:model|scripts)\/[\w./]+(?:'s)?/g, "the pipeline")
   .replace(/\b[a-z0-9]+(?:_[a-z0-9]+)+\b/g, labelOf)
-  .replace(/\b([a-z][a-z -]*[a-z]) \(\1, /gi, "$1 (")          // "static depth to water (static depth to water, Buraidah …" → "static depth to water (Buraidah …"
+  .replace(/\b([a-z][a-z -]*[a-z]) \(\1, /gi, "$1 (")          // "static depth to water (static depth to water, Buraidah …" becomes "static depth to water (Buraidah …"
   .replace(/ x /g, " × ").replace(/\brho g\b/g, "ρg").replace(/ - /g, " − ")   // " / " stays: sources use it between low, central and high values
   .replace(/(\d+(?:\.\d+)?)-(\d+(?:\.\d+)?)/g, (m, a, b, i, str) => /[\d-]/.test(str[i - 1] || "") || /[\d-]/.test(str[i + m.length] || "") ? m : `${a}–${b}`)
   .replace(/(\d{1,2} [A-Z][a-z]{2})-(\d{1,2} [A-Z][a-z]{2})\b/g, "$1–$2").replace(/(\d) C\b/g, "$1 °C")
@@ -110,7 +117,7 @@ function safe(fn, el) {
   try { return fn(); } catch (e) {
     console.error(e);
     const box = el && $(el);
-    if (box) box.innerHTML = `<p class="note">This part could not be shown (${esc(e.message)}).</p>`;
+    if (box) box.innerHTML = `<p class="alert" role="alert">${ICO("alert")}<span>This part could not be shown (${esc(e.message)}).</span></p>`;
   }
 }
 
@@ -140,6 +147,7 @@ async function init() {
   raiseMarkers();   // the cement rings went onto the shared canvas first: keep them above the field outlines
   safe(buildKeys);
   safe(setupGroups, "legendtext");   // fills the colour ramp and legend, so the map-tools card has its final height before the fit
+  safe(renderStamp);
   autoView(() => map.invalidateSize({ pan: false }));
   foldKey();
   $("mapkey")?.querySelector("summary")?.addEventListener("click", () => { state.keyTouched = true; });
@@ -153,12 +161,6 @@ async function init() {
   const h = location.hash.slice(1);
   if ($("tab-" + h)) openTab(h, { hash: false, scroll: false });
   if (h === "field") showExample(true);
-  window.addEventListener("hashchange", () => {
-    const n = location.hash.slice(1);
-    if (!$("tab-" + n)) return;
-    openTab(n, { hash: false });
-    if (n === "field" && !state.fieldShown) showExample(true);
-  });
   idle(loadNational);
   setTimeout(loadTs, 5000);   // the per-field radar record (largest file, Field tab only): fetched after the first view
 }
@@ -175,9 +177,24 @@ function wire() {
     if (l) e.target.checked ? l.addTo(map) : map.removeLayer(l);
   });
   document.addEventListener("click", onDocClick);
+  $("examplefield").onclick = () => showExample(true);
+  // Phones: the layer select, legend and map key fold under one "Map layers and key" button (desktop shows them all).
+  $("mtmore").onclick = (e) => {
+    const open = e.currentTarget.getAttribute("aria-expanded") !== "true";
+    e.currentTarget.setAttribute("aria-expanded", open);
+    $("maptools").classList.toggle("is-open", open);
+  };
+}
+// The tabs work before the data arrives, so the Method tab stays readable if the results fail to load.
+function wireTabs() {
   document.querySelectorAll(".tabs [data-tab]").forEach((b) => b.addEventListener("click", () => openTab(b.dataset.tab)));
   document.querySelector(".tabs")?.addEventListener("keydown", onTabKey);
-  $("examplefield").onclick = () => showExample(true);
+  window.addEventListener("hashchange", () => {
+    const n = location.hash.slice(1);
+    if (!$("tab-" + n)) return;
+    openTab(n, { hash: false });
+    if (n === "field" && !state.fieldShown && state.fieldsLayer) showExample(true);
+  });
 }
 
 function onDocClick(e) {
@@ -276,6 +293,7 @@ function setupGroups() {
 }
 function setupDates(keepT) {
   const list = overlaysFor(state.group), r = $("date");
+  if ($("groupname")) $("groupname").textContent = state.group || "";   // the layer's name in the title, for phones (the select is folded)
   r.max = Math.max(0, list.length - 1);
   r.disabled = list.length < 2;
   let i = list.length - 1;
@@ -284,14 +302,39 @@ function setupDates(keepT) {
     list.forEach((o, j) => { const d = Math.abs(oTime(o) - keepT); if (d < best) { best = d; i = j; } });
   }
   r.value = Math.max(0, i);
+  safe(() => renderRuns(list));
   showOverlay();
+}
+// Under the date slider: one label per season run of images, placed under its first to last tick, with a tick per image.
+// The slider steps image by image, so the runs are spaced by image count, not by calendar time.
+function renderRuns(list) {
+  const box = $("dateruns");
+  if (!box) return;
+  const n = list.length;
+  if (n < 2) { box.innerHTML = ""; return; }
+  const runs = [];
+  list.forEach((o, i) => { const s = seasonOf(o.date); if (!runs.length || runs[runs.length - 1].s !== s) runs.push({ s, a: i, b: i }); else runs[runs.length - 1].b = i; });
+  const f = (i) => (i / (n - 1)).toFixed(4), at = (i) => `calc(9px + (100% - 18px) * ${f(i)})`;   // 9 px: half the thumb
+  const span = (r) => `width:calc((100% - 18px) * ${((r.b - r.a) / (n - 1)).toFixed(4)})`;
+  const name = (r) => {
+    const d = list.slice(r.a, r.b + 1).map((o) => o.date).filter(isDate);
+    if (!d.length) return r.s.charAt(0).toUpperCase() + r.s.slice(1);
+    const m0 = MON[+d[0].slice(5, 7) - 1], m1 = MON[+d[d.length - 1].slice(5, 7) - 1], y0 = d[0].slice(0, 4), y1 = d[d.length - 1].slice(0, 4);
+    return m0 === m1 && y0 === y1 ? `${m0} ${y0}` : y0 === y1 ? `${m0}–${m1} ${y0}` : `${m0} ${y0} to ${m1} ${y1}`;
+  };
+  box.innerHTML = list.map((o, i) => `<i class="dl-tick" style="left:${at(i)}"></i>`).join("") +
+    runs.map((r, k) => {   // the last run is set from its end, so its label ends under the last tick
+      const end = runs.length > 1 && k === runs.length - 1;
+      return `<span class="dl-run${end ? " end" : ""}" style="${end ? `right:calc(9px + (100% - 18px) * ${(1 - r.b / (n - 1)).toFixed(4)})` : `left:${at(r.a)}`};${span(r)}">${esc(name(r))}</span>`;
+    }).join("");
 }
 function showOverlay() {
   const list = overlaysFor(state.group), i = +$("date").value, o = list[i];
   if (!o) return;
   state.current = o;
   const season = seasonOf(o.date);
-  $("datelabel").textContent = isDate(o.date) ? `${o.date} · ${season}` : `${season} season`;
+  $("datelabel").innerHTML = isDate(o.date) ? `<span class="dl-date">${esc(dayLabel(o.date))}</span><span class="tag">${esc(season)}</span>` :
+    `<span class="dl-date">${esc(season.charAt(0).toUpperCase() + season.slice(1))} season</span>`;
   $("date").setAttribute("aria-valuetext", `${isDate(o.date) ? dayLabel(o.date) + ", " + season : season + " season"}, image ${i + 1} of ${list.length}`);
   updateLegend(o);
   // Keep the current image until the next one has loaded, so the map never flashes bare (qassim-14).
@@ -322,8 +365,20 @@ function updateLegend(o) {
     $("ramp").style.setProperty("--ramp", r.stops.join(","));
     $("ramplo").textContent = r.lo; $("ramphi").textContent = r.hi;
   }
-  const text = String(o.legend || "").replace(/\bHV gamma0\b/, "HV backscatter (gamma0)").replace(/m3\/m3/g, "m³/m³").replace(/(^|[\s(])-(\d)/g, "$1−$2");
+  const raw = r ? legendExtra(String(o.legend || "")) : String(o.legend || "");   // the ramp's ends already give the range
+  const text = raw.replace(/\bHV gamma0\b/, "HV backscatter (gamma0)").replace(/m3\/m3/g, "m³/m³").replace(/(^|[\s(])-(\d)/g, "$1−$2");
   $("legendtext").textContent = [text, r && r.note].filter(Boolean).map((s, i, a) => i < a.length - 1 && !/[.!?]$/.test(s) ? s + "." : s).join(" ");
+}
+// A layer's legend string without the value range the colour ramp shows, and without the quantity's name before it:
+// "Coherence 0 (surface changed) to 1 (unchanged). Note: sand itself…" keeps "Sand itself…"; "… 0 to 0.4 m3/m3 (200 m)"
+// keeps "On a 200 m grid". A string with no range ("Maximum NDVI, winter season") is kept whole.
+function legendExtra(s) {
+  const v = "[−-]?\\d+(?:\\.\\d+)?(?:\\s*(?:dB|m³\\/m³|m3\\/m3))?(?:\\s*\\((?!\\d)[^)]*\\))?";
+  const RNG = new RegExp(`,?\\s*${v}\\s+to\\s+${v}`);
+  if (!RNG.test(s)) return s;
+  return s.replace(RNG, "").replace(/^[^.(]*/, "").replace(/^\.\s*/, "").trim()
+    .replace(/^\((\d+(?:\.\d+)?) ?m\)\.?$/, "On a $1 m grid").replace(/^Note:\s*/i, "").replace(/^./, (c) => c.toUpperCase())
+    .replace(/([^.!?])$/, "$1.");   // what is left reads as a sentence
 }
 
 /* ---------- fields ---------- */
@@ -341,26 +396,42 @@ function drawFields() {
     onEachFeature: (f, lyr) => {
       const p = f.properties || {};
       state.byId[p.id] = lyr;
-      if (canHover) lyr.bindTooltip(() => `Field ${esc(p.id)} · ${esc(cname(fieldClass(p)))} · ${fmt(p.area_ha, 1)} ha<br>Click for its radar record`, { sticky: true });
+      if (canHover) lyr.bindTooltip(() => `<b>Field ${esc(p.id)}</b><br>${esc(cname(fieldClass(p)))}, ${fmt(p.area_ha, 1)} ha<br><span class="tt-hint">Click for its radar record</span>`, { sticky: true });
       lyr.on("click", (e) => { showField(p, true, lyr); if (narrow()) fieldPopup(p, e.latlng); });
     },
   }).addTo(map);
 }
-function toolsPad() { const t = $("maptools"); return !narrow() && t ? t.offsetHeight + 12 : 12; }
+// Padding that keeps a fit clear of the floating map tools (desktop): the fields go above the panel or beside it,
+// whichever draws them larger. On phones the tools sit under the map, so the padding is even.
+function fitOpts(b, pad = 12, maxZoom = Infinity) {
+  const P = (x, y) => L.point(x, y), even = { paddingTopLeft: P(pad, pad), paddingBottomRight: P(pad, pad) };
+  const t = $("maptools");
+  if (narrow() || !t || !t.offsetHeight || !b || !b.isValid()) return even;
+  const m = map.getContainer().getBoundingClientRect(), r = t.getBoundingClientRect();
+  const above = { paddingTopLeft: P(pad, pad), paddingBottomRight: P(pad, Math.max(pad, Math.round(m.bottom - r.top) + pad)) };
+  const beside = { paddingTopLeft: P(Math.max(pad, Math.round(r.right - m.left) + pad), pad), paddingBottomRight: P(pad, pad) };
+  const z = (o) => Math.min(maxZoom, map.getBoundsZoom(b, false, o.paddingTopLeft.add(o.paddingBottomRight)));
+  const room = (o) => { const p = o.paddingTopLeft.add(o.paddingBottomRight), s = map.getSize(); return (s.x - p.x) * (s.y - p.y); };
+  const zb = z(beside), za = z(above);   // the same zoom either way (a small field at maxZoom): the side with more room
+  return zb > za || (zb === za && room(beside) > room(above)) ? beside : above;
+}
 function fitFields() {
   const b = state.fieldsLayer && state.fieldsLayer.getBounds();
-  if (b && b.isValid()) map.fitBounds(b, { padding: [12, 12], paddingBottomRight: [12, toolsPad()], animate: false });
+  if (b && b.isValid()) map.fitBounds(b, { ...fitOpts(b), animate: false });
   state.fitSize = map.getSize();
 }
 // Map moves made by the page (fit, resize) are not the reader's: they do not stop the refit after a resize.
 function autoView(fn) { state.autoView = true; try { fn(); } finally { state.autoView = false; } }
-// The map key is folded on phones, so the headline follows the map closely, and on a small desktop map, so the
-// floating card leaves room for the fields; its "Map key" row stays visible. Once the reader opens or closes it, it stays.
+// The map key is folded on a small desktop map, so the floating card leaves room for the fields; its "Map key" row
+// stays visible. Once the reader opens or closes it, it stays. On phones it is always open, inside the "Map layers and
+// key" fold (its own summary is hidden there).
 function foldKey() {
   const k = $("mapkey");
-  if (!k || state.keyTouched) return;
+  if (!k) return;
+  if (narrow()) { k.open = true; return; }
+  if (state.keyTouched) return;
   const ms = map.getSize();
-  k.open = !(narrow() || ms.x < 760 || ms.y < 620);
+  k.open = !(ms.x < 760 || ms.y < 620);
 }
 function onResize() {   // as Leaflet's own trackResize, then a debounced refit to the fields unless the reader has moved the map
   cancelAnimationFrame(state.rzFrame);
@@ -386,7 +457,7 @@ function raiseMarkers() {   // cement rings stay above field outlines (plant mar
 function fieldPopup(p, latlng) {   // phones: a small popup, and the reader chooses to scroll to the panel
   if (!latlng) return;
   L.popup({ maxWidth: 240, autoPanPadding: [16, 16], autoPanPaddingTopLeft: [64, 16] }).setLatLng(latlng)
-    .setContent(`<b>Field ${esc(p.id)}</b><br>${esc(cname(fieldClass(p)))} · ${fmt(p.area_ha, 1)} ha<br><a href="#field" class="poplink">See its radar record ↓</a>`)
+    .setContent(`<b>Field ${esc(p.id)}</b><br>${esc(cname(fieldClass(p)))}, ${fmt(p.area_ha, 1)} ha<br><a href="#field" class="poplink">See its radar record${ICO("chevron", "sm down")}</a>`)
     .openOn(map);
 }
 
@@ -413,8 +484,8 @@ function buildKeys() {
   if (!outlets.size) outlets.add("soil");
   const both = outlets.has("soil") && outlets.has("cement");   // name the outlet only when the map shows both
   $("plantkey").innerHTML = ["soil", "cement"].filter((o) => outlets.has(o)).map((o) =>
-    `<li><i class="dot" style="--c:${MARK[o]}" aria-hidden="true"></i>biochar plant${both ? `: char ${o === "soil" ? "to the fields" : "to cement"}` : " (numbered)"}</li>`).join("") +
-    (state.cementLayer ? `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>cement plant</li>` : "");
+    `<li><i class="dot" style="--c:${MARK[o]}" aria-hidden="true"></i>Biochar plant${both ? `: char ${o === "soil" ? "to the fields" : "to cement"}` : " (numbered)"}</li>`).join("") +
+    (state.cementLayer ? `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>Cement plant</li>` : "");
 }
 
 /* ---------- Overview ---------- */
@@ -448,9 +519,40 @@ function renderLead() {
   let farmedFields = sum(FARMED.map((k) => nf[k]));
   if (!farmedFields) farmedFields = state.fields.features.filter((f) => FARMED.includes(fieldClass(f.properties))).length;
   const nFields = num(S.fields) ?? state.fields.features.length;
-  const seasons = num(act.winter) != null && num(act.summer) != null ? ` (winter ${fmt(act.winter)} ha, summer ${fmt(act.summer)} ha)` : "";
+  // The two seasons as small figures between hairlines under the headline (each shown only when the JSON holds it).
+  const seasons = [["winter", "Farmed in winter"], ["summer", "Farmed in summer"]].filter(([k]) => num(act[k]) != null)
+    .map(([k, label]) => `<div><dt>${label}</dt><dd>${fmt(act[k])}<span class="u">ha</span></dd></div>`).join("");
   // qassim-3, qd-9, tx-10: the farmed area sits on the farmed fields, not on every mapped field.
-  $("lead").innerHTML = `Radar finds <b>${fmt(farmedOfSupply(S))} ha</b> farmed in 2025/26${seasons} on ${fmt(farmedFields)} of the ${fmt(nFields)} fields mapped from Sentinel-2${num(S.field_ha) != null ? ` (${fmt(S.field_ha)} ha)` : ""} in the core Qassim pivot cluster. ${regionSentence()}`;
+  $("lead").innerHTML = `<p class="hl"><span class="hl-num">${fmt(farmedOfSupply(S))}</span><span class="hl-unit">ha farmed in 2025/26, found by radar</span></p>` +
+    (seasons ? `<dl class="hl-seasons">${seasons}</dl>` : "") +
+    `<p class="hl-text">Farmed on ${fmt(farmedFields)} of the ${fmt(nFields)} fields that Sentinel-2 maps in the core Qassim pivot cluster${num(S.field_ha) != null ? `, which cover ${fmt(S.field_ha)} ha` : ""}. ${regionSentence()}</p>`;
+}
+// The header's data stamp: the radar's dates, from the HV overlays (the static text stays when there are none).
+function renderStamp() {
+  const D = hvDates(), el = $("stamptext");
+  if (!el || !D.all.length) return;
+  const mo = (d) => `${MON[+d.slice(5, 7) - 1]} ${d.slice(0, 4)}`;
+  el.textContent = `NISAR L-band radar, 20 m grid, ${D.all.length} dates from ${mo(D.all[0])} to ${mo(D.all[D.all.length - 1])}`;
+}
+// A KPI card's range bar, on a scale from the lowest to the highest value shown, with a tick at the chosen estimate.
+// Lanes: the factor range (light band) and the threshold range (dark band). "Both at once" (the widest corners) normally
+// sets the scale, so it is drawn as the bar's two ends with their values under them, not as a lane of its own; if a value
+// falls outside it, it gets its whisker lane and keeps its row instead (bothRow). No bar when the estimate is missing,
+// no range has values, or every value is equal.
+function rangeBar(mid, lanes, both, div, d) {
+  const ok = lanes.filter((l) => num(l.lo) != null && num(l.hi) != null);
+  const hasBoth = both && num(both.lo) != null && num(both.hi) != null;
+  if (num(mid) == null || (!ok.length && !hasBoth)) return { html: "", bothRow: hasBoth };
+  const vals = [mid, ...ok.flatMap((l) => [l.lo, l.hi]), ...(hasBoth ? [both.lo, both.hi] : [])].map(Number);
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  if (!(hi > lo)) return { html: "", bothRow: hasBoth };
+  const ends = hasBoth && Math.min(both.lo, both.hi) === lo && Math.max(both.lo, both.hi) === hi;
+  const pos = (v) => `${(100 * (v - lo) / (hi - lo)).toFixed(2)}%`;
+  const drawn = ends || !hasBoth ? ok : [...ok, { ...both, cls: "rb-both" }];
+  const html = `<div class="kpi-bar"><div class="rb${ends ? " framed" : ""}" aria-hidden="true">${drawn.map((l) => `<div class="rb-lane ${l.cls}"><i style="--a:${pos(Math.min(l.lo, l.hi))};--b:${pos(Math.max(l.lo, l.hi))}"></i></div>`).join("")}` +
+    `<b class="rb-mid" style="--x:${pos(mid)}"></b></div>` +
+    (ends ? `<div class="rb-ends"><span><span class="sr-only">${esc(both.name)}: </span>${fmt(lo / div, d)}</span><span><span class="sr-only">to </span>${fmt(hi / div, d)}</span></div>` : "") + `</div>`;
+  return { html, bothRow: hasBoth && !ends, ends };
 }
 function renderOverview() {
   const S = get(state.summary, "supply");
@@ -460,20 +562,51 @@ function renderOverview() {
   const farmed = farmedOfSupply(S);
 
   const mw = S.summer_pumping_avg_mw;
+  // [label, keys, divisor, unit, decimals, sub line]. Labels carry no icon: the six are told apart by their words.
   const tiles = [
     ["Water pumped", ["water_m3"], 1e6, "million m³ / year", 0],
-    ["Pumping electricity", ["elec_kwh"], 1e6, "GWh / year", 0, mw && num(mw[L_]) != null ? `<br>about ${fmt(mw[L_])} MW average June–September` : ""],
+    ["Pumping electricity", ["elec_kwh"], 1e6, "GWh / year", 0, mw && num(mw[L_]) != null ? `About ${fmt(mw[L_])} MW average June–September` : ""],
     ["Pumping CO₂ (grid)", ["co2_t_electric", "co2_t_grid"], 1e3, "kt CO₂e / year", 0],
     ["Pumping CO₂ (diesel)", ["co2_t_diesel"], 1e3, "kt CO₂e / year", 0],
     ["Collectable wheat straw", ["residue_t_dry", "straw_t_dry"], 1e3, "kt dry / year", 1],
-    ["Palm fronds (radar + WorldCover)", ["fronds_t_dry"], 1e3, "kt dry / year", 1],
+    ["Palm fronds", ["fronds_t_dry"], 1e3, "kt dry / year", 1, "From radar + WorldCover"],
   ];
+  // Each card: the chosen estimate, then its ranges on one bar. Factor range: every factor at its low or high bound.
+  // Threshold: both radar thresholds moved each way, at the chosen estimate. Both at once: the widest corners, drawn as
+  // the bar's ends. The key above the cards names each mark once; each card's rows give the values.
+  const CR = obj(S.classification_range) || {}, sh = shifts(CR), corners = obj(CR.corners) || {};
+  const thrName = sh.up === sh.dn ? `Threshold ±${sh.upTxt}` : `Threshold −${sh.dnTxt} / +${sh.upTxt}`;
+  const span = (a, b, div, d) => { const lo = Math.min(a, b), hi = Math.max(a, b); return fmt(lo / div, d) === fmt(hi / div, d) ? fmt(lo / div, d) : `${fmt(lo / div, d)}–${fmt(hi / div, d)}`; };   // a range that collapses shows its one value
+  const used = new Set();
   $("kpis").innerHTML = tiles.map(([label, keys, div, unit, d, extra]) => {
     const o = pick(S, keys);
     if (!o || num(o[L_]) == null) return "";
-    const range = num(o.low) != null && num(o.high) != null ? `range ${fmt(o.low / div, d)}–${fmt(o.high / div, d)}` : "";
-    return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-value">${fmt(o[L_] / div, d)}<span class="kpi-unit">${unit}</span></div>${range || extra ? `<div class="kpi-range">${range}${extra || ""}</div>` : ""}</div>`;
+    const tp = pick(CR.plus_1db, keys), tm = pick(CR.minus_1db, keys), co = pick(corners, keys);
+    const lanes = [
+      { cls: "rb-factor", lo: num(o.low), hi: num(o.high), name: "Factor range" },
+      { cls: "rb-thr", lo: num(get(tp, L_)), hi: num(get(tm, L_)), name: thrName },
+    ];
+    const both = { cls: "rb-both", lo: num(get(co, "low")), hi: num(get(co, "high")), name: "Both at once" };
+    const bar = rangeBar(num(o[L_]), lanes, both, div, d);
+    const shown = lanes.filter((l) => l.lo != null && l.hi != null).concat(bar.bothRow ? [both] : []);
+    shown.forEach((l) => used.add(l.cls));
+    if (bar.html) used.add("rb-mid");
+    if (bar.ends) used.add("rb-ends");
+    const rows = shown.map((l) => `<div class="r-${l.cls.slice(3)}"><dt><span class="sr-only">${l.name}</span></dt><dd>${span(l.lo, l.hi, div, d)}</dd></div>`).join("");
+    // five rows on the cards' shared grid (label, value, sub line, bar, values), so bars line up across a row
+    return `<div class="kpi"><div class="kpi-label">${label}</div><div class="kpi-value">${fmt(o[L_] / div, d)}<span class="kpi-unit">${unit}</span></div>` +
+      `<p class="kpi-sub">${extra || ""}</p>${bar.html || `<div class="kpi-bar"></div>`}<dl class="kpi-range">${rows}</dl></div>`;
   }).join("");
+  // The key, once above the cards: only the marks the cards draw.
+  const keyItems = [
+    ["rb-factor", "rk", "Factor range", "every factor at its low or high bound"],
+    ["rb-thr", "rk thr", thrName, "both radar thresholds moved, at the chosen estimate"],
+    ["rb-ends", "rk both", "Both at once", "the bar's two ends, with their values under them"],
+    ["rb-both", "rk both", "Both at once", "the two moved together"],
+    ["rb-mid", "rk mid", `${LEVEL_NAME[L_]} estimate`, "the tick"],
+  ].filter(([k]) => used.has(k));
+  $("kpikey").hidden = !keyItems.length;
+  $("kpikey").innerHTML = keyItems.map(([, cls, name, what]) => `<li><i class="${cls}" aria-hidden="true"></i><span><b>${esc(name)}</b>, ${what}</span></li>`).join("");
   safe(() => renderSens(S, L_), "sens");
 
   const max = Math.max(1, ...Object.values(area).map((v) => num(v) || 0));
@@ -654,9 +787,9 @@ function renderPlants() {
   state.plantLayer = L.layerGroup();
   const lvl = LEVEL_NAME[L_].toLowerCase(), minLoad = num(get(P, "min_load_fraction", L_));
   if (!plants) {
-    $("plantlist").innerHTML = `<p class="plant">No siting result for ${size} kt/y plants at the ${lvl} estimate.</p>`;
+    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No siting result for ${size} kt/y plants at the ${lvl} estimate.</span></p>`;
   } else if (!plants.length) {
-    $("plantlist").innerHTML = `<p class="plant">No site can be filled to ${minLoad != null ? pct(minLoad) : "80%"} of a <b>${size} kt/y</b> plant with the straw and palm fronds radar finds here (${lvl} estimate). The local limit is supply, not distance: pooling a wider region or other residues would be needed.</p>`;
+    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No site can be filled to ${minLoad != null ? pct(minLoad) : "80%"} of a <b>${size} kt/y</b> plant with the straw and palm fronds radar finds here (${lvl} estimate). The local limit is supply, not distance: pooling a wider region or other residues would be needed.</span></p>`;
   } else {
     const tot = sum(plants.map((p) => p.feed_t_dry)), st = sum(plants.map((p) => p.feed_straw)), fr = sum(plants.map((p) => p.feed_fronds));
     const net = sum(plants.map((p) => p.net_removal_tco2 ?? (p.best_outlet === "cement" ? p.cement_net_tco2 : p.soil_net_tco2)));
@@ -673,16 +806,24 @@ function renderPlants() {
       const cem = num(p.cement_net_tco2) != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest plant (${fmt(p.cement_km)} km)` : "";
       const rem = num(p.soil_removal_tco2);
       const flags = notPass.map(([f, , ch]) => { const r = num(p[`soil_removal_${f}_tco2`]); return rem > 0 && r > 0 ? `${pct(r / rem)} of the removal comes from ${ch}, ${soilStatus(SU[f].status)} against Puro's soil limits` : ""; }).filter(Boolean);
-      return `<div class="plant" data-plant="${esc(p.plant)}"><b>Plant ${esc(p.plant)}</b> at ${fmt(p.lat, 3)}°N, ${fmt(p.lon, 3)}°E (${p.kind === "cement" ? "at a cement plant" : "grid site"})<br>
-        ${fmt(p.fields)} fields, mean haul ${fmt(p.mean_feed_haul_km, 1)} km, load ${pct(p.load_factor)}
-        ${feedMix(num(p.feed_straw) || 0, num(p.feed_fronds) || 0) || "<br>"}
-        Char: ${fmt(p.char_t)} t/y. Net CO₂ removed after transport: <b>${fmt(p.soil_net_tco2)} t/y</b> spread back on the fields${cem}<br>
-        Best outlet: <b>${outletName(p.best_outlet)}</b>; transport uses ${fmt(100 * (num(p.penalty) || 0), 1)}% of its removal.
-        ${flags.length ? `<div class="soilflag">${flags.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(". ")} (<a href="#plants" data-target="soiluse-h">soil use</a>).</div>` : ""}</div>`;
+      // The number badge matches the plant's pin on the map: filled in the colour of its char outlet.
+      return `<article class="plant" data-plant="${esc(p.plant)}" aria-label="Plant ${esc(p.plant)}">
+        <div class="plant-head"><span class="pnum" style="--c:${MARK[p.best_outlet === "cement" ? "cement" : "soil"]}" aria-hidden="true">${esc(p.plant)}</span>
+          <div class="plant-id"><b class="plant-name">Plant ${esc(p.plant)}</b><span class="plant-where">${fmt(p.lat, 3)}°N, ${fmt(p.lon, 3)}°E, ${p.kind === "cement" ? "at a cement plant" : "grid site"}</span></div></div>
+        <dl class="pfacts"><div><dt>Fields</dt><dd>${fmt(p.fields)}</dd></div><div><dt>Mean haul</dt><dd>${fmt(p.mean_feed_haul_km, 1)} km</dd></div>
+          <div><dt>Load</dt><dd>${pct(p.load_factor)}</dd></div><div><dt>Char</dt><dd>${fmt(p.char_t)} t/y</dd></div></dl>
+        ${feedMix(num(p.feed_straw) || 0, num(p.feed_fronds) || 0)}
+        <p class="pline">Net CO₂ removed after transport: <b>${fmt(p.soil_net_tco2)} t/y</b> spread back on the fields${cem}.</p>
+        <p class="pline">Best outlet: <b>${outletName(p.best_outlet)}</b>; transport uses ${fmt(100 * (num(p.penalty) || 0), 1)}% of its removal.</p>
+        ${flags.length ? `<div class="soilflag">${flags.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(". ")} (<a href="#plants" data-target="soiluse-h">soil use</a>).</div>` : ""}</article>`;
     };
     const mixKey = st > 0 && fr > 0 ? `<ul class="key feedkey"><li><i style="--c:${FEED_COL.straw}" aria-hidden="true"></i>wheat straw</li><li><i style="--c:${FEED_COL.fronds}" aria-hidden="true"></i>palm fronds</li></ul>` : "";
-    $("plantlist").innerHTML = `<p><span class="big">${plants.length}</span> plant${plants.length > 1 ? "s" : ""} of ${size} kt/y using ${fmt(tot / 1e3, 1)} kt dry feed${st || fr ? ` (${fmt(st / 1e3, 1)} kt wheat straw, ${fmt(fr / 1e3, 1)} kt palm fronds)` : ""}, removing <b>${fmt(net)} t CO₂ a year</b> net of transport.</p>
-      <p class="callout">This is a technical potential, not a credit volume: stored char carbon × the Puro.earth 2025 soil persistence model, minus truck emissions only; production and embodied emissions and leakage are not subtracted.</p>
+    $("plantlist").innerHTML = `<dl class="plant-sum">
+        <div><dt>Plant${plants.length > 1 ? "s" : ""} of ${size} kt/y</dt><dd>${plants.length}</dd></div>
+        <div><dt>kt dry feed a year</dt><dd>${fmt(tot / 1e3, 1)}</dd></div>
+        <div><dt>t CO₂ removed a year, net of transport</dt><dd>${fmt(net)}</dd></div></dl>
+      ${st || fr ? `<p class="note plant-feed">Feed: ${fmt(st / 1e3, 1)} kt wheat straw and ${fmt(fr / 1e3, 1)} kt palm fronds, dry, at the ${lvl} estimate.</p>` : ""}
+      <p class="callout">${ICO("info")}<span>This is a technical potential, not a credit volume: stored char carbon × the Puro.earth 2025 soil persistence model, minus truck emissions only; production and embodied emissions and leakage are not subtracted.</span></p>
       ${mixKey}${plants.map(card).join("")}
       <p class="note">Char in cement earns the same credit as char spread back on the fields: the Puro.earth 2025 methodology credits both with its soil persistence model (${pf.length ? `${list(pf)} of the char's organic carbon kept over 200 years` : "the char's organic carbon kept over 200 years"}${num(temp) != null ? ` in ${fmt(temp)} °C soil` : ""}), so the shorter char haul picks the outlet. Cement may hold more in service${num(ret.low) != null ? ` (${pct(ret.low)}–${pct(ret.high)} retained)` : ""}; that is reported, not credited. In this cluster haulage costs ${pmin.toFixed(1) === pmax.toFixed(1) ? `${fmt(pmax, 1)}%` : `${fmt(pmin, 1)}–${fmt(pmax, 1)}%`} of the removal: the limit is residue supply, not distance.${rc != null && rc !== 1 ? ` At the ${lvl} estimate every distance is the straight line × ${fmt(rc, 1)} (road circuity, an unsourced sensitivity), so the same site shows longer hauls than at the other estimates.` : ""}</p>${soilUse(SU, plants, size, lvl)}`;
     // One marker per site: some sizes put two plants on the same grid point.
@@ -695,7 +836,7 @@ function renderPlants() {
     });
     sites.forEach((ps) => {
       const outlet = ps.every((p) => p.best_outlet === "cement") ? "cement" : "soil", ids = ps.map((p) => p.plant);
-      const icon = L.divIcon({ className: "plant-pin", html: `<span style="--c:${MARK[outlet]}">${ids.map(esc).join("·")}</span>`, iconSize: [0, 0] });
+      const icon = L.divIcon({ className: "plant-pin", html: `<span style="--c:${MARK[outlet]}">${ids.map(esc).join(", ")}</span>`, iconSize: [0, 0] });
       const m = L.marker([+ps[0].lat, +ps[0].lon], { icon, keyboard: true, riseOnHover: true });
       // Touch screens get the popup only: Leaflet also opens a tooltip on tap, and the two would overlap (as drawFields).
       if (canHover) m.bindTooltip(ps.map((p) => `Plant ${esc(p.plant)}: ${size} kt/y, ${plantFacts(p)}`).join("<br>"), { direction: "top", offset: [0, -12] });
@@ -712,7 +853,7 @@ function focusPlant(ps, marker) {
   if (narrow()) {   // never scroll away from the map: offer the panel instead, with the tooltip's facts
     marker.closeTooltip();
     L.popup({ maxWidth: 240, autoPanPadding: [16, 16], autoPanPaddingTopLeft: [64, 16], offset: [0, -8] }).setLatLng(marker.getLatLng())
-      .setContent(`${ps.map((p) => `<b>Plant ${esc(p.plant)}</b> · ${state.size} kt/y<br>${plantFacts(p).replace(/^./, (c) => c.toUpperCase())}`).join("<br>")}<br><a href="#plants" class="poplink" data-plant="${esc(n)}">See it in Biochar plants ↓</a>`).openOn(map);
+      .setContent(`${ps.map((p) => `<b>Plant ${esc(p.plant)}</b>, ${state.size} kt/y<br>${plantFacts(p).replace(/^./, (c) => c.toUpperCase())}`).join("<br>")}<br><a href="#plants" class="poplink" data-plant="${esc(n)}">See it in Biochar plants${ICO("chevron", "sm down")}</a>`).openOn(map);
     return;
   }
   openTab("plants");
@@ -759,7 +900,8 @@ function renderFieldInfo() {
   const L_ = state.level, lv = LEVEL_NAME[L_].toLowerCase(), c = fieldClass(p);
   const val = (k) => num(p[`${k}_${L_}`]) ?? (L_ === "central" ? num(p[k]) : null);
   const green = (b) => b == null ? "unknown" : b ? "green" : "not green";
-  $("fieldhint").innerHTML = `<b>Field ${esc(p.id)}</b>${state.ts ? "" : " · radar record loading…"}`;
+  $("fieldhint").classList.add("is-field");
+  $("fieldhint").innerHTML = `<span class="field-title">Field ${esc(p.id)}</span>${state.ts ? "" : `<span class="field-status">Radar record loading…</span>`}`;
   const rw = WINTER_ON.has(c), rs = SUMMER_ON.has(c), dis = [];
   if (p.s2_winter_check != null && !!p.s2_winter_check !== rw) dis.push(`winter (radar: ${rw ? "farmed" : "not farmed"})`);
   if (p.s2_summer_check != null && !!p.s2_summer_check !== rs) dis.push(`summer (radar: ${rs ? "farmed" : "not farmed"})`);
@@ -768,7 +910,7 @@ function renderFieldInfo() {
   const none = c === "idle" && !(val("water_m3") > 0);   // not farmed by radar: no water, so no pumping
   const rows = [
     ["Class", `<span class="swatch outline" style="--c:${COLORS[c] || COLORS.idle}"></span>${esc(cname(c))}<div class="sub">${esc(CLASS_HELP[c] || "")}</div>`],
-    ["Area", `${fmt(p.area_ha, 1)} ha${p.is_pivot ? " · centre pivot" : ""}`],
+    ["Area", `${fmt(p.area_ha, 1)} ha${p.is_pivot ? ", centre pivot" : ""}`],
     [`Water pumped (${lv})`, none ? "none: not farmed by radar" : `${fmt(val("water_m3") / 1e3)} thousand m³/y`],
     [`Pumping electricity (${lv})`, none ? "none" : `${fmt(val("elec_kwh") / 1e3)} MWh/y`],
   ];
@@ -799,36 +941,52 @@ function monthTicks(x0, x1) {
 function makeChart(canvas, spec, x0, x1) {
   return new Chart(canvas, {
     type: "line",
-    data: { datasets: spec.sets.map(([label, data, color]) => ({ label, data, borderColor: color, backgroundColor: color, borderWidth: 2,
-      pointRadius: 3, pointHoverRadius: 5, pointHitRadius: 8, pointBorderColor: "#fff", pointBorderWidth: 1.5, tension: 0, spanGaps: 40 * DAY })) },
+    // Solid 2 px lines with a small dot per radar date in the series colour (no ring at rest, so the line never looks
+    // dashed); an open dot marks the de-emphasised series (HH). The panel-coloured ring appears only on hover.
+    data: { datasets: spec.sets.map(([label, data, color, open]) => ({ label, data, borderColor: color, backgroundColor: open ? CH.panel : color, borderWidth: open ? 1.5 : 2,
+      pointRadius: open ? 2.5 : 2.25, pointBorderColor: color, pointBorderWidth: open ? 1.25 : 0, pointHitRadius: 10,
+      pointHoverRadius: 5, pointHoverBorderColor: CH.panel, pointHoverBorderWidth: 2, pointHoverBackgroundColor: color,
+      tension: 0, spanGaps: 40 * DAY, borderJoinStyle: "round", borderCapStyle: "round" })) },
     options: {
       maintainAspectRatio: false, animation: reduceMotion ? false : { duration: 250 },
       interaction: { mode: "nearest", axis: "x", intersect: false },
-      layout: { padding: { right: 4 } },
+      layout: { padding: { top: 4, right: 4 } },
       scales: {
         x: { type: "linear", min: x0, max: x1, grid: { display: false }, border: { color: CH.axis },
           afterBuildTicks: (ax) => { ax.ticks = monthTicks(x0, x1).map((value) => ({ value })); },
-          ticks: { autoSkip: false, maxRotation: 0, color: CH.muted, font: { size: 11 },
+          ticks: { autoSkip: false, maxRotation: 0, color: CH.muted, font: { size: 11 }, padding: 4,
             callback: (v, i) => { const d = new Date(v); return i === 0 || d.getUTCMonth() === 0 ? `${MON[d.getUTCMonth()]} ’${String(d.getUTCFullYear()).slice(2)}` : MON[d.getUTCMonth()]; } } },
-        y: { min: spec.min, max: spec.max, suggestedMax: spec.sugMax, grid: { color: CH.grid }, border: { display: false },
-          ticks: { color: CH.muted, font: { size: 11 }, maxTicksLimit: 5 },
+        y: { min: spec.min, max: spec.max, suggestedMax: spec.sugMax, grid: { color: CH.grid, lineWidth: 1, drawTicks: false }, border: { display: false },
+          ticks: { color: CH.muted, font: { size: 11 }, maxTicksLimit: 5, padding: 6,
+            callback(v, i, t) {   // Chart.js's own number format, with a true minus sign
+              const f = Chart.Ticks && Chart.Ticks.formatters && Chart.Ticks.formatters.numeric;
+              return String(f ? f.call(this, v, i, t) : v).replace(/^-/, "−");
+            } },
           title: { display: !!spec.unit, text: spec.unit, color: CH.muted, font: { size: 11 } } },
       },
       plugins: {
-        title: { display: true, text: spec.title, align: "start", color: "#1d2327", font: { size: 13, weight: "600" }, padding: { top: 2, bottom: 6 } },
-        // Line-style keys in the series colour (a point-style key would take the points' white ring colour).
-        legend: { display: spec.sets.length > 1, align: "start", labels: { usePointStyle: true, pointStyle: "line", pointStyleWidth: 22, boxHeight: 8, color: CH.ink, font: { size: 12 },
-          generateLabels: (chart) => Chart.defaults.plugins.legend.labels.generateLabels(chart).map((l) => Object.assign(l, { strokeStyle: chart.data.datasets[l.datasetIndex].borderColor, lineWidth: 2.5 })) } },
-        tooltip: { callbacks: { title: (items) => items.length ? dayLabel(new Date(items[0].parsed.x).toISOString().slice(0, 10)) : "",
-          label: (it) => `${it.dataset.label}: ${fmt(it.parsed.y, spec.d)}${spec.unit ? " " + spec.unit : ""}` } },
+        title: { display: false },   // the figure caption above the canvas holds the title and the key
+        legend: { display: false },
+        tooltip: { backgroundColor: CH.panel, titleColor: CH.title, bodyColor: CH.ink, borderColor: CH.axis, borderWidth: 1, cornerRadius: 8, padding: 9,
+          boxPadding: 4, usePointStyle: true, titleFont: { weight: "600" },
+          callbacks: { title: (items) => items.length ? dayLabel(new Date(items[0].parsed.x).toISOString().slice(0, 10)) : "",
+            labelPointStyle: () => ({ pointStyle: "line", rotation: 0 }),
+            labelColor: (it) => ({ borderColor: it.dataset.borderColor, backgroundColor: it.dataset.borderColor, borderWidth: 2 }),
+            label: (it) => `${it.dataset.label}: ${fmt(it.parsed.y, spec.d)}${spec.unit ? " " + spec.unit : ""}` } },
       },
     },
   });
 }
+// A chart's caption: its title and what it shows, and for two or more series a key with a line and point per series.
+function chartCaption(spec) {
+  const key = spec.sets.length > 1 ? `<ul class="chart-key">${spec.sets.map(([label, , color, open]) =>
+    `<li><i class="lk${open ? " open" : ""}" style="--c:${color}" aria-hidden="true"></i>${esc(label)}</li>`).join("")}</ul>` : "";
+  return `<span class="chart-t">${esc(spec.title)}</span>${spec.sub ? `<span class="chart-s">${esc(spec.sub)}</span>` : ""}${key}`;
+}
 function renderFieldCharts() {
   const p = state.fieldShown;
   if (!p) return;
-  const boxes = [...document.querySelectorAll("#fieldbody .chartbox")];
+  const boxes = [...document.querySelectorAll("#fieldbody .chart")];
   state.charts.forEach((ch) => ch.destroy());
   state.charts = [];
   const hide = (note) => { boxes.forEach((b) => { b.hidden = true; }); $("chartnote").textContent = note; };
@@ -838,19 +996,22 @@ function renderFieldCharts() {
   $("tstable").innerHTML = tsTable(t);
   $("tsvalues").hidden = false;
   if (typeof Chart === "undefined") { hide("The charts need Chart.js, which did not load; the values are in the table below."); return; }
-  if (!state.chartsStyled) { Chart.defaults.font.family = getComputedStyle(document.body).fontFamily; Chart.defaults.color = CH.muted; state.chartsStyled = true; }
+  if (!state.chartsStyled) { chartTokens(); Chart.defaults.font.family = getComputedStyle(document.body).fontFamily; Chart.defaults.color = CH.muted; state.chartsStyled = true; }
   const S = { hv: pts(t.hv), hh: pts(t.hh), coh: pts(t.coh), sm: pts(t.sm) };
   const xs = [].concat(...Object.values(S)).map((q) => q.x);
   if (!xs.length) { hide("This field's radar record is empty."); return; }
   const x0 = Math.min(...xs) - 6 * DAY, x1 = Math.max(...xs) + 6 * DAY;
   const specs = [
-    { el: "tschart", title: "NISAR backscatter: rises with crop canopy", unit: "dB", d: 1, sets: [["HV backscatter", S.hv, CH.hv], ["HH backscatter", S.hh, CH.hh]] },
-    { el: "tschart2", title: "12-day coherence: 0 = surface changed, 1 = unchanged", d: 2, min: 0, max: 1, sets: [["12-day coherence", S.coh, CH.ink]] },
-    { el: "tschart3", title: "Soil moisture (200 m)", unit: "m³/m³", d: 2, min: 0, sugMax: 0.4, sets: [["Soil moisture", S.sm, CH.ink]] },
+    { el: "tschart", title: "NISAR backscatter", sub: "Rises with crop canopy", unit: "dB", d: 1, sets: [["HV backscatter", S.hv, CH.hv], ["HH backscatter", S.hh, CH.hh, true]] },
+    { el: "tschart2", title: "12-day coherence", sub: "0 = surface changed, 1 = unchanged", d: 2, min: 0, max: 1, sets: [["12-day coherence", S.coh, CH.ink]] },
+    { el: "tschart3", title: "Soil moisture", sub: "200 m grid", unit: "m³/m³", d: 2, min: 0, sugMax: 0.4, sets: [["Soil moisture", S.sm, CH.ink]] },
   ];
   specs.forEach((s, i) => {
     s.sets = s.sets.filter(([, d]) => d.length);
+    if (!boxes[i]) return;
     boxes[i].hidden = !s.sets.length;
+    const cap = $(s.el + "-cap");
+    if (cap) cap.innerHTML = s.sets.length ? chartCaption(s) : "";
     if (s.sets.length) state.charts.push(makeChart($(s.el), s, x0, x1));
   });
   // Name the long break between the seasons, which the time axis shows as a gap in the lines.
@@ -885,7 +1046,7 @@ function showExample(zoom) {
   if (!lyr) { $("examplefield").hidden = true; return; }
   if (!$("showfields").checked) { $("showfields").checked = true; state.fieldsLayer.addTo(map); raiseMarkers(); }
   if (zoom) {
-    try { map.fitBounds(lyr.getBounds(), { maxZoom: 14, animate: !reduceMotion, padding: [24, 24], paddingBottomRight: [24, toolsPad() + 12] }); } catch (e) { /* keep the view */ }
+    try { const b = lyr.getBounds(); map.fitBounds(b, { maxZoom: 14, animate: !reduceMotion, ...fitOpts(b, 24, 14) }); } catch (e) { /* keep the view */ }
   }
   showField(lyr.feature.properties, true, lyr);
 }
@@ -915,9 +1076,9 @@ function renderSteps() {
     "<b>Fields</b> are mapped from ESA Sentinel-2 greenness: seasonal maximum NDVI from offset-corrected surface reflectance, 20 m.",
     `<b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.${dates}`,
     `A field is <b>farmed in a season</b> when ${ruleText(V)}`,
-    `<b>Classes</b> follow the national rules: farmed in winter only → winter crop, treated as wheat; summer only → summer crop; farmed in both seasons → wheat followed by a summer crop where the national Sentinel-2 spring check finds the field brown in late spring, otherwise year-round fodder; tree cover of 30% or more and farmed in both seasons → palm grove. The spring check comes from the national field covering at least half of each field${matched}; fields without one stay year-round, as in the national run.`,
+    `<b>Classes</b> follow the national rules: a field farmed in winter only is a winter crop, treated as wheat; in summer only, a summer crop; in both seasons, wheat followed by a summer crop where the national Sentinel-2 spring check finds the field brown in late spring, otherwise year-round fodder; with tree cover of 30% or more and farmed in both seasons, a palm grove. The spring check comes from the national field covering at least half of each field${matched}; fields without one stay year-round, as in the national run.`,
     `<b>Water</b> = farmed area × irrigation depth by class (published for winter and year-round fields; summer crops get half the perennial depth, a rotation gets both) ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency, with ${head ? esc(head) : "the depth to water as the head"}; <b>CO₂</b> for grid or diesel pumps.`,
-    "<b>Wheat straw</b> from winter-only and rotation fields and <b>palm fronds</b> from palm groves → <b>biochar plant siting</b>, with transport emissions for feed in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets, each feed with its own char factors; only truck emissions are subtracted, so it is a technical potential.",
+    "<b>Wheat straw</b> from winter-only and rotation fields and <b>palm fronds</b> from palm groves feed the <b>biochar plant siting</b>, with transport emissions for feed in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets, each feed with its own char factors; only truck emissions are subtracted, so it is a technical potential.",
   ].map((t) => `<li>${t}</li>`).join("");
 }
 function renderDiffers() {
@@ -957,7 +1118,7 @@ function windowText() {
   const nat = arr(W.national_winter) || rx(get(state, "national", "s2rule"), "s2_winter_active over ") || rx(SF.rule, "national flags use ");
   const long = (d) => String(d).replace(/\b([A-Z][a-z]{2})\b/, (m) => MONTH[MON.indexOf(m)] || m);
   const dayOf = (d) => { const m = String(d).match(/(\d{1,2}) ([A-Z][a-z]{2})/); const i = m ? MON.indexOf(m[2]) : -1; return i < 0 ? null : ((i + 2) % 12) * 31 + +m[1]; };   // season order, November first
-  // the day after a window end ("31 Jan" → "1 February"): wheat greening after both ends is missed by both runs
+  // the day after a window end ("31 Jan" gives "1 February"): wheat greening after both ends is missed by both runs
   const next = (d) => { const m = String(d).match(/(\d{1,2}) ([A-Z][a-z]{2})/); const t = new Date(Date.UTC(2001, MON.indexOf(m[2]), +m[1] + 1)); return `${t.getUTCDate()} ${MONTH[t.getUTCMonth()]}`; };
   if (!here || !nat) return "shorter here than in the national run, so wheat that greens only late in winter is missed here";
   const a = dayOf(here[1]), b = dayOf(nat[1]);
@@ -1010,7 +1171,7 @@ const PARAM_LABEL = {
   pumping_lift_m: "Static depth to water (m)", drawdown_m: "Drawdown while pumping (m)", pivot_pressure_head_m: "Pivot pressure head (m)",
   pump_wire_to_water_eff: "Pump wire-to-water efficiency", grid_kgco2e_per_kwh: "Grid electricity (kg CO₂e/kWh)",
   diesel_water_kwh_per_litre: "Diesel pump water work (kWh/litre)", diesel_kgco2e_per_litre: "Diesel (kg CO₂e/litre)",
-  road_circuity: "Road distance ÷ straight line", truck_kgco2e_per_tkm: "Truck (kg CO₂e per t·km)",
+  road_circuity: "Road distance ÷ straight line", truck_kgco2e_per_tkm: "Truck (kg CO₂e per tonne-km)",
   char_yield_dry: "Straw char yield (t char / t dry feed)", char_c_org: "Straw char organic carbon", h_c_org_straw: "Straw char H/C_org (molar)",
   palm_char_yield_dry: "Frond char yield (t char / t dry feed)", palm_char_c_org: "Frond char organic carbon", h_c_org_fronds: "Frond char H/C_org (molar)",
   soil_temp_c: "Soil temperature (°C)", straw_char_persistence: "Straw char carbon kept over 200 years", fronds_char_persistence: "Frond char carbon kept over 200 years",
@@ -1071,11 +1232,30 @@ async function loadNational() {
   } catch (e) { /* the comparison sentence is left out */ }
 }
 
+// The first data did not load: say so in the panel too, hide the controls that have nothing to act on, and keep the
+// Method tab (static text) readable.
+function showFailure() {
+  const alert = (role) => `<p class="alert"${role ? ' role="alert"' : ""}>${ICO("alert")}<span>The results could not be loaded. Reload the page to try again; the Method tab still explains how they are made.</span></p>`;
+  ["overview", "check", "plants", "field"].forEach((n, i) => {
+    const tab = $("tab-" + n);
+    if (!tab) return;
+    [...tab.children].forEach((c) => { c.hidden = true; });
+    tab.insertAdjacentHTML("afterbegin", alert(i === 0));
+  });
+  if ($("params") && !$("params").innerHTML.trim()) $("params").innerHTML = `<p class="note">The factor table is part of the results summary, which did not load.</p>`;
+  const t = $("maptools");
+  if (t && !state.fieldsLayer) t.hidden = true;
+}
+
 window.appStarted = true;  // read by the check that follows app.js in qassim.html
+wireTabs();
 init().catch((e) => {
   console.error(e);
   const box = $("loading");  // still there if the first data failed to load
   const msg = `Could not load data: ${e && e.message ? e.message : e}`;
-  if (box) { box.textContent = msg; box.classList.add("error"); }
+  if (box) { box.textContent = msg; box.classList.remove("is-busy"); box.classList.add("error"); }
   else document.body.insertAdjacentHTML("beforeend", `<p style="padding:16px">${esc(msg)}</p>`);
+  safe(showFailure);
+  const h = location.hash.slice(1);
+  if ($("tab-" + h)) openTab(h, { hash: false, scroll: false });
 });
