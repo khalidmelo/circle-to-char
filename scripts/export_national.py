@@ -61,10 +61,11 @@ def pooled(cells):
     pe = ((tp + fp) * (tp + fn) + (fn + tn) * (fp + tn)) / tot ** 2
     prec = tp / (tp + fp) if tp + fp else None  # a true 0 stays 0; None only when undefined
     rec = tp / (tp + fn) if tp + fn else None
-    return {"validated_ha": round(tot), "agreement": round(po, 3), "chance_agreement": round(pe, 3),
-            "kappa": round((po - pe) / (1 - pe), 3) if pe < 1 else None,
-            "precision": None if prec is None else round(prec, 3), "recall": None if rec is None else round(rec, 3),
-            "f1": round(2 * tp / (2 * tp + fp + fn), 3) if 2 * tp + fp + fn else None,
+    # 4 decimals: pages print percentages, and 3 decimals let 0.6848 round twice to 69%
+    return {"validated_ha": round(tot), "agreement": round(po, 4), "chance_agreement": round(pe, 4),
+            "kappa": round((po - pe) / (1 - pe), 4) if pe < 1 else None,
+            "precision": None if prec is None else round(prec, 4), "recall": None if rec is None else round(rec, 4),
+            "f1": round(2 * tp / (2 * tp + fp + fn), 4) if 2 * tp + fp + fn else None,
             "radar_ha": round(tp + fp), "s2_ha": round(tp + fn)}
 
 

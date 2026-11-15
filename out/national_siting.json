@@ -7,23 +7,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 279,
-  "plants_outside_boxes": 157,
-  "distinct_sites": 250,
-  "feed_used_t": 2784046,
-  "feed_outside_boxes_t": 1611530,
-  "supply_t": 2884468,
+  "plants": 280,
+  "plants_outside_boxes": 101,
+  "distinct_sites": 193,
+  "feed_used_t": 2796129,
+  "feed_outside_boxes_t": 886802,
+  "supply_t": 2899469,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 2593407.0,
+   "manure": 2608409.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 842447
+   "litter": 844814
   },
-  "net_removal_tco2": 1101052,
-  "cement_outlet_plants": 16,
-  "cement_retained_tco2": 86340,
+  "net_removal_tco2": 1107215,
+  "cement_outlet_plants": 10,
+  "cement_retained_tco2": 55232,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -31,21 +31,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0095,
+  "median_transport_share": 0.0077,
   "feed_used_by_feed_t": {
-   "straw": 226978,
-   "fronds": 63935,
+   "straw": 226871,
+   "fronds": 64012,
    "litter": 0,
-   "manure": 2493133
+   "manure": 2505246
   },
   "credited_by_feed_tco2": {
-   "straw": 118464,
-   "fronds": 38843,
+   "straw": 118408,
+   "fronds": 38889,
    "litter": 0,
-   "manure": 955722
+   "manure": 960366
   },
   "capped": false,
-  "supply_left_t": 100422,
+  "supply_left_t": 103340,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -58,22 +58,22 @@
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
   "plants": 104,
-  "plants_outside_boxes": 57,
-  "distinct_sites": 100,
-  "feed_used_t": 2587644,
-  "feed_outside_boxes_t": 1439109,
-  "supply_t": 2884468,
+  "plants_outside_boxes": 33,
+  "distinct_sites": 90,
+  "feed_used_t": 2595098,
+  "feed_outside_boxes_t": 730696,
+  "supply_t": 2899469,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 2593407.0,
+   "manure": 2608409.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 842447
+   "litter": 844814
   },
-  "net_removal_tco2": 1022178,
-  "cement_outlet_plants": 9,
-  "cement_retained_tco2": 122720,
+  "net_removal_tco2": 1028134,
+  "cement_outlet_plants": 8,
+  "cement_retained_tco2": 111625,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -81,21 +81,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0136,
+  "median_transport_share": 0.0087,
   "feed_used_by_feed_t": {
-   "straw": 224419,
-   "fronds": 63081,
+   "straw": 222902,
+   "fronds": 63036,
    "litter": 0,
-   "manure": 2300144
+   "manure": 2309160
   },
   "credited_by_feed_tco2": {
-   "straw": 117128,
-   "fronds": 38324,
+   "straw": 116337,
+   "fronds": 38296,
    "litter": 0,
-   "manure": 881742
+   "manure": 885198
   },
   "capped": false,
-  "supply_left_t": 296824,
+  "supply_left_t": 304371,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -107,23 +107,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 47,
-  "plants_outside_boxes": 23,
+  "plants": 48,
+  "plants_outside_boxes": 16,
   "distinct_sites": 43,
-  "feed_used_t": 2317845,
-  "feed_outside_boxes_t": 1158521,
-  "supply_t": 2884468,
+  "feed_used_t": 2379878,
+  "feed_outside_boxes_t": 555465,
+  "supply_t": 2899469,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 2593407.0,
+   "manure": 2608409.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 842447
+   "litter": 844814
   },
-  "net_removal_tco2": 916512,
-  "cement_outlet_plants": 8,
-  "cement_retained_tco2": 216018,
+  "net_removal_tco2": 941507,
+  "cement_outlet_plants": 4,
+  "cement_retained_tco2": 108888,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -131,21 +131,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0184,
+  "median_transport_share": 0.012,
   "feed_used_by_feed_t": {
-   "straw": 225930,
-   "fronds": 63239,
+   "straw": 221924,
+   "fronds": 50626,
    "litter": 0,
-   "manure": 2028676
+   "manure": 2107327
   },
   "credited_by_feed_tco2": {
-   "straw": 117917,
-   "fronds": 38420,
+   "straw": 115826,
+   "fronds": 30757,
    "litter": 0,
-   "manure": 777677
+   "manure": 807827
   },
   "capped": false,
-  "supply_left_t": 566623,
+  "supply_left_t": 519592,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -365,23 +365,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "boxes",
-  "plants": 115,
-  "plants_outside_boxes": 10,
-  "distinct_sites": 91,
-  "feed_used_t": 1147330,
-  "feed_outside_boxes_t": 190,
-  "supply_t": 1184111,
+  "plants": 188,
+  "plants_outside_boxes": 16,
+  "distinct_sites": 99,
+  "feed_used_t": 1876119,
+  "feed_outside_boxes_t": 179,
+  "supply_t": 1917525,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 893050.0,
+   "manure": 1626465.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 266410
+   "litter": 336908
   },
-  "net_removal_tco2": 481811,
-  "cement_outlet_plants": 5,
-  "cement_retained_tco2": 26791,
+  "net_removal_tco2": 758652,
+  "cement_outlet_plants": 6,
+  "cement_retained_tco2": 34827,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -389,21 +389,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0067,
+  "median_transport_share": 0.0069,
   "feed_used_by_feed_t": {
-   "straw": 226524,
-   "fronds": 63745,
+   "straw": 226610,
+   "fronds": 60535,
    "litter": 0,
-   "manure": 857061
+   "manure": 1588974
   },
   "credited_by_feed_tco2": {
-   "straw": 118227,
-   "fronds": 38727,
+   "straw": 118272,
+   "fronds": 36777,
    "litter": 0,
-   "manure": 328547
+   "manure": 609120
   },
   "capped": false,
-  "supply_left_t": 36781,
+  "supply_left_t": 41406,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -415,23 +415,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "boxes",
-  "plants": 43,
-  "plants_outside_boxes": 3,
-  "distinct_sites": 39,
-  "feed_used_t": 1070530,
+  "plants": 72,
+  "plants_outside_boxes": 6,
+  "distinct_sites": 57,
+  "feed_used_t": 1791813,
   "feed_outside_boxes_t": 149,
-  "supply_t": 1184111,
+  "supply_t": 1917525,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 893050.0,
+   "manure": 1626465.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 266410
+   "litter": 336908
   },
-  "net_removal_tco2": 448008,
-  "cement_outlet_plants": 5,
-  "cement_retained_tco2": 67090,
+  "net_removal_tco2": 722721,
+  "cement_outlet_plants": 3,
+  "cement_retained_tco2": 41899,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -439,21 +439,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0097,
+  "median_transport_share": 0.0074,
   "feed_used_by_feed_t": {
-   "straw": 223947,
-   "fronds": 51492,
+   "straw": 220819,
+   "fronds": 51351,
    "litter": 0,
-   "manure": 795092
+   "manure": 1519643
   },
   "credited_by_feed_tco2": {
-   "straw": 116882,
-   "fronds": 31283,
+   "straw": 115249,
+   "fronds": 31197,
    "litter": 0,
-   "manure": 304792
+   "manure": 582543
   },
   "capped": false,
-  "supply_left_t": 113581,
+  "supply_left_t": 125712,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -465,23 +465,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "boxes",
-  "plants": 21,
-  "plants_outside_boxes": 1,
-  "distinct_sites": 19,
-  "feed_used_t": 1028268,
+  "plants": 35,
+  "plants_outside_boxes": 3,
+  "distinct_sites": 30,
+  "feed_used_t": 1714799,
   "feed_outside_boxes_t": 149,
-  "supply_t": 1184111,
+  "supply_t": 1917525,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "manure": 893050.0,
+   "manure": 1626465.0,
    "straw": 227016.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 266410
+   "litter": 336908
   },
-  "net_removal_tco2": 428338,
+  "net_removal_tco2": 690864,
   "cement_outlet_plants": 3,
-  "cement_retained_tco2": 80325,
+  "cement_retained_tco2": 81467,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7068,
@@ -489,21 +489,21 @@
    "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0131,
+  "median_transport_share": 0.0088,
   "feed_used_by_feed_t": {
-   "straw": 211063,
-   "fronds": 49970,
+   "straw": 219593,
+   "fronds": 50020,
    "litter": 0,
-   "manure": 767234
+   "manure": 1445186
   },
   "credited_by_feed_tco2": {
-   "straw": 110158,
-   "fronds": 30358,
+   "straw": 114609,
+   "fronds": 30389,
    "litter": 0,
-   "manure": 294113
+   "manure": 554001
   },
   "capped": false,
-  "supply_left_t": 155843,
+  "supply_left_t": 202726,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -518,21 +518,21 @@
   "upside_of": "central_50kt",
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 65,
-  "plants_outside_boxes": 35,
-  "distinct_sites": 64,
-  "feed_used_t": 3230900,
-  "feed_outside_boxes_t": 1843626,
-  "supply_t": 3726915,
+  "plants": 67,
+  "plants_outside_boxes": 24,
+  "distinct_sites": 61,
+  "feed_used_t": 3323840,
+  "feed_outside_boxes_t": 1164361,
+  "supply_t": 3744283,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "litter": 842447.0,
-   "manure": 2593407.0,
+   "litter": 844814.0,
+   "manure": 2608409.0,
    "straw": 227016.0
   },
-  "net_removal_tco2": 1243812,
-  "cement_outlet_plants": 6,
-  "cement_retained_tco2": 166968,
+  "net_removal_tco2": 1282675,
+  "cement_outlet_plants": 4,
+  "cement_retained_tco2": 113419,
   "credited_basis": "not credited: hypothetical upper bound with litter at its total-carbon H/C 0.69 (h_c_org_litter upside)",
   "persistence": {
    "straw": 0.7068,
@@ -540,21 +540,21 @@
    "litter": 0.5792,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0169,
+  "median_transport_share": 0.0126,
   "feed_used_by_feed_t": {
-   "straw": 225715,
-   "fronds": 63038,
-   "litter": 737341,
-   "manure": 2204805
+   "straw": 222988,
+   "fronds": 62048,
+   "litter": 732798,
+   "manure": 2306005
   },
   "credited_by_feed_tco2": {
-   "straw": 117805,
-   "fronds": 38298,
-   "litter": 264168,
-   "manure": 845194
+   "straw": 116381,
+   "fronds": 37696,
+   "litter": 262541,
+   "manure": 883988
   },
   "capped": false,
-  "supply_left_t": 496015,
+  "supply_left_t": 420444,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -569,21 +569,21 @@
   "upside_of": "central_boxes_50kt",
   "residue_tier": "radar",
   "livestock_coverage": "boxes",
-  "plants": 27,
-  "plants_outside_boxes": 2,
-  "distinct_sites": 26,
-  "feed_used_t": 1326137,
+  "plants": 41,
+  "plants_outside_boxes": 3,
+  "distinct_sites": 34,
+  "feed_used_t": 2040839,
   "feed_outside_boxes_t": 149,
-  "supply_t": 1450521,
+  "supply_t": 2254433,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "litter": 266410.0,
-   "manure": 893050.0,
+   "litter": 336908.0,
+   "manure": 1626465.0,
    "straw": 227016.0
   },
-  "net_removal_tco2": 536182,
-  "cement_outlet_plants": 2,
-  "cement_retained_tco2": 55627,
+  "net_removal_tco2": 807604,
+  "cement_outlet_plants": 3,
+  "cement_retained_tco2": 84706,
   "credited_basis": "not credited: hypothetical upper bound with litter at its total-carbon H/C 0.69 (h_c_org_litter upside)",
   "persistence": {
    "straw": 0.7068,
@@ -591,21 +591,21 @@
    "litter": 0.5792,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0127,
+  "median_transport_share": 0.0097,
   "feed_used_by_feed_t": {
-   "straw": 217164,
-   "fronds": 50691,
-   "litter": 243832,
-   "manure": 814449
+   "straw": 222731,
+   "fronds": 50668,
+   "litter": 314235,
+   "manure": 1453205
   },
   "credited_by_feed_tco2": {
-   "straw": 113342,
-   "fronds": 30797,
-   "litter": 87358,
-   "manure": 312212
+   "straw": 116247,
+   "fronds": 30782,
+   "litter": 112582,
+   "manure": 557075
   },
   "capped": false,
-  "supply_left_t": 124384,
+  "supply_left_t": 213594,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -620,23 +620,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 155,
-  "plants_outside_boxes": 86,
-  "distinct_sites": 143,
-  "feed_used_t": 1540058,
-  "feed_outside_boxes_t": 846024,
-  "supply_t": 1641210,
+  "plants": 154,
+  "plants_outside_boxes": 52,
+  "distinct_sites": 125,
+  "feed_used_t": 1536479,
+  "feed_outside_boxes_t": 474512,
+  "supply_t": 1649472,
   "supply_by_feed_t": {
    "fronds": 39698.0,
-   "manure": 1433035.0,
+   "manure": 1441297.0,
    "straw": 168478.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 577360
+   "litter": 578996
   },
-  "net_removal_tco2": 410072,
-  "cement_outlet_plants": 10,
-  "cement_retained_tco2": 36162,
+  "net_removal_tco2": 410441,
+  "cement_outlet_plants": 6,
+  "cement_retained_tco2": 22283,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.6943,
@@ -644,21 +644,21 @@
    "litter": 0.0,
    "manure": 0.5632
   },
-  "median_transport_share": 0.018,
+  "median_transport_share": 0.0129,
   "feed_used_by_feed_t": {
-   "straw": 168217,
-   "fronds": 39494,
+   "straw": 168169,
+   "fronds": 39451,
    "litter": 0,
-   "manure": 1332347
+   "manure": 1328859
   },
   "credited_by_feed_tco2": {
-   "straw": 77649,
-   "fronds": 22389,
+   "straw": 77627,
+   "fronds": 22364,
    "litter": 0,
-   "manure": 317782
+   "manure": 316950
   },
   "capped": false,
-  "supply_left_t": 101152,
+  "supply_left_t": 112993,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -674,22 +674,22 @@
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
   "plants": 56,
-  "plants_outside_boxes": 27,
-  "distinct_sites": 54,
-  "feed_used_t": 1383807,
-  "feed_outside_boxes_t": 690476,
-  "supply_t": 1641210,
+  "plants_outside_boxes": 17,
+  "distinct_sites": 47,
+  "feed_used_t": 1390951,
+  "feed_outside_boxes_t": 358720,
+  "supply_t": 1649472,
   "supply_by_feed_t": {
    "fronds": 39698.0,
-   "manure": 1433035.0,
+   "manure": 1441297.0,
    "straw": 168478.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 577360
+   "litter": 578996
   },
-  "net_removal_tco2": 370609,
+  "net_removal_tco2": 374886,
   "cement_outlet_plants": 6,
-  "cement_retained_tco2": 59154,
+  "cement_retained_tco2": 58564,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.6943,
@@ -697,21 +697,21 @@
    "litter": 0.0,
    "manure": 0.5632
   },
-  "median_transport_share": 0.0278,
+  "median_transport_share": 0.0176,
   "feed_used_by_feed_t": {
-   "straw": 167598,
-   "fronds": 39396,
+   "straw": 168142,
+   "fronds": 39265,
    "litter": 0,
-   "manure": 1176813
+   "manure": 1183543
   },
   "credited_by_feed_tco2": {
-   "straw": 77364,
-   "fronds": 22333,
+   "straw": 77615,
+   "fronds": 22259,
    "litter": 0,
-   "manure": 280685
+   "manure": 282290
   },
   "capped": false,
-  "supply_left_t": 257403,
+  "supply_left_t": 258521,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -727,22 +727,22 @@
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
   "plants": 24,
-  "plants_outside_boxes": 10,
-  "distinct_sites": 24,
-  "feed_used_t": 1181091,
-  "feed_outside_boxes_t": 560438,
-  "supply_t": 1641210,
+  "plants_outside_boxes": 7,
+  "distinct_sites": 22,
+  "feed_used_t": 1186710,
+  "feed_outside_boxes_t": 239265,
+  "supply_t": 1649472,
   "supply_by_feed_t": {
    "fronds": 39698.0,
-   "manure": 1433035.0,
+   "manure": 1441297.0,
    "straw": 168478.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 577360
+   "litter": 578996
   },
-  "net_removal_tco2": 316773,
-  "cement_outlet_plants": 3,
-  "cement_retained_tco2": 53991,
+  "net_removal_tco2": 318176,
+  "cement_outlet_plants": 4,
+  "cement_retained_tco2": 75189,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.6943,
@@ -750,21 +750,21 @@
    "litter": 0.0,
    "manure": 0.5632
   },
-  "median_transport_share": 0.0364,
+  "median_transport_share": 0.018,
   "feed_used_by_feed_t": {
-   "straw": 146170,
-   "fronds": 37169,
+   "straw": 142583,
+   "fronds": 30741,
    "litter": 0,
-   "manure": 997752
+   "manure": 1013386
   },
   "credited_by_feed_tco2": {
-   "straw": 67473,
-   "fronds": 21071,
+   "straw": 65817,
+   "fronds": 17427,
    "litter": 0,
-   "manure": 237976
+   "manure": 241705
   },
   "capped": false,
-  "supply_left_t": 460119,
+  "supply_left_t": 462762,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -834,23 +834,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 442,
-  "plants_outside_boxes": 241,
-  "distinct_sites": 361,
-  "feed_used_t": 4413003,
-  "feed_outside_boxes_t": 2401738,
-  "supply_t": 4514991,
+  "plants": 444,
+  "plants_outside_boxes": 166,
+  "distinct_sites": 279,
+  "feed_used_t": 4432646,
+  "feed_outside_boxes_t": 1499240,
+  "supply_t": 4537022,
   "supply_by_feed_t": {
    "fronds": 202227.0,
-   "manure": 3830184.0,
+   "manure": 3852215.0,
    "straw": 482580.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 1374966
+   "litter": 1378830
   },
-  "net_removal_tco2": 2488473,
-  "cement_outlet_plants": 14,
-  "cement_retained_tco2": 104904,
+  "net_removal_tco2": 2501135,
+  "cement_outlet_plants": 11,
+  "cement_retained_tco2": 83646,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7298,
@@ -858,21 +858,21 @@
    "litter": 0.0,
    "manure": 0.7342
   },
-  "median_transport_share": 0.0054,
+  "median_transport_share": 0.0049,
   "feed_used_by_feed_t": {
-   "straw": 482526,
-   "fronds": 202227,
+   "straw": 482580,
+   "fronds": 202130,
    "litter": 0,
-   "manure": 3728250
+   "manure": 3747937
   },
   "credited_by_feed_tco2": {
-   "straw": 280766,
-   "fronds": 127980,
+   "straw": 280797,
+   "fronds": 127919,
    "litter": 0,
-   "manure": 2095646
+   "manure": 2106711
   },
   "capped": false,
-  "supply_left_t": 101988,
+  "supply_left_t": 104375,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -887,23 +887,23 @@
   "credited": true,
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
-  "plants": 172,
-  "plants_outside_boxes": 92,
-  "distinct_sites": 160,
-  "feed_used_t": 4274010,
-  "feed_outside_boxes_t": 2281101,
-  "supply_t": 4514991,
+  "plants": 169,
+  "plants_outside_boxes": 53,
+  "distinct_sites": 132,
+  "feed_used_t": 4222985,
+  "feed_outside_boxes_t": 1330744,
+  "supply_t": 4537022,
   "supply_by_feed_t": {
    "fronds": 202227.0,
-   "manure": 3830184.0,
+   "manure": 3852215.0,
    "straw": 482580.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 1374966
+   "litter": 1378830
   },
-  "net_removal_tco2": 2404759,
-  "cement_outlet_plants": 8,
-  "cement_retained_tco2": 153121,
+  "net_removal_tco2": 2380764,
+  "cement_outlet_plants": 7,
+  "cement_retained_tco2": 134229,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7298,
@@ -911,21 +911,21 @@
    "litter": 0.0,
    "manure": 0.7342
   },
-  "median_transport_share": 0.0077,
+  "median_transport_share": 0.0054,
   "feed_used_by_feed_t": {
-   "straw": 480512,
-   "fronds": 201360,
+   "straw": 481509,
+   "fronds": 200105,
    "litter": 0,
-   "manure": 3592138
+   "manure": 3541370
   },
   "credited_by_feed_tco2": {
-   "straw": 279594,
-   "fronds": 127432,
+   "straw": 280174,
+   "fronds": 126638,
    "litter": 0,
-   "manure": 2019137
+   "manure": 1990600
   },
   "capped": false,
-  "supply_left_t": 240981,
+  "supply_left_t": 314037,
   "feeds": "all",
   "radius_km": 100.0
  },
@@ -941,22 +941,22 @@
   "residue_tier": "radar",
   "livestock_coverage": "kingdom",
   "plants": 80,
-  "plants_outside_boxes": 38,
-  "distinct_sites": 76,
-  "feed_used_t": 3967163,
-  "feed_outside_boxes_t": 2037524,
-  "supply_t": 4514991,
+  "plants_outside_boxes": 24,
+  "distinct_sites": 73,
+  "feed_used_t": 3970877,
+  "feed_outside_boxes_t": 1175573,
+  "supply_t": 4537022,
   "supply_by_feed_t": {
    "fronds": 202227.0,
-   "manure": 3830184.0,
+   "manure": 3852215.0,
    "straw": 482580.0
   },
   "uncredited_supply_by_feed_t": {
-   "litter": 1374966
+   "litter": 1378830
   },
-  "net_removal_tco2": 2228581,
-  "cement_outlet_plants": 5,
-  "cement_retained_tco2": 191488,
+  "net_removal_tco2": 2236242,
+  "cement_outlet_plants": 4,
+  "cement_retained_tco2": 157547,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
    "straw": 0.7298,
@@ -964,21 +964,21 @@
    "litter": 0.0,
    "manure": 0.7342
   },
-  "median_transport_share": 0.0103,
+  "median_transport_share": 0.0069,
   "feed_used_by_feed_t": {
-   "straw": 469102,
-   "fronds": 199808,
+   "straw": 472763,
+   "fronds": 200817,
    "litter": 0,
-   "manure": 3298252
+   "manure": 3297297
   },
   "credited_by_feed_tco2": {
-   "straw": 272955,
-   "fronds": 126450,
+   "straw": 275085,
+   "fronds": 127088,
    "litter": 0,
-   "manure": 1853944
+   "manure": 1853407
   },
   "capped": false,
-  "supply_left_t": 547828,
+  "supply_left_t": 566144,
   "feeds": "all",
   "radius_km": 100.0
  },

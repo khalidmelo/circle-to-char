@@ -1,0 +1,14 @@
+{
+ "fields_national_columns": [
+  "lon",
+  "lat",
+  "area_ha",
+  "admin",
+  "class_s2"
+ ],
+ "fields_national_sha256": "38c3194b01056b41a685cec797664b006975c5387eedcbc6a56aa9c8e2ec3c85",
+ "osm_places_sha256": "ec123bbf1c67d2a5d28b302c448742d1a2df7543e6cb34543289ee39808250c6",
+ "NEAR_KM": 10.0,
+ "CUT_T": 20,
+ "manure_points_sha256": "a5458d4164e4c50a8078a65c2e95f724c1cb119fe5fe482cf36c2d094c311429"
+}

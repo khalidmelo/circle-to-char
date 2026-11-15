@@ -52,8 +52,8 @@ Runs (main; each summary entry carries a "basis" note)
 
 Output: out/national_plants_<tag>.csv and summary in out/national_siting.json (keys: summarize())
 Usage:  .venv/bin/python model/national_siting.py [central] [low] [high]   (default all three; each call replaces the last)
-        It stops before any run if data/national/manure_points.csv does not match params.json (check_manure_points):
-        rerun model/manure.py first.
+        It stops before any run if data/national/manure_points.csv does not match params.json or the placement inputs
+        recorded in its sidecar manure_points.meta.json (check_manure_points): rerun model/manure.py first.
 """
 import json
 import sys
@@ -160,26 +160,30 @@ def persistence(p, feed):
 
 def manure_points_gaps(m, levels=LEVELS):
     """{"<feed>_<level>": (t in the file, t params.json gives now, relative gap)} for litter and manure in a
-    data/national/manure_points.csv frame m. Recomputed with model/manure.py's own steps on the file's own inputs
-    (chk_share; heads_CTL, heads_SHP, heads_GTS, already scaled to GASTAT 2024): per-cell tonnes from params.json,
-    rounded to 0.1 t as written, then its 20 t cell cut on central litter + manure. The file keeps only the cells that
-    passed the cut when it was written, so a cell a new cut would add is not seen, and a change in the GASTAT head
-    totals (the heads_* scaling) is not caught."""
+    data/national/manure_points.csv frame m. Recomputed with model/manure.py's own steps (tonnes()) on the file's own
+    inputs, the factor-free shares of the national herds placed in each cell (share_CTL, share_SHP, share_GTS,
+    share_BRL, share_LAY): heads = share x the GASTAT 2024 totals (or layers_on_hand) in params.json, per-cell tonnes
+    from params.json, rounded to 0.1 t as written, then its cell cut (model/manure.py CUT_T) on central litter +
+    manure. A change to the head totals or to any factor is caught. The file keeps only the cells that passed the cut
+    when it was written, so a cell a new cut would add is not seen (check_manure_points catches a changed CUT_T through
+    the sidecar), and a change to model/manure.py's regional tables or placement code is not (rerun model/manure.py
+    after editing it)."""
+    import manure  # model/manure.py, next to this file: its CUT_T
     raw = json.loads((ROOT / "model" / "params.json").read_text())
     p = {k: v for k, v in raw.items() if not k.startswith("_")}
     tot = raw["gastat_2024_totals"]["values"]
 
-    def cells(lv):  # as model/manure.py main(), term by term
-        poultry_kg = (tot["broilers_produced"] * p["broiler_litter_kg_dry_per_bird"][lv]
-                      + p["layers_on_hand"][lv] * p["layer_manure_kg_dry_per_hen"][lv])
-        litter = m.chk_share * poultry_kg * p["collectable_share_poultry"][lv] / 1000
-        manure = (m.heads_CTL * p["cattle_manure_kg_dry_per_head"][lv] * p["collectable_share_cattle"][lv]
-                  + (m.heads_SHP + m.heads_GTS) * p["small_ruminant_manure_kg_dry_per_head"][lv]
-                  * p["collectable_share_small_ruminants"][lv]) / 1000
+    def cells(lv):  # as model/manure.py tonnes(), term by term
+        litter = (m.share_BRL * tot["broilers_produced"] * p["broiler_litter_kg_dry_per_bird"][lv]
+                  + m.share_LAY * p["layers_on_hand"][lv] * p["layer_manure_kg_dry_per_hen"][lv]) \
+            * p["collectable_share_poultry"][lv] / 1000
+        manure = (m.share_CTL * tot["cattle"] * p["cattle_manure_kg_dry_per_head"][lv] * p["collectable_share_cattle"][lv]
+                  + (m.share_SHP * tot["sheep"] + m.share_GTS * tot["goats"])
+                  * p["small_ruminant_manure_kg_dry_per_head"][lv] * p["collectable_share_small_ruminants"][lv]) / 1000
         return {"litter": litter.round(1), "manure": manure.round(1)}
 
     cen = cells("central")
-    keep = (cen["litter"] + cen["manure"]) > 20  # model/manure.py's cut of near-empty cells, on the central level
+    keep = (cen["litter"] + cen["manure"]) > manure.CUT_T  # model/manure.py's cut of near-empty cells, central level
     gaps = {}
     for lv in levels:
         for feed, t in cells(lv).items():
@@ -189,15 +193,31 @@ def manure_points_gaps(m, levels=LEVELS):
 
 
 def check_manure_points(levels=LEVELS):
-    """Stop (RuntimeError) unless data/national/manure_points.csv exists and its litter and manure totals at each of
-    levels are within MANURE_TOL of what params.json gives now (manure_points_gaps). A stale file (model/manure.py
-    not rerun after a params.json change) would otherwise be sited as it is. Returns the largest gap."""
-    mp = ROOT / "data" / "national" / "manure_points.csv"
+    """Stop (RuntimeError) unless data/national/manure_points.csv exists, its sidecar manure_points.meta.json (written
+    with it by model/manure.py) matches the current placement inputs and the CSV itself, and its litter and manure
+    totals at each of levels are within MANURE_TOL of what params.json gives now (manure_points_gaps). The sidecar
+    check catches a change to fields_national.csv's placement columns, to osm_places.csv, or to model/manure.py's
+    NEAR_KM or CUT_T since the run (manure.placement_inputs), and a CSV that is not the one that run wrote. A stale
+    file would otherwise be sited as it is. Returns the largest gap."""
+    import manure  # model/manure.py, next to this file: the placement fingerprint and CUT_T
+    nat = ROOT / "data" / "national"
+    mp = nat / "manure_points.csv"
     if not mp.exists():
         raise RuntimeError("data/national/manure_points.csv not found: run model/manure.py first")
+    meta = nat / manure.META
+    if not meta.exists():
+        raise RuntimeError(f"data/national/{manure.META} not found: rerun model/manure.py")
+    have = json.loads(meta.read_text())
+    want = json.loads(json.dumps(manure.placement_inputs(nat) | {"manure_points_sha256": manure.sha256_file(mp)}))
+    moved = [k if k.endswith("sha256") else f"{k} ({have.get(k)!r} recorded, {want[k]!r} now)" for k in want
+             if have.get(k) != want[k]]
+    if moved:
+        raise RuntimeError(f"data/national/manure_points.csv does not match data/national/{manure.META}: "
+                           f"{'; '.join(moved)} changed since model/manure.py ran: rerun model/manure.py, then "
+                           "model/national_siting.py.")
     m = pd.read_csv(mp)
-    need = ["heads_CTL", "heads_SHP", "heads_GTS", "chk_share"] + [f"{f}_t_dry_{lv}" for lv in levels
-                                                                   for f in ("litter", "manure")]
+    need = [f"share_{sp}" for sp in ("CTL", "SHP", "GTS", "BRL", "LAY")] + [f"{f}_t_dry_{lv}" for lv in levels
+                                                                            for f in ("litter", "manure")]
     miss = [c for c in need if c not in m.columns]
     if miss:
         raise RuntimeError(f"data/national/manure_points.csv lacks {miss}: rerun model/manure.py")
@@ -206,8 +226,8 @@ def check_manure_points(levels=LEVELS):
     if bad:
         raise RuntimeError(
             "data/national/manure_points.csv is stale: its totals differ by more than "
-            f"{MANURE_TOL:.1%} from what model/params.json gives now through model/manure.py's formula (same 20 t "
-            "cell cut), so model/manure.py was not rerun after a change: "
+            f"{MANURE_TOL:.1%} from what model/params.json gives now through model/manure.py's formula (same "
+            f"{manure.CUT_T} t cell cut), so model/manure.py was not rerun after a change: "
             + "; ".join(f"{k} {h:,.0f} t in the file against {w:,.0f} t ({g:+.2%})" for k, (h, w, g) in bad.items())
             + ". Rerun model/manure.py, then model/national_siting.py.")
     return max((abs(g[2]) for g in gaps.values()), default=0.0)

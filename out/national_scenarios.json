@@ -91,7 +91,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A1_floor": {
    "id": "A1_floor",
@@ -218,7 +218,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A1_southwest_line": {
    "id": "A1_southwest_line",
@@ -307,8 +307,8 @@
      "s2_ha": 10549
     }
    },
-   "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 0,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A4_both": {
    "id": "A4_both",
@@ -512,7 +512,7 @@
     }
    ],
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A4_radar": {
    "id": "A4_radar",
@@ -737,7 +737,7 @@
     }
    ],
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A4_s2fill": {
    "id": "A4_s2fill",
@@ -969,7 +969,7 @@
     }
    ],
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A4_either": {
    "id": "A4_either",
@@ -1171,7 +1171,7 @@
     }
    ],
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc0_swin_wradar": {
    "id": "A2_qc0_swin_wradar",
@@ -1263,7 +1263,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc0_swin_ws2": {
    "id": "A2_qc0_swin_ws2",
@@ -1363,7 +1363,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc0_swout_wradar": {
    "id": "A2_qc0_swout_wradar",
@@ -1455,7 +1455,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc0_swout_ws2": {
    "id": "A2_qc0_swout_ws2",
@@ -1555,7 +1555,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc1_swin_wradar": {
    "id": "A2_qc1_swin_wradar",
@@ -1648,7 +1648,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc1_swin_ws2": {
    "id": "A2_qc1_swin_ws2",
@@ -1748,7 +1748,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc1_swout_wradar": {
    "id": "A2_qc1_swout_wradar",
@@ -1841,7 +1841,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "A2_qc1_swout_ws2": {
    "id": "A2_qc1_swout_ws2",
@@ -1941,7 +1941,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_100": {
    "id": "B1_seasonal_100",
@@ -2136,7 +2136,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_50": {
    "id": "B1_seasonal_50",
@@ -2311,7 +2311,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_25": {
    "id": "B1_seasonal_25",
@@ -2486,7 +2486,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_wheat_100": {
    "id": "B1_wheat_100",
@@ -2680,7 +2680,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_fallow_100": {
    "id": "B1_fallow_100",
@@ -2875,7 +2875,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_100_s2fill": {
    "id": "B1_seasonal_100_s2fill",
@@ -3082,8 +3082,8 @@
      "s2_ha": 420403
     }
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_50_s2fill": {
    "id": "B1_seasonal_50_s2fill",
@@ -3271,8 +3271,8 @@
      "s2_ha": 420403
     }
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_seasonal_25_s2fill": {
    "id": "B1_seasonal_25_s2fill",
@@ -3460,8 +3460,8 @@
      "s2_ha": 420403
     }
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_wheat_100_s2fill": {
    "id": "B1_wheat_100_s2fill",
@@ -3666,8 +3666,8 @@
      "s2_ha": 420403
     }
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B1_fallow_100_s2fill": {
    "id": "B1_fallow_100_s2fill",
@@ -3873,8 +3873,8 @@
      "s2_ha": 420403
     }
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B2_lesa": {
    "id": "B2_lesa",
@@ -4008,7 +4008,7 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "B2_lepa": {
    "id": "B2_lepa",
@@ -4142,45 +4142,45 @@
     }
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C0_published": {
    "id": "C0_published",
    "family": "C",
    "name": "As published: soil or nearest cement by haul, both unlimited (gross)",
    "note": "The national page's siting: Puro crediting, no limit on soil absorption or cement uptake",
-   "plants": 47,
-   "feed_used_t": 2317845,
-   "supply_t": 2884468,
+   "plants": 48,
+   "feed_used_t": 2379878,
+   "supply_t": 2899469,
    "supply_by_feed_t": {
     "fronds": 64045.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 227016.0
    },
    "feed_used_by_feed_t": {
-    "straw": 225931,
-    "fronds": 63241,
+    "straw": 221926,
+    "fronds": 50623,
     "litter": 0,
-    "manure": 2028675
+    "manure": 2107329
    },
-   "radar_feed_share": 0.1248,
-   "char_t": 945952,
-   "char_to_cement_t": 161700,
-   "char_to_soil_t": 784252,
+   "radar_feed_share": 0.1145,
+   "char_t": 973823,
+   "char_to_cement_t": 84203,
+   "char_to_soil_t": 889620,
    "char_unplaced_t": 0,
-   "credited_tco2": 916512,
-   "retained_tco2": 978387,
-   "transport_tco2": 17497,
+   "credited_tco2": 941507,
+   "retained_tco2": 973436,
+   "transport_tco2": 12905,
    "feed_left_by_feed_t": {
-    "straw": 1085,
-    "fronds": 804,
+    "straw": 5090,
+    "fronds": 13422,
     "litter": 0,
-    "manure": 564732
+    "manure": 501080
    },
    "avoided_cement_tco2_not_removal": {
-    "low": 97020,
-    "central": 119658,
-    "high": 145530
+    "low": 50522,
+    "central": 62310,
+    "high": 75783
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -4202,8 +4202,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 28,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 9,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F1": {
    "id": "C1_F1",
@@ -4265,40 +4265,40 @@
     "manure": 0.6352
    },
    "seconds": 1,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3": {
    "id": "C1_F3",
    "family": "C",
    "name": "Radar feed + modelled manure",
    "note": "",
-   "plants": 36,
-   "feed_used_t": 1792904,
-   "supply_t": 2868380,
+   "plants": 37,
+   "feed_used_t": 1831135,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202023,
-    "fronds": 60766,
+    "straw": 201228,
+    "fronds": 49174,
     "litter": 0,
-    "manure": 1530118
+    "manure": 1580731
    },
-   "radar_feed_share": 0.1466,
-   "char_t": 727418,
-   "char_to_cement_t": 561915,
-   "char_to_soil_t": 165503,
+   "radar_feed_share": 0.1367,
+   "char_t": 744778,
+   "char_to_cement_t": 573227,
+   "char_to_soil_t": 171552,
    "char_unplaced_t": 0,
-   "credited_tco2": 712746,
-   "retained_tco2": 927717,
-   "transport_tco2": 16166,
+   "credited_tco2": 725641,
+   "retained_tco2": 945008,
+   "transport_tco2": 15219,
    "feed_left_by_feed_t": {
-    "straw": 10280,
-    "fronds": 1904,
+    "straw": 11075,
+    "fronds": 13496,
     "litter": 0,
-    "manure": 1063289
+    "manure": 1027678
    },
    "cement_use": [
     {
@@ -4322,19 +4322,25 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7935,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 10667,
+     "char_t": 13045,
      "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 31950,
-     "char_t": 25154,
+     "char_t": 31950,
+     "at_cap": true
+    },
+    {
+     "plant": "Rabigh (Arabian Cement)",
+     "allowance_t": 50250,
+     "char_t": 18325,
      "at_cap": false
     },
     {
@@ -4352,7 +4358,7 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 20754,
+     "char_t": 19360,
      "at_cap": false
     },
     {
@@ -4364,7 +4370,7 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 59091,
+     "char_t": 49142,
      "at_cap": false
     },
     {
@@ -4399,9 +4405,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 337149,
-    "central": 415817,
-    "high": 505724
+    "low": 343936,
+    "central": 424188,
+    "high": 515904
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -4426,8 +4432,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 22,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 7,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F1_25kt": {
    "id": "C1_F1_25kt",
@@ -4488,8 +4494,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F1_10kt": {
    "id": "C1_F1_10kt",
@@ -4550,41 +4556,41 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 2,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 1,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_25kt": {
    "id": "C1_F3_25kt",
    "family": "C",
    "name": "Radar feed + manure, 25 kt plants",
    "note": "",
-   "plants": 78,
-   "feed_used_t": 1940356,
-   "supply_t": 2868380,
+   "plants": 77,
+   "feed_used_t": 1921457,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 207066,
-    "fronds": 61385,
+    "straw": 205219,
+    "fronds": 61189,
     "litter": 0,
-    "manure": 1671912
+    "manure": 1655047
    },
-   "radar_feed_share": 0.1384,
-   "char_t": 789005,
-   "char_to_cement_t": 609462,
-   "char_to_soil_t": 178366,
-   "char_unplaced_t": 1178,
-   "credited_tco2": 770043,
-   "retained_tco2": 1002826,
-   "transport_tco2": 15160,
+   "radar_feed_share": 0.1386,
+   "char_t": 781258,
+   "char_to_cement_t": 606653,
+   "char_to_soil_t": 174607,
+   "char_unplaced_t": 0,
+   "credited_tco2": 764612,
+   "retained_tco2": 996655,
+   "transport_tco2": 14120,
    "feed_left_by_feed_t": {
-    "straw": 5237,
-    "fronds": 1284,
+    "straw": 7084,
+    "fronds": 1480,
     "litter": 0,
-    "manure": 921495
+    "manure": 953362
    },
    "cement_use": [
     {
@@ -4608,13 +4614,13 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 10550,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 11660,
+     "char_t": 12447,
      "at_cap": false
     },
     {
@@ -4632,7 +4638,7 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 11250,
+     "char_t": 10250,
      "at_cap": false
     },
     {
@@ -4650,8 +4656,8 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 25200,
-     "at_cap": true
+     "char_t": 24467,
+     "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
@@ -4662,7 +4668,7 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 72601,
+     "char_t": 75064,
      "at_cap": false
     },
     {
@@ -4686,8 +4692,8 @@
     {
      "plant": "Najran (Najran Cement (Aakfah grinding))",
      "allowance_t": 13275,
-     "char_t": 13275,
-     "at_cap": true
+     "char_t": 11180,
+     "at_cap": false
     },
     {
      "plant": "Taif (Umm Al-Qura Cement)",
@@ -4697,9 +4703,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 365677,
-    "central": 451002,
-    "high": 548516
+    "low": 363992,
+    "central": 448923,
+    "high": 545988
    },
    "plant_size_t": 25000,
    "credit": "puro",
@@ -4724,8 +4730,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 47,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 12,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_10kt": {
    "id": "C1_F3_10kt",
@@ -4733,32 +4739,32 @@
    "name": "Radar feed + manure, 10 kt plants",
    "note": "",
    "plants": 199,
-   "feed_used_t": 1986992,
-   "supply_t": 2868380,
+   "feed_used_t": 1987754,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211276,
-    "fronds": 62316,
+    "straw": 200511,
+    "fronds": 61094,
     "litter": 0,
-    "manure": 1713403
+    "manure": 1726143
    },
-   "radar_feed_share": 0.1377,
-   "char_t": 808109,
-   "char_to_cement_t": 625758,
-   "char_to_soil_t": 181726,
-   "char_unplaced_t": 626,
-   "credited_tco2": 791392,
-   "retained_tco2": 1029968,
-   "transport_tco2": 12994,
+   "radar_feed_share": 0.1316,
+   "char_t": 809784,
+   "char_to_cement_t": 621499,
+   "char_to_soil_t": 187143,
+   "char_unplaced_t": 1143,
+   "credited_tco2": 790013,
+   "retained_tco2": 1027043,
+   "transport_tco2": 12419,
    "feed_left_by_feed_t": {
-    "straw": 1027,
-    "fronds": 354,
+    "straw": 11792,
+    "fronds": 1576,
     "litter": 0,
-    "manure": 880004
+    "manure": 882266
    },
    "cement_use": [
     {
@@ -4788,13 +4794,13 @@
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 12581,
+     "char_t": 12682,
      "at_cap": false
     },
     {
      "plant": "Yanbu Al Bahr (Yanbu Cement)",
      "allowance_t": 63300,
-     "char_t": 16400,
+     "char_t": 12268,
      "at_cap": false
     },
     {
@@ -4806,7 +4812,7 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 21320,
+     "char_t": 17100,
      "at_cap": false
     },
     {
@@ -4824,8 +4830,8 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 23589,
-     "at_cap": false
+     "char_t": 25200,
+     "at_cap": true
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
@@ -4834,15 +4840,9 @@
      "at_cap": true
     },
     {
-     "plant": "Turaif (Northern Region Cement)",
-     "allowance_t": 6900,
-     "char_t": 3693,
-     "at_cap": false
-    },
-    {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 69972,
+     "char_t": 76046,
      "at_cap": false
     },
     {
@@ -4877,9 +4877,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 375455,
-    "central": 463061,
-    "high": 563182
+    "low": 372899,
+    "central": 459909,
+    "high": 559349
    },
    "plant_size_t": 10000,
    "credit": "puro",
@@ -4904,8 +4904,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 112,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 29,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_soil_unlimited": {
    "id": "C1_F3_soil_unlimited",
@@ -4913,44 +4913,44 @@
    "name": "Radar feed + manure, soil absorption unlimited",
    "note": "",
    "plants": 47,
-   "feed_used_t": 2316850,
-   "supply_t": 2868380,
+   "feed_used_t": 2330555,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211218,
-    "fronds": 61866,
+    "straw": 207213,
+    "fronds": 49248,
     "litter": 0,
-    "manure": 2043769
+    "manure": 2074094
    },
-   "radar_feed_share": 0.1179,
-   "char_t": 947358,
-   "char_to_cement_t": 154884,
-   "char_to_soil_t": 792474,
+   "radar_feed_share": 0.11,
+   "char_t": 954836,
+   "char_to_cement_t": 89158,
+   "char_to_soil_t": 865678,
    "char_unplaced_t": 0,
-   "credited_tco2": 913852,
-   "retained_tco2": 973146,
-   "transport_tco2": 17431,
+   "credited_tco2": 920887,
+   "retained_tco2": 954691,
+   "transport_tco2": 12267,
    "feed_left_by_feed_t": {
-    "straw": 1085,
-    "fronds": 804,
+    "straw": 5090,
+    "fronds": 13422,
     "litter": 0,
-    "manure": 549638
+    "manure": 534315
    },
    "cement_use": [
     {
-     "plant": "Buraydah (Qassim Cement)",
-     "allowance_t": 68550,
-     "char_t": 41108,
+     "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
+     "allowance_t": 31950,
+     "char_t": 21100,
      "at_cap": false
     },
     {
-     "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
-     "allowance_t": 31950,
-     "char_t": 31950,
+     "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
+     "allowance_t": 12780,
+     "char_t": 12780,
      "at_cap": true
     },
     {
@@ -4960,28 +4960,22 @@
      "at_cap": false
     },
     {
-     "plant": "Marat (City Cement)",
-     "allowance_t": 42600,
-     "char_t": 20788,
+     "plant": "Al-Muzahmiyya (Riyadh Cement)",
+     "allowance_t": 49350,
+     "char_t": 20903,
      "at_cap": false
     },
     {
-     "plant": "Jubail (Eastern Province Cement)",
-     "allowance_t": 38700,
-     "char_t": 19948,
-     "at_cap": false
-    },
-    {
-     "plant": "Al Oyun (Saudi Cement)",
-     "allowance_t": 95550,
-     "char_t": 19990,
-     "at_cap": false
+     "plant": "Najran (Najran Cement (Aakfah grinding))",
+     "allowance_t": 13275,
+     "char_t": 13275,
+     "at_cap": true
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 92930,
-    "central": 114614,
-    "high": 139396
+    "low": 53495,
+    "central": 65977,
+    "high": 80242
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5006,41 +5000,41 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 27,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 7,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_soildose_0.5": {
    "id": "C1_F3_soildose_0.5",
    "family": "C",
    "name": "Radar feed + manure, soil dose 0.5 t/ha/yr",
    "note": "",
-   "plants": 32,
-   "feed_used_t": 1592993,
-   "supply_t": 2868380,
+   "plants": 34,
+   "feed_used_t": 1681135,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 194481,
-    "fronds": 59753,
+    "straw": 189651,
+    "fronds": 47514,
     "litter": 0,
-    "manure": 1338760
+    "manure": 1443968
    },
-   "radar_feed_share": 0.1596,
-   "char_t": 644022,
-   "char_to_cement_t": 541158,
-   "char_to_soil_t": 102863,
+   "radar_feed_share": 0.1411,
+   "char_t": 682971,
+   "char_to_cement_t": 582018,
+   "char_to_soil_t": 100955,
    "char_unplaced_t": 0,
-   "credited_tco2": 637006,
-   "retained_tco2": 845090,
-   "transport_tco2": 14000,
+   "credited_tco2": 667259,
+   "retained_tco2": 891053,
+   "transport_tco2": 14123,
    "feed_left_by_feed_t": {
-    "straw": 17822,
-    "fronds": 2916,
+    "straw": 22652,
+    "fronds": 15156,
     "litter": 0,
-    "manure": 1254647
+    "manure": 1164441
    },
    "cement_use": [
     {
@@ -5064,25 +5058,31 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7825,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 13916,
+     "char_t": 16262,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 280,
+     "char_t": 2035,
      "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 31950,
-     "char_t": 23730,
+     "char_t": 31950,
+     "at_cap": true
+    },
+    {
+     "plant": "Rabigh (Arabian Cement)",
+     "allowance_t": 50250,
+     "char_t": 10496,
      "at_cap": false
     },
     {
@@ -5100,19 +5100,19 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 17858,
-     "at_cap": false
+     "char_t": 25200,
+     "at_cap": true
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 20701,
-     "at_cap": false
+     "char_t": 27225,
+     "at_cap": true
     },
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 45646,
+     "char_t": 54781,
      "at_cap": false
     },
     {
@@ -5147,9 +5147,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 324695,
-    "central": 400457,
-    "high": 487042
+    "low": 349211,
+    "central": 430693,
+    "high": 523816
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5174,8 +5174,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 27,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 7,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_soildose_2": {
    "id": "C1_F3_soildose_2",
@@ -5183,32 +5183,32 @@
    "name": "Radar feed + manure, soil dose 2 t/ha/yr",
    "note": "",
    "plants": 40,
-   "feed_used_t": 1992993,
-   "supply_t": 2868380,
+   "feed_used_t": 1972321,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211160,
-    "fronds": 61818,
+    "straw": 203660,
+    "fronds": 49239,
     "litter": 0,
-    "manure": 1720016
+    "manure": 1719422
    },
-   "radar_feed_share": 0.137,
-   "char_t": 810702,
-   "char_to_cement_t": 530205,
-   "char_to_soil_t": 280495,
+   "radar_feed_share": 0.1282,
+   "char_t": 804071,
+   "char_to_cement_t": 502934,
+   "char_to_soil_t": 301139,
    "char_unplaced_t": 0,
-   "credited_tco2": 789153,
-   "retained_tco2": 990971,
-   "transport_tco2": 17964,
+   "credited_tco2": 779876,
+   "retained_tco2": 971069,
+   "transport_tco2": 15462,
    "feed_left_by_feed_t": {
-    "straw": 1143,
-    "fronds": 852,
+    "straw": 8643,
+    "fronds": 13430,
     "litter": 0,
-    "manure": 873391
+    "manure": 888987
    },
    "cement_use": [
     {
@@ -5232,26 +5232,32 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7825,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 4168,
+     "char_t": 6612,
      "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 31950,
-     "char_t": 23730,
+     "char_t": 31950,
+     "at_cap": true
+    },
+    {
+     "plant": "Rabigh (Arabian Cement)",
+     "allowance_t": 50250,
+     "char_t": 13949,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 42600,
-     "at_cap": true
+     "char_t": 39319,
+     "at_cap": false
     },
     {
      "plant": "Jubail (Eastern Province Cement)",
@@ -5262,25 +5268,25 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 25200,
-     "at_cap": true
+     "char_t": 6073,
+     "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 16145,
-     "at_cap": false
+     "char_t": 27225,
+     "at_cap": true
     },
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 52550,
+     "char_t": 34782,
      "at_cap": false
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
      "allowance_t": 49350,
-     "char_t": 45237,
+     "char_t": 20903,
      "at_cap": false
     },
     {
@@ -5292,8 +5298,8 @@
     {
      "plant": "Al-Kharj (Yamama Cement)",
      "allowance_t": 90900,
-     "char_t": 84400,
-     "at_cap": false
+     "char_t": 90900,
+     "at_cap": true
     },
     {
      "plant": "Najran (Najran Cement (Aakfah grinding))",
@@ -5309,9 +5315,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 318123,
-    "central": 392352,
-    "high": 477184
+    "low": 301760,
+    "central": 372171,
+    "high": 452641
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5336,8 +5342,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 24,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 7,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_dose_0.25pct": {
    "id": "C1_F3_dose_0.25pct",
@@ -5345,32 +5351,32 @@
    "name": "Radar feed + manure, cement dose 0.25%",
    "note": "",
    "plants": 13,
-   "feed_used_t": 647010,
-   "supply_t": 2868380,
+   "feed_used_t": 650000,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 160907,
-    "fronds": 48228,
+    "straw": 139351,
+    "fronds": 38559,
     "litter": 0,
-    "manure": 437874
+    "manure": 472089
    },
-   "radar_feed_share": 0.3232,
-   "char_t": 249807,
-   "char_to_cement_t": 89671,
-   "char_to_soil_t": 158798,
-   "char_unplaced_t": 1338,
-   "credited_tco2": 275842,
-   "retained_tco2": 310602,
-   "transport_tco2": 4065,
+   "radar_feed_share": 0.2737,
+   "char_t": 254495,
+   "char_to_cement_t": 99400,
+   "char_to_soil_t": 151396,
+   "char_unplaced_t": 3700,
+   "credited_tco2": 270122,
+   "retained_tco2": 308331,
+   "transport_tco2": 3644,
    "feed_left_by_feed_t": {
-    "straw": 51396,
-    "fronds": 14442,
+    "straw": 72952,
+    "fronds": 24110,
     "litter": 0,
-    "manure": 2155533
+    "manure": 2136320
    },
    "cement_use": [
     {
@@ -5383,6 +5389,18 @@
      "plant": "Bisha (Southern Province Cement)",
      "allowance_t": 3195,
      "char_t": 3195,
+     "at_cap": true
+    },
+    {
+     "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
+     "allowance_t": 5325,
+     "char_t": 5325,
+     "at_cap": true
+    },
+    {
+     "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
+     "allowance_t": 2130,
+     "char_t": 2130,
      "at_cap": true
     },
     {
@@ -5412,7 +5430,7 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 4200,
-     "char_t": 1461,
+     "char_t": 2989,
      "at_cap": false
     },
     {
@@ -5424,13 +5442,13 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 15925,
-     "char_t": 15925,
-     "at_cap": true
+     "char_t": 9685,
+     "at_cap": false
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
      "allowance_t": 8225,
-     "char_t": 6870,
+     "char_t": 8101,
      "at_cap": false
     },
     {
@@ -5442,8 +5460,8 @@
     {
      "plant": "Al-Kharj (Yamama Cement)",
      "allowance_t": 15150,
-     "char_t": 9396,
-     "at_cap": false
+     "char_t": 15150,
+     "at_cap": true
     },
     {
      "plant": "Najran (Najran Cement (Aakfah grinding))",
@@ -5459,9 +5477,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 53803,
-    "central": 66357,
-    "high": 80704
+    "low": 59640,
+    "central": 73556,
+    "high": 89460
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5486,41 +5504,41 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 13,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 4,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_dose_0.5pct": {
    "id": "C1_F3_dose_0.5pct",
    "family": "C",
    "name": "Radar feed + manure, cement dose 0.5%",
    "note": "",
-   "plants": 21,
-   "feed_used_t": 1023237,
-   "supply_t": 2868380,
+   "plants": 20,
+   "feed_used_t": 985569,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 180416,
-    "fronds": 56201,
+    "straw": 173303,
+    "fronds": 44800,
     "litter": 0,
-    "manure": 786621
+    "manure": 767464
    },
-   "radar_feed_share": 0.2312,
-   "char_t": 405551,
-   "char_to_cement_t": 235810,
-   "char_to_soil_t": 165426,
-   "char_unplaced_t": 4316,
-   "credited_tco2": 417086,
-   "retained_tco2": 507913,
-   "transport_tco2": 8572,
+   "radar_feed_share": 0.2213,
+   "char_t": 391589,
+   "char_to_cement_t": 222500,
+   "char_to_soil_t": 162954,
+   "char_unplaced_t": 6137,
+   "credited_tco2": 398473,
+   "retained_tco2": 484289,
+   "transport_tco2": 7645,
    "feed_left_by_feed_t": {
-    "straw": 31887,
-    "fronds": 6468,
+    "straw": 39000,
+    "fronds": 17870,
     "litter": 0,
-    "manure": 1806786
+    "manure": 1840945
    },
    "cement_use": [
     {
@@ -5542,16 +5560,16 @@
      "at_cap": true
     },
     {
+     "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
+     "allowance_t": 4260,
+     "char_t": 4260,
+     "at_cap": true
+    },
+    {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 8550,
      "char_t": 8550,
      "at_cap": true
-    },
-    {
-     "plant": "Yanbu Al Bahr (Yanbu Cement)",
-     "allowance_t": 21100,
-     "char_t": 17337,
-     "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
@@ -5562,8 +5580,8 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 16750,
-     "char_t": 16750,
-     "at_cap": true
+     "char_t": 14300,
+     "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
@@ -5616,8 +5634,8 @@
     {
      "plant": "Najran (Najran Cement (Aakfah grinding))",
      "allowance_t": 4425,
-     "char_t": 2208,
-     "at_cap": false
+     "char_t": 4425,
+     "at_cap": true
     },
     {
      "plant": "Taif (Umm Al-Qura Cement)",
@@ -5627,9 +5645,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 141486,
-    "central": 174499,
-    "high": 212229
+    "low": 133500,
+    "central": 164650,
+    "high": 200250
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5654,41 +5672,41 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 17,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 5,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_dose_2.5pct": {
    "id": "C1_F3_dose_2.5pct",
    "family": "C",
    "name": "Radar feed + manure, cement dose 2.5%",
    "note": "",
-   "plants": 43,
-   "feed_used_t": 2135416,
-   "supply_t": 2868380,
+   "plants": 42,
+   "feed_used_t": 2074965,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211253,
-    "fronds": 61741,
+    "straw": 203828,
+    "fronds": 49249,
     "litter": 0,
-    "manure": 1862424
+    "manure": 1821888
    },
-   "radar_feed_share": 0.1278,
-   "char_t": 870800,
-   "char_to_cement_t": 701455,
-   "char_to_soil_t": 169346,
+   "radar_feed_share": 0.122,
+   "char_t": 847367,
+   "char_to_cement_t": 676209,
+   "char_to_soil_t": 171159,
    "char_unplaced_t": 0,
-   "credited_tco2": 842058,
-   "retained_tco2": 1110101,
-   "transport_tco2": 19651,
+   "credited_tco2": 818098,
+   "retained_tco2": 1076530,
+   "transport_tco2": 16612,
    "feed_left_by_feed_t": {
-    "straw": 1050,
-    "fronds": 928,
+    "straw": 8475,
+    "fronds": 13420,
     "litter": 0,
-    "manure": 730983
+    "manure": 786521
    },
    "cement_use": [
     {
@@ -5700,8 +5718,8 @@
     {
      "plant": "Bisha (Southern Province Cement)",
      "allowance_t": 31950,
-     "char_t": 29925,
-     "at_cap": false
+     "char_t": 31950,
+     "at_cap": true
     },
     {
      "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
@@ -5712,26 +5730,26 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 21300,
-     "char_t": 21300,
-     "at_cap": true
+     "char_t": 21100,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 42750,
-     "char_t": 10667,
+     "char_t": 13045,
      "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 53250,
-     "char_t": 21100,
+     "char_t": 39841,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 71000,
-     "char_t": 71000,
-     "at_cap": true
+     "char_t": 56926,
+     "at_cap": false
     },
     {
      "plant": "Jubail (Eastern Province Cement)",
@@ -5742,50 +5760,56 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 42000,
-     "char_t": 42000,
-     "at_cap": true
+     "char_t": 30290,
+     "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 45375,
-     "char_t": 33604,
-     "at_cap": false
+     "char_t": 45375,
+     "at_cap": true
     },
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 159250,
-     "char_t": 19990,
+     "char_t": 13244,
      "at_cap": false
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
      "allowance_t": 82250,
-     "char_t": 79006,
+     "char_t": 20903,
      "at_cap": false
     },
     {
      "plant": "Al Lith (United Cement Industrial)",
      "allowance_t": 46500,
-     "char_t": 42200,
-     "at_cap": false
+     "char_t": 46500,
+     "at_cap": true
     },
     {
      "plant": "Al-Kharj (Yamama Cement)",
      "allowance_t": 151500,
-     "char_t": 76539,
+     "char_t": 97375,
      "at_cap": false
     },
     {
      "plant": "Najran (Najran Cement (Aakfah grinding))",
      "allowance_t": 22125,
-     "char_t": 22125,
-     "at_cap": true
+     "char_t": 21910,
+     "at_cap": false
+    },
+    {
+     "plant": "Taif (Umm Al-Qura Cement)",
+     "allowance_t": 39750,
+     "char_t": 5750,
+     "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 420873,
-    "central": 519077,
-    "high": 631310
+    "low": 405725,
+    "central": 500395,
+    "high": 608588
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5810,8 +5834,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 27,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 7,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C1_F3_dose_5pct": {
    "id": "C1_F3_dose_5pct",
@@ -5819,104 +5843,98 @@
    "name": "Radar feed + manure, cement dose 5%",
    "note": "",
    "plants": 48,
-   "feed_used_t": 2377969,
-   "supply_t": 2868380,
+   "feed_used_t": 2374965,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211360,
-    "fronds": 61858,
+    "straw": 207472,
+    "fronds": 49331,
     "litter": 0,
-    "manure": 2104753
+    "manure": 2118162
    },
-   "radar_feed_share": 0.1149,
-   "char_t": 973134,
-   "char_to_cement_t": 803686,
-   "char_to_soil_t": 169449,
+   "radar_feed_share": 0.1081,
+   "char_t": 973539,
+   "char_to_cement_t": 802381,
+   "char_to_soil_t": 171159,
    "char_unplaced_t": 0,
-   "credited_tco2": 932763,
-   "retained_tco2": 1239520,
-   "transport_tco2": 21965,
+   "credited_tco2": 931125,
+   "retained_tco2": 1237422,
+   "transport_tco2": 19113,
    "feed_left_by_feed_t": {
-    "straw": 943,
-    "fronds": 812,
+    "straw": 4831,
+    "fronds": 13338,
     "litter": 0,
-    "manure": 488654
+    "manure": 490247
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 228500,
-     "char_t": 214490,
+     "char_t": 125181,
      "at_cap": false
     },
     {
      "plant": "Bisha (Southern Province Cement)",
      "allowance_t": 63900,
-     "char_t": 19050,
+     "char_t": 47808,
      "at_cap": false
     },
     {
      "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
      "allowance_t": 106500,
-     "char_t": 63300,
+     "char_t": 84400,
      "at_cap": false
     },
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 42600,
-     "char_t": 42200,
-     "at_cap": false
+     "char_t": 42600,
+     "at_cap": true
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 85500,
-     "char_t": 10667,
+     "char_t": 13045,
      "at_cap": false
     },
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 106500,
-     "char_t": 21100,
+     "char_t": 39841,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 142000,
-     "char_t": 117176,
+     "char_t": 56926,
      "at_cap": false
     },
     {
      "plant": "Jubail (Eastern Province Cement)",
      "allowance_t": 129000,
-     "char_t": 98839,
+     "char_t": 77744,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 84000,
-     "char_t": 38748,
+     "char_t": 19360,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 90750,
-     "char_t": 12504,
-     "at_cap": false
-    },
-    {
-     "plant": "Al Oyun (Saudi Cement)",
-     "allowance_t": 318500,
-     "char_t": 19990,
-     "at_cap": false
+     "char_t": 90750,
+     "at_cap": true
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
      "allowance_t": 164500,
-     "char_t": 16971,
+     "char_t": 20903,
      "at_cap": false
     },
     {
@@ -5928,7 +5946,7 @@
     {
      "plant": "Al-Kharj (Yamama Cement)",
      "allowance_t": 303000,
-     "char_t": 42200,
+     "char_t": 97375,
      "at_cap": false
     },
     {
@@ -5939,9 +5957,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 482212,
-    "central": 594728,
-    "high": 723317
+    "low": 481429,
+    "central": 593762,
+    "high": 722143
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -5966,8 +5984,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 28,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 8,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_F3_vm0044_cement": {
    "id": "C3_F3_vm0044_cement",
@@ -5976,10 +5994,10 @@
    "note": "Verra sensitivity, Puro crediting otherwise: VM0044 v1.2 admits only chars of at least 50% carbon to non-soil uses, which manure and litter chars fall below; Puro 2025 v2 sets no carbon minimum, so the other rows let every char that passes its H/C_org gate into cement. With manure char limited to farmland, straw and frond chars here go to cement wherever allowance remains, keeping farmland for it; the other rows send char to cement only where that beats farmland after haul",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 2868380,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
@@ -5993,14 +6011,14 @@
    "char_to_cement_t": 77382,
    "char_to_soil_t": 84674,
    "char_unplaced_t": 0,
-   "credited_tco2": 208777,
-   "retained_tco2": 244684,
-   "transport_tco2": 2464,
+   "credited_tco2": 208864,
+   "retained_tco2": 244771,
+   "transport_tco2": 2377,
    "feed_left_by_feed_t": {
     "straw": 11803,
     "fronds": 13818,
     "litter": 0,
-    "manure": 2392759
+    "manure": 2407761
    },
    "cement_use": [
     {
@@ -6061,8 +6079,8 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 9,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 3,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_F3_retention": {
    "id": "C3_F3_retention",
@@ -6070,32 +6088,32 @@
    "name": "Radar feed + manure, sited for in-service retention in cement (not Puro)",
    "note": "",
    "plants": 36,
-   "feed_used_t": 1792993,
-   "supply_t": 2868380,
+   "feed_used_t": 1784328,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 209214,
-    "fronds": 61679,
+    "straw": 201228,
+    "fronds": 49174,
     "litter": 0,
-    "manure": 1522101
+    "manure": 1533924
    },
-   "radar_feed_share": 0.1511,
-   "char_t": 726539,
-   "char_to_cement_t": 618695,
-   "char_to_soil_t": 104371,
-   "char_unplaced_t": 3473,
-   "credited_tco2": 709373,
-   "retained_tco2": 949713,
-   "transport_tco2": 17292,
+   "radar_feed_share": 0.1403,
+   "char_t": 725026,
+   "char_to_cement_t": 636558,
+   "char_to_soil_t": 88469,
+   "char_unplaced_t": 0,
+   "credited_tco2": 706509,
+   "retained_tco2": 953210,
+   "transport_tco2": 16407,
    "feed_left_by_feed_t": {
-    "straw": 3089,
-    "fronds": 990,
+    "straw": 11075,
+    "fronds": 13496,
     "litter": 0,
-    "manure": 1071306
+    "manure": 1074485
    },
    "cement_use": [
     {
@@ -6119,13 +6137,13 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7825,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 17165,
+     "char_t": 19479,
      "at_cap": false
     },
     {
@@ -6137,7 +6155,13 @@
     {
      "plant": "Khulays (Alsafwa Cement)",
      "allowance_t": 31950,
-     "char_t": 31680,
+     "char_t": 31950,
+     "at_cap": true
+    },
+    {
+     "plant": "Rabigh (Arabian Cement)",
+     "allowance_t": 50250,
+     "char_t": 7891,
      "at_cap": false
     },
     {
@@ -6173,7 +6197,7 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 69299,
+     "char_t": 86153,
      "at_cap": false
     },
     {
@@ -6203,14 +6227,14 @@
     {
      "plant": "Taif (Umm Al-Qura Cement)",
      "allowance_t": 23850,
-     "char_t": 23850,
-     "at_cap": true
+     "char_t": 19340,
+     "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 371217,
-    "central": 457834,
-    "high": 556826
+    "low": 381935,
+    "central": 471053,
+    "high": 572902
    },
    "plant_size_t": 50000,
    "credit": "retention",
@@ -6235,42 +6259,42 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 25,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 10,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_E1_litter_upside": {
    "id": "C3_E1_litter_upside",
    "family": "C_upside",
    "name": "Upside, not credited: + poultry litter if its char were eligible",
    "note": "Not credited, a hypothetical upper bound: litter char counted at H/C 0.69, its total-carbon value (the earlier treatment), as if a measured char's H/C_org passed Puro's gate (rule 3.5.1) and the char met the Table 3.3 limits for soil use (rules 3.6.9-3.6.10); litter char may also go to cement (Table 3.2 BE3: WBC-Material declaration and 8 EFSA PAH at or below 4 mg/kg)",
-   "plants": 41,
-   "feed_used_t": 2031595,
-   "supply_t": 3710827,
+   "plants": 39,
+   "feed_used_t": 1942050,
+   "supply_t": 3728195,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "litter": 842447.0,
-    "manure": 2593407.0,
+    "litter": 844814.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 198183,
-    "fronds": 57547,
-    "litter": 332725,
-    "manure": 1443139
+    "straw": 184643,
+    "fronds": 57158,
+    "litter": 302624,
+    "manure": 1397624
    },
-   "radar_feed_share": 0.1259,
-   "char_t": 830232,
-   "char_to_cement_t": 660209,
-   "char_to_soil_t": 166585,
-   "char_unplaced_t": 3439,
-   "credited_tco2": 789592,
-   "retained_tco2": 1052717,
-   "transport_tco2": 18198,
+   "radar_feed_share": 0.1245,
+   "char_t": 793921,
+   "char_to_cement_t": 622103,
+   "char_to_soil_t": 169523,
+   "char_unplaced_t": 2299,
+   "credited_tco2": 758662,
+   "retained_tco2": 1005899,
+   "transport_tco2": 14541,
    "feed_left_by_feed_t": {
-    "straw": 14120,
-    "fronds": 5122,
-    "litter": 509722,
-    "manure": 1150268
+    "straw": 27660,
+    "fronds": 5512,
+    "litter": 542190,
+    "manure": 1210785
    },
    "cement_use": [
     {
@@ -6300,7 +6324,7 @@
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 12741,
+     "char_t": 13242,
      "at_cap": false
     },
     {
@@ -6312,8 +6336,8 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 50250,
-     "at_cap": true
+     "char_t": 17253,
+     "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
@@ -6330,8 +6354,8 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 25200,
-     "at_cap": true
+     "char_t": 17859,
+     "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
@@ -6342,8 +6366,8 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 93819,
-     "at_cap": false
+     "char_t": 95550,
+     "at_cap": true
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
@@ -6377,9 +6401,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 396125,
-    "central": 488555,
-    "high": 594188
+    "low": 373262,
+    "central": 460356,
+    "high": 559893
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -6411,42 +6435,42 @@
    "params_override": {
     "h_c_org_litter": 0.69
    },
-   "seconds": 45,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 13,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_E1_litter_upside_25kt": {
    "id": "C3_E1_litter_upside_25kt",
    "family": "C_upside",
    "name": "Upside, not credited: + poultry litter if its char were eligible, 25 kt plants",
    "note": "Not credited, a hypothetical upper bound: litter char counted at H/C 0.69, its total-carbon value (the earlier treatment), as if a measured char's H/C_org passed Puro's gate (rule 3.5.1) and the char met the Table 3.3 limits for soil use (rules 3.6.9-3.6.10); litter char may also go to cement (Table 3.2 BE3: WBC-Material declaration and 8 EFSA PAH at or below 4 mg/kg)",
-   "plants": 85,
-   "feed_used_t": 2118108,
-   "supply_t": 3710827,
+   "plants": 81,
+   "feed_used_t": 2024025,
+   "supply_t": 3728195,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "litter": 842447.0,
-    "manure": 2593407.0,
+    "litter": 844814.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 201183,
-    "fronds": 58984,
-    "litter": 354887,
-    "manure": 1503054
+    "straw": 188249,
+    "fronds": 58969,
+    "litter": 325893,
+    "manure": 1450906
    },
-   "radar_feed_share": 0.1228,
-   "char_t": 866344,
-   "char_to_cement_t": 688630,
-   "char_to_soil_t": 177019,
-   "char_unplaced_t": 695,
-   "credited_tco2": 827503,
-   "retained_tco2": 1102054,
-   "transport_tco2": 16039,
+   "radar_feed_share": 0.1221,
+   "char_t": 828017,
+   "char_to_cement_t": 653829,
+   "char_to_soil_t": 174188,
+   "char_unplaced_t": 0,
+   "credited_tco2": 793338,
+   "retained_tco2": 1053432,
+   "transport_tco2": 13690,
    "feed_left_by_feed_t": {
-    "straw": 11120,
-    "fronds": 3686,
-    "litter": 487560,
-    "manure": 1090353
+    "straw": 24054,
+    "fronds": 3700,
+    "litter": 518921,
+    "manure": 1157503
    },
    "cement_use": [
     {
@@ -6476,13 +6500,13 @@
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 13303,
+     "char_t": 13074,
      "at_cap": false
     },
     {
      "plant": "Yanbu Al Bahr (Yanbu Cement)",
      "allowance_t": 63300,
-     "char_t": 26127,
+     "char_t": 10570,
      "at_cap": false
     },
     {
@@ -6494,8 +6518,8 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 50250,
-     "at_cap": true
+     "char_t": 38003,
+     "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
@@ -6524,8 +6548,8 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 95550,
-     "at_cap": true
+     "char_t": 88782,
+     "at_cap": false
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
@@ -6559,9 +6583,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 413178,
-    "central": 509586,
-    "high": 619767
+    "low": 392297,
+    "central": 483833,
+    "high": 588446
    },
    "plant_size_t": 25000,
    "credit": "puro",
@@ -6593,42 +6617,42 @@
    "params_override": {
     "h_c_org_litter": 0.69
    },
-   "seconds": 96,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 24,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_E1_litter_upside_10kt": {
    "id": "C3_E1_litter_upside_10kt",
    "family": "C_upside",
    "name": "Upside, not credited: + poultry litter if its char were eligible, 10 kt plants",
    "note": "Not credited, a hypothetical upper bound: litter char counted at H/C 0.69, its total-carbon value (the earlier treatment), as if a measured char's H/C_org passed Puro's gate (rule 3.5.1) and the char met the Table 3.3 limits for soil use (rules 3.6.9-3.6.10); litter char may also go to cement (Table 3.2 BE3: WBC-Material declaration and 8 EFSA PAH at or below 4 mg/kg)",
-   "plants": 213,
-   "feed_used_t": 2128675,
-   "supply_t": 3710827,
+   "plants": 212,
+   "feed_used_t": 2119410,
+   "supply_t": 3728195,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "litter": 842447.0,
-    "manure": 2593407.0,
+    "litter": 844814.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 206771,
-    "fronds": 59072,
-    "litter": 345041,
-    "manure": 1517785
+    "straw": 199578,
+    "fronds": 59649,
+    "litter": 342131,
+    "manure": 1518055
    },
-   "radar_feed_share": 0.1249,
-   "char_t": 870107,
-   "char_to_cement_t": 686622,
-   "char_to_soil_t": 183486,
+   "radar_feed_share": 0.1223,
+   "char_t": 866961,
+   "char_to_cement_t": 682979,
+   "char_to_soil_t": 183983,
    "char_unplaced_t": 0,
-   "credited_tco2": 835802,
-   "retained_tco2": 1108962,
-   "transport_tco2": 13448,
+   "credited_tco2": 831840,
+   "retained_tco2": 1103389,
+   "transport_tco2": 13066,
    "feed_left_by_feed_t": {
-    "straw": 5532,
-    "fronds": 3598,
-    "litter": 497406,
-    "manure": 1075622
+    "straw": 12725,
+    "fronds": 3020,
+    "litter": 502683,
+    "manure": 1090354
    },
    "cement_use": [
     {
@@ -6658,13 +6682,13 @@
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 16878,
+     "char_t": 17040,
      "at_cap": false
     },
     {
      "plant": "Yanbu Al Bahr (Yanbu Cement)",
      "allowance_t": 63300,
-     "char_t": 25769,
+     "char_t": 21157,
      "at_cap": false
     },
     {
@@ -6676,8 +6700,8 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 50250,
-     "at_cap": true
+     "char_t": 46523,
+     "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
@@ -6700,13 +6724,13 @@
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 25187,
-     "at_cap": false
+     "char_t": 27225,
+     "at_cap": true
     },
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 92367,
+     "char_t": 94860,
      "at_cap": false
     },
     {
@@ -6741,9 +6765,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 411973,
-    "central": 508100,
-    "high": 617960
+    "low": 409787,
+    "central": 505404,
+    "high": 614681
    },
    "plant_size_t": 10000,
    "credit": "puro",
@@ -6775,55 +6799,55 @@
    "params_override": {
     "h_c_org_litter": 0.69
    },
-   "seconds": 157,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 70,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C3_E1_litter_upside_soil_unlimited": {
    "id": "C3_E1_litter_upside_soil_unlimited",
    "family": "C_upside",
    "name": "Upside, not credited: + poultry litter if its char were eligible, soil absorption unlimited",
    "note": "Not credited, a hypothetical upper bound: litter char counted at H/C 0.69, its total-carbon value (the earlier treatment), as if a measured char's H/C_org passed Puro's gate (rule 3.5.1) and the char met the Table 3.3 limits for soil use (rules 3.6.9-3.6.10); litter char may also go to cement (Table 3.2 BE3: WBC-Material declaration and 8 EFSA PAH at or below 4 mg/kg)",
-   "plants": 64,
-   "feed_used_t": 3180958,
-   "supply_t": 3710827,
+   "plants": 67,
+   "feed_used_t": 3326985,
+   "supply_t": 3728195,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "litter": 842447.0,
-    "manure": 2593407.0,
+    "litter": 844814.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 211001,
-    "fronds": 61664,
-    "litter": 714345,
-    "manure": 2193945
+    "straw": 208276,
+    "fronds": 60673,
+    "litter": 732118,
+    "manure": 2325918
    },
-   "radar_feed_share": 0.0857,
-   "char_t": 1314916,
-   "char_to_cement_t": 95847,
-   "char_to_soil_t": 1219069,
+   "radar_feed_share": 0.0808,
+   "char_t": 1377016,
+   "char_to_cement_t": 85169,
+   "char_to_soil_t": 1291847,
    "char_unplaced_t": 0,
-   "credited_tco2": 1223490,
-   "retained_tco2": 1262102,
-   "transport_tco2": 21062,
+   "credited_tco2": 1281238,
+   "retained_tco2": 1315987,
+   "transport_tco2": 18240,
    "feed_left_by_feed_t": {
-    "straw": 1302,
-    "fronds": 1006,
-    "litter": 128102,
-    "manure": 399462
+    "straw": 4027,
+    "fronds": 1996,
+    "litter": 112696,
+    "manure": 282491
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 20757,
+     "char_t": 20374,
      "at_cap": false
     },
     {
      "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
      "allowance_t": 31950,
-     "char_t": 21165,
-     "at_cap": false
+     "char_t": 31950,
+     "at_cap": true
     },
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
@@ -6832,22 +6856,16 @@
      "at_cap": true
     },
     {
-     "plant": "Jubail (Eastern Province Cement)",
-     "allowance_t": 38700,
-     "char_t": 21128,
-     "at_cap": false
-    },
-    {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 20017,
+     "char_t": 20065,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 57508,
-    "central": 70927,
-    "high": 86262
+    "low": 51101,
+    "central": 63025,
+    "high": 76652
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -6879,41 +6897,41 @@
    "params_override": {
     "h_c_org_litter": 0.69
    },
-   "seconds": 29,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 20,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C6_radius_50": {
    "id": "C6_radius_50",
    "family": "C",
    "name": "Radar feed + manure, haul radius 50 km",
    "note": "",
-   "plants": 21,
-   "feed_used_t": 1017215,
-   "supply_t": 2868380,
+   "plants": 27,
+   "feed_used_t": 1336206,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 184128,
-    "fronds": 47688,
+    "straw": 166569,
+    "fronds": 46279,
     "litter": 0,
-    "manure": 785400
+    "manure": 1123358
    },
-   "radar_feed_share": 0.2279,
-   "char_t": 403417,
-   "char_to_cement_t": 256480,
-   "char_to_soil_t": 146935,
+   "radar_feed_share": 0.1593,
+   "char_t": 540186,
+   "char_to_cement_t": 379097,
+   "char_to_soil_t": 161089,
    "char_unplaced_t": 0,
-   "credited_tco2": 419368,
-   "retained_tco2": 518089,
-   "transport_tco2": 6778,
+   "credited_tco2": 536672,
+   "retained_tco2": 681689,
+   "transport_tco2": 9011,
    "feed_left_by_feed_t": {
-    "straw": 28175,
-    "fronds": 14982,
+    "straw": 45734,
+    "fronds": 16390,
     "litter": 0,
-    "manure": 1808007
+    "manure": 1485051
    },
    "cement_use": [
     {
@@ -6937,43 +6955,49 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7935,
+     "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 42600,
-     "at_cap": true
+     "char_t": 15492,
+     "at_cap": false
     },
     {
      "plant": "Jubail (Eastern Province Cement)",
      "allowance_t": 38700,
-     "char_t": 14439,
-     "at_cap": false
+     "char_t": 38700,
+     "at_cap": true
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 17057,
+     "char_t": 1255,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 16145,
-     "at_cap": false
+     "char_t": 27225,
+     "at_cap": true
     },
     {
-     "plant": "Al-Muzahmiyya (Riyadh Cement)",
-     "allowance_t": 49350,
-     "char_t": 13125,
+     "plant": "Al Oyun (Saudi Cement)",
+     "allowance_t": 95550,
+     "char_t": 39044,
      "at_cap": false
     },
     {
      "plant": "Al Lith (United Cement Industrial)",
      "allowance_t": 27900,
-     "char_t": 7391,
+     "char_t": 27900,
+     "at_cap": true
+    },
+    {
+     "plant": "Al-Kharj (Yamama Cement)",
+     "allowance_t": 90900,
+     "char_t": 80123,
      "at_cap": false
     },
     {
@@ -6981,12 +7005,18 @@
      "allowance_t": 13275,
      "char_t": 13275,
      "at_cap": true
+    },
+    {
+     "plant": "Taif (Umm Al-Qura Cement)",
+     "allowance_t": 23850,
+     "char_t": 8479,
+     "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 153888,
-    "central": 189795,
-    "high": 230832
+    "low": 227458,
+    "central": 280532,
+    "high": 341187
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -7011,41 +7041,41 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 8,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 9,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   },
   "C6_radius_150": {
    "id": "C6_radius_150",
    "family": "C",
    "name": "Radar feed + manure, haul radius 150 km",
    "note": "",
-   "plants": 40,
-   "feed_used_t": 1990469,
-   "supply_t": 2868380,
+   "plants": 39,
+   "feed_used_t": 1949514,
+   "supply_t": 2883381,
    "supply_by_feed_t": {
     "fronds": 62670.0,
-    "manure": 2593407.0,
+    "manure": 2608409.0,
     "straw": 212303.0
    },
    "feed_used_by_feed_t": {
-    "straw": 203817,
-    "fronds": 60885,
+    "straw": 201724,
+    "fronds": 60443,
     "litter": 0,
-    "manure": 1725767
+    "manure": 1687345
    },
-   "radar_feed_share": 0.133,
-   "char_t": 810574,
-   "char_to_cement_t": 643941,
-   "char_to_soil_t": 165068,
-   "char_unplaced_t": 1564,
-   "credited_tco2": 783015,
-   "retained_tco2": 1029103,
-   "transport_tco2": 20487,
+   "radar_feed_share": 0.1345,
+   "char_t": 793574,
+   "char_to_cement_t": 621617,
+   "char_to_soil_t": 171957,
+   "char_unplaced_t": 0,
+   "credited_tco2": 770817,
+   "retained_tco2": 1008814,
+   "transport_tco2": 18016,
    "feed_left_by_feed_t": {
-    "straw": 8486,
-    "fronds": 1784,
+    "straw": 10579,
+    "fronds": 2226,
     "litter": 0,
-    "manure": 867640
+    "manure": 921064
    },
    "cement_use": [
     {
@@ -7069,19 +7099,13 @@
     {
      "plant": "Ahad Al Masarihah (Southern Province Cement (Jazan))",
      "allowance_t": 12780,
-     "char_t": 12780,
-     "at_cap": true
+     "char_t": 7935,
+     "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 13996,
-     "at_cap": false
-    },
-    {
-     "plant": "Yanbu Al Bahr (Yanbu Cement)",
-     "allowance_t": 63300,
-     "char_t": 21100,
+     "char_t": 13220,
      "at_cap": false
     },
     {
@@ -7093,7 +7117,7 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 14342,
+     "char_t": 21800,
      "at_cap": false
     },
     {
@@ -7111,7 +7135,7 @@
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 20754,
+     "char_t": 19360,
      "at_cap": false
     },
     {
@@ -7123,8 +7147,8 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 95550,
-     "at_cap": true
+     "char_t": 93881,
+     "at_cap": false
     },
     {
      "plant": "Al-Muzahmiyya (Riyadh Cement)",
@@ -7158,9 +7182,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 386365,
-    "central": 476516,
-    "high": 579547
+    "low": 372970,
+    "central": 459997,
+    "high": 559455
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -7185,23 +7209,23 @@
     "litter": 0.0,
     "manure": 0.6352
    },
-   "seconds": 13,
-   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd"
+   "seconds": 10,
+   "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0"
   }
  },
- "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:2877ef27 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:f2cf07fd",
+ "run_id": "fields:df2bb5aa regions:0971603d boundaries:0412cf8d manure:a5458d41 cement:d30a60cf params:d8b77c09 scenario_params:46707cd1 engine:827667b2 supply:6ed336c8 siting:ee4436f0",
  "run_inputs": {
   "commit": null,
   "fields": "df2bb5aa",
   "regions": "0971603d",
   "boundaries": "0412cf8d",
-  "manure": "2877ef27",
+  "manure": "a5458d41",
   "cement": "d30a60cf",
   "params": "d8b77c09",
   "scenario_params": "46707cd1",
   "engine": "827667b2",
   "supply": "6ed336c8",
-  "siting": "f2cf07fd"
+  "siting": "ee4436f0"
  },
  "published_table_quality_check": true,
  "litter_credited": false,
