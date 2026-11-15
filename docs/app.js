@@ -4,7 +4,7 @@
 
 // Data colours: the same values as the --c-* tokens in style.css (one meaning per colour on every page).
 const COLORS = { winter_only: "#eda100", wheat_rotation: "#b23a00", summer_only: "#3b7dd8", year_round: "#2e9e5b", palm_grove: "#4a2c0f", idle: "#9aa0a6" };
-const MARK = { soil: "#0f6e6a", cement: "#5b2c83" };          // filled dot = biochar plant by char outlet; hollow ring = cement plant
+const MARK = { soil: "#0f6e6a", cement: "#5b2c83" };          // dashed square = hypothetical biochar plant by char outlet; solid ring = real cement plant
 const FEED_COL = { straw: COLORS.winter_only, fronds: COLORS.palm_grove };  // a feed takes the colour of the fields it comes from
 const CLASS_NAME = { winter_only: "Winter only (wheat)", wheat_rotation: "Wheat, then summer crop", summer_only: "Summer only", year_round: "Year-round (fodder)",
   palm_grove: "Palm groves", idle: "Not detected by radar" };
@@ -58,7 +58,7 @@ const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct
 const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 const state = { level: "central", size: 10, group: null, overlays: [], current: null, layer: null, pending: null, ovSeq: 0, firstImage: false,
-  fieldsLayer: null, plantLayer: null, cementLayer: null, cementHalo: null, byId: {}, selLyr: null, fieldShown: null,
+  fieldsLayer: null, plantLayer: null, plantSites: new Map(), cementLayer: null, cementHalo: null, byId: {}, selLyr: null, fieldShown: null,
   summary: null, fields: null, ts: null, tsPromise: null, charts: [], national: null, idleGreen: undefined,
   autoView: false, userMoved: false, fitSize: null, rzFrame: 0, rzTimer: 0, keyTouched: false };
 
@@ -202,6 +202,8 @@ function onDocClick(e) {
   if (lv) { setLevel(lv.dataset.level); return; }
   const sz = e.target.closest(".sizes button[data-size]");
   if (sz) { setSize(+sz.dataset.size); return; }
+  const pc = e.target.closest("#plantlist .plant[data-plant]");   // a plant card (or its Show on map button): fly to its site
+  if (pc && !e.target.closest("a, summary, details")) { goPlant(pc.dataset.plant); return; }
   const a = e.target.closest('a[href^="#"]');
   const name = a && a.getAttribute("href").slice(1);
   if (!a || !$("tab-" + name)) return;
@@ -396,8 +398,12 @@ function drawFields() {
     onEachFeature: (f, lyr) => {
       const p = f.properties || {};
       state.byId[p.id] = lyr;
-      if (canHover) lyr.bindTooltip(() => `<b>Field ${esc(p.id)}</b><br>${esc(cname(fieldClass(p)))}, ${fmt(p.area_ha, 1)} ha<br><span class="tt-hint">Click for its radar record</span>`, { sticky: true });
-      lyr.on("click", (e) => { showField(p, true, lyr); if (narrow()) fieldPopup(p, e.latlng); });
+      if (canHover) lyr.bindTooltip(() => `<b>Field ${esc(p.id)}</b><br>${esc(cname(fieldClass(p)))}, ${fmt(p.area_ha, 1)} ha<br><span class="tt-hint">Click to zoom in and see its radar record</span>`, { sticky: true });
+      lyr.on("click", (e) => {
+        showField(p, true, lyr);
+        const moved = zoomTo(lyr.getBounds(), 15, true);
+        if (narrow()) afterMove(moved, () => fieldPopup(p, e.latlng));
+      });
     },
   }).addTo(map);
 }
@@ -461,18 +467,47 @@ function fieldPopup(p, latlng) {   // phones: a small popup, and the reader choo
     .openOn(map);
 }
 
+// Click-to-zoom: fly to a field, plant or list item, clear of the floating map tools; a jump when motion is reduced.
+// keepZoom (a click on the map itself): never zoom out, and do not move at all when the target is already in view.
+// Returns true when the map will fire moveend later (an animated move), so a popup can wait for it.
+function zoomTo(b, maxZ, keepZoom = false) {
+  if (!b || !b.isValid()) return false;
+  const o = fitOpts(b, 24, maxZ), tl = o.paddingTopLeft, br = o.paddingBottomRight;
+  const z = Math.min(maxZ, map.getBoundsZoom(b, false, tl.add(br)));
+  if (keepZoom && map.getZoom() >= z - 0.01) {
+    const px = map.latLngToContainerPoint(b.getCenter()), s = map.getSize();
+    if (px.x >= tl.x && px.y >= tl.y && px.x <= s.x - br.x && px.y <= s.y - br.y) return false;
+    map.panInside(b.getCenter(), { paddingTopLeft: tl, paddingBottomRight: br, animate: !reduceMotion });
+    return !reduceMotion;
+  }
+  if (reduceMotion) { map.fitBounds(b, { ...o, maxZoom: maxZ, animate: false }); return false; }
+  map.flyToBounds(b, { ...o, maxZoom: maxZ, duration: 0.8 });
+  return true;
+}
+const afterMove = (moved, fn) => { if (moved) map.once("moveend", fn); else fn(); };
+// Phones: the panel sits under the map, so bring the map into view (below the sticky bar) before it moves.
+function showMapThen(fn) {
+  const w = $("mapwrap");
+  if (!narrow() || !w) { fn(); return; }
+  const nav = document.querySelector("nav.site"), top = w.getBoundingClientRect().top - (nav ? nav.offsetHeight : 0);
+  if (Math.abs(top) < 4) { fn(); return; }
+  window.scrollTo({ top: window.scrollY + top, behavior: reduceMotion ? "auto" : "smooth" });
+  setTimeout(fn, reduceMotion ? 0 : 450);
+}
+
 /* ---------- cement plants and map keys ---------- */
 function addCement(gj) {
   if (!gj || !Array.isArray(gj.features)) return;
   const pts = gj.features.filter((f) => f && f.geometry && Array.isArray(f.geometry.coordinates));
   const label = (q) => {
     const name = [q.owner_name, q.city].filter(Boolean).join(", ");
-    return `Cement plant${name ? ": " + esc(name) : ""}${num(q.cap) ? ` (${fmt(q.cap, 1)} Mt/y)` : ""}`;
+    return `<b>Existing cement plant</b> (a real facility)${name ? "<br>" + esc(name) : ""}${num(q.cap) ? `, ${fmt(q.cap, 1)} Mt/y` : ""}`;
   };
   const ll = (f) => [f.geometry.coordinates[1], f.geometry.coordinates[0]];
   state.cementHalo = L.featureGroup(pts.map((f) => L.circleMarker(ll(f), { radius: 7, color: "#fff", weight: 5, opacity: 0.85, fill: false, interactive: false }))).addTo(map);
   state.cementLayer = L.featureGroup(pts.map((f) => L.circleMarker(ll(f), { radius: 7, color: MARK.cement, weight: 2.5, opacity: 1, fill: false })
-    .bindTooltip(label(f.properties || {})))).addTo(map);
+    .bindTooltip(label(f.properties || {}))
+    .on("click", (e) => zoomTo(e.target.getLatLng().toBounds(2000), 14, true)))).addTo(map);
 }
 function buildKeys() {
   const area = get(state.summary, "supply", "area_ha_by_class") || {};
@@ -484,8 +519,8 @@ function buildKeys() {
   if (!outlets.size) outlets.add("soil");
   const both = outlets.has("soil") && outlets.has("cement");   // name the outlet only when the map shows both
   $("plantkey").innerHTML = ["soil", "cement"].filter((o) => outlets.has(o)).map((o) =>
-    `<li><i class="dot" style="--c:${MARK[o]}" aria-hidden="true"></i>Biochar plant${both ? `: char ${o === "soil" ? "to the fields" : "to cement"}` : " (numbered)"}</li>`).join("") +
-    (state.cementLayer ? `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>Cement plant</li>` : "");
+    `<li><i class="hypo" style="--c:${MARK[o]}" aria-hidden="true"></i>Hypothetical biochar plant site${both ? `, char ${o === "soil" ? "to the fields" : "to cement"}` : " (numbered)"}</li>`).join("") +
+    (state.cementLayer ? `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>Existing cement plant (real facility)</li>` : "");
 }
 
 /* ---------- Overview ---------- */
@@ -785,9 +820,10 @@ function renderPlants() {
   const tag = `${L_}_${size}kt`, plants = Array.isArray(siting[tag]) ? siting[tag].filter((p) => p && typeof p === "object") : null;
   if (state.plantLayer) map.removeLayer(state.plantLayer);
   state.plantLayer = L.layerGroup();
+  state.plantSites = new Map();
   const lvl = LEVEL_NAME[L_].toLowerCase(), minLoad = num(get(P, "min_load_fraction", L_));
   if (!plants) {
-    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No siting result for ${size} kt/y plants at the ${lvl} estimate.</span></p>`;
+    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No siting result for hypothetical ${size} kt/y plants at the ${lvl} estimate.</span></p>`;
   } else if (!plants.length) {
     $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No site can be filled to ${minLoad != null ? pct(minLoad) : "80%"} of a <b>${size} kt/y</b> plant with the straw and palm fronds radar finds here (${lvl} estimate). The local limit is supply, not distance: pooling a wider region or other residues would be needed.</span></p>`;
   } else {
@@ -803,13 +839,14 @@ function renderPlants() {
     const SU = obj(get(state.summary, "soil_use")) || obj(get(state.summary, "params", "_soil_use")) || {};
     const notPass = FEEDS.filter(([f]) => obj(SU[f]) && SU[f].status && SU[f].status !== "pass");
     const card = (p) => {
-      const cem = num(p.cement_net_tco2) != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest plant (${fmt(p.cement_km)} km)` : "";
+      const cem = num(p.cement_net_tco2) != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest existing cement plant (${fmt(p.cement_km)} km)` : "";
       const rem = num(p.soil_removal_tco2);
       const flags = notPass.map(([f, , ch]) => { const r = num(p[`soil_removal_${f}_tco2`]); return rem > 0 && r > 0 ? `${pct(r / rem)} of the removal comes from ${ch}, ${soilStatus(SU[f].status)} against Puro's soil limits` : ""; }).filter(Boolean);
-      // The number badge matches the plant's pin on the map: filled in the colour of its char outlet.
-      return `<article class="plant" data-plant="${esc(p.plant)}" aria-label="Plant ${esc(p.plant)}">
+      // The number badge matches the plant's pin on the map: a dashed square in the colour of its char outlet.
+      return `<article class="plant" data-plant="${esc(p.plant)}" aria-label="Hypothetical biochar plant site ${esc(p.plant)}">
         <div class="plant-head"><span class="pnum" style="--c:${MARK[p.best_outlet === "cement" ? "cement" : "soil"]}" aria-hidden="true">${esc(p.plant)}</span>
-          <div class="plant-id"><b class="plant-name">Plant ${esc(p.plant)}</b><span class="plant-where">${fmt(p.lat, 3)}°N, ${fmt(p.lon, 3)}°E, ${p.kind === "cement" ? "at a cement plant" : "grid site"}</span></div></div>
+          <div class="plant-id"><b class="plant-name">Hypothetical plant ${esc(p.plant)}</b><span class="plant-where">${fmt(p.lat, 3)}°N, ${fmt(p.lon, 3)}°E, ${p.kind === "cement" ? "beside an existing cement plant" : "model grid site"}</span></div>
+          ${num(p.lat) != null && num(p.lon) != null ? `<button type="button" class="showmap">${ICO("target", "sm")}<span>Show on map</span></button>` : ""}</div>
         <dl class="pfacts"><div><dt>Fields</dt><dd>${fmt(p.fields)}</dd></div><div><dt>Mean haul</dt><dd>${fmt(p.mean_feed_haul_km, 1)} km</dd></div>
           <div><dt>Load</dt><dd>${pct(p.load_factor)}</dd></div><div><dt>Char</dt><dd>${fmt(p.char_t)} t/y</dd></div></dl>
         ${feedMix(num(p.feed_straw) || 0, num(p.feed_fronds) || 0)}
@@ -819,7 +856,7 @@ function renderPlants() {
     };
     const mixKey = st > 0 && fr > 0 ? `<ul class="key feedkey"><li><i style="--c:${FEED_COL.straw}" aria-hidden="true"></i>wheat straw</li><li><i style="--c:${FEED_COL.fronds}" aria-hidden="true"></i>palm fronds</li></ul>` : "";
     $("plantlist").innerHTML = `<dl class="plant-sum">
-        <div><dt>Plant${plants.length > 1 ? "s" : ""} of ${size} kt/y</dt><dd>${plants.length}</dd></div>
+        <div><dt>Hypothetical plant${plants.length > 1 ? "s" : ""} of ${size} kt/y</dt><dd>${plants.length}</dd></div>
         <div><dt>kt dry feed a year</dt><dd>${fmt(tot / 1e3, 1)}</dd></div>
         <div><dt>t CO₂ removed a year, net of transport</dt><dd>${fmt(net)}</dd></div></dl>
       ${st || fr ? `<p class="note plant-feed">Feed: ${fmt(st / 1e3, 1)} kt wheat straw and ${fmt(fr / 1e3, 1)} kt palm fronds, dry, at the ${lvl} estimate.</p>` : ""}
@@ -839,25 +876,43 @@ function renderPlants() {
       const icon = L.divIcon({ className: "plant-pin", html: `<span style="--c:${MARK[outlet]}">${ids.map(esc).join(", ")}</span>`, iconSize: [0, 0] });
       const m = L.marker([+ps[0].lat, +ps[0].lon], { icon, keyboard: true, riseOnHover: true });
       // Touch screens get the popup only: Leaflet also opens a tooltip on tap, and the two would overlap (as drawFields).
-      if (canHover) m.bindTooltip(ps.map((p) => `Plant ${esc(p.plant)}: ${size} kt/y, ${plantFacts(p)}`).join("<br>"), { direction: "top", offset: [0, -12] });
+      if (canHover) m.bindTooltip(ps.map((p) => `<b>Hypothetical biochar plant ${esc(p.plant)}</b>: ${size} kt/y, ${plantFacts(p)}`).join("<br>") +
+        `<br><span class="tt-hint">A modelled site: no such plant exists</span>`, { direction: "top", offset: [0, -12] });
       m.on("click", () => focusPlant(ps, m));
-      m.on("add", () => m.getElement()?.setAttribute("aria-label", `Biochar plant ${ids.join(" and ")}`));
+      m.on("add", () => m.getElement()?.setAttribute("aria-label", `Hypothetical biochar plant site ${ids.join(" and ")}`));
       m.addTo(state.plantLayer);
+      ids.forEach((id) => state.plantSites.set(String(id), { ps, m }));
     });
   }
   if ($("showplants").checked) state.plantLayer.addTo(map);
 }
 const plantFacts = (p) => `char ${p.best_outlet === "cement" ? "to cement" : "back to the fields"}, transport ${fmt(100 * (num(p.penalty) || 0), 1)}% of removal`;
+const plantBox = (m) => m.getLatLng().toBounds(2500);
+function plantPopup(ps, marker, link) {
+  marker.closeTooltip();
+  L.popup({ maxWidth: 240, autoPanPadding: [16, 16], autoPanPaddingTopLeft: [64, 16], offset: [0, -8] }).setLatLng(marker.getLatLng())
+    .setContent(`${ps.map((p) => `<b>Hypothetical biochar plant ${esc(p.plant)}</b>, ${state.size} kt/y<br>${plantFacts(p).replace(/^./, (c) => c.toUpperCase())}`).join("<br>")}` +
+      `<br><span class="tt-hint">A modelled site: no such plant exists.</span>` +
+      (link ? `<br><a href="#plants" class="poplink" data-plant="${esc(ps[0].plant)}">See it in the list${ICO("chevron", "sm down")}</a>` : "")).openOn(map);
+}
 function focusPlant(ps, marker) {
-  const n = ps[0].plant;
+  const n = ps[0].plant, moved = zoomTo(plantBox(marker), 13, true);
   if (narrow()) {   // never scroll away from the map: offer the panel instead, with the tooltip's facts
     marker.closeTooltip();
-    L.popup({ maxWidth: 240, autoPanPadding: [16, 16], autoPanPaddingTopLeft: [64, 16], offset: [0, -8] }).setLatLng(marker.getLatLng())
-      .setContent(`${ps.map((p) => `<b>Plant ${esc(p.plant)}</b>, ${state.size} kt/y<br>${plantFacts(p).replace(/^./, (c) => c.toUpperCase())}`).join("<br>")}<br><a href="#plants" class="poplink" data-plant="${esc(n)}">See it in Biochar plants${ICO("chevron", "sm down")}</a>`).openOn(map);
+    afterMove(moved, () => plantPopup(ps, marker, true));
     return;
   }
   openTab("plants");
   highlightPlant(n);
+}
+// A plant card in the list: fly the map to its site and open its facts there (phones: the map comes into view first).
+function goPlant(n) {
+  const site = state.plantSites.get(String(n));
+  if (!site) return;
+  highlightPlant(n, false);
+  const box = $("showplants");
+  if (box && !box.checked) { box.checked = true; box.onchange({ target: box }); }
+  showMapThen(() => afterMove(zoomTo(plantBox(site.m), 13), () => plantPopup(site.ps, site.m, false)));
 }
 // Can the char go on the fields? Each feed's soil-use status against Puro.earth 2025 Table 3.3 (summary.soil_use), the
 // share of this layout's credited removal that rests on a char not measured as passing, and the evidence.
@@ -927,7 +982,7 @@ function renderFieldInfo() {
       ? `${p.spring_brown === true ? "brown in late spring" : p.spring_brown === false ? "green in late spring" : none}<div class="sub">Not used for palm groves: tree cover of 30% or more makes the field a palm grove.</div>`
       : p.spring_brown === true ? "brown in late spring (wheat, then a summer crop)" : p.spring_brown === false ? "green in late spring (perennial)" : none]);
   }
-  if (num(p.plant_10kt) != null) rows.push(["Feeds", `Plant ${esc(p.plant_10kt)} in the central 10 kt/y plant layout`]);
+  if (num(p.plant_10kt) != null) rows.push(["Feeds", `Hypothetical biochar plant ${esc(p.plant_10kt)} in the central 10 kt/y layout (a modelled site)`]);
   $("fieldinfo").innerHTML = `<table class="fieldtable">${rows.map(([h, d]) => `<tr><th scope="row">${h}</th><td>${d}</td></tr>`).join("")}</table>`;
 }
 const pts = (a) => (Array.isArray(a) ? a : []).map((q) => Array.isArray(q) ? { x: tOf(q[0]), y: num(q[1]) } : null).filter((q) => q && !isNaN(q.x) && q.y != null);
@@ -1078,7 +1133,7 @@ function renderSteps() {
     `A field is <b>farmed in a season</b> when ${ruleText(V)}`,
     `<b>Classes</b> follow the national rules: a field farmed in winter only is a winter crop, treated as wheat; in summer only, a summer crop; in both seasons, wheat followed by a summer crop where the national Sentinel-2 spring check finds the field brown in late spring, otherwise year-round fodder; with tree cover of 30% or more and farmed in both seasons, a palm grove. The spring check comes from the national field covering at least half of each field${matched}; fields without one stay year-round, as in the national run.`,
     `<b>Water</b> = farmed area × irrigation depth by class (published for winter and year-round fields; summer crops get half the perennial depth, a rotation gets both) ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency, with ${head ? esc(head) : "the depth to water as the head"}; <b>CO₂</b> for grid or diesel pumps.`,
-    "<b>Wheat straw</b> from winter-only and rotation fields and <b>palm fronds</b> from palm groves feed the <b>biochar plant siting</b>, with transport emissions for feed in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets, each feed with its own char factors; only truck emissions are subtracted, so it is a technical potential.",
+    "<b>Wheat straw</b> from winter-only and rotation fields and <b>palm fronds</b> from palm groves feed a model that places <b>hypothetical biochar plants</b> (none exists or is planned), with transport emissions for feed in and char out (back to the fields, or to the nearest existing cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets, each feed with its own char factors; only truck emissions are subtracted, so it is a technical potential.",
   ].map((t) => `<li>${t}</li>`).join("");
 }
 function renderDiffers() {

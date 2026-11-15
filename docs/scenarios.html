@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://server.arcgisonline.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="scenarios.css?v=6">
+<link rel="stylesheet" href="scenarios.css?v=7">
 </head>
 <body class="app">
 <a class="skip" href="#results">Skip to the scenario results</a>
@@ -36,13 +36,13 @@
 <header class="page">
   <div class="brand">
     <h1>What-if scenarios</h1>
-    <p>Built on the national radar record: a radar-verified floor with its uncertainty, a field-level baseline for MEWA's halt on perennial fodder from 16 November 2026, what low-pressure pivot retrofits could save, and how much carbon biochar can remove when cement plants and farmland take only limited char.</p>
+    <p>Built on the national radar record: a radar-verified floor with its uncertainty, a field-level baseline for MEWA's halt on perennial fodder from 16 November 2026, what low-pressure pivot retrofits could save, and how much carbon hypothetical biochar plants, placed by a siting model, could remove when existing cement plants and farmland take only limited char.</p>
     <div class="page-meta"><span class="stamp"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-satellite"/></svg>NISAR L-band radar record, 2025/26</span></div>
   </div>
 </header>
 <main>
   <section id="mapwrap" aria-label="Map">
-    <div id="map" role="region" aria-label="Map of biochar plants, cement plants and the fodder-halt watch-list"></div>
+    <div id="map" role="region" aria-label="Map of hypothetical biochar plant sites, existing cement plants and the fodder-halt watch-list"></div>
     <p id="mapnote" class="loading is-busy" role="status">Loading the scenarios…</p>
     <div class="maptools" id="tools">
       <button type="button" class="mt-head" id="mt-toggle" aria-expanded="true" aria-controls="mt-body">
@@ -55,9 +55,13 @@
           <button type="button" class="linkbtn" data-act="open-biochar" hidden><span>Scenario details</span><svg class="ico sm" aria-hidden="true"><use href="img/icons.svg#i-chevron"/></svg></button>
         </div>
         <ul class="key" id="mapkey" aria-label="Map key">
-          <li><i class="dot" style="--c:var(--c-cement)" aria-hidden="true"></i>Biochar plant, char mostly to cement</li>
-          <li><i class="dot" style="--c:var(--c-soil)" aria-hidden="true"></i>Biochar plant, char mostly to soil</li>
-          <li class="full"><span class="glyphs" aria-hidden="true"><i class="ring" style="--c:var(--c-cement)"></i><i class="ring used" style="--c:var(--c-cement)"></i></span><span id="key-cement-txt">Cement plant. Size shows 2024 output; fill shows the share of its char allowance used; hollow takes none.</span></li>
+          <li class="key-sub full">Hypothetical biochar plant sites</li>
+          <li><i class="tri" style="--c:var(--c-cement)" aria-hidden="true"></i>char mostly to cement</li>
+          <li><i class="tri" style="--c:var(--c-soil)" aria-hidden="true"></i>char mostly to soil</li>
+          <li class="full key-note">These are hypothetical sites from a siting model; no such plants exist.</li>
+          <li class="key-sub full">Existing cement plants (real facilities)</li>
+          <li class="full"><span class="glyphs" aria-hidden="true"><i class="ring" style="--c:var(--c-cement)"></i><i class="ring used" style="--c:var(--c-cement)"></i></span><span id="key-cement-txt">Size shows 2024 output; fill shows the share of its char allowance used; hollow takes none.</span></li>
+          <li class="full key-note">Tap or click any mark to zoom in to it.</li>
         </ul>
         <div class="mt-watch">
           <label class="chk"><input id="showwatch" type="checkbox" disabled> Fodder-halt watch-list</label>
@@ -89,6 +93,6 @@
   </aside>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="scenarios.js?v=6"></script>
+<script src="scenarios.js?v=7"></script>
 </body>
 </html>

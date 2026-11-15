@@ -147,10 +147,47 @@ function fit(bounds, after, opts) {   // after: runs once the fitted view has se
   const go = () => {
     map.setView(map.getCenter(), map.getZoom(), { animate: false });
     if (after) map.once("moveend", after);
-    map.fitBounds(bounds, typeof opts === "function" ? opts() : fitOpts());
+    // a smooth flight (fitBounds jumps when the zoom changes a lot); reduced motion: animate is false, so it jumps
+    map.flyToBounds(bounds, Object.assign({ duration: 0.9 }, typeof opts === "function" ? opts() : fitOpts()));
   };
   // a fit started during a zoom animation (a double-click) is dropped: wait until that animation has fully ended
   if (map._animatingZoom) map.once("moveend", () => setTimeout(go, 0)); else go();
+}
+/* ---------- Click to zoom: fly to a place, never zooming out (a jump when reduced motion is set) ---------- */
+function flyTo(ll, z, after) {
+  if (!map || !ll) return;
+  const zoom = Math.min(map.getMaxZoom() || 17, Math.max(map.getZoom(), z));
+  // desktop: the place sits in the middle of the open map above the floating tools card, not behind it
+  const tools = floatingTools(), dy = tools ? Math.min(tools.offsetHeight / 2, map.getSize().y / 3) : 0;
+  const c = dy ? map.unproject(map.project(L.latLng(ll), zoom).add([0, dy]), zoom) : ll;
+  if (after) map.once("moveend", after);
+  if (REDUCE) map.setView(c, zoom, { animate: false }); else map.flyTo(c, zoom, { duration: 0.9 });
+}
+// Open a marker's label after a flight; a tall label that would run off the top of the map pans down into view
+function openTip(m) {
+  if (!map || !m || !map.hasLayer(m)) return;
+  m.openTooltip();
+  const t = m.getTooltip(), el = t && t.getElement(), h = !S.hintGone && $("hint");
+  if (!el) return;
+  const pad = h && h.offsetParent ? h.offsetTop + h.offsetHeight + 8 : 8;
+  const top = el.getBoundingClientRect().top - map.getContainer().getBoundingClientRect().top;
+  if (top < pad) map.panBy([0, Math.round(top - pad)], { animate: !REDUCE });
+}
+// From the panel: turn the layer on if it is off; on phones bring the map (above the panel) into view first
+function showOnMap(ll, z, layer, box, after) {
+  if (!map || !ll) return;
+  const cb = $(box);
+  if (cb && !cb.checked) { cb.checked = true; toggleLayer(layer, true); }
+  const go = () => flyTo(ll, z, after), m = $("map");
+  if (window.innerWidth <= 860 && m) {
+    const nav = document.querySelector("nav.site"), navH = nav ? nav.offsetHeight : 0, r = m.getBoundingClientRect();
+    if (r.top < navH - 1 || r.bottom > window.innerHeight + 1) {
+      window.scrollBy({ top: r.top - navH, behavior: REDUCE ? "auto" : "smooth" });
+      setTimeout(go, REDUCE ? 0 : 450);
+      return;
+    }
+  }
+  go();
 }
 function restack() {   // draw order, bottom to top: region boxes, manure cells, fields, biochar plants, cement plants
   if (!map) return;
@@ -365,10 +402,15 @@ function drawFields(r, rows) {
     g.addLayer(m);
     n++;
   });
-  g.on("click", (e) => {
+  g.on("click", (e) => {   // fly in close enough to see the field itself, then open its popup
     const m = e.layer;
-    if (m && m.f) L.popup({ maxWidth: 260, autoPanPaddingTopLeft: [16, 16], autoPanPaddingBottomRight: [16, popupPad()] })   // clear of the tools card
-      .setLatLng(m.getLatLng()).setContent(fieldHtml(m.f, r)).openOn(map);
+    if (!m || !m.f) return;
+    const tok = S.seq;
+    flyTo(m.getLatLng(), 13, () => {
+      if (tok !== S.seq || !S.layers.fields || !S.layers.fields.hasLayer(m)) return;   // the region changed meanwhile
+      L.popup({ maxWidth: 260, autoPanPaddingTopLeft: [16, 16], autoPanPaddingBottomRight: [16, popupPad()] })   // clear of the tools card
+        .setLatLng(m.getLatLng()).setContent(fieldHtml(m.f, r)).openOn(map);
+    });
   });
   if (!NO_HOVER) g.on("mouseover", (e) => {   // tooltips are bound on first hover only (thousands of fields)
     const m = e.layer;
@@ -384,20 +426,46 @@ function clearFields() {
   S.fieldsOf = null;
 }
 
-/* ---------- Biochar plants: one marker per site ---------- */
+/* ---------- Hypothetical biochar plants (a siting model, none exists): one diamond with a dashed edge per site ---------- */
 const plantTag = (size) => `central_${size}kt`;
+const siteKey = (p) => p.lat.toFixed(4) + "," + p.lon.toFixed(4);
+const HYPO = "These are hypothetical sites from a siting model; no such plants exist.";
 function plantLine(p, size) {
   const feeds = ["straw", "fronds", "manure", "litter"].filter((f) => ok(p["feed_" + f]) && p["feed_" + f] > 0)
-    .map((f) => `${f} ${fmt(p["feed_" + f])}`).join(", ");
-  return `<b>Plant ${esc(p.plant)}</b>: ${size}&nbsp;kt/y, ${fmt(p.net_removal_tco2)}&nbsp;t CO₂/y net of transport, via ${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` (${esc(p.cement_name)}, ${fmt(p.cement_km)}&nbsp;km)` : ""}${feeds ? `<br><span class="tt-sub">Feed, t: ${feeds}</span>` : ""}`;
+    .map((f) => `${FEED[f]} ${fmt(p["feed_" + f])}`).join(", ");
+  const km = ok(p.cement_km) ? (p.cement_km < 0.5 ? ", on the same site" : `, ${fmt(p.cement_km)}&nbsp;km away`) : "";
+  const to = p.best_outlet === "cement" ? `char goes to the existing ${esc(p.cement_name)} cement plant${km}`
+    : p.best_outlet === "soil" ? "char goes to farmland" : `char goes to ${esc(p.best_outlet)}`;
+  return `<b>Plant #${esc(p.plant)}</b>: ${size}&nbsp;kt/y, removes ${fmt(p.net_removal_tco2)}&nbsp;t CO₂/y net of transport; ${to}${feeds ? `<br><span class="tt-sub">Feed, t dry a year: ${feeds}</span>` : ""}`;
+}
+// A circle marker drawn as a diamond on the canvas renderer, so a hypothetical plant never reads as a round cement ring
+let DiamondMarker = null;
+function diamondMarker(ll, opts) {
+  if (!DiamondMarker) DiamondMarker = L.CircleMarker.extend({
+    _updatePath() {
+      const R = this._renderer;
+      if (!R._ctx) { R._updateCircle(this); return; }
+      if (!R._drawing || this._empty()) return;
+      const p = this._point, ctx = R._ctx, r = Math.max(Math.round(this._radius), 1);
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y - r); ctx.lineTo(p.x + r, p.y); ctx.lineTo(p.x, p.y + r); ctx.lineTo(p.x - r, p.y); ctx.closePath();
+      R._fillStroke(ctx, this);
+    },
+    _containsPoint(p) { const r = this._radius + this._clickTolerance(); return Math.abs(p.x - this._point.x) + Math.abs(p.y - this._point.y) <= r; },
+  });
+  return new DiamondMarker(ll, opts);
 }
 function plantMarker(ps, size) {
   const top = ps.slice().sort((a, b) => (b.net_removal_tco2 || 0) - (a.net_removal_tco2 || 0))[0];
   const net = ps.reduce((t, p) => t + (ok(p.net_removal_tco2) ? p.net_removal_tco2 : 0), 0);
-  const tip = ps.length === 1 ? plantLine(top, size)
-    : `<b>One site, ${ps.length} plants</b> (${fmt(size * ps.length)}&nbsp;kt/y in all, ${fmt(net)}&nbsp;t CO₂/y net of transport)<br>` + ps.map((p) => plantLine(p, size)).join("<br>");
-  return L.circleMarker([top.lat, top.lon], { radius: 4 + Math.sqrt(size * ps.length) / 1.5, color: "#fff", weight: 2, opacity: 1,
-    fillColor: top.best_outlet === "cement" ? MARK.cement : MARK.soil, fillOpacity: 0.95 }).bindTooltip(tip);
+  const head = `<b>Hypothetical biochar plant site</b><br><span class="tt-sub">From a siting model: no such plant exists or is planned.</span><br>`;
+  const tip = head + (ps.length === 1 ? plantLine(top, size)
+    : `${ps.length} modelled plants on this site (${fmt(size * ps.length)}&nbsp;kt/y in all, ${fmt(net)}&nbsp;t CO₂/y net of transport)<br>` + ps.map((p) => plantLine(p, size)).join("<br>"));
+  const m = diamondMarker([top.lat, top.lon], { radius: 1.3 * (4 + Math.sqrt(size * ps.length) / 1.5), color: "#fff", weight: 2, opacity: 1, dashArray: "4 3",
+    fillColor: top.best_outlet === "cement" ? MARK.cement : MARK.soil, fillOpacity: 0.95, bubblingMouseEvents: false })
+    .bindTooltip(tip, { className: "tip-wrap", direction: "top", offset: [0, -8] });
+  m.on("click", () => flyTo(m.getLatLng(), 10, () => openTip(m)));
+  return m;
 }
 async function drawPlants() {
   const tok = ++S.plantSeq, size = S.size, tag = plantTag(size);
@@ -413,18 +481,19 @@ async function drawPlants() {
     const sites = new Map();
     S.plants.forEach((p) => {
       if (!obj(p) || !ok(p.lat) || !ok(p.lon)) return;
-      const k = p.lat.toFixed(4) + "," + p.lon.toFixed(4);
+      const k = siteKey(p);
       if (!sites.has(k)) sites.set(k, []);
       sites.get(k).push(p);
     });
-    S.layers.plants = L.featureGroup([...sites.values()].map((ps) => plantMarker(ps, size)));
+    S.plantAt = new Map();   // site key -> its marker, for the plant list's "show on the map"
+    S.layers.plants = L.featureGroup([...sites.entries()].map(([k, ps]) => { const m = plantMarker(ps, size); S.plantAt.set(k, m); return m; }));
     if (chk("showplants")) S.layers.plants.addTo(map);
     restack();
   }
   renderLegend();
 }
 
-/* ---------- Cement plants: a hollow ring with a white halo, always on top ---------- */
+/* ---------- Existing cement plants (real facilities): a hollow ring with a white halo, always on top ---------- */
 function addCement(gj) {
   if (!map) return;
   const g = L.featureGroup();
@@ -434,8 +503,9 @@ function addCement(gj) {
     const p = obj(f.properties) || {}, ll = [c[1], c[0]];
     const who = [p.owner_name, p.city].filter((x) => x).map(esc).join(", ") || "name not listed";
     L.circleMarker(ll, { radius: 7, color: "#fff", weight: 5, opacity: 0.85, fill: false, interactive: false }).addTo(g);
-    L.circleMarker(ll, { radius: 7, color: MARK.cement, weight: 2.5, opacity: 1, fill: false })
-      .bindTooltip(`<b>Cement plant</b>: ${who}${ok(p.cap) ? `<br><span class="tt-sub">Capacity ${fmt(p.cap, p.cap % 1 ? 2 : 0)} Mt/y</span>` : ""}`).addTo(g);
+    const m = L.circleMarker(ll, { radius: 7, color: MARK.cement, weight: 2.5, opacity: 1, fill: false, bubblingMouseEvents: false })
+      .bindTooltip(`<b>Existing cement plant</b> (a real facility): ${who}${ok(p.cap) ? `<br><span class="tt-sub">Capacity ${fmt(p.cap, p.cap % 1 ? 2 : 0)} Mt/y</span>` : ""}`, { className: "tip-wrap", direction: "top", offset: [0, -8] }).addTo(g);
+    m.on("click", () => flyTo(ll, 13, () => openTip(m)));   // close enough to see the plant itself
   });
   S.layers.cement = g;
   if (chk("showcement")) g.addTo(map);
@@ -498,14 +568,14 @@ function glyph(c) {
 }
 function renderLegend() {
   const set = (id, html) => { const e = $(id); if (e) e.innerHTML = html; };
-  const dot = (c, label) => `<li><i class="dot" style="--c:${c}" aria-hidden="true"></i>${label}</li>`;
   set("k-regions", `<li><i class="box" style="--c:${MARK.region}" aria-hidden="true"></i>radar results</li><li><i class="dash" aria-hidden="true"></i>radar failed the quality check, or not processed</li>`);
+  const dia = (c, label) => `<li><i class="dia" style="--c:${c}" aria-hidden="true"></i>${label}</li>`;
   set("k-plants", S.plantsFailed ? `<li class="kn">no plant list in this data export</li>`
-    : dot(MARK.soil, "char to soil") + dot(MARK.cement, "char to cement") + `<li class="kn">size shows capacity; one per site</li>`);
-  set("k-cement", `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>cement plant</li>`);
+    : dia(MARK.soil, "char goes to farmland") + dia(MARK.cement, "char goes to a cement plant") + `<li class="kn">size shows capacity; one diamond per site</li>`);
+  set("k-cement", `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>existing cement plant (real facility)</li>`);
   const sq = (c, label) => `<li><i class="sq" style="--c:${c}" aria-hidden="true"></i>${label}</li>`;
   set("k-manure", sq(MARK.manure, "mostly manure") + sq(MARK.litter, "mostly poultry litter (not credited)") + `<li class="kn">one square per 0.25° cell; size grows with dry tonnes</li>`);
-  [["showregions", "k-regions"], ["showplants", "k-plants"], ["showcement", "k-cement"], ["showmanure", "k-manure"]]
+  [["showregions", "k-regions"], ["showplants", "k-plants"], ["showplants", "k-hypo"], ["showcement", "k-cement"], ["showmanure", "k-manure"]]
     .forEach(([c, k]) => { const e = $(k); if (e) e.hidden = !chk(c); });
   renderFieldKey();
 }
@@ -818,7 +888,7 @@ function renderLenses() {
   const c = obj(get(D(), `siting.central_${S.size}kt`)), lo = obj(get(D(), `siting.low_${S.size}kt`)), hi = obj(get(D(), `siting.high_${S.size}kt`));
   const cr = c && lo && hi ? span(lo.net_removal_tco2, hi.net_removal_tco2, 1e6, 2) : null;
   const litOut = c && !(get(c, "credited_by_feed_tco2.litter") > 0);
-  items.push(["Carbon removal deployment", `Where biochar plants can be filled, how big, which outlet, and how much CO₂ they remove net of transport (<a href="#biochar">Biochar tab</a>).${c && c.credited !== false && ok(c.net_removal_tco2) ? ` With ${S.size} kt/y plants: ${fmt(c.plants)} plants, ${fmt(c.net_removal_tco2 / 1e6, 2)} Mt CO₂ a year net of transport${cr ? ` (all-low / all-high corners ${cr})` : ""}, a technical potential${litOut ? " with poultry litter left out" : ""}.` : ""}`]);
+  items.push(["Carbon removal deployment", `Where hypothetical biochar plants (a siting model; none exists) could be filled, how big, which outlet, and how much CO₂ they would remove net of transport (<a href="#biochar">Biochar tab</a>).${c && c.credited !== false && ok(c.net_removal_tco2) ? ` With ${S.size} kt/y plants: ${fmt(c.plants)} hypothetical plants, ${fmt(c.net_removal_tco2 / 1e6, 2)} Mt CO₂ a year net of transport${cr ? ` (all-low / all-high corners ${cr})` : ""}, a technical potential${litOut ? " with poultry litter left out" : ""}.` : ""}`]);
 
   items.push(["Next", "Loan and insurance checks that a field was planted; carbon-credit feedstock verification; ground sinking from radar interferometry; alerts when a circle switches on or off."]);
   const LENS_ICON = { "Groundwater accounting": "water", "Grid planning": "energy", "Food security": "leaf", "Fields to check": "target", "Fodder policy": "calendar",
@@ -914,11 +984,12 @@ function renderBiochar() {
     // the headline figure: net removal of the case on the map, its all-low / all-high corners drawn on a small scale
     if (cred(c)) {
       const bar = cr ? rangeBar([{ cls: "rb-factor", a: lo.net_removal_tco2, b: hi.net_removal_tco2 }], c.net_removal_tco2, 1e6, 2) : "";
-      html.push(`<div class="ov-hero bio-hero"><p class="ov-k">${ico("flame", "sm")}<span>Net CO₂ removal with ${z}&nbsp;kt/y plants, the case on the map</span></p>
+      html.push(`<div class="ov-hero bio-hero"><p class="ov-k">${ico("flame", "sm")}<span>Net CO₂ removal with hypothetical ${z}&nbsp;kt/y plants, the case on the map</span></p>
         <p class="ov-num">${mt(c.net_removal_tco2)}<span class="ov-unit">Mt CO₂ a year, net of transport</span></p>${bar}
         ${cr ? `<dl class="kpi-range"><div class="r-factor"><dt>All-low / all-high corners</dt><dd>${cr}</dd></div></dl>` : ""}</div>`);
     }
-    html.push(`<p class="lead"><b>${fmt(c.plants)}</b> plants of ${z}&nbsp;kt/y${ok(c.distinct_sites) && c.distinct_sites < c.plants ? ` on ${fmt(c.distinct_sites)} sites` : ""} could be filled within ${fmt(c.radius_km)}&nbsp;km, using <b>${mt(c.feed_used_t)}&nbsp;Mt</b> of ${mt(c.supply_t)}&nbsp;Mt of dry residue that can be credited, removing <b>${mt(c.net_removal_tco2)}&nbsp;Mt CO₂ a year</b> net of transport${cr && !cred(c) ? ` (all-low / all-high corners ${cr}&nbsp;Mt)` : ""}${c.capped ? " (the run stopped at its plant cap)" : ""}.</p>`);
+    html.push(`<p class="callout">${ico("info")}<span><b>Hypothetical plants.</b> ${HYPO} The model places them where enough residue lies nearby; the cement plants on the map are real, existing facilities.</span></p>`);
+    html.push(`<p class="lead"><b>${fmt(c.plants)}</b> hypothetical plants of ${z}&nbsp;kt/y${ok(c.distinct_sites) && c.distinct_sites < c.plants ? ` on ${fmt(c.distinct_sites)} sites` : ""} could be filled within ${fmt(c.radius_km)}&nbsp;km, using <b>${mt(c.feed_used_t)}&nbsp;Mt</b> of ${mt(c.supply_t)}&nbsp;Mt of dry residue that can be credited, removing <b>${mt(c.net_removal_tco2)}&nbsp;Mt CO₂ a year</b> net of transport${cr && !cred(c) ? ` (all-low / all-high corners ${cr}&nbsp;Mt)` : ""}${c.capped ? " (the run stopped at its plant cap)" : ""}.</p>`);
     // the litter upside runs exist only at some sizes: say "below" only when one is listed below
     html.push(`<p>${share ? `<b>${share}</b> of that feed is ${tierTxt} (wheat straw, palm fronds); the rest is modelled ${litterIn(c) ? "manure and litter" : "manure"}. ` : ""}${litterIn(c)
       ? `These figures still credit poultry litter, whose char may fail Puro's H/C<sub>org</sub> eligibility gate on the organic-carbon basis.`
@@ -1013,10 +1084,11 @@ function renderBiochar() {
     const pos = new Map();   // site key -> plant numbers
     (plants || []).forEach((p) => { if (ok(p.lat) && ok(p.lon)) { const k = p.lat.toFixed(4) + "," + p.lon.toFixed(4); if (!pos.has(k)) pos.set(k, []); pos.get(k).push(p.plant); } });
     const row = (p) => {
+      const where = ok(p.lat) && ok(p.lon) ? `<button type="button" class="fly" data-site="${esc(siteKey(p))}" data-lat="${p.lat}" data-lon="${p.lon}" aria-label="Show hypothetical plant ${esc(p.plant)} on the map">${ico("target", "sm")}<span>${p.lat.toFixed(2)}°N ${p.lon.toFixed(2)}°E</span></button>` : "–";
       const f = { straw: p.feed_straw, fronds: p.feed_fronds, litter: p.feed_litter, manure: p.feed_manure };
       const main = Object.entries(f).filter(([, x]) => ok(x)).sort((x, y) => y[1] - x[1])[0];
       const k = ok(p.lat) && ok(p.lon) ? p.lat.toFixed(4) + "," + p.lon.toFixed(4) : null, mates = k && pos.get(k) ? pos.get(k).filter((n) => n !== p.plant) : [];
-      return `<tr><td class="num">${esc(p.plant)}</td><td>${ok(p.lat) ? p.lat.toFixed(2) + "°N " + p.lon.toFixed(2) + "°E" : "–"}${p.kind === "cement" && p.name ? ` (${esc(p.name)})` : ""}${mates.length ? `<br><span class="mate">same site as #${mates.map(esc).join(", #")}</span>` : ""}</td><td class="num">${fmt(p.net_removal_tco2)}</td><td>${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` <span class="mate">${fmt(p.cement_km)}&nbsp;km</span>` : ""}</td><td>${main ? main[0] : "–"}</td></tr>`;
+      return `<tr><td class="num">${esc(p.plant)}</td><td>${where}${p.kind === "cement" && p.name ? `<br><span class="mate">beside the existing ${esc(p.name)} plant</span>` : ""}${mates.length ? `<br><span class="mate">same site as #${mates.map(esc).join(", #")}</span>` : ""}</td><td class="num">${fmt(p.net_removal_tco2)}</td><td>${esc(p.best_outlet)}${p.best_outlet === "cement" ? ` <span class="mate">${fmt(p.cement_km)}&nbsp;km</span>` : ""}</td><td>${main ? main[0] : "–"}</td></tr>`;
     };
     const head = `<tr><th class="num" title="order placed">#</th><th>Where</th><th class="num">t CO₂/y net of transport</th><th>Outlet</th><th>Main feed</th></tr>`;
     let table = "";
@@ -1025,7 +1097,8 @@ function renderBiochar() {
       const first = plants.slice(0, 40), rest = plants.slice(40);
       table = `<table>${head}${first.map(row).join("")}</table>${rest.length ? `<details class="more"><summary>Show the other ${fmt(rest.length)} plants (of ${fmt(plants.length)})</summary><table>${head}${rest.map(row).join("")}</table></details>` : ""}`;
     }
-    html.push(`<h3>Plants of the case on the map</h3>
+    html.push(`<h3>Hypothetical plant sites of the case on the map</h3>
+      <p class="callout">${ico("info")}<span>${HYPO} ${map ? `${NO_HOVER ? "Tap" : "Click"} a location in the list to fly the map there.` : ""}</span></p>
       <p>Char in cement is credited like char in soil (Puro rule 6.2.4), so a plant sends its char to a cement plant only when that is the shorter haul: ${fmt(c.cement_outlet_plants)} of ${fmt(c.plants)} do.${ok(c.cement_retained_tco2) && c.cement_retained_tco2 > 0 ? ` Their char would hold ${mt(c.cement_retained_tco2)}&nbsp;Mt CO₂ a year in concrete over 60–80 years${ret && ok(ret.central) ? ` (at ${fmt(ret.central, 2)} retention, within a ${fmt(ret.low, 2)}–${fmt(ret.high, 2)} envelope; reported, not credited)` : " (reported, not credited)"}.` : ""} Median transport cost ${ok(c.median_transport_share) ? fmt(100 * c.median_transport_share, 1) + "%" : "–"} of the removal. Plants are numbered in the order the greedy siting placed them; several can share one site, which the map draws as one marker.</p>
       ${table}`);
     html.push(persistenceNote(c, up));
@@ -1142,7 +1215,7 @@ function renderMethod() {
     <li><b>Manure and litter</b>: Manure and poultry litter are modelled from GASTAT 2024 livestock counts for each administrative region, and only the part that can be collected is placed on the map, where the animals are housed: cattle, most of them in barn-housed dairy projects, on each region's year-round fodder fields, and penned sheep, goats and poultry following the FAO GLW4 livestock map but only within 10 km of a mapped field or an OpenStreetMap settlement. Manure dropped by grazing animals is not placed and feeds no plant.${su && obj(su.litter) && su.litter.status === "excluded" ? " Poultry-litter char fails Puro's H/C<sub>org</sub> gate, so litter is not credited." : ""}</li>
     <li><b>Water, energy</b>: area × irrigation depth ÷ pivot efficiency, with published depths for winter and year-round fields and a derived depth (half the perennial) for summer crops. ${ph && ph.rule ? `Pumping electricity = water × ρg × head ÷ pump efficiency, with ${txt(ph.rule)}${ph.pivot_rule ? `; ${txt(plain(ph.pivot_rule))}` : ""}${mh && ok(mh.central) ? `; mean head ${fmt(mh.central)} m at central` : ""}.${pgpTxt} Arabian Shield fields get water but no energy.` : "Lift by region."}</li>
     ${obj(s.s2_filled) ? `<li><b>Radar + Sentinel-2 tier</b>: published next to the radar-only figures and never replacing them; Sentinel-2 fills winters the radar missed and seasons it did not observe, and the area it adds is measured by Sentinel-2, not by the radar.${s.s2_filled.rule ? ` <details class="more"><summary>The full rule</summary><p>${txt(sentence(plain(s.s2_filled.rule)))}</p></details>` : ""}</li>` : ""}
-    <li><b>Siting</b>: greedy placement of plants that remove the most CO₂ net of transport. Removal is credited with the Puro.earth 2025 soil persistence model for farmland and for cement alike (H/C<sub>org</sub> below 0.70 required, on the organic-carbon basis${su && obj(su.litter) && su.litter.status === "excluded" ? "; poultry-litter char fails it" : ""}); char goes to farmland or to the nearest operating cement plant, whichever removes more net of transport (with both credited alike, the shorter haul). The all-low and all-high corners set the supply, char-yield and char-carbon, H/C and soil-temperature factors to their least or most favourable values at once, with road circuity and the truck emission factor held at central; they are not probability intervals.</li></ol>
+    <li><b>Siting</b>: greedy placement of hypothetical plants (a model only; no such plants exist or are planned) that would remove the most CO₂ net of transport. Removal is credited with the Puro.earth 2025 soil persistence model for farmland and for cement alike (H/C<sub>org</sub> below 0.70 required, on the organic-carbon basis${su && obj(su.litter) && su.litter.status === "excluded" ? "; poultry-litter char fails it" : ""}); char goes to farmland or to the nearest operating cement plant, whichever removes more net of transport (with both credited alike, the shorter haul). The all-low and all-high corners set the supply, char-yield and char-carbon, H/C and soil-temperature factors to their least or most favourable values at once, with road circuity and the truck emission factor held at central; they are not probability intervals.</li></ol>
     <h3>Depth to groundwater (m)</h3>${lift ? `<table class="stack"><tr><th>Area</th><th class="num">Low</th><th class="num">Central</th><th class="num">High</th></tr>${lift}</table>` : "<p>No depth table in this export.</p>"}
     ${liftNotes.length || shTxt ? `<p class="note">${liftNotes.map((x) => txt(sentence(x))).join(" ")}${shTxt}</p>` : ""}
     ${ph && ph.rule ? `<p class="note">These are static depths to groundwater: no pumping levels are published, so drawdown and pivot pressure are added from the factors below.</p>`
@@ -1180,6 +1253,15 @@ function wireControls() {
   if (bb) bb.addEventListener("click", back);
   if (kb) kb.addEventListener("click", toggleFieldKey);
   if (lk) lk.addEventListener("click", () => { toggleLayerKeys(); lk.focus(); });
+  // the plant list: a location flies the map to that hypothetical site and opens its label
+  const bio = $("bio");
+  if (bio) bio.addEventListener("click", (e) => {
+    const b = e.target.closest && e.target.closest("button.fly[data-site]");
+    if (!b) return;
+    const ll = [Number(b.dataset.lat), Number(b.dataset.lon)];
+    if (!ll.every(ok)) return;
+    showOnMap(ll, 10, "plants", "showplants", () => openTip(S.plantAt && S.plantAt.get(b.dataset.site)));
+  });
   document.addEventListener("click", (e) => {
     const b = e.target.closest && e.target.closest(".level button[data-level]");
     if (!b) return;

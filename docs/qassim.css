@@ -50,15 +50,19 @@
 .mt-key ul.key + ul.key { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
 #maptools .mt-hint { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--muted); }
 
-/* Biochar plants on the map: a filled badge by char outlet, with its number; the hit area reaches 40 px */
+/* Hypothetical biochar plants on the map: a white square with a dashed outline in the colour of its char outlet and its
+   number, unlike the solid rings of the real cement plants; the hit area reaches 40 px */
 .plant-pin { overflow: visible; }
 .plant-pin > span {
   position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 24px; height: 24px; padding: 0 6px; white-space: nowrap;
-  font: 700 12px/1 var(--font); font-variant-numeric: tabular-nums; color: #fff; background: var(--c, var(--c-soil));
-  border: 2px solid #fff; border-radius: 12px; box-shadow: 0 0 0 1px rgba(14, 26, 38, .4), 0 2px 6px rgba(14, 26, 38, .35);
+  min-width: 26px; height: 26px; padding: 0 6px; white-space: nowrap;
+  font: 700 12px/1 var(--font); font-variant-numeric: tabular-nums; color: var(--c, var(--c-soil)); background: #fff;
+  border: 2px dashed var(--c, var(--c-soil)); border-radius: 6px; box-shadow: 0 0 0 1px rgba(14, 26, 38, .35), 0 2px 6px rgba(14, 26, 38, .35);
 }
+.key i.hypo { width: 14px; height: 14px; background: #fff; border: 2px dashed var(--c, var(--c-soil)); border-radius: 3px; }
+.mt-key .key-note { margin: 6px 0 0; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2); }
+.hypo-note b { color: var(--ink); }
 .plant-pin > span::after { content: ""; position: absolute; inset: -9px; }
 .plant-pin:focus-visible { outline: none; }
 .plant-pin:focus-visible > span { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -164,9 +168,17 @@ dl.hl-seasons dd .u { margin-left: 4px; font-size: var(--fs-sm); font-weight: 60
 .plant-head { display: flex; align-items: center; gap: 12px; }
 .pnum {
   display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 30px; height: 30px; padding: 0 7px;
-  font-size: 14px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: #fff; background: var(--c, var(--c-soil));
-  border-radius: 15px; box-shadow: 0 0 0 2px var(--panel), 0 0 0 3px rgba(14, 26, 38, .18);
+  font-size: 14px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: var(--c, var(--c-soil)); background: #fff;
+  border: 2px dashed var(--c, var(--c-soil)); border-radius: 7px;
 }
+#plantlist .plant[data-plant] { cursor: pointer; }
+#plantlist .plant[data-plant]:hover { border-color: var(--accent); }
+.showmap {
+  display: inline-flex; flex: none; align-items: center; gap: 5px; margin-left: auto; padding: 6px 10px; min-height: 32px;
+  font: 600 var(--fs-cap)/1 var(--font); color: var(--accent); background: transparent; border: 1px solid var(--line-2); border-radius: 8px; cursor: pointer;
+}
+.showmap:hover { background: var(--accent-wash); border-color: var(--accent); }
+.showmap .ico { width: 14px; height: 14px; }
 .plant-id { display: grid; min-width: 0; }
 .plant-name { font-size: var(--fs-h3); font-weight: 650; line-height: 1.3; color: var(--ink); }
 .plant-where { font: 400 12px/1.5 var(--font-mono); color: var(--muted); }

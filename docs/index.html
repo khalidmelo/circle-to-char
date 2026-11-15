@@ -4,13 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SkyMeter</title>
-<meta name="description" content="NASA Space Apps 2026, Dancing with the SARs: SkyMeter uses NISAR L-band radar to check which Saudi farm fields are farmed each season, field by field, what they cost in irrigation water and pumping energy, what residue they leave and where biochar plants could go.">
-<meta name="theme-color" content="#07111d">
+<meta name="description" content="NASA Space Apps 2026, Dancing with the SARs: SkyMeter uses NISAR L-band radar to check which Saudi farm fields are farmed each season, field by field, what they cost in irrigation water and pumping energy, what residue they leave and where hypothetical biochar plants could go.">
+<meta name="theme-color" content="#f3f5f7">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SkyMeter">
 <meta property="og:url" content="https://khalidmelo.github.io/circle-to-char/">
 <meta property="og:title" content="SkyMeter">
-<meta property="og:description" content="Which Saudi fields are farmed each season? NISAR radar checks, field by field: farmed area, irrigation water, pumping energy, residues and where biochar plants could go.">
+<meta property="og:description" content="Which Saudi fields are farmed each season? NISAR radar checks, field by field: farmed area, irrigation water, pumping energy, residues and where hypothetical biochar plants could go.">
 <meta property="og:image" content="https://khalidmelo.github.io/circle-to-char/img/hero-1200.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
@@ -20,9 +20,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="preload" as="image" href="img/hero.jpg" imagesrcset="img/hero-1200.jpg 1200w, img/hero.jpg 2400w" imagesizes="100vw">
-<link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="landing.css?v=2">
+<link rel="preload" as="image" href="img/hero.jpg" imagesrcset="img/hero-1200.jpg 1200w, img/hero.jpg 2400w" imagesizes="(min-width: 900px) 46vw, 100vw">
+<link rel="stylesheet" href="style.css?v=4">
+<link rel="stylesheet" href="landing.css?v=3">
 </head>
 <body class="landing">
 <a class="skip" href="#main">Skip to content</a>
@@ -36,22 +36,9 @@
 
 <main id="main">
   <!-- Hero: the radar image, the promise and the one headline figure -->
-  <section class="l-hero" aria-labelledby="title">
-    <img class="l-hero-img" src="img/hero.jpg" srcset="img/hero-1200.jpg 1200w, img/hero.jpg 2400w" sizes="100vw" width="2400" height="1350" fetchpriority="high"
-      alt="False-colour NISAR radar image of the Qassim farming area: amber and blue circles are centre-pivot fields with a crop in winter or in summer, pale patches are bright in both seasons, on a dark desert background.">
-    <!-- the caption follows the image: under the band on phones, on the image (bottom right) from 900 px -->
-    <div class="l-wrap l-hero-cap"><div class="l-cap-plate">
-      <p class="l-cap-line">NISAR L&#8209;band HV, Qassim pivots west of Buraydah, about 53&nbsp;by&nbsp;30&nbsp;km, 2025/26</p>
-      <ul class="l-key" aria-label="Image colours">
-        <li><i style="--c:var(--d-winter)"></i>Winter only, 6&nbsp;dates</li>
-        <li><i style="--c:var(--d-summer)"></i>Summer only, 10&nbsp;dates</li>
-        <li><i class="ring" style="--c:var(--ink-2)"></i>Both seasons</li>
-      </ul>
-      <details class="more l-cap-more"><summary>About this image</summary>
-        <p>False-colour composite of NISAR L&#8209;band HV radar over the Qassim centre-pivot fields west of Buraydah, about 53 by 30&nbsp;km with north up: amber marks ground bright only on the six winter dates (1 November to 31 December 2025), blue only on the ten summer dates (29 June to 27 October 2026), pale grey ground bright in both seasons (year-round crops, palm groves and buildings), and dark is bare ground.</p>
-      </details>
-    </div></div>
-    <div class="l-wrap l-hero-in">
+  <section class="l-top" aria-labelledby="title">
+   <div class="l-wrap l-top-grid">
+    <div class="l-top-text">
       <p class="stamp">NASA Space Apps 2026, Dancing with the SARs</p>
       <h1 class="l-title" id="title"><span class="l-name">SkyMeter</span> <span class="l-promise">reads Saudi farm fields from orbit, season by season.</span></h1>
       <p class="l-deck">NISAR's L&#8209;band radar sees through cloud, dust and darkness. SkyMeter uses it to check, field by field, which fields are farmed each season, what they cost in irrigation water and pumping energy, and what residue they leave for biochar.</p>
@@ -67,6 +54,23 @@
         <a class="btn" href="#story">How it works</a>
       </div>
     </div>
+    <!-- the radar image as a framed figure beside the text (under it on phones), its caption below it: no text on the image -->
+    <figure class="l-top-fig">
+      <img class="l-top-img" src="img/hero.jpg" srcset="img/hero-1200.jpg 1200w, img/hero.jpg 2400w" sizes="(min-width: 900px) 46vw, 100vw" width="2400" height="1350" fetchpriority="high"
+        alt="False-colour NISAR radar image of the Qassim farming area: amber and blue circles are centre-pivot fields with a crop in winter or in summer, pale patches are bright in both seasons, on a dark desert background.">
+      <figcaption class="l-cap-plate">
+        <p class="l-cap-line">NISAR L&#8209;band HV, Qassim pivots west of Buraydah, about 53&nbsp;by&nbsp;30&nbsp;km, 2025/26</p>
+        <ul class="l-key" aria-label="Image colours">
+          <li><i style="--c:var(--d-winter)"></i>Winter only, 6&nbsp;dates</li>
+          <li><i style="--c:var(--d-summer)"></i>Summer only, 10&nbsp;dates</li>
+          <li><i class="ring" style="--c:var(--ink-2)"></i>Both seasons</li>
+        </ul>
+        <details class="more l-cap-more"><summary>About this image</summary>
+          <p>False-colour composite of NISAR L&#8209;band HV radar over the Qassim centre-pivot fields west of Buraydah, about 53 by 30&nbsp;km with north up: amber marks ground bright only on the six winter dates (1 November to 31 December 2025), blue only on the ten summer dates (29 June to 27 October 2026), pale grey ground bright in both seasons (year-round crops, palm groves and buildings), and dark is bare ground.</p>
+        </details>
+      </figcaption>
+    </figure>
+   </div>
   </section>
 
   <!-- The story, in four steps -->
@@ -158,6 +162,7 @@
               <div class="l-bio-head">
                 <h3 class="l-h2" id="b-h">Biochar carbon removal</h3>
                 <p class="l-bio-sub" id="b-sub">Mt CO₂ a year, net of transport: a technical potential</p>
+                <p class="l-hypo"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-info"/></svg><span><b>These are hypothetical sites from a siting model; no such plants exist.</b> The plants counted below are modelled biochar plant sites, none built or planned. The cement plants that could take the char are existing cement plants (real facilities).</span></p>
               </div>
               <div class="l-bio-cases">
                 <ol class="cases" id="b-rows"></ol>
@@ -244,7 +249,7 @@
           <span class="l-entry-n"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-map"/></svg></span>
           <span class="l-entry-body">
             <span class="l-entry-title">National results</span>
-            <span class="l-entry-text">Farmed area, water, energy, residues and biochar sites for the <span id="c-regions">largest</span> farming regions<span id="c-radar"></span>, checked against Sentinel&#8209;2 and 2024 official statistics.</span>
+            <span class="l-entry-text">Farmed area, water, energy, residues and hypothetical biochar plant sites for the <span id="c-regions">largest</span> farming regions<span id="c-radar"></span>, checked against Sentinel&#8209;2 and 2024 official statistics.</span>
           </span>
           <span class="l-entry-meta" id="m-national"></span>
           <svg class="ico l-entry-go" aria-hidden="true"><use href="img/icons.svg#i-chevron"/></svg>
@@ -485,7 +490,7 @@
     const mt = (t) => fmt(t / 1e6, 2);
     const credited = (x) => !!x && x.credited !== false && ok(x.net_removal_tco2);
     const corners = (lo, hi) => (credited(lo) && credited(hi)) ? span(lo.net_removal_tco2, hi.net_removal_tco2, 1e6, 2) : null;
-    const plants = (x) => ok(x.plants) ? `${fmt(x.plants)}\u00a0plants${ok(x.distinct_sites) && x.distinct_sites < x.plants ? ` on ${fmt(x.distinct_sites)}\u00a0sites` : ""}` : "";
+    const plants = (x) => ok(x.plants) ? `${fmt(x.plants)}\u00a0hypothetical plants${ok(x.distinct_sites) && x.distinct_sites < x.plants ? ` on ${fmt(x.distinct_sites)}\u00a0sites` : ""}` : "";
     const FEED = { straw: "wheat straw", fronds: "palm fronds", manure: "manure", litter: "poultry litter" };
     const feedsOf = (x) => {
       const cb = obj(x.credited_by_feed_tco2);
@@ -523,7 +528,7 @@
       const cr = useCorners(tag(`low_${SIZE}kt`), tag(`high_${SIZE}kt`));
       unlimited = true;
       const outside = ok(c50.feed_outside_boxes_t) && ok(c50.feed_used_t) && c50.feed_used_t > 0
-        ? `${ok(c50.plants_outside_boxes) ? `${fmt(c50.plants_outside_boxes)} of the plants and ` : ""}${pct(c50.feed_outside_boxes_t / c50.feed_used_t)} of the feed are outside ${inside}` : "";
+        ? `${ok(c50.plants_outside_boxes) ? `${fmt(c50.plants_outside_boxes)} of the hypothetical plants and ` : ""}${pct(c50.feed_outside_boxes_t / c50.feed_used_t)} of the feed are outside ${inside}` : "";
       const within = credited(b50) ? `Manure only from inside ${inside}: ${mt(b50.net_removal_tco2)}\u00a0Mt, ${plants(b50)}` : "";
       cases.push({ label, v: c50.net_removal_tco2, cr, meta: [[plants(c50), cornerTxt(cr)].filter(Boolean).join(", "), outside, within] });
       if (c50.basis) basis.push(["Whole Kingdom", c50.basis]);
@@ -532,7 +537,7 @@
     if (sc && ok(sc.credited_tco2)) {
       const lit = ok(get(sc, "feed_used_by_feed_t.litter")) && sc.feed_used_by_feed_t.litter > 0;
       cases.push({ label: `Outlets limited: farmland and cement take only limited char${lit ? " (includes poultry litter)" : ""}`, v: sc.credited_tco2,
-        meta: [ok(sc.plants) ? `${fmt(sc.plants)}\u00a0plants` : "", `<a href="scenarios.html#biochar">Details in Scenarios</a>`] });
+        meta: [ok(sc.plants) ? `${fmt(sc.plants)}\u00a0hypothetical plants` : "", `<a href="scenarios.html#biochar">Details in Scenarios</a>`] });
       if (sc.note) basis.push(["Outlets limited", sc.note]);
     }
     if (up && ok(up.net_removal_tco2)) {   // never among the credited cases: its own list, value in brackets (as scenarios.js)
@@ -554,7 +559,7 @@
     if (!credited(r50) && !credited(c50)) rows.unshift(`<li class="case"><span class="case-label">Siting with unlimited outlets is not in this data export; see the national page.</span></li>`);
     const sz = [c50, r50].map((x) => x && (ok(x.size_t) ? x.size_t : ok(x.plant_size_t) ? x.plant_size_t : null)).find(ok);
     const sizeKt = ok(sz) ? sz / 1000 : sc && ok(sc.plant_size_t) ? sc.plant_size_t / 1000 : SIZE;
-    $("b-sub").textContent = `Mt CO₂ a year, net of transport, with ${fmt(sizeKt)}\u00a0kt/yr plants: a technical potential`;
+    $("b-sub").textContent = `Mt CO₂ a year, net of transport, from hypothetical ${fmt(sizeKt)}\u00a0kt/yr biochar plants: a technical potential`;
     $("b-rows").innerHTML = rows.join("");
     $("b-axis").innerHTML = all.length && top > 0 ? `<div class="cbar-axis" aria-hidden="true"><span>0</span><span>${mt(top)}\u00a0Mt CO₂ a year</span></div>` +
       `<ul class="cbar-legend" aria-hidden="true"><li><span class="ck bar"></span>The case</li>${anyCorners ? `<li><span class="ck whisk"></span>All-low / all-high corners</li>` : ""}${upCases.length ? `<li><span class="ck hollow"></span>Hypothetical, not credited</li>` : ""}</ul>` : "";

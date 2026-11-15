@@ -1,74 +1,73 @@
-/* SkyMeter landing (index.html): page-only rules on top of style.css (body.landing).
+/* SkyMeter landing (index.html): page-only rules on top of style.css (body.landing), in the same light theme as the app pages.
    Tokens only. Data marks use the three validated landing steps (--d-winter, --d-summer, --d-year);
    every range, meter and case bar uses the slate --rb-* ramp, so none of them reads as a data class. */
 
 /* ---------- Anchors under the sticky bar ---------- */
-#story, #sure, #explore, .l-step { scroll-margin-top: calc(var(--nav-h) + 16px); }
+#story, #sure, #explore, #b-h, .l-step { scroll-margin-top: calc(var(--nav-h) + 16px); }
 
-/* ---------- Hero ---------- */
+/* ---------- Light theme: the landing shares the app pages' light tokens (style.css). These reset the few
+   landing rules in style.css that were written for the old dark page (white figures, inverted buttons, bar). ---------- */
+body.landing .skip { color: #fff; background: var(--navy); }
+body.landing .brand-mark { color: var(--navy); }
+body.landing .btn.primary { color: #fff; background: var(--navy); border-color: var(--navy); }
+body.landing .btn.primary:hover { color: #fff; background: #17304d; border-color: #17304d; }
+body.landing .btn.secondary, body.landing .btn:not(.primary):not(.ghost) { color: var(--ink); background: var(--panel); border-color: var(--line-2); }
+body.landing .btn.secondary:hover, body.landing .btn:not(.primary):not(.ghost):hover { color: var(--ink); background: var(--panel-2); border-color: var(--line-2); }
+body.landing .btn.ghost { color: var(--ink); }
+body.landing .btn.ghost:hover { background: var(--panel-2); }
+body.landing .seg button.on, body.landing .seg button[aria-pressed="true"] { color: var(--ink); background: var(--panel); }
+.l-title, .l-num, .l-h2, .l-stat-num, .l-entry:hover .l-entry-go { color: var(--ink); }
+.l-figure { border-top-color: var(--line-2); }
+.l-entry:hover { background: var(--panel-2); }
+.l-key i, .glow { box-shadow: 0 0 0 1px rgba(14, 26, 38, .18); }   /* a hairline edge on the light page, no glow */
+.l-segbar > span { box-shadow: none; }
+
+/* ---------- Hero: the text, and beside it (under it on phones) the radar image as a framed figure with its caption.
+   No text sits on the image, so every line keeps the page's light-theme contrast. ---------- */
+.l-top { padding: clamp(28px, 5vw, 64px) 0 clamp(40px, 6vw, 80px); background: var(--bg); }
+.l-top-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 32px; align-items: center; }
+.l-top-text { min-width: 0; }
+.l-top-text > .stamp { margin: 0; }
+.l-top-fig { min-width: 0; margin: 0; }
+.l-top-img {
+  display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover;
+  background: #07111d; border-radius: var(--r-lg); box-shadow: 0 0 0 1px var(--line), var(--shadow-float);
+}
 .l-title { max-width: 20ch; font-size: clamp(34px, 4vw, 58px); line-height: 1.04; }
-.l-title .l-name { font-weight: 760; font-stretch: 114%; color: #fff; }
+.l-title .l-name { font-weight: 760; font-stretch: 114%; color: var(--ink); }
 .l-title .l-promise { font-weight: 560; color: var(--ink-2); }
-.l-hero .l-deck { max-width: 54ch; }
+.l-top .l-deck { max-width: 54ch; }
 .l-figure { max-width: 600px; }
+.l-num { font-size: clamp(56px, 7vw, 112px); }
 .l-figure-note { margin: 12px 0 0; max-width: 56ch; font-size: 14px; line-height: 1.55; color: var(--ink-2); }
-.l-hero .alert, .l-hero .loadfail { max-width: 56ch; }
+.l-top .alert, .l-top .loadfail { max-width: 56ch; }
 
-/* The image caption: one short line, the key (each colour with its date count) and the full sentence in a disclosure.
-   It follows the image in the markup: a strip in the band's faded foot on phones, a glass plate on the image from 900 px. */
-.l-cap-plate { flex: 1 1 100%; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; }
+/* The image caption: one short line, the key (each colour with its date count) and the full sentence in a disclosure */
+.l-cap-plate { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 20px; margin-top: 12px; font-size: var(--fs-cap); line-height: 1.5; color: var(--ink-2); }
 .l-cap-plate p { flex: none; max-width: 72ch; margin: 0; }
 .l-cap-line { width: 100%; color: var(--ink-2); }
-.l-hero-cap .l-key { gap: 6px 18px; }
-.l-hero-cap .l-key i.ring { box-shadow: none; }   /* the image's achromatic channel: an outline in the text colour, no glow */
+.l-cap-plate .l-key { gap: 6px 18px; }
+.l-cap-plate .l-key i.ring { box-shadow: none; }   /* the image's achromatic channel: an outline in the text colour */
 .l-cap-more { width: 100%; margin: 0; font-size: var(--fs-cap); }
 .l-cap-more[open] > summary { margin-bottom: 2px; }
-.l-cap-more p { margin: 0 0 4px; text-align: left; color: var(--ink-2); }
-@media (max-width: 899px) {
-  .l-hero-cap { margin-top: -40px; padding-bottom: 0; }   /* right under the image, in the band's faded foot */
-  .l-hero-in { margin-top: 0; padding-top: 22px; }
-}
+.l-cap-more p { margin: 0 0 4px; color: var(--ink-2); }
 @media (min-width: 900px) {
-  .l-hero-in { padding-bottom: 56px; }   /* the caption plate sits clear of the text column, so it needs no reserved row */
-  /* the radar keeps the right half; a deeper scrim holds the text column */
-  .l-hero::before {
-    background:
-      linear-gradient(90deg, rgba(7, 17, 29, .95) 0%, rgba(7, 17, 29, .9) 36%, rgba(7, 17, 29, .6) 50%, rgba(7, 17, 29, .12) 64%, rgba(7, 17, 29, 0) 74%),
-      linear-gradient(to bottom, rgba(7, 17, 29, .55), rgba(7, 17, 29, 0) 18%, rgba(7, 17, 29, 0) 76%, var(--bg));
-  }
-  /* above the text block in the stack, but only the plate takes clicks, so the buttons beside it stay usable */
-  .l-hero-cap { z-index: 3; pointer-events: none; }
-  /* the caption sits on a glass plate so small type stays readable over the image */
-  .l-cap-plate {
-    flex: none; flex-direction: column; align-items: flex-end; gap: 8px; max-width: calc(46ch + 34px);
-    padding: 12px 16px; text-align: right; pointer-events: auto;
-    background: rgba(7, 17, 29, .76); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
-    border: 1px solid var(--line); border-radius: var(--r);
-  }
-  .l-cap-plate p { text-shadow: none; }
-  .l-hero-cap .l-key { justify-content: flex-end; }
-}
-@media (min-width: 900px) and (max-width: 1199px) {
-  .l-figure { max-width: min(600px, calc(100% - 380px)); }   /* the figure block stays clear of the caption plate */
-}
-@media (min-width: 900px) and (max-height: 900px) {
-  .l-hero-in { padding-top: 36px; padding-bottom: 40px; }   /* 1536x864, 1440x900: the caption plate stays in view too */
+  .l-top-grid { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(32px, 4vw, 64px); }
 }
 @media (min-width: 900px) and (max-height: 820px) {
-  .l-hero-in { padding-top: 40px; }
-  .l-title { font-size: clamp(34px, 4vw, 56px); }
+  .l-top { padding-top: 32px; padding-bottom: 40px; }
+  .l-title { font-size: clamp(32px, 3.3vw, 48px); }
+  .l-num { font-size: clamp(56px, 12svh, 96px); }
 }
-/* short laptop windows (1366x640 to 1366x768 and the like): the figure, its line and both buttons stay above the fold */
-@media (min-width: 900px) and (max-height: 800px) {
-  .l-hero-in { padding-top: 28px; padding-bottom: 24px; }
-  .l-title { font-size: clamp(32px, 3.3vw, 46px); margin-top: 14px; }
-  .l-hero .l-deck { font-size: 16px; margin-top: 14px; max-width: 64ch; }
-  .l-figure { margin-top: 20px; padding-top: 16px; }
-  .l-num { font-size: clamp(56px, 13svh, 96px); }
-  .l-label { margin-top: 8px; }
-  .l-figure-note { margin-top: 8px; max-width: none; font-size: 13px; }
-  .l-actions { margin-top: 20px; }
+
+/* Hypothetical biochar plants: one plain line, set apart, so no one reads the modelled sites as real plants */
+.l-hypo {
+  display: flex; align-items: flex-start; gap: 10px; max-width: 78ch; margin: 14px 0 0; padding: 12px 14px;
+  font-size: 14px; line-height: 1.55; color: var(--ink-2);
+  background: var(--panel); border: 1px dashed var(--line-2); border-radius: var(--r);
 }
+.l-hypo .ico { flex: none; width: 18px; height: 18px; margin-top: 2px; color: var(--accent); }
+.l-hypo b { color: var(--ink); font-weight: 650; }
 
 /* ---------- Story: shared pieces ---------- */
 .l-story-in { padding-top: clamp(56px, 8vw, 112px); }
@@ -135,7 +134,7 @@
 .l-fig-label .ico { width: 18px; height: 18px; color: var(--muted); }
 .l-fig-value {
   display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; margin: 12px 0 0;
-  font-size: var(--fs-stat); font-weight: 600; line-height: 1; letter-spacing: -.04em; font-variant-numeric: proportional-nums; color: #fff;
+  font-size: var(--fs-stat); font-weight: 600; line-height: 1; letter-spacing: -.04em; font-variant-numeric: proportional-nums; color: var(--ink);
 }
 .l-fig-unit { font-size: 15px; font-weight: 500; letter-spacing: 0; color: var(--ink-2); }
 .l-fig-note { margin: 14px 0 0; max-width: 62ch; font-size: 13.5px; line-height: 1.6; color: var(--ink-2); }
@@ -176,7 +175,7 @@
 .l-bio .case:first-child { border-top-color: var(--line-2); }
 .l-bio .case-head { align-items: baseline; }
 .l-bio .case-label { font-size: 14.5px; font-weight: 550; color: var(--ink); }
-.l-bio .case-value { font-size: 28px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: proportional-nums; color: #fff; }
+.l-bio .case-value { font-size: 28px; font-weight: 600; letter-spacing: -.03em; font-variant-numeric: proportional-nums; color: var(--ink); }
 .l-bio .case-meta { font-size: 12.5px; color: var(--ink-2); }
 .l-bio .case-meta a { display: inline-block; padding: 13px 0; margin: -13px 0; overflow-wrap: anywhere; }   /* 40 px hit area, same layout */
 .l-bio .case.upside .case-label { color: var(--ink-2); }
@@ -219,7 +218,7 @@
   .l-change { grid-template-columns: minmax(150px, 12.5rem) minmax(0, 1fr); }
 }
 .l-ch-fig { min-width: 0; margin: 0; }
-.l-change .l-ch-num { max-width: none; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; margin: 0; font-size: clamp(34px, 3.4vw, 50px); font-weight: 600; line-height: 1; letter-spacing: -.035em; font-variant-numeric: proportional-nums; color: #fff; }
+.l-change .l-ch-num { max-width: none; display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; margin: 0; font-size: clamp(34px, 3.4vw, 50px); font-weight: 600; line-height: 1; letter-spacing: -.035em; font-variant-numeric: proportional-nums; color: var(--ink); }
 .l-change .l-ch-num + .l-ch-num { margin-top: 12px; }
 .l-ch-unit { font-size: 14px; font-weight: 500; letter-spacing: 0; color: var(--ink-2); }
 .l-change .l-ch-lab { margin: 12px 0 0; font-size: 13px; line-height: 1.45; color: var(--ink-2); }
@@ -246,7 +245,7 @@
 .l-chk-season h3 span { font: 500 12px/1.4 var(--font-mono); letter-spacing: 0; color: var(--muted); }
 .l-meter { margin: 0 0 16px; }
 .l-meter-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; font-size: 13px; line-height: 1.4; color: var(--ink-2); }
-.l-meter-head b { flex: none; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -.03em; font-variant-numeric: proportional-nums; color: #fff; }
+.l-meter-head b { flex: none; font-size: 26px; font-weight: 600; line-height: 1; letter-spacing: -.03em; font-variant-numeric: proportional-nums; color: var(--ink); }
 .l-meter-bar { position: relative; height: 6px; margin-top: 8px; background: var(--rb-track); border-radius: 3px; overflow: hidden; }
 .l-meter-bar > i { position: absolute; left: 0; top: 0; bottom: 0; width: var(--w, 0%); background: var(--rb-thr); border-radius: 3px; }
 .l-kappa { margin: 4px 0 0; font-size: 13px; line-height: 1.5; color: var(--ink-2); }
@@ -262,11 +261,12 @@
 /* ---------- Entry points ---------- */
 .l-go-lead { max-width: 60ch; }
 .l-entry-n .ico { width: 24px; height: 24px; stroke-width: 1.6; color: var(--ink-2); }
-.l-entry:hover .l-entry-n .ico { color: #fff; }
+.l-entry:hover .l-entry-n .ico { color: var(--ink); }
 .l-entry-n { padding-top: .2em; }
 
 /* ---------- Site bar and footer ---------- */
-body.landing nav.site { background: rgba(7, 17, 29, .9); }   /* big white figures stay behind a solid enough bar */
+body.landing nav.site { background: rgba(255, 255, 255, .92); border-bottom-color: var(--line); }   /* the same light bar as the app pages */
+body.landing nav.site a[aria-current="page"]::after { background: var(--ink); }
 body.landing nav.site a.home { min-width: 40px; }
 @media (min-width: 1200px) {
   /* the bar's brand and the page column share one left edge */
@@ -322,17 +322,13 @@ body.landing nav.site a.home { min-width: 40px; }
   }
   body.landing nav.site, .skip, .l-actions { display: none; }
   .io-reveal .l-step-text, .io-reveal .l-step-vis, .io-reveal .l-reveal { opacity: 1 !important; transform: none !important; }
-  .l-hero::before { display: none; }
-  /* the hero as a band: the image, its caption, then the text (never text over the image) */
-  .l-hero { display: block; min-height: 0; }
-  .l-hero-img { position: static; height: auto; max-height: 60vh; }
-  .l-hero-cap { position: static; margin-top: 8px; padding-bottom: 0; text-align: left; }
-  .l-cap-plate { align-items: flex-start; text-align: left; max-width: none; padding: 0; background: none; border: 0; }
-  .l-hero-in { margin-top: 0; padding: 16px var(--gutter) 24px; }
+  /* the hero stacks: the text, then the image and its caption */
+  .l-top-grid { grid-template-columns: minmax(0, 1fr); }
+  .l-top-img { max-height: 60vh; box-shadow: none; }
   .l-title, .l-title .l-name, .l-num, .l-h2, .l-stat-num, .l-fig-value, .l-bio .case-value, .l-change .l-ch-num,
   .l-meter-head b, .l-entry-title { color: var(--ink); }
   body.landing .brand-mark { color: var(--ink); }
-  .l-hero .stamp { background: none; color: var(--ink-2); border-color: var(--line-2); }
+  .l-top .stamp { background: none; color: var(--ink-2); border-color: var(--line-2); }
   .l-figure { border-top-color: var(--line-2); }
   .l-key i, .glow { box-shadow: none; }
   .l-step.top > .l-step-text { position: static; }

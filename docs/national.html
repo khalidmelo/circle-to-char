@@ -23,7 +23,7 @@
 <link rel="preconnect" href="https://server.arcgisonline.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="national.css?v=6">
+<link rel="stylesheet" href="national.css?v=8">
 </head>
 <body class="app">
 <a class="skip" href="#panel">Skip to the results</a>
@@ -37,14 +37,14 @@
 <header class="page">
   <div class="brand">
     <h1>National results</h1>
-    <p>NISAR radar over Saudi Arabia's <span id="h-regions">largest</span> farming regions, 2025/26: what is farmed, what it costs in water and energy, what organic residue it leaves, and where biochar plants could go. Radar results only where the radar passed its quality check; manure and litter are modelled from livestock statistics for the whole Kingdom, not measured.</p>
+    <p>NISAR radar over Saudi Arabia's <span id="h-regions">largest</span> farming regions, 2025/26: what is farmed, what it costs in water and energy, what organic residue it leaves, and where hypothetical biochar plants could go (sites from a siting model; no such plants exist or are planned). The cement plants on the map are real, existing facilities. Radar results only where the radar passed its quality check; manure and litter are modelled from livestock statistics for the whole Kingdom, not measured.</p>
     <div class="page-meta">
       <span class="stamp"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-satellite"/></svg>NISAR L-band HV, 2025/26 season</span>
     </div>
   </div>
 </header>
 <main>
-  <section id="mapwrap" aria-label="Map of the farming regions, fields and biochar sites">
+  <section id="mapwrap" aria-label="Map of the farming regions, fields, hypothetical biochar sites and existing cement plants">
     <div id="map"></div>
     <p id="hint" class="loading is-busy" role="status">Loading the national results…</p>
     <!-- One group per map layer: its checkbox is the heading, its key sits below (keys are built in national.js from the same colours as the marks). -->
@@ -60,16 +60,16 @@
       </div>
       <div class="grp">
         <div class="grp-head">
-          <label class="chk"><input id="showplants" type="checkbox" checked autocomplete="off"><span>Biochar plants</span></label>
+          <label class="chk"><input id="showplants" type="checkbox" checked autocomplete="off"><span>Hypothetical biochar plant sites <span class="chk-sub">(modelled)</span></span></label>
           <label class="pick"><span class="pick-l">Size</span>
-            <select id="size" autocomplete="off" aria-label="Biochar plant size, feed per year"><option value="10">10 kt/y</option><option value="25">25 kt/y</option><option value="50" selected>50 kt/y</option></select>
+            <select id="size" autocomplete="off" aria-label="Hypothetical biochar plant size, feed per year"><option value="10">10 kt/y</option><option value="25">25 kt/y</option><option value="50" selected>50 kt/y</option></select>
           </label>
         </div>
         <ul class="key" id="k-plants"></ul>
       </div>
       <div class="grp grp-pair">
         <div class="grp">
-          <label class="chk"><input id="showcement" type="checkbox" checked autocomplete="off"><span>Cement plants</span></label>
+          <label class="chk"><input id="showcement" type="checkbox" checked autocomplete="off"><span>Existing cement plants <span class="chk-sub">(real)</span></span></label>
           <ul class="key" id="k-cement"></ul>
         </div>
         <div class="grp">
@@ -77,6 +77,7 @@
           <ul class="key" id="k-manure" hidden></ul>
         </div>
       </div>
+      <p class="mt-hypo" id="k-hypo"><i class="dia" aria-hidden="true"></i><span>The diamonds are hypothetical sites from a siting model; no such plants exist. The rings are real, existing cement plants.</span></p>
       <div class="fieldbar" id="fieldbar" hidden>
         <span id="fieldstatus" aria-live="polite"></span>
         <span class="fieldbtns">
@@ -104,6 +105,6 @@
   </aside>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-<script src="national.js?v=6"></script>
+<script src="national.js?v=8"></script>
 </body>
 </html>

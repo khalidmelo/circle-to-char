@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://server.arcgisonline.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="qassim.css?v=5">
+<link rel="stylesheet" href="qassim.css?v=6">
 <noscript><style>#loading { display: none; }</style></noscript>
 </head>
 <body class="app">
@@ -70,7 +70,7 @@
           <p class="mt-title"><svg class="ico sm" aria-hidden="true"><use href="img/icons.svg#i-layers"/></svg>On the map</p>
           <div class="mt-toggles">
             <label class="chk"><input id="showfields" type="checkbox" checked> Fields</label>
-            <label class="chk"><input id="showplants" type="checkbox" checked> Plants</label>
+            <label class="chk"><input id="showplants" type="checkbox" checked> Biochar and cement plants</label>
           </div>
         </div>
         <details class="more mt-key mt-fold" id="mapkey" open>
@@ -78,8 +78,9 @@
           <p class="key-h">Outline colour shows the field class</p>
           <ul class="key" id="fieldkey" aria-label="Field classes"></ul>
           <ul class="key" id="plantkey" aria-label="Plants"></ul>
+          <p class="key-note">Dashed squares are hypothetical sites from a siting model; no such plants exist. Solid rings are real cement plants.</p>
         </details>
-        <p class="legend mt-hint">Click or tap a field for its radar record.</p>
+        <p class="legend mt-hint">Click or tap a field or plant to zoom in and see its details.</p>
       </div>
       <button type="button" class="mt-more" id="mtmore" aria-expanded="false" aria-controls="mt-layerrow legend mapkey"><span>Map layers and key</span></button>
     </div>
@@ -119,7 +120,8 @@
     </div>
 
     <div id="tab-plants" class="tab" role="tabpanel" aria-labelledby="tabbtn-plants" hidden>
-      <p class="lead">Where should a pyrolysis plant go, and how big can it be? Plants are placed one at a time where the nearest fields can fill them with the least haulage, taking wheat straw and palm fronds.</p>
+      <p class="lead">Where could a biochar plant go, and how big could it be? A siting model places <b>hypothetical biochar plants</b> one at a time where the nearest fields can fill them with the least haulage, using wheat straw and palm fronds.</p>
+      <p class="callout hypo-note"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-info"/></svg><span><b>These are hypothetical sites from a siting model; no such plants exist.</b> On the map they are numbered dashed squares. The solid rings are existing cement plants, which are real facilities. Click a plant below to fly to it.</span></p>
       <div class="controls-row">
         <div class="estimate">
           <span class="seg-label" id="est-plants">Estimate</span>
@@ -180,7 +182,7 @@
         <li><b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.</li>
         <li>A field is <b>farmed in a season</b> when its peak HV backscatter, measured above the same date's bare-desert median, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks. The rule uses no Sentinel-2 input; Sentinel-2 is only the check.</li>
         <li><b>Water</b> = farmed area × irrigation depth by class ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
-        <li><b>Wheat straw</b> and <b>palm fronds</b> feed the <b>biochar plant siting</b>, with transport emissions for feed in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets.</li>
+        <li><b>Wheat straw</b> and <b>palm fronds</b> feed a model that places <b>hypothetical biochar plants</b> (none exists or is planned), with transport emissions for feed in and char out (back to the fields, or to the nearest existing cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets.</li>
       </ol>
       <h3 id="differs-h">How this differs from the national run</h3>
       <div id="differs"><p class="note">The national results map this ground too, in a separate run with fewer radar dates and a coarser grid, so the two are never added together.</p></div>
@@ -191,7 +193,7 @@
       <ul class="sources">
         <li><b>NASA-ISRO NISAR</b> L-band radar, from the ASF DAAC</li>
         <li><b>ESA Sentinel-2</b> and <b>WorldCover</b>, from the Microsoft Planetary Computer</li>
-        <li><b>Cement plants</b> from the Spatial Finance Initiative Global Database of Cement Production Assets (CC BY 4.0)</li>
+        <li><b>Existing cement plants</b> (real facilities) from the Spatial Finance Initiative Global Database of Cement Production Assets (CC BY 4.0)</li>
         <li><b>Puro.earth 2025</b> biochar methodology</li>
         <li>Map imagery © Esri, Maxar, Earthstar Geographics</li>
       </ul>
@@ -203,7 +205,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="app.js?v=5"></script>
+<script src="app.js?v=6"></script>
 <script>
   // app.js sets appStarted on its last line; if a script failed to load or threw first, say so instead of "Loading…"
   if (!window.appStarted) {

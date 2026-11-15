@@ -108,7 +108,7 @@ const inSentence = (n) => n === "Eastern Province" ? "the Eastern Province" : n;
 const FEED = { straw: "wheat straw", fronds: "palm fronds", litter: "poultry litter", manure: "manure" };
 const FEEDC = { straw: "straw", fronds: "frond", litter: "litter", manure: "manure" };   // "straw and frond chars"
 const RADAR_FEEDS = ["straw", "fronds"];
-const KEY_CEMENT = "Cement plant. Size shows 2024 output; fill shows the share of its char allowance used; hollow takes none.";
+const KEY_CEMENT = "Size shows 2024 output; fill shows the share of its char allowance used; hollow takes none.";
 /* MEWA's halt date, a policy date, used only if data/national/summary.json carries no fodder_halt.effective */
 const HALT_DATE = "2026-11-16";
 const REPO = "https://github.com/khalidmelo/circle-to-char";
@@ -125,7 +125,7 @@ const displayName = (id, x) => {
   const n = String((x && x.name) || id);
   return id === "C0_published" ? n.replace(/\s*\(gross\)\s*$/i, "") : n;   // "outlets unconstrained", not "gross"
 };
-const plantsTxt = (x) => ok(x && x.plants) ? plural(x.plants, "plant", "plants") : "";
+const plantsTxt = (x) => ok(x && x.plants) ? plural(x.plants, "hypothetical plant", "hypothetical plants") : "";
 const dose = (x) => share(x && x.dosage);
 
 /* ---------- Map ---------- */
@@ -144,8 +144,8 @@ const map = (() => {
       onAdd() {
         const b = L.DomUtil.create("button", "map-btn");
         b.type = "button";
-        b.title = "Show every plant";
-        b.setAttribute("aria-label", "Show every plant");
+        b.title = "Zoom out to show everything";
+        b.setAttribute("aria-label", "Zoom out to show everything");
         b.innerHTML = '<svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-expand"/></svg>';
         L.DomEvent.disableClickPropagation(b);
         L.DomEvent.on(b, "click", () => refit(true));
@@ -156,6 +156,27 @@ const map = (() => {
     return m;
   } catch (e) { if (window.console) console.error("scenarios: map", e); return null; }
 })();
+
+/* Click to zoom: fly the map to a place, never zooming out (a jump when the reader prefers reduced motion). On phones
+   the map sits above the panel, so it is scrolled into view first. A marker's tooltip opens when the map arrives. */
+const calm = () => !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+const ZOOM = { plant: 9, cement: 12, field: 14 };   // a plant site is a modelled point: show its area, not a spot
+function flyTo(lat, lon, zoom, layer) {
+  if (!map || !ok(lat) || !ok(lon)) return;
+  const mw = $("mapwrap");
+  if (mw && narrow()) {
+    const bar = document.querySelector("nav.site"), hh = bar ? bar.offsetHeight : 44, top = mw.getBoundingClientRect().top;
+    if (top < hh || top > window.innerHeight * 0.5) window.scrollTo(0, Math.max(0, top + window.scrollY - hh));
+  }
+  const ll = L.latLng(lat, lon), z = Math.max(map.getZoom(), ok(zoom) ? zoom : ZOOM.cement);
+  if (layer && typeof layer.openTooltip === "function") map.once("moveend", () => safe("tooltip", () => {
+    map.eachLayer((l) => { if (l !== layer && typeof l.getTooltip === "function" && l.getTooltip() && l.isTooltipOpen()) l.closeTooltip(); });   // one label at a time
+    if (map.hasLayer(layer)) layer.openTooltip();
+  }));
+  safe("fly", () => calm() ? map.setView(ll, z, { animate: false }) : map.flyTo(ll, z, { duration: 0.9 }));
+}
+/* a marker layer's clicks fly to the marker */
+const flyOnClick = (g, zoom) => g.on("click", (e) => { const m = e.layer, p = m && m.getLatLng && m.getLatLng(); if (p) flyTo(p.lat, p.lng, zoom, m); });
 
 /* kind: "error", "upside" (a hypothetical scenario is on the map) or "busy" (a spinner while a file loads) */
 function mapNote(text, kind) {
@@ -638,6 +659,7 @@ function renderC() {
   const h = [];
 
   h.push(`<p class="lead">How much durable removal stands on residues the radar measured, and what ${modelled.length > 1 ? "do" : "does"} modelled ${esc(modTxt || "feed")} add once outlets are realistic?${litterOut && up3 ? " Poultry litter is not credited: its char fails Puro's H/C eligibility gate, so what it would add is shown apart as a hypothetical upper bound." : ""}</p>`);
+  h.push(`<p class="callout hypo"><b>Hypothetical biochar plants.</b> The biochar plants counted and mapped here are hypothetical sites from a siting model; no such plants exist. The cement plants are existing, real facilities.</p>`);
   if (cred(un) && cred(f3) && un.credited_tco2 > 2 * f3.credited_tco2 && modTxt) h.push(`<p class="lead"><b>What decides the number is where ${esc(modTxt)} char can go:</b> farmland near the plants takes only limited char.</p>`);
 
   // Separate cases, never one range
@@ -762,13 +784,13 @@ function renderC() {
   const ktu = (v) => ok(v) ? `${kt(v)} kt` : "–";
   if (credited.length) {
     h.push(`<h3>Credited scenarios</h3><p class="note">Pick a row to show it on the map. Mt CO₂ a year, net of transport; char in kt a year.</p>
-      <table class="cred"><tr><th>Scenario</th><th class="num">Credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants</th><th class="num">Char<span class="sub">kt/yr</span></th><th class="num">To cement<span class="sub">kt/yr</span></th></tr>
+      <table class="cred"><tr><th>Scenario</th><th class="num">Credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants<span class="sub">hypothetical</span></th><th class="num">Char<span class="sub">kt/yr</span></th><th class="num">To cement<span class="sub">kt/yr</span></th></tr>
       ${credited.map(([k, x]) => `<tr${k === S.sel ? ' class="sel"' : ""}><td class="name">${pick(k, x)}${tags(k, x)}${sub(k, x) ? `<span class="sub">${sub(k, x)}</span>` : ""}${figs([["to soil", ktu(x.char_to_soil_t)], ["unplaced", ktu(x.char_unplaced_t)], ["radar feed", pct(x.radar_feed_share)], ["in-service", ok(x.retained_tco2) ? `${mt(x.retained_tco2)} Mt` : "–"]])}</td><td class="num"><b>${mt(x.credited_tco2)}</b></td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td><td class="num">${kt(x.char_to_cement_t)}</td></tr>`).join("")}</table>`);
   }
   // Hypothetical upper bounds: never in a credited column
   if (upsides.length) {
     h.push(`<h3>Not credited: hypothetical upper bounds</h3>
-      <table class="cred"><tr><th>Scenario</th><th class="num">Hypothetical<span class="sub">Mt CO₂/yr</span></th><th class="num">Above credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants</th><th class="num">Char<span class="sub">kt/yr</span></th></tr>
+      <table class="cred"><tr><th>Scenario</th><th class="num">Hypothetical<span class="sub">Mt CO₂/yr</span></th><th class="num">Above credited<span class="sub">Mt CO₂/yr</span></th><th class="num">Plants<span class="sub">hypothetical</span></th><th class="num">Char<span class="sub">kt/yr</span></th></tr>
       ${upsides.map(([k, x]) => { const b = x.upside_of ? sc(x.upside_of) : null, d = cred(b) && ok(x.credited_tco2) ? x.credited_tco2 - b.credited_tco2 : null;
         return `<tr class="upside${k === S.sel ? " sel" : ""}"><td class="name">${pick(k, x)}${tags(k, x)}<span class="sub">${sub(k, x, b ? `adds poultry litter to: ${esc(displayName(b.id, b))}` : "")}</span>${figs([["litter used", ktu(used(x, "litter"))], ["radar feed", pct(x.radar_feed_share)]])}</td><td class="num">${mt(x.credited_tco2)}</td><td class="num">${smt(d)}</td><td class="num">${fmt(x.plants)}</td><td class="num">${kt(x.char_t)}</td></tr>`; }).join("")}</table>`);
   }
@@ -814,7 +836,10 @@ function renderC() {
     if (fuTxt.length) h.push(`<p class="note">Feed used, kt dry a year: ${esc(fuTxt.join(", "))}.</p>`);
     if (noteOf(s.id, s) && s.id !== "C0_published") h.push(`<p class="note">${subs(esc(sentence(noteOf(s.id, s))))}</p>`);   // C0's is in its own note below
     const cu = arr(s.cement_use).filter(obj);
-    if (cu.length) h.push(`<table><tr><th>Cement plant</th><th class="num">Allowance kt</th><th class="num">Char kt</th><th>At cap</th></tr>${cu.map((c) => `<tr><td>${esc(c.plant)}</td><td class="num">${fmt(c.allowance_t / 1e3, 1)}</td><td class="num">${fmt(c.char_t / 1e3, 1)}</td><td>${c.at_cap ? "yes" : ""}</td></tr>`).join("")}</table>`);
+    const cemAt = {};
+    arr(S.data.cement).forEach((c) => { if (obj(c) && ok(c.lat) && ok(c.lon)) cemAt[`${c.city} (${c.company})`] = c; });
+    const cemName = (c) => { const at = cemAt[c.plant]; return at ? `<button type="button" class="flybtn" data-act="fly" data-lat="${at.lat}" data-lon="${at.lon}" data-z="${ZOOM.cement}">${esc(c.plant)}</button>` : esc(c.plant); };
+    if (cu.length) h.push(`<p class="note">The existing cement plants (real facilities) that take char in this scenario. Pick a name to zoom the map to it.</p><table><tr><th>Existing cement plant</th><th class="num">Allowance kt</th><th class="num">Char kt</th><th>At cap</th></tr>${cu.map((c) => `<tr><td>${cemName(c)}</td><td class="num">${fmt(c.allowance_t / 1e3, 1)}</td><td class="num">${fmt(c.char_t / 1e3, 1)}</td><td>${c.at_cap ? "yes" : ""}</td></tr>`).join("")}</table>`);
     if (s.id === "C0_published") h.push(`<p class="note">C0 is ${c0Name()}, with Puro crediting: each plant sends its char to soil or to the nearest open cement plant, whichever haul is shorter, with no limit on either, so its cement rings show which plants take char, not a share of an allowance. It runs ${c0Tables()}.</p>`);
   }
   el.innerHTML = h.join("");
@@ -980,6 +1005,12 @@ function onAction(e) {
     if (!el || !aside) return;
     if (!narrow()) aside.scrollTop += el.getBoundingClientRect().top - aside.getBoundingClientRect().top - th - 8;
     else { const bar = document.querySelector("nav.site"); window.scrollTo(0, Math.max(0, el.getBoundingClientRect().top + window.scrollY - (bar ? bar.offsetHeight : 44) - th - 8)); }
+  } else if (act === "fly") {   // a row with a place: fly there, opening the marker drawn at that spot
+    const lat = Number(t.dataset.lat), lon = Number(t.dataset.lon);
+    if (!ok(lat) || !ok(lon)) return;
+    const mk = [S.cementLayer, S.plantLayer].filter((l) => l && map && map.hasLayer(l)).flatMap((l) => l.getLayers())
+      .find((m) => { const p = m.getLatLng(); return Math.abs(p.lat - lat) < 1e-6 && Math.abs(p.lng - lon) < 1e-6; });
+    flyTo(lat, lon, Number(t.dataset.z) || ZOOM.cement, mk);
   } else if (act === "watch") {
     const cb = $("showwatch");
     if (!cb || cb.disabled) return;
@@ -1020,15 +1051,18 @@ function plantTip(g, upside) {
     return lines.join("<br>");
   };
   const n = g.plants.length;
-  return `<b>${n > 1 ? `${n} biochar plants at this site` : "Biochar plant"}</b><br>` + g.plants.map((p, i) => (n > 1 ? `Plant ${i + 1}: ` : "") + one(p)).join("<br>");
+  return `<b>${n > 1 ? `${fmt(n)} hypothetical biochar plants at this site` : "Hypothetical biochar plant site"}</b><br>a modelled site: no such plant exists<br>` + g.plants.map((p, i) => (n > 1 ? `Plant ${i + 1}: ` : "") + one(p)).join("<br>");
 }
 
+/* Hypothetical biochar plant sites are triangles, so they never read as the round cement plants or the watch-list */
 function plantLayer(sites, upside) {
-  return L.featureGroup(sites.map((g) => {
+  const g0 = L.featureGroup(sites.map((g) => {
     const tot = (i) => g.plants.reduce((a, p) => a + (ok(p[i]) ? p[i] : 0), 0), ch = tot(2), cem = tot(3);
-    return L.circleMarker([g.lat, g.lon], { radius: 4 + Math.sqrt(Math.max(ch, 0)) / 40, color: "#fff", weight: 1.5,
-      fillColor: cem >= ch / 2 ? MARK.cement : MARK.soil, fillOpacity: 0.95 }).bindTooltip(plantTip(g, upside));
+    const o = { radius: 5 + Math.sqrt(Math.max(ch, 0)) / 40, color: "#fff", weight: 1.5,
+      fillColor: cem >= ch / 2 ? MARK.cement : MARK.soil, fillOpacity: 0.95, shape: "triangle" };
+    return (ShapeMarker ? new ShapeMarker([g.lat, g.lon], o) : L.circleMarker([g.lat, g.lon], o)).bindTooltip(plantTip(g, upside));
   }));
+  return flyOnClick(g0, ZOOM.plant);
 }
 
 function cementLayer(x, rows) {
@@ -1054,18 +1088,18 @@ function cementLayer(x, rows) {
     got[k] = (got[k] || 0) + p.t;
   }));
   const capped = !!x && (ok(x.dosage) || Object.keys(use).length > 0);   // C0 has no allowances
-  return L.featureGroup(cem.map((c) => {
+  return flyOnClick(L.featureGroup(cem.map((c) => {
     const key = keyOf(c), u = use[key];
     const t = u && ok(u.char_t) ? u.char_t : (got[key] || 0);
     const al = u && ok(u.allowance_t) ? u.allowance_t : null, sh = ok(al) && al > 0 ? Math.min(1, t / al) : null;
     const out = ok(c.output_mt) ? c.output_mt : 0;
-    const tip = [`<b>${esc(c.company)}, ${esc(c.city)}</b>: ${fmt(out, 2)} Mt cement sold in 2024`,
+    const tip = [`<b>${esc(c.company)}, ${esc(c.city)}</b>`, `existing cement plant (real facility): ${fmt(out, 2)} Mt cement sold in 2024`,
       t > 0 ? (sh != null ? `takes ${fmt(t)} t of char a year: ${pct(sh)} of its ${fmt(al)} t allowance${u && u.at_cap ? " (at cap)" : ""}` : `takes ${fmt(t)} t of char a year${capped ? "" : " (no allowance in this siting)"}`)
         : "takes no char in this scenario", t > 0 && how[key] ? how[key] : ""].filter(Boolean);
     // a ring at any fill: the pale tint never matches a solid biochar-plant dot, and the outline stays at full strength
     return L.circleMarker([c.lat, c.lon], { radius: 4 + Math.sqrt(out) * 3, color: MARK.cement, weight: 2, opacity: 1, fillColor: CEM_TINT,
       fillOpacity: t > 0 ? (sh != null ? 0.25 + 0.75 * sh : 0.6) : 0 }).bindTooltip(tip.join("<br>"));
-  }));
+  })), ZOOM.cement);
 }
 
 async function drawMap() {
@@ -1085,7 +1119,7 @@ async function drawMap() {
     S.cementLayer = cementLayer(x, rows).addTo(map);                 // drawn first: under everything
     const kc = $("key-cement-txt");   // C0 has no allowances: its fill says only which plants take char
     if (kc) kc.textContent = x && (ok(x.dosage) || arr(x.cement_use).length) ? KEY_CEMENT
-      : "Cement plant. Size shows 2024 output; filled takes char (this siting sets no allowance); hollow takes none.";
+      : "Size shows 2024 output; filled takes char (this siting sets no allowance); hollow takes none.";
     if (S.watchLayer && map.hasLayer(S.watchLayer)) S.watchLayer.bringToFront();
     const sites = siteGroups(rows);
     S.sites = err ? null : sites.length;
@@ -1284,15 +1318,16 @@ const FILL = {
   s2: { shape: "ring", key: "with a season from Sentinel-2", tip: "with a season from Sentinel-2" },
 };
 const fillCode = (r) => [0, 1, 2, 3].includes(r[7]) ? r[7] : (r[6] === 1 || r[6] === true ? "s2" : 0);
-/* A canvas marker drawn as a diamond or a square (Leaflet 1.9.4's canvas renderer; hit-testing stays a circle) */
+/* A canvas marker drawn as a diamond, a square or a triangle (Leaflet 1.9.4's canvas renderer; hit-testing stays a circle) */
 const ShapeMarker = window.L ? L.CircleMarker.extend({
   _updatePath() {
     const R = this._renderer, sh = this.options.shape;
-    if ((sh !== "diamond" && sh !== "square") || !R || !R._ctx || typeof R._fillStroke !== "function") return L.CircleMarker.prototype._updatePath.call(this);
+    if ((sh !== "diamond" && sh !== "square" && sh !== "triangle") || !R || !R._ctx || typeof R._fillStroke !== "function") return L.CircleMarker.prototype._updatePath.call(this);
     if (!R._drawing || this._empty()) return;
     const p = this._point, ctx = R._ctx, r = Math.max(Math.round(this._radius), 1);
     ctx.beginPath();
     if (sh === "diamond") { ctx.moveTo(p.x, p.y - r); ctx.lineTo(p.x + r, p.y); ctx.lineTo(p.x, p.y + r); ctx.lineTo(p.x - r, p.y); }
+    else if (sh === "triangle") { const t = r * 1.3; ctx.moveTo(p.x, p.y - t); ctx.lineTo(p.x + t * 0.866, p.y + t * 0.5); ctx.lineTo(p.x - t * 0.866, p.y + t * 0.5); }
     else { const q = Math.max(1, Math.round(r * 0.8)); ctx.rect(p.x - q, p.y - q, 2 * q, 2 * q); }
     ctx.closePath();
     R._fillStroke(ctx, this);
@@ -1314,7 +1349,7 @@ function watchLayer(rows) {
     return m.bindTooltip(`Year-round field, ${esc(admin(adm))}: ${fmt(ha, 1)} ha<br>${f.tip}<br>${alone ? "no radar margin: both seasons are from Sentinel-2" : `radar margin above threshold: winter ${mg(wm)}, summer ${mg(sm)}`}`);
   }));
   S.watchCounts = n;
-  return g;
+  return flyOnClick(g, ZOOM.field);
 }
 
 function syncWatch() {

@@ -244,3 +244,26 @@ table.off td.num, table.off tr.total > th.num { white-space: nowrap; }   /* a ra
 .tab ol.steps { padding-left: 22px; }
 .tab ol.steps > li { margin: 0; padding: 10px 0 11px 4px; border-bottom: 1px solid var(--line); font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-2); }
 .tab ol.steps > li > b:first-child { color: var(--ink); font-weight: 650; }
+
+/* =====================================================================================================
+   Hypothetical biochar plants: a diamond with a dashed edge (as on the map), never a round mark like the cement rings;
+   the plant list's locations fly the map there
+   ===================================================================================================== */
+.key i.dia {
+  width: 10px; height: 10px; margin: 1px; border-radius: 1px; transform: rotate(45deg);
+  border: 1.5px dashed rgba(14, 26, 38, .6);
+}
+.leaflet-tooltip.tip-wrap { white-space: normal; width: max-content; max-width: min(300px, calc(100vw - 32px)); }
+button.fly {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 0; padding: 2px 6px; margin-left: -6px;
+  font: inherit; font-variant-numeric: tabular-nums; color: var(--accent); text-align: left;
+  background: transparent; border: 0; border-radius: var(--r-sm); cursor: pointer;
+}
+button.fly span { text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 2px; }
+button.fly:hover { color: var(--accent-hover); background: var(--accent-wash); }
+button.fly .ico { flex: none; width: 13px; height: 13px; }
+@media (pointer: coarse) { button.fly { min-height: 36px; } }
+/* the plain line under the layer groups: the diamonds are hypothetical, the rings are real */
+.mt-hypo { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 8px; margin: -2px 0 0; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2); }
+.mt-hypo i.dia { flex: none; width: 9px; height: 9px; margin: 3px 2px 0; border-radius: 1px; transform: rotate(45deg); background: var(--c-soil, #0f6e6a); border: 1.5px dashed rgba(14, 26, 38, .6); }
+.mt-hypo[hidden] { display: none; }
