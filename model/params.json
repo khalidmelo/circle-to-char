@@ -50,9 +50,9 @@
   },
   "straw_dry_matter": {
     "low": 0.85,
-    "central": 0.85,
+    "central": 0.88,
     "high": 0.916,
-    "source": "Straw moisture 15% for small-grain bales (Lefebvre 2023 p.14); 8.4% for pellets (Sedmihradska et al. 2020 Table 3)"
+    "source": "Haulage only (straw supply is already a dry mass). Low: 15% small-grain moisture (Lefebvre et al. 2023, Biochar 5:65, p.14); high: Sedmihradska 2020 Table 3 (8.4% water); central 0.88 assumed between them"
   },
   "alfalfa_collectable_residue_t_ha": {
     "low": 0,
@@ -71,6 +71,12 @@
     "central": 2007,
     "high": 2799,
     "source": "Lopez Valencia et al. 2020, HESS 24:5251, p.5266: perennial (alfalfa/grass) fields Q1/mean/Q3"
+  },
+  "irrigation_mm_summer_crop": {
+    "low": 674,
+    "central": 1004,
+    "high": 1400,
+    "source": "derived: half the perennial depth (irrigation_mm_year_round), the share this model already gives June-September for year-round fields. A June-October crop grows at peak evaporative demand, so the winter (seasonal-field) depth would understate it"
   },
   "pivot_application_efficiency": {
     "low": 0.7,
@@ -121,27 +127,221 @@
     "source": "DESNZ 2026 GHG conversion factors, freighting goods: articulated HGV >33 t 100% laden / average laden / all HGVs average laden"
   },
   "char_yield_dry": {
-    "low": 0.316,
-    "central": 0.321,
+    "low": 0.282,
+    "central": 0.307,
     "high": 0.326,
-    "source": "Sedmihradska et al. 2020, RAE 66(1) Table 4: 28.9% (600 C) and 29.9% (500 C) as received, divided by 0.916 dry matter (derived)"
+    "source": "Sedmihradska et al. 2020, RAE 66(1), Tables 3-4: wheat and barley straw chars at 500-600 C, as received / feed dry matter: barley 600 C 28.2%, mean of four 30.7%, wheat 500 C 32.6% (derived)"
   },
   "char_c_org": {
-    "low": 0.59,
-    "central": 0.64,
-    "high": 0.65,
-    "source": "Woolf et al. 2021, Environ. Sci. Technol., Table 2: wheat straw char organic C, low/medium/high pyrolysis temperature"
-  },
-  "soil_persistence_100y": {
-    "low": 0.696,
-    "central": 0.71,
-    "high": 0.73,
-    "source": "Puro.earth Biochar Methodology 2025 v2, Table 6.1 (PF = M - a x H/Corg) at 25-30 C soil and H/Corg 0.39-0.42 (Sedmihradska Table 7, derived); 200+ year basis. Woolf 2021 at 25 C gives 0.70-0.72"
+    "low": 0.643,
+    "central": 0.656,
+    "high": 0.667,
+    "source": "Derived from Sedmihradska et al. 2020 Table 7 char carbon of four wheat/barley straw chars (64.7-67.2%; mean 66.1%) divided by an assumed total-to-organic carbon factor of 1.007 (lignocellulosic class, Enders et al. 2012 analogues): 0.643 / 0.656 / 0.667"
   },
   "cement_retention": {
     "low": 0.85,
     "central": 0.9,
     "high": 1.0,
-    "source": "In-service retention of biochar carbon in cementitious products, envelope from Bartoli et al. 2020 and Zou et al. 2025"
+    "source": "Reported, not credited: in-service retention of char carbon in cementitious products, envelope 0.85-1.00 on 60-80 year horizons (Bartoli et al. 2020; Zou et al. 2025; Schmidt & Hagemann 2026, C-Sink Standard v3.3 s12.3). Credited removal uses the soil persistence model for cement too (Puro.earth 2025 v2 rule 6.2.4)"
+  },
+  "palms_per_ha": {
+    "low": 100,
+    "central": 121,
+    "high": 270,
+    "source": "Low: Saudi 8-site average 100 trees/ha (AL-Omran & Eid 2019, Appl Water Sci, doi:10.1007/s13201-019-0936-6). Central: modern 9x9 m spacing 121/ha (FAO 2002, Date palm cultivation, Ch.VI). High: traditional ~6 m spacing 270/ha (FAO 2002 Table 40)"
+  },
+  "palm_residue_kg_dry_per_palm": {
+    "low": 15,
+    "central": 20,
+    "high": 28.3,
+    "source": "Low: 15 kg/palm/yr (Al Yahya et al. 2021, Energies 14:6048, p.1; moisture basis not stated). Central: ~20 kg dry fronds/palm/yr (Chehma & Longo 2001, cited in Burezq & Davidson 2023, p.9). High: 28.3 kg oven-dry fronds/palm, derived from Nasser et al. 2016 (Energies 9:374) Table 1"
+  },
+  "palm_char_yield_dry": {
+    "low": 0.309,
+    "central": 0.324,
+    "high": 0.324,
+    "source": "Usman et al. 2015 (J Anal Appl Pyrolysis, doi:10.1016/j.jaap.2015.08.016) Table 1: Saudi date palm waste biochar yield 32.4% at 500 C, 30.9% at 600 C"
+  },
+  "palm_char_c_org": {
+    "low": 0.703,
+    "central": 0.708,
+    "high": 0.717,
+    "source": "Usman et al. 2015, JAAP, Table 1: Saudi date palm chars, organic carbon basis (total C 72.3-72.9% less inorganic C; Puro 2025 v2 rule 6.1.6), central 70.8%"
+  },
+  "layer_manure_kg_dry_per_hen": {
+    "low": 4.4,
+    "central": 7.1,
+    "high": 8.1,
+    "source": "Layer manure, total solids per hen on hand per year: low USDA NRCS AWMFH (2008) Table 4-16(a) as transferred (4.37); central IPCC 2019 Table 10.13A Middle East high-productivity hens 5.21 kg VS / ASABE D384.2 VS:TS 0.735 = 7.09; high ASABE D384.2 as excreted (AWMFH Table 4-11(a)) 8.11"
+  },
+  "cattle_manure_kg_dry_per_head": {
+    "low": 1368,
+    "central": 1604,
+    "high": 2135,
+    "source": "Total solids per head per year: IPCC 2019 Table 10.13A Middle East dairy VS (low-productivity 1,163; mean 1,363 kg) / VS:TS 0.85 (USDA NRCS AWMFH Table 4-5 note 3); high: ASABE D384.2 total solids by animal class applied to the GASTAT 2024 herd (232,950 milking cows, dry cows, heifers, calves, bulls and 41,913 traditional cattle) = 2,135 (derived)"
+  },
+  "small_ruminant_manure_kg_dry_per_head": {
+    "low": 110,
+    "central": 113,
+    "high": 131,
+    "source": "Total solids per head per year: IPCC 2019 Table 10.13A/10A.5 VS (sheep 93.9, goats 91.1 kg) / VS:TS (sheep 0.83, AWMFH Table 4-13; goats 0.822, Zhang et al. 2013 PLoS ONE 8:e66845); high uses VS 72% of TS (Hayat, Odeh & Elshurafa 2025, KAPSARC DP KS-2025-DP28, Table A6)"
+  },
+  "collectable_share_cattle": {
+    "low": 0.54,
+    "central": 0.56,
+    "high": 0.58,
+    "source": "IPCC 2019 Tables 10A.6/10A.8 Middle East: 46% (dairy) / 42% (other cattle) deposited on pasture; collectable = 1 - pasture share (derived)"
+  },
+  "collectable_share_small_ruminants": {
+    "low": 0.5,
+    "central": 0.5,
+    "high": 0.5,
+    "source": "IPCC 2019 Table 10A.9 Middle East sheep/goats: 50% pasture, 50% drylot; collectable = drylot share (derived)"
+  },
+  "collectable_share_poultry": {
+    "low": 1.0,
+    "central": 1.0,
+    "high": 1.0,
+    "source": "IPCC 2019 Table 10A.9: broilers 100% 'poultry manure with litter', layers 0% pasture"
+  },
+  "litter_char_yield_dry": {
+    "low": 0.37,
+    "central": 0.426,
+    "high": 0.457,
+    "source": "Bedded broiler litter: the 600 C measurements are 37% (Tsai & Chang 2021 s2.1) and 45.7% of dry feed (Song & Guo 2012, JAAP 94:138, Table 2); central 42.6% is Das et al. 2008 at 500 C, quoted in Song & Guo 2012 p.141"
+  },
+  "litter_char_c_org": {
+    "low": 0.325,
+    "central": 0.396,
+    "high": 0.47,
+    "source": "Organic carbon of broiler-litter chars: low Song & Guo 2012 Table 2 TOC at 600 C (32.5%); central 39.6% and high 47% are assumed class values for carbonate-corrected litter chars (not measurements)"
+  },
+  "manure_char_yield_dry": {
+    "low": 0.35,
+    "central": 0.422,
+    "high": 0.464,
+    "source": "Low: Cantrell et al. 2012, Bioresour. Technol., Table 2, dairy manure char at 700 C (35.0%); high: dairy interpolated to 500 C (46.4%); central 42.2% is an assumed class value at 600 C (Cantrell dairy and feedlot interpolated to 600 C give 40.7% and 37.6%)"
+  },
+  "manure_char_c_org": {
+    "low": 0.33,
+    "central": 0.39,
+    "high": 0.45,
+    "source": "Woolf et al. 2021, Environ. Sci. Technol., Table 2: manure char carbon fraction 0.39 in all temperature classes; bounds 0.33-0.45 from in-window analogues"
+  },
+  "gastat_2024_totals": {
+    "low": 0,
+    "central": 0,
+    "high": 0,
+    "source": "GASTAT Livestock Statistics 2024: sheep 22,055,779; goats 7,339,749; cattle 516 thousand; broiler barn capacity 274,069,031; layer capacity 55,101,080. Agricultural Statistics 2024: date palms 37,565,146. Livestock Statistics 2024 (Excel, published 20 Nov 2025) Tables 1-4, 2-1, 2-2, 3-1 to 3-3, 4-1: broilers produced 1,316,175,048 (2023: 1,165,355,341); broiler capacity 274,069,031 places is the most birds held on one day; eggs 8.42 bn table + 1.89 bn hatching; milking cows 232,950; camels 2,235,296",
+    "values": {
+      "sheep": 22055779,
+      "goats": 7339749,
+      "cattle": 516000,
+      "broiler_places": 274069031,
+      "layer_places": 55101080,
+      "date_palms": 37565146,
+      "broilers_produced": 1316175048,
+      "broilers_produced_2023": 1165355341,
+      "broiler_kg_produced_est": 1250366295,
+      "table_eggs": 8420841886,
+      "hatching_eggs": 1890623330,
+      "milking_cows": 232950,
+      "specialized_cattle": 474410,
+      "traditional_cattle": 41913,
+      "camels": 2235296
+    }
+  },
+  "soil_temp_c": {
+    "low": 33,
+    "central": 30,
+    "high": 25,
+    "source": "Annual mean soil temperature of the region of first use (Puro.earth 2025 v2 rule 6.2.4, also for char in cement): 30 C central, 25-33 C spanning Saudi regions (Lembrechts et al. 2022 soil bioclimatic dataset). Low estimate = hottest soil (least persistent)"
+  },
+  "puro_pf_table": {
+    "values": {
+      "25": [
+        88.57,
+        39.87
+      ],
+      "30": [
+        87.66,
+        43.1
+      ],
+      "33": [
+        87.19,
+        44.74
+      ]
+    },
+    "source": "Puro.earth Biochar Methodology 2025 v2, Table 6.1 p.101: persistence PF (%) = M - a x H/C_org over 200 years, M and a by soil temperature; a stream with H/C_org >= 0.70 is ineligible (rule 3.5.1)"
+  },
+  "h_c_org_straw": {
+    "low": 0.391,
+    "central": 0.391,
+    "high": 0.391,
+    "range": [
+      0.322,
+      0.528
+    ],
+    "source": "Derived: molar H/C_org = (H/1.008)/(C/12.011) from the C and H contents of four wheat/barley straw chars at 500-600 C in Sedmihradska et al. 2020 Table 7 (mean 0.391; bounds 0.322-0.528); persistence 0.697 / 0.708 / 0.730 at 33 / 30 / 25 C"
+  },
+  "h_c_org_fronds": {
+    "low": 0.358,
+    "central": 0.358,
+    "high": 0.358,
+    "range": [
+      0.295,
+      0.362
+    ],
+    "source": "Derived from Usman et al. 2015 Table 1 (Saudi date palm chars): H 2.11% at 500 C (1.74% at 600 C) over an assumed organic carbon of 70.8% gives H/C_org 0.358 (0.295); persistence 0.712 / 0.722 / 0.743"
+  },
+  "h_c_org_litter": {
+    "low": 0.69,
+    "central": 0.69,
+    "high": 0.69,
+    "range": [
+      0.15,
+      0.72
+    ],
+    "source": "Tsai & Chang 2021, Agronomy 11:1692, Table 1: bedded broiler litter char at 600 C, H/C 0.69 on TOTAL carbon (no inorganic-carbon correction). On the organic-carbon basis Puro requires it is about 0.70-0.73, at or above the 0.70 gate, so litter's eligibility is uncertain; credited here as eligible. Persistence 0.563 / 0.579 / 0.611"
+  },
+  "h_c_org_manure": {
+    "low": 0.56,
+    "central": 0.56,
+    "high": 0.56,
+    "range": [
+      0.28,
+      0.75
+    ],
+    "source": "Assumption: a class value for cattle-manure chars at 600 C (not a measurement). Measured manure chars in the Woolf et al. 2021 dataset span about 0.55-1.09 at 400-550 C (cow manure 0.72 at 550 C), so manure's eligibility is uncertain; credited here as eligible. Persistence 0.621 / 0.635 / 0.662"
+  },
+  "palm_frond_dry_matter": {
+    "low": 0.924,
+    "central": 0.924,
+    "high": 0.924,
+    "source": "Haulage only: Usman et al. 2015 Table 1, date palm feedstock moisture 7.6%"
+  },
+  "litter_dry_matter": {
+    "low": 0.7,
+    "central": 0.7,
+    "high": 0.7,
+    "source": "Haulage only: USDA NRCS AWMFH (2008) Table 4-16(a), broiler litter as removed, 31% moisture / 70% solids; applied to the whole poultry stream, although layer manure (about a third of it) is wetter"
+  },
+  "manure_dry_matter": {
+    "low": 0.46,
+    "central": 0.46,
+    "high": 0.46,
+    "source": "Haulage only: USDA NRCS AWMFH (2008) Table 4-16(a), dairy manure scraped from earthen lots, 54% moisture / 46% solids"
+  },
+  "broiler_litter_kg_dry_per_bird": {
+    "low": 0.32,
+    "central": 0.44,
+    "high": 0.74,
+    "source": "Bedded broiler litter per bird produced (applied to GASTAT 2024 birds produced, 1,316,175,048): low Coufal et al. 2006, Poultry Sci. 85:398 (228 g dry litter per kg live weight per flock x 1.40 kg); central Berry 1997 via MSU Ext. P3601 Table 2 (0.311 kg DM per kg live weight x 1.40 kg); high all excreted solids, IPCC 2019 Table 10.13A Middle East broilers (0.52 kg VS over 42 d) / ASABE D384.2 VS:TS 0.75 + GASTAT 2023 wood shavings 0.05 kg. Market live weight 1.40 kg (USDA FAS GAIN 2006)"
+  },
+  "layers_on_hand": {
+    "low": 36054074,
+    "central": 36054074,
+    "high": 55101080,
+    "source": "Laying hens: GASTAT 2024 eggs (8,420,841,886 table + 1,890,623,330 hatching) / 286 eggs per layer on hand (USDA NASS Chickens and Eggs 2023, transferred) = 36.05 M; high = GASTAT layer capacity 55.10 M (includes parent and grandparent flocks)"
   }
 }

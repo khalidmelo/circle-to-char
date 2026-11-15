@@ -11,7 +11,9 @@ Method (kept simple and explainable on purpose)
   3. Score j by transport emissions per tonne of CO2 removed (feed in + char out).
   4. Place the best plant, remove its fields, repeat until residue runs out
      or no site can be filled to the minimum load.
-  Char outlets compared per plant: back to the same fields (soil) or the nearest cement plant.
+  Char outlets compared per plant: back to the same fields (soil) or the nearest operating cement plant.
+  Both are credited with the Puro.earth 2025 v2 soil persistence model (rule 6.2.4), so the outlet is
+  chosen by haul; in-service retention in cement is reported, not credited.
 
 Outputs
   out/plants_<scenario>.csv and out/plants_<scenario>.geojson, out/assignments_<scenario>.csv
@@ -20,8 +22,13 @@ import json
 import math
 from pathlib import Path
 
+import sys
+
 import numpy as np
 import pandas as pd
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from national_siting import persistence  # noqa: E402  (Puro persistence from H/C_org and soil temperature)
 
 ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "out"
@@ -31,10 +38,11 @@ CO2_PER_C = 44.0 / 12.0
 
 def load_params(level="central"):
     raw = json.loads((ROOT / "model" / "params.json").read_text())
-    missing = [k for k, v in raw.items() if not k.startswith("_") and v.get(level) is None]
+    levelled = {k: v for k, v in raw.items() if not k.startswith("_") and isinstance(v, dict) and level in v}
+    missing = [k for k, v in levelled.items() if v.get(level) is None]
     if missing:
         raise SystemExit(f"Fill these in model/params.json first ({level}): {missing}")
-    return {k: v[level] for k, v in raw.items() if not k.startswith("_")}
+    return {k: v[level] for k, v in levelled.items()}
 
 
 def haversine_km(lon1, lat1, lon2, lat2):
@@ -75,14 +83,15 @@ def evaluate_site(site, pool, cement, p, capacity):
 
     # Outlet A: soil, char spread back on the supplying fields (mean haul = feed-weighted distance)
     soil_km = float((w * d[take]).sum() / w.sum())
-    soil_removal = c_org_t * CO2_PER_C * p["soil_persistence_100y"]
+    soil_removal = c_org_t * CO2_PER_C * persistence(p, "straw")
     # Outlet B: nearest cement plant
     if cement is not None and len(cement):
         dc = haversine_km(site.lon, site.lat, cement.lon.values, cement.lat.values) * p["road_circuity"]
         cem_km = float(dc.min())
     else:
         cem_km = float("nan")
-    cem_removal = c_org_t * CO2_PER_C * p["cement_retention"]
+    cem_removal = soil_removal  # Puro rule 6.2.4: char in cement is credited with the soil persistence model
+    retained = c_org_t * CO2_PER_C * p["cement_retention"]  # held in the cement matrix: reported, not credited
 
     ef = p["truck_kgco2e_per_tkm"] / 1000.0
     feed_t_co2 = feed_tkm * ef
@@ -93,7 +102,7 @@ def evaluate_site(site, pool, cement, p, capacity):
         "char_t": char_t,
         "soil_removal_tco2": soil_removal,
         "soil_transport_tco2": feed_t_co2 + char_t * soil_km * ef,
-        "cement_km": cem_km, "cement_removal_tco2": cem_removal,
+        "cement_km": cem_km, "cement_removal_tco2": cem_removal, "cement_retained_tco2": retained,
         "cement_transport_tco2": feed_t_co2 + char_t * cem_km * ef,
     }
     res["soil_penalty"] = res["soil_transport_tco2"] / soil_removal
@@ -143,6 +152,8 @@ def main(level="central"):
     print(f"{level}: {len(supply)} supplying fields, {supply.residue_t_dry.sum():,.0f} t dry/y collectable")
     cpath = ROOT / "data" / "cement" / "saudi_cement.csv"
     cement = pd.read_csv(cpath) if cpath.exists() else None
+    if cement is not None and "status" in cement:
+        cement = cement[cement.status != "Closed"].reset_index(drop=True)  # closed plants take no char
     for cap in p["plant_sizes_t_dry"]:
         plants, assign = place_plants(supply, cement, p, cap)
         tag = f"{level}_{int(cap/1000)}kt"

@@ -1,0 +1,178 @@
+{
+ "_sources": {
+  "G24": "GASTAT Agricultural Statistics 2024 (published 30 Nov 2025), https://www.stats.gov.sa/en/statistics-tabs?tab=436312&category=124583 ; tables 1-3 (wheat), 1-4 (fodder), 5-1 (date palms)",
+  "M24": "MEWA Statistical Book 2024 (Arabic, Dec 2025), https://www.mewa.gov.sa/ar/InformationCenter/Researchs/Reports/GeneralReports/TheStatisticalBook.pdf ; pp.62-63 agricultural groundwater use by region",
+  "lift": "Static depth to groundwater (no pumping levels published); see lift_m sources per region"
+ },
+ "regions": {
+  "Al Jawf Region": {
+   "key": "Al-Jouf",
+   "wheat_ha": 37874,
+   "fodder_ha": 82307,
+   "date_palms": 966180,
+   "agri_groundwater_m3": 2922151256
+  },
+  "Riyadh Region": {
+   "key": "Riyadh",
+   "wheat_ha": 37708,
+   "fodder_ha": 38036,
+   "date_palms": 8177002,
+   "agri_groundwater_m3": 1889791325
+  },
+  "Hayel Region": {
+   "key": "Hail",
+   "wheat_ha": 26453,
+   "fodder_ha": 29088,
+   "date_palms": 1285882,
+   "agri_groundwater_m3": 1314327876
+  },
+  "Al-Qassim Region": {
+   "key": "Qassim",
+   "wheat_ha": 25888,
+   "fodder_ha": 18993,
+   "date_palms": 10867246,
+   "agri_groundwater_m3": 1330675506
+  },
+  "Eastern Region": {
+   "key": "Eastern",
+   "wheat_ha": 18243,
+   "fodder_ha": 20834,
+   "date_palms": 4233498,
+   "agri_groundwater_m3": 988741204
+  },
+  "Jazan Region": {
+   "key": "Jazan",
+   "wheat_ha": 10518,
+   "fodder_ha": 3419,
+   "date_palms": 10370,
+   "agri_groundwater_m3": 386545306
+  },
+  "Tabuk Region": {
+   "key": "Tabuk",
+   "wheat_ha": 10183,
+   "fodder_ha": 14795,
+   "date_palms": 1171905,
+   "agri_groundwater_m3": 651301500
+  },
+  "'Asir Region": {
+   "key": "Asir",
+   "wheat_ha": 8353,
+   "fodder_ha": 960,
+   "date_palms": 1331117,
+   "agri_groundwater_m3": 389563207
+  },
+  "Makkah Region": {
+   "key": "Makkah",
+   "wheat_ha": 3697,
+   "fodder_ha": 3648,
+   "date_palms": 948800,
+   "agri_groundwater_m3": 667280483
+  },
+  "Al Madinah Region": {
+   "key": "Madinah",
+   "wheat_ha": 806,
+   "fodder_ha": 1157,
+   "date_palms": 8114677,
+   "agri_groundwater_m3": 666677574
+  },
+  "Najran Region": {
+   "key": "Najran",
+   "wheat_ha": 405,
+   "fodder_ha": 946,
+   "date_palms": 295138,
+   "agri_groundwater_m3": 205767755
+  },
+  "Al Bahah Region": {
+   "key": "Al-Baha",
+   "wheat_ha": 327,
+   "fodder_ha": 312,
+   "date_palms": 141159,
+   "agri_groundwater_m3": 134682573
+  },
+  "Northern Borders Region": {
+   "key": "N. Borders",
+   "wheat_ha": 1,
+   "fodder_ha": 4,
+   "date_palms": 22172,
+   "agri_groundwater_m3": 13813794
+  }
+ },
+ "national": {
+  "wheat_ha": 180455,
+  "fodder_ha": 214500,
+  "date_palms": 37565146,
+  "agri_groundwater_m3": 11561310000
+ },
+ "lift_m": {
+  "Al-Jouf": {
+   "low": 65,
+   "central": 200,
+   "high": 250,
+   "source": "Saq 65-297 m (Ahmed et al. 2015, Environ Earth Sci 74:1303, Table 1); Sakaka static 200 m (1979) and Tawil max 250 m bgl (ESCWA-BGR 2013 Ch.13 p.360, Ch.17 p.429)"
+  },
+  "Tabuk": {
+   "low": 50,
+   "central": 150,
+   "high": 200,
+   "source": "ESCWA-BGR 2013 Ch.10 pp.307-310: most levels 50-150 m bgl, around 200 m bgl"
+  },
+  "Hail": {
+   "low": 54,
+   "central": 137,
+   "high": 220,
+   "source": "Kahal 2024, JKSUS doi:10.1016/j.jksus.2024.103384 s2.1: ~220 m around Hail city, 54 m toward the centre; central = midpoint (derived)"
+  },
+  "Qassim": {
+   "low": 90,
+   "central": 114,
+   "high": 138,
+   "source": "Al-Salamah & Nassar 2009, J Appl Sci 9(19):3555: Saq at Buraydah 90-138 m (2006)"
+  },
+  "Riyadh": {
+   "low": 91,
+   "central": 111,
+   "high": 130,
+   "source": "Alharbi 2023, JKSUS doi:10.1016/j.jksus.2023.102847: Biyadh 92-130 m (Wadi Sahba/Al-Kharj); 91-111 m (preprint)"
+  },
+  "WadiDawasir": {
+   "low": 90,
+   "central": 120,
+   "high": 150,
+   "source": "ESCWA-BGR 2013 Ch.11 pp.326-327: Wajid ~150 m bgl, 90-100 m west of Wadi ad-Dawasir; central = midpoint (derived)"
+  },
+  "_fallback": {
+   "low": 90,
+   "central": 114,
+   "high": 138,
+   "source": "No regional depth found (Eastern, Northern Borders); Qassim range used and flagged"
+  },
+  "_shield": "Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha): shallow alluvial or rainfed/spate systems; pumping energy not estimated"
+ },
+ "mwan": {
+  "agri_total_kt": 39960,
+  "agri_total_year": 2020,
+  "confidence": "Low",
+  "confidence_legend": "estimation based on assumptions from international benchmarks",
+  "streams_2024_mt": {
+   "grain_residue": 4.04,
+   "date_palm": 1.93,
+   "broiler": 5.51,
+   "manure": 8.35
+  },
+  "streams_basis": "MWAN-based estimates for 2030 back-cast to 2024 at 1.44%/yr; wet or dry not stated",
+  "source": "MWAN (National Center for Waste Management), national waste inventory, National Waste Management Strategy (2023)"
+ },
+ "mewa_fodder_halt": {
+  "effective": "2026-11-16",
+  "regions": [
+   "Al-Jouf",
+   "Riyadh",
+   "Hail",
+   "Eastern",
+   "Qassim",
+   "Tabuk"
+  ],
+  "url": "https://www.mewa.gov.sa/ar/MediaCenter/News/Pages/saudi-stopping-perennial-fodder-cultivation.aspx",
+  "source": "MEWA news release, 7 Jumada I 1448 AH: halt of perennial fodder cultivation in the sedimentary-shelf regions from 16 November 2026; seasonal fodder allowed under licence (Council of Ministers Resolution No. 66, per Argaam, 26 Jan 2026)"
+ }
+}

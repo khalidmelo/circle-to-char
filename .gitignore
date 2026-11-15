@@ -3,11 +3,16 @@
 .bootstrap/
 __pycache__/
 
-# Raw and intermediate data (large; re-created by the scripts)
-data/nisar/
-data/s2/
+# Raw and intermediate data (large; re-created by the scripts).
+# No trailing slash, so symlinked copies (e.g. in git worktrees) are ignored too.
+/.venv
+data/nisar
+data/s2
+data/regions
+data/glw
 data/fields/*.tif
 data/fields/radar_timeseries.csv
+logs/
 
 # Local tooling
 .claude/

@@ -1,0 +1,131 @@
+{
+ "regions_done": 60,
+ "fields": 60440,
+ "quality_check": true,
+ "quality_check_rule": "season left unobserved if the desert background is above -21.0 dB on every date or the threshold exceeds 6.0 dB",
+ "quality_check_rejected": {
+  "winter": [
+   "R01",
+   "R03",
+   "R10",
+   "R12",
+   "R15",
+   "R21",
+   "R28",
+   "R29",
+   "R32",
+   "R42",
+   "R44",
+   "R45",
+   "R47",
+   "R52",
+   "R54",
+   "R55",
+   "R56",
+   "R57",
+   "R59"
+  ],
+  "summer": [
+   "R01",
+   "R03",
+   "R12",
+   "R17",
+   "R21",
+   "R28",
+   "R32",
+   "R42",
+   "R43",
+   "R44",
+   "R45",
+   "R47",
+   "R52",
+   "R53",
+   "R54",
+   "R55",
+   "R56",
+   "R57",
+   "R59"
+  ]
+ },
+ "field_ha": 740700,
+ "farmed_ha": 358227,
+ "area_ha_by_class": {
+  "idle": 188713.0,
+  "palm_grove": 26465.0,
+  "partly_seen_active": 49242.0,
+  "partly_seen_inactive": 54886.0,
+  "radar_unusable": 115283.0,
+  "summer_only": 115251.0,
+  "unseen": 23592.0,
+  "wheat_rotation": 31499.0,
+  "winter_only": 39948.0,
+  "year_round": 95822.0
+ },
+ "active_ha": {
+  "winter": 189283,
+  "summer": 317718
+ },
+ "season_not_observed_ha": {
+  "winter": 93446,
+  "summer": 10681
+ },
+ "outside_saudi_dropped_ha": 1381,
+ "water_m3": {
+  "low": 3614203821.0,
+  "central": 6128965936.0,
+  "high": 9870296018.0
+ },
+ "elec_kwh": {
+  "low": 1101822517.0,
+  "central": 3395695652.0,
+  "high": 7038945349.0
+ },
+ "elec_kwh_summer": {
+  "low": 741035322.0,
+  "central": 2272616418.0,
+  "high": 4650596097.0
+ },
+ "co2_t_grid": {
+  "low": 762461.06,
+  "central": 2349824.5700000003,
+  "high": 4948377.960000001
+ },
+ "co2_t_diesel": {
+  "low": 972562.49,
+  "central": 2997324.04,
+  "high": 6213155.55
+ },
+ "straw_t_dry": {
+  "low": 168618.7,
+  "central": 227206.0,
+  "high": 482984.4
+ },
+ "fronds_t_dry": {
+  "low": 39697.799999999996,
+  "central": 64044.600000000006,
+  "high": 202226.59999999998
+ },
+ "summer_pumping_avg_mw": {
+  "low": 253.1,
+  "central": 776.2,
+  "high": 1588.3
+ },
+ "vs_official": {
+  "radar_winter_only_ha": 39948,
+  "radar_wheat_ha": 71446,
+  "gastat_wheat_ha": 180455,
+  "radar_year_round_ha": 95823,
+  "gastat_fodder_ha": 214500,
+  "palms_est": [
+   2646544,
+   7145668
+  ],
+  "gastat_palms": 37565146,
+  "water_m3": [
+   3614203821,
+   6128965936,
+   9870296018
+  ],
+  "mewa_agri_groundwater_m3": 11561310000
+ }
+}

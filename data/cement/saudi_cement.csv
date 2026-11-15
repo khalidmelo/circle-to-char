@@ -1,20 +1,22 @@
-uid,owner_name,city,state,plant_type,cap,status,year,lat,lon,accuracy
-GACTSAU0001,,Buraydah,Al Qassim,Integrated,4.0,Operating,1978,26.49184933199992,43.96316018793149,Exact
-GACTSAU0002,,Bisha,Aseer Province,Integrated,3.64,Operating,1997,19.52090990054166,42.53820093709022,Exact
-GACTSAU0003,,Al Ardiyat,Makkah Province,Integrated,,Operating,2008,19.288327648694967,41.74455229519371,Exact
-GACTSAU0004,,Ahad Al Masarihah,Jazan,Integrated,2.14,Operating,1981,16.7363261474942,43.05092621261965,Exact
-GACTSAU0005,,Duba,Tabuk Province,Integrated,3.3,Operating,1998,27.532755127309997,35.53849138563513,Exact
-GACTSAU0006,,Yanbu Al Bahr,Al Madinah Province,Integrated,7.0,Operating,1979,24.276171068654246,37.56332904209542,Exact
-GACTSAU0007,,Turaif,Northern Borders Province,Integrated,,Operating,,31.414893095450523,38.68265704763246,Exact
-GACTSAU0008,,Khulays,Makkah Province,Integrated,3.71,Operating,,22.552073023642563,39.43569665623523,Exact
-GACTSAU0009,,Rabigh,Makkah Province,Integrated,,Operating,,22.58211844654068,39.083516855034084,Exact
-GACTSAU0010,,Marat,Riyadh Province,Integrated,,Operating,,24.957423609397605,45.544205812047586,Exact
-GACTSAU0011,,Jubail,Eastern Province,Integrated,,Operating,,27.191509041891894,49.145317854496774,Exact
-GACTSAU0012,,Baqaa,Hail Province,Integrated,,Operating,,28.27034840986365,43.195164754395456,Exact
-GACTSAU0013,,Al Mundfin,,Integrated,,Operating,,18.57915221715494,45.35657129881964,Exact
-GACTSAU0014,,Turaif,Northern Borders Province,Integrated,,Operating,,31.436323535113385,39.130649553169,Exact
-GACTSAU0015,,Al Oyun,Eastern Province,Integrated,,Operating,,25.68081465509602,49.51743429650789,Exact
-GACTSAU0016,,Al-Muzahmiyya,Riyadh Province,Integrated,,Operating,,24.302586783294863,46.30017505004248,Exact
-GACTSAU0017,,Al Lith,Makkah Province,Integrated,2.45,Operating,,20.71311299459516,39.82726369704148,Exact
-GACTSAU0018,,Riyadh,Riyadh Province,Integrated,,Operating,,24.61426902872862,46.776291105923114,Exact
-GACTSAU0019,,Najran,Najran,Grinding,,Operating,,17.478650536265548,43.77396498933484,Exact
+uid,owner_name,city,state,plant_type,cap,status,year,lat,lon,accuracy,source
+GACTSAU0001,,Buraydah,Al Qassim,Integrated,4.0,Operating,1978.0,26.49184933199992,43.96316018793149,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0002,,Bisha,Aseer Province,Integrated,3.64,Operating,1997.0,19.52090990054166,42.53820093709022,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0003,,Al Ardiyat,Makkah Province,Integrated,,Operating,2008.0,19.288327648694967,41.74455229519371,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0004,,Ahad Al Masarihah,Jazan,Integrated,2.14,Operating,1981.0,16.7363261474942,43.05092621261965,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0005,,Duba,Tabuk Province,Integrated,3.3,Operating,1998.0,27.532755127309997,35.53849138563513,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0006,,Yanbu Al Bahr,Al Madinah Province,Integrated,7.0,Operating,1979.0,24.276171068654246,37.56332904209542,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0007,,Turaif,Northern Borders Province,Integrated,,Operating,,31.414893095450523,38.68265704763246,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0008,,Khulays,Makkah Province,Integrated,3.71,Operating,,22.552073023642563,39.43569665623523,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0009,,Rabigh,Makkah Province,Integrated,,Operating,,22.58211844654068,39.083516855034084,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0010,,Marat,Riyadh Province,Integrated,,Operating,,24.957423609397605,45.544205812047586,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0011,,Jubail,Eastern Province,Integrated,,Operating,,27.191509041891894,49.145317854496774,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0012,,Baqaa,Hail Province,Integrated,,Operating,,28.27034840986365,43.195164754395456,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0013,,Al Mundfin,,Integrated,,Operating,,18.57915221715494,45.35657129881964,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0014,,Turaif,Northern Borders Province,Integrated,,Operating,,31.436323535113385,39.130649553169,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0015,,Al Oyun,Eastern Province,Integrated,,Operating,,25.68081465509602,49.51743429650789,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0016,,Al-Muzahmiyya,Riyadh Province,Integrated,,Operating,,24.302586783294863,46.30017505004248,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0017,,Al Lith,Makkah Province,Integrated,2.45,Operating,,20.71311299459516,39.82726369704148,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+GACTSAU0018,,Riyadh,Riyadh Province,Integrated,,Closed,,24.61426902872862,46.776291105923114,Exact,"SFI database; closed: Yamama Cement's former Al-Manakh plant, 'former factory land' in Yamama's Board of Directors Report 2024 (old lines sold 2023-24); OpenStreetMap way 331409518"
+GACTSAU0019,,Najran,Najran,Grinding,,Operating,,17.478650536265548,43.77396498933484,Exact,"Spatial Finance Initiative, Global Database of Cement Production Assets (CC BY 4.0)"
+CTC-ADD-01,Yamama Cement,Al-Kharj,Riyadh Province,Integrated,,Operating,,24.7022,47.5314,OpenStreetMap,"Yamama Cement's active plant ('New Yamama Cement Factory'), OpenStreetMap way 1122192276; replaces the closed Al-Manakh site"
+CTC-ADD-02,Umm Al-Qura Cement,Taif,Makkah Province,Integrated,2.22,Operating,,21.9158,41.2618,OpenStreetMap,"Umm Al-Qura Cement near Radwan, Taif: OpenStreetMap way 1327781406; capacity 2.22 Mt/y per Climate TRACE asset list (2026)"

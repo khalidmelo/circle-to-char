@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circle to Char: National</title>
+<meta name="description" content="NISAR radar audit of the 60 largest farming regions in Saudi Arabia: farmed area, irrigation water and pumping energy, organic residues and where biochar plants could go.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Circle to Char <span class="tag">National</span></h1>
+    <p>NISAR radar reads Saudi Arabia's 60 largest farming regions (~88% of mapped farmland): what is farmed, what it costs in water and energy, what organic residue it leaves, and where biochar plants could go. <a href="index.html">Qassim deep dive →</a></p>
+  </div>
+  <div class="level" role="group" aria-label="Estimate">
+    <span>Estimate</span>
+    <button data-level="low">Low</button>
+    <button data-level="central" class="on">Central</button>
+    <button data-level="high">High</button>
+  </div>
+</header>
+<main>
+  <section id="mapwrap">
+    <div id="map"></div>
+    <div class="maptools">
+      <label class="chk"><input id="showregions" type="checkbox" checked> Regions</label>
+      <label class="chk"><input id="showplants" type="checkbox" checked> Biochar plants</label>
+      <label class="chk"><input id="showcement" type="checkbox" checked> Cement plants</label>
+      <label class="chk"><input id="showmanure" type="checkbox"> Manure &amp; litter (modelled)</label>
+      <label>Plant size
+        <select id="size"><option value="10">10 kt/y</option><option value="25">25 kt/y</option><option value="50" selected>50 kt/y</option></select>
+      </label>
+      <p class="legend" id="legend">Click a region to load its fields: <span class="swatch" style="background:#e08a1e"></span>winter only (wheat) <span class="swatch" style="background:#b23a00"></span>wheat then summer crop <span class="swatch" style="background:#3b7dd8"></span>summer only <span class="swatch" style="background:#2e9e5b"></span>year-round <span class="swatch" style="background:#7a4b1d"></span>palm grove <span class="swatch" style="background:#8e6bbf"></span>one season observed: farmed <span class="swatch" style="background:#9aa0a6"></span>not detected by radar <span class="swatch" style="background:#d1c4e9"></span>one season observed: not detected <span class="swatch" style="background:#e0c9a6"></span>radar not usable <span class="swatch" style="background:#d0d0d0"></span>not covered by radar</p>
+    </div>
+  </section>
+  <aside>
+    <nav class="tabs">
+      <button data-tab="overview" class="on">Overview</button>
+      <button data-tab="official">vs official</button>
+      <button data-tab="biochar">Biochar</button>
+      <button data-tab="lenses">Problems it answers</button>
+      <button data-tab="method">Method</button>
+    </nav>
+    <div id="tab-overview" class="tab on"><div id="ov"></div></div>
+    <div id="tab-official" class="tab"><div id="off"></div></div>
+    <div id="tab-biochar" class="tab"><div id="bio"></div></div>
+    <div id="tab-lenses" class="tab"><div id="lens"></div></div>
+    <div id="tab-method" class="tab"><div id="meth"></div></div>
+  </aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="national.js"></script>
+</body>
+</html>

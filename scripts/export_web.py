@@ -142,6 +142,8 @@ def main():
     c = ROOT / "data" / "cement" / "saudi_cement.csv"
     if c.exists():
         df = pd.read_csv(c)
+        if "status" in df:
+            df = df[df.status != "Closed"]  # the map shows operating plants only
         feats = [{"type": "Feature", "geometry": {"type": "Point", "coordinates": [r.lon, r.lat]},
                   "properties": {k: (None if pd.isna(r[k]) else r[k]) for k in df.columns if k not in ("lon", "lat")}}
                  for _, r in df.iterrows()]

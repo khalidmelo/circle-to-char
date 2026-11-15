@@ -12,6 +12,8 @@ Outputs (data/fields/)
 Run:  .venv/bin/python scripts/s2_fields.py
 """
 import json
+import os
+import time
 from pathlib import Path
 
 import matplotlib
@@ -33,14 +35,86 @@ from skimage.segmentation import watershed
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# Remote reads: retry transient HTTP errors, never hang on a dead connection, skip directory listings.
+for _k, _v in {"GDAL_HTTP_MAX_RETRY": "6", "GDAL_HTTP_RETRY_DELAY": "3", "GDAL_HTTP_TIMEOUT": "120",
+               "GDAL_HTTP_CONNECTTIMEOUT": "30", "GDAL_DISABLE_READDIR_ON_OPEN": "EMPTY_DIR",
+               "CPL_VSIL_CURL_ALLOWED_EXTENSIONS": ".tif,.TIF"}.items():
+    os.environ.setdefault(_k, _v)
+
 ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config.json").read_text())
+PC_STAC = "https://planetarycomputer.microsoft.com/api/stac/v1"
 OUT = ROOT / "data" / "fields"
 OUT.mkdir(parents=True, exist_ok=True)
 
 GREEN = 0.40        # NDVI above this = actively growing crop (common threshold for irrigated crops)
 MIN_HA = 3.0        # ignore patches smaller than 3 ha
-MAX_SCENES = 30
+MAX_SCENES = 30     # per Sentinel-2 tile and relative orbit
+USE_OVERVIEWS = False  # national runs: read the coarsest overview no finer than the grid (far fewer requests)
+NDVI_TAG = "offset_corrected"  # written into cached composites; older caches (raw DNs) lack it and are rebuilt
+LAST_SKIPPED = 0  # scenes the last season_max_ndvi call could not read (after retries)
+
+
+def dn_offset(it):
+    """L2A processing baseline 04.00 and later (from 25 Jan 2022) store DN = 10000 x reflectance + 1000."""
+    try:
+        return 1000.0 if float(it.properties.get("s2:processing_baseline", "99")) >= 4.0 else 0.0
+    except ValueError:
+        return 1000.0
+
+
+def ndvi(b, off):
+    """NDVI from L2A digital numbers: remove the offset, clip negative reflectance (over-correction) at 0."""
+    r = np.clip(b["B04"] - off, 0, None)
+    n = np.clip(b["B08"] - off, 0, None)
+    return (n - r) / (n + r + 1e-6)
+
+
+def pick_items(items, k):
+    """Up to k scenes per Sentinel-2 tile AND relative orbit: the window split into k equal runs of dates,
+    clearest scene of each. A tile at a swath edge is only partly imaged by each orbit, so choosing per tile
+    alone can take every scene from the orbit that misses part of it (holes); spreading the dates over the
+    window catches each crop near its peak."""
+    groups = {}
+    for it in items:
+        key = (it.properties.get("s2:mgrs_tile", "?"), it.properties.get("sat:relative_orbit"))
+        groups.setdefault(key, []).append(it)
+    out = []
+    for lst in groups.values():
+        lst.sort(key=lambda i: i.datetime)
+        if len(lst) > k:
+            lst = [min((lst[j] for j in run), key=lambda i: i.properties.get("eo:cloud_cover", 0))
+                   for run in np.array_split(np.arange(len(lst)), k)]
+        out += lst
+    return out
+
+
+def search_items(**kw):
+    """Planetary Computer STAC search, retried: the API sometimes drops connections mid-response."""
+    from pystac_client.stac_api_io import StacApiIO
+    from urllib3.util.retry import Retry
+    for k in range(5):
+        try:
+            io = StacApiIO(timeout=(30, 180), max_retries=Retry(total=5, backoff_factor=2, allowed_methods=None,
+                                                                status_forcelist=[429, 500, 502, 503, 504]))
+            cat = pystac_client.Client.open(PC_STAC, modifier=planetary_computer.sign_inplace, stac_io=io)
+            return list(cat.search(**kw).items())
+        except Exception as e:
+            if k == 4:
+                raise
+            print(f"  STAC search failed ({repr(e)[:80]}), retry {k + 1}", flush=True)
+            time.sleep(15 * (k + 1))
+
+
+def open_cog(href, res):
+    """Open a COG; with USE_OVERVIEWS, at the coarsest overview whose pixels are no larger than res metres."""
+    src = rasterio.open(href)
+    if USE_OVERVIEWS:
+        lvl = sum(1 for f in src.overviews(1) if src.res[0] * f <= res + 1e-6) - 1
+        if lvl >= 0:
+            src.close()
+            src = rasterio.open(href, overview_level=lvl)
+    return src
 
 
 def grid():
@@ -54,33 +128,57 @@ def grid():
     return from_origin(x0, y1, r, r), w, h
 
 
-def season_max_ndvi(start, end, transform, w, h):
-    cat = pystac_client.Client.open("https://planetarycomputer.microsoft.com/api/stac/v1",
-                                    modifier=planetary_computer.sign_inplace)
-    items = list(cat.search(collections=["sentinel-2-l2a"], bbox=CFG["bbox"], datetime=f"{start}/{end}",
-                            query={"eo:cloud_cover": {"lt": 20}}).items())
-    items = sorted(items, key=lambda i: i.properties["eo:cloud_cover"])[:MAX_SCENES]
+def read_bands(it, crs, transform, w, h, bands=("B04", "B08", "SCL"), tries=3):
+    """Read bands of one Sentinel-2 item onto the grid; retry, then skip the scene (returns None)."""
+    for k in range(tries):
+        try:
+            b = {}
+            for band in bands:
+                # sign at read time from the bare URL: the token signed at search time expires within the hour
+                href = planetary_computer.sign(it.assets[band].href.split("?")[0])
+                with open_cog(href, abs(transform.a)) as src:
+                    with WarpedVRT(src, crs=crs, transform=transform, width=w, height=h,
+                                   resampling=Resampling.nearest if band == "SCL" else Resampling.average) as vrt:
+                        b[band] = vrt.read(1).astype("float32")
+            return b
+        except Exception as e:  # network hiccup: wait and retry
+            if k == tries - 1:
+                print("  skipped scene", it.id, repr(e)[:80], flush=True)
+                return None
+            time.sleep(5 * (k + 1))
+
+
+def season_max_ndvi(start, end, transform, w, h, return_count=False):
+    """Seasonal maximum NDVI; with return_count, also the number of clear looks per pixel (0 = hole).
+    Sets LAST_SKIPPED to the number of scenes that could not be read."""
+    global LAST_SKIPPED
+    items = search_items(collections=["sentinel-2-l2a"], bbox=CFG["bbox"], datetime=f"{start}/{end}",
+                         query={"eo:cloud_cover": {"lt": 20}})
+    items = pick_items(items, MAX_SCENES)
     print(f"  {len(items)} scenes {start}..{end}")
     best = np.full((h, w), np.nan, dtype="float32")
+    count = np.zeros((h, w), dtype="uint8")
+    LAST_SKIPPED = 0
     for it in items:
-        b = {}
-        for band in ("B04", "B08", "SCL"):
-            with rasterio.open(it.assets[band].href) as src:
-                with WarpedVRT(src, crs=CFG["crs"], transform=transform, width=w, height=h,
-                               resampling=Resampling.nearest if band == "SCL" else Resampling.average) as vrt:
-                    b[band] = vrt.read(1).astype("float32")
+        b = read_bands(it, CFG["crs"], transform, w, h)
+        if b is None:
+            LAST_SKIPPED += 1
+            continue
         # Scene classification: keep vegetation (4), bare soil (5), water (6); drop cloud/shadow/no data
         ok = np.isin(b["SCL"], [4, 5, 6]) & (b["B04"] > 0) & (b["B08"] > 0)
-        nd = np.where(ok, (b["B08"] - b["B04"]) / (b["B08"] + b["B04"] + 1e-6), np.nan)
+        nd = np.where(ok, ndvi(b, dn_offset(it)), np.nan)
         best = np.fmax(best, nd)
-    return best
+        count += ok.astype("uint8")
+    return (best, count) if return_count else best
 
 
-def save_tif(arr, transform, path, dtype="float32", nodata=np.nan):
+def save_tif(arr, transform, path, dtype="float32", nodata=np.nan, tags=None):
     with rasterio.open(path, "w", driver="GTiff", height=arr.shape[0], width=arr.shape[1], count=1,
                        dtype=dtype, crs=CFG["crs"], transform=transform, nodata=nodata,
                        compress="deflate", tiled=True) as dst:
         dst.write(arr.astype(dtype), 1)
+        if tags:
+            dst.update_tags(**tags)
 
 
 def main():
@@ -89,12 +187,16 @@ def main():
     nd = {}
     for name, (s, e) in CFG["seasons"].items():
         p = OUT / f"ndvi_max_{name}.tif"
+        cached = None
         if p.exists():
             with rasterio.open(p) as src:
-                nd[name] = src.read(1)
+                if src.tags().get("ndvi") == NDVI_TAG:  # older composites were made from raw DNs: rebuild
+                    cached = src.read(1)
+        if cached is not None:
+            nd[name] = cached
         else:
             nd[name] = season_max_ndvi(s, e, transform, w, h)
-            save_tif(nd[name], transform, p)
+            save_tif(nd[name], transform, p, tags={"ndvi": NDVI_TAG})
 
     green_w = np.nan_to_num(nd["winter"]) > GREEN
     green_s = np.nan_to_num(nd["summer"]) > GREEN
