@@ -29,12 +29,14 @@ def main():
     ids = df.id.values
     for season, (s, e) in WINDOWS.items():
         p = FD / f"ndvi_max_{season}_radarwindow.tif"
+        nd = None
         if p.exists():
             with rasterio.open(p) as src:
-                nd = src.read(1)
-        else:
+                if src.tags().get("ndvi") == S.NDVI_TAG:  # older composites were made from raw DNs: rebuild
+                    nd = src.read(1)
+        if nd is None:
             nd = S.season_max_ndvi(s, e, transform, w, h)
-            S.save_tif(nd, transform, p)
+            S.save_tif(nd, transform, p, tags={"ndvi": S.NDVI_TAG})
         med = ndi.median(np.nan_to_num(nd, nan=-1), labels, ids)
         df[f"ndvi_{season}_check"] = np.round(med, 3)
         df[f"s2_{season}_check"] = med > S.GREEN

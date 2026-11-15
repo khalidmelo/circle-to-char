@@ -1,85 +1,85 @@
 {
   "hv_threshold_db": {
-    "winter": 2.7,
-    "summer": 2.3
+    "winter": 2.64,
+    "summer": 1.96
   },
   "coh_threshold": {
-    "winter": -0.039,
-    "summer": 0.042
+    "winter": -0.04,
+    "summer": 0.014
   },
   "sm_threshold": {
-    "winter": 0.181,
-    "summer": 0.116
+    "winter": 0.178,
+    "summer": 0.111
   },
   "rule": "farmed if the field's seasonal peak HV, measured against the bare-desert median of the same date, beats the desert noise level (median + 3 sigma of field-sized desert patches). No Sentinel-2 input.",
   "reference": "Sentinel-2 max NDVI > 0.40 over the same date windows as the radar",
   "winter": {
-    "fields": 3244,
-    "area_agreement": 0.662,
-    "kappa": 0.368,
+    "fields": 4029,
+    "area_agreement": 0.711,
+    "kappa": 0.394,
     "ha": {
-      "both_active": 13341,
-      "both_inactive": 9530,
-      "radar_only": 859,
-      "s2_only": 10834
+      "both_active": 24612,
+      "both_inactive": 9386,
+      "radar_only": 1272,
+      "s2_only": 12544
     },
-    "radar_active_ha": 14200,
-    "s2_active_ha": 24175,
+    "radar_active_ha": 25884,
+    "s2_active_ha": 37156,
     "by_witness": {
       "backscatter (used)": {
-        "area_agreement": 0.662,
-        "kappa": 0.368,
-        "radar_active_ha": 14200
+        "area_agreement": 0.711,
+        "kappa": 0.394,
+        "radar_active_ha": 25884
       },
       "coherence": {
-        "area_agreement": 0.301,
+        "area_agreement": 0.223,
         "kappa": 0.0,
         "radar_active_ha": 0
       },
       "soil moisture": {
-        "area_agreement": 0.398,
-        "kappa": -0.063,
-        "radar_active_ha": 11561
+        "area_agreement": 0.344,
+        "kappa": -0.061,
+        "radar_active_ha": 13750
       },
       "backscatter or soil moisture": {
-        "area_agreement": 0.689,
-        "kappa": 0.288,
-        "radar_active_ha": 22806
+        "area_agreement": 0.757,
+        "kappa": 0.345,
+        "radar_active_ha": 35006
       }
     }
   },
   "summer": {
-    "fields": 3244,
-    "area_agreement": 0.767,
-    "kappa": 0.462,
+    "fields": 4029,
+    "area_agreement": 0.843,
+    "kappa": 0.564,
     "ha": {
-      "both_active": 19904,
-      "both_inactive": 6595,
-      "radar_only": 1874,
-      "s2_only": 6190
+      "both_active": 32860,
+      "both_inactive": 7457,
+      "radar_only": 2776,
+      "s2_only": 4722
     },
-    "radar_active_ha": 21778,
-    "s2_active_ha": 26095,
+    "radar_active_ha": 35636,
+    "s2_active_ha": 37582,
     "by_witness": {
       "backscatter (used)": {
-        "area_agreement": 0.767,
-        "kappa": 0.462,
-        "radar_active_ha": 21778
+        "area_agreement": 0.843,
+        "kappa": 0.564,
+        "radar_active_ha": 35636
       },
       "coherence": {
-        "area_agreement": 0.245,
-        "kappa": -0.0,
+        "area_agreement": 0.214,
+        "kappa": 0.0,
         "radar_active_ha": 0
       },
       "soil moisture": {
-        "area_agreement": 0.695,
-        "kappa": 0.257,
-        "radar_active_ha": 23349
+        "area_agreement": 0.742,
+        "kappa": 0.289,
+        "radar_active_ha": 35387
       },
       "backscatter or soil moisture": {
-        "area_agreement": 0.796,
-        "kappa": 0.408,
-        "radar_active_ha": 27761
+        "area_agreement": 0.828,
+        "kappa": 0.411,
+        "radar_active_ha": 41340
       }
     }
   }

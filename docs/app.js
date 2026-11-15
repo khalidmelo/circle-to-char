@@ -120,7 +120,7 @@ function renderValidation() {
     <p class="note">Rule: a field is farmed when its seasonal peak HV backscatter stands more than ${fmt(thr.winter, 1)} dB (winter) or ${fmt(thr.summer, 1)} dB (summer) above bare desert on the same dates. That margin is the desert's own noise (median + 3σ of field-sized desert patches), so the rule uses no Sentinel-2 input. Sentinel-2 (same date windows) is only the check.</p>
     <h3>Three radar witnesses tested</h3>
     <table><tr><th>Season</th><th>Witness</th><th class="num">Agreement</th><th class="num">Kappa</th><th class="num">Farmed ha</th></tr>${wit}</table>
-    <p class="note">HV backscatter (crop canopy) is the reliable witness here. Twelve-day coherence does not separate fields from desert: sand itself loses coherence (desert median about 0.5). Soil moisture (200 m) catches irrigation but also wet ground around fields, so adding it raises the farmed area towards Sentinel-2's but lowers kappa. Winter agreement is lower because NISAR's winter scenes end on 31 December, when young wheat is still thin at L-band.</p>`;
+    <p class="note">HV backscatter (crop canopy) is the reliable witness here. Twelve-day coherence does not separate fields from desert: sand itself loses coherence (desert median about 0.5). Soil moisture (200 m) catches irrigation but also wet ground around fields: adding it raises the farmed area (close to Sentinel-2's in winter, past it in summer) but lowers kappa. Winter agreement is lower because NISAR's winter scenes end on 31 December, when young wheat is still thin at L-band.</p>`;
 }
 
 function renderPlants() {
@@ -132,12 +132,15 @@ function renderPlants() {
     $("plantlist").innerHTML = `<p class="plant">No site can be filled to 80% of a <b>${state.size} kt/y</b> plant with the straw radar finds here (${state.level} estimate). The local limit is supply, not distance: pooling a wider region or other residues would be needed.</p>`;
   } else {
     const tot = plants.reduce((a, p) => a + p.feed_t_dry, 0);
+    const P = state.summary.params || {}, ret = P.cement_retention || {};
+    const pf = (P.straw_char_persistence || {})[state.level], temp = (P.soil_temp_c || {})[state.level];
+    const pens = plants.map(p => 100 * p.penalty), pmin = Math.min(...pens), pmax = Math.max(...pens);
     $("plantlist").innerHTML = `<p><span class="big">${plants.length}</span> plant${plants.length > 1 ? "s" : ""} of ${state.size} kt/y using ${fmt(tot / 1e3, 1)} kt dry straw.</p>` +
       plants.map(p => `<div class="plant"><b>Plant ${p.plant}</b> at ${p.lat.toFixed(3)}°N, ${p.lon.toFixed(3)}°E (${p.kind === "cement" ? "at a cement plant" : "grid site"})<br>
         ${fmt(p.fields)} fields, mean haul ${fmt(p.mean_feed_haul_km, 1)} km, load ${fmt(100 * p.load_factor)}%<br>
         Char: ${fmt(p.char_t)} t/y. Net CO₂ removed after transport: <b>${fmt(p.soil_net_tco2)} t/y</b> spread back on the fields${p.cement_net_tco2 != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest plant (${fmt(p.cement_km)} km)` : ""}<br>
         Best outlet: <b>${p.best_outlet}</b>; transport uses ${fmt(100 * p.penalty, 1)}% of its removal.</div>`).join("") +
-      `<p class="note">Cement keeps more of the carbon (90% retained in service vs about 71% in hot soil), so it wins even after hauling char further. In this cluster haulage costs well under 1% of the removal: the limit is straw supply, not distance.</p>`;
+      `<p class="note">Char in cement earns the same credit as char spread back on the fields: the Puro.earth 2025 methodology credits both with its soil persistence model (${fmt(100 * pf)}% of the char's organic carbon kept over 200 years in ${fmt(temp)} °C soil), so the shorter char haul picks the outlet. Cement may hold more in service (${fmt(100 * ret.low)}–${fmt(100 * ret.high)}% retained); that is reported, not credited. In this cluster haulage costs ${pmin.toFixed(1) === pmax.toFixed(1) ? `${fmt(pmax, 1)}%` : `${fmt(pmin, 1)}–${fmt(pmax, 1)}%`} of the removal: the limit is straw supply, not distance.</p>`;
     plants.forEach(p => {
       L.circleMarker([p.lat, p.lon], { radius: 10, color: "#fff", weight: 2, fillColor: "#0f6e6a", fillOpacity: 1 })
         .bindTooltip(`Plant ${p.plant}: ${state.size} kt/y, transport ${fmt(100 * p.penalty, 1)}% of removal`).addTo(state.plantLayer);

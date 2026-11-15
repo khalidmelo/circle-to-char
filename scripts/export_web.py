@@ -11,6 +11,7 @@
 Run:  .venv/bin/python scripts/export_web.py
 """
 import json
+import sys
 from pathlib import Path
 
 import matplotlib
@@ -28,6 +29,31 @@ ROOT = Path(__file__).resolve().parents[1]
 CFG = json.loads((ROOT / "config.json").read_text())
 WEB = ROOT / "docs" / "data"
 (WEB / "overlays").mkdir(parents=True, exist_ok=True)
+
+sys.path.insert(0, str(ROOT / "model"))
+from national_siting import persistence  # noqa: E402
+
+# Factors the deep dive uses (params.json also holds the national feedstocks), in the order the page lists them.
+DEEP_DIVE_PARAMS = ("plant_sizes_t_dry", "min_load_fraction", "wheat_grain_yield_t_ha", "straw_t_dry_per_ha",
+                    "collectable_fraction", "straw_dry_matter", "alfalfa_collectable_residue_t_ha",
+                    "irrigation_mm_winter_only", "irrigation_mm_summer_crop", "irrigation_mm_year_round",
+                    "pivot_application_efficiency", "pumping_lift_m", "pump_wire_to_water_eff", "grid_kgco2e_per_kwh",
+                    "diesel_water_kwh_per_litre", "diesel_kgco2e_per_litre", "road_circuity", "truck_kgco2e_per_tkm",
+                    "char_yield_dry", "char_c_org", "h_c_org_straw", "soil_temp_c", "cement_retention")
+
+
+def deep_dive_params():
+    """The deep dive's factors, plus the straw-char persistence they give (the factor that credits removal)."""
+    raw = json.loads((ROOT / "model" / "params.json").read_text())
+    out = {k: raw[k] for k in DEEP_DIVE_PARAMS if k in raw}
+    by_level = {lv: {k: v[lv] for k, v in raw.items() if isinstance(v, dict) and lv in v} for lv in ("low", "central", "high")}
+    pf = {lv: round(persistence(p, "straw"), 3) for lv, p in by_level.items()}
+    pf["source"] = ("derived: Puro.earth 2025 v2 Table 6.1, persistence = (M - a x H/C_org) / 100 at the soil temperature "
+                    "above (200 years); credited for char spread on fields and for char in cement alike (rule 6.2.4)")
+    keys = list(out)
+    keys.insert(keys.index("soil_temp_c") + 1, "straw_char_persistence")
+    out["straw_char_persistence"] = pf
+    return {k: out[k] for k in keys}
 
 
 def png_overlay(src_path, out_name, vmin, vmax, cmap, to_db=False, max_px=1600, unit_range=False):
@@ -128,7 +154,7 @@ def main():
     summ = {"supply": json.loads((ROOT / "out" / "supply_summary.json").read_text())}
     v = ROOT / "out" / "validation.json"
     summ["validation"] = json.loads(v.read_text()) if v.exists() else None
-    summ["params"] = json.loads((ROOT / "model" / "params.json").read_text())
+    summ["params"] = deep_dive_params()
     summ["siting"] = {}
     for f in sorted((ROOT / "out").glob("plants_*.csv")):
         tag = f.stem.replace("plants_", "")

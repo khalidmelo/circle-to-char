@@ -84,11 +84,11 @@
     <div id="tab-sources" class="tab">
       <h3>How it works</h3>
       <ol class="steps">
-        <li><b>Fields</b> are mapped from ESA Sentinel-2 greenness (20 m).</li>
+        <li><b>Fields</b> are mapped from ESA Sentinel-2 greenness: seasonal maximum NDVI from offset-corrected surface reflectance, 20 m.</li>
         <li><b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.</li>
-        <li>A field is <b>farmed in a season</b> when its peak HV backscatter clears a threshold set from the data itself (Otsu), then checked against Sentinel-2.</li>
-        <li><b>Water</b> = farmed area × published irrigation depth ÷ pivot efficiency; <b>energy</b> = water × lift ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
-        <li><b>Straw</b> from winter (wheat) fields → <b>biochar plant siting</b>, with transport emissions for straw in and char out (back to the fields, or to a cement plant).</li>
+        <li>A field is <b>farmed in a season</b> when its peak HV backscatter, measured above the same date's bare-desert median, beats the desert's own noise (a threshold set from field-sized desert patches, with no Sentinel-2 input); Sentinel-2 is only the check.</li>
+        <li><b>Water</b> = farmed area × irrigation depth (published for winter and year-round fields; summer crops get half the perennial depth) ÷ pivot efficiency; <b>energy</b> = water × lift ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
+        <li><b>Straw</b> from winter (wheat) fields → <b>biochar plant siting</b>, with transport emissions for straw in and char out (back to the fields, or to the nearest operating cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets.</li>
       </ol>
       <h3>Factors and sources</h3>
       <div id="params"></div>
