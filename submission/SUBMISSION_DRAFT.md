@@ -55,6 +55,7 @@ Yes. We used AI-assisted coding and writing tools to help write and debug code a
 - GASTAT Agricultural and Livestock Statistics 2024; MEWA Statistical Book 2024; geoBoundaries (Saudi ADM1)
 - Factor sources: see model/params.json and data/national/official_2024.json (IPCC 2019, FAO, USDA NRCS, DESNZ 2026, Ember, Puro.earth 2025, Woolf et al. 2021, Usman et al. 2015, Song & Guo 2012, Tsai & Chang 2021, Cantrell et al. 2012, Sedmihradská et al. 2020, López Valencia et al. 2020, ESCWA-BGR 2013 and others)
 - Basemap: Esri World Imagery
+- Music in the demo video: "Sleeping Alone" by Matthew C. Wright (https://www.matthewcwright.com/), licensed under CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), via chosic.com
 
 ## 7-slide demo outline
 1. **Title**: SkyMeter, with team names and the challenge "Dancing with the SARs".

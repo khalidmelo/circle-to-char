@@ -76,6 +76,7 @@ Cement plants come from `gee/01_export_saudi_cement.js` (Google Earth Engine).
 - **Model factors**: `model/params.json` and `data/national/official_2024.json`; each value lists its source (FAO, IPCC, USDA NRCS, López Valencia et al. 2020, Multsch et al. 2013, ESCWA-BGR 2013, UGA Extension, Ember, DESNZ 2026, Woolf et al. 2021, Puro.earth 2025 and others).
 - **Boundaries and basemap**: geoBoundaries (CC BY 4.0) and Natural Earth (public domain); Esri World Imagery basemap tiles (Esri terms of use).
 - **Libraries**: Leaflet (BSD-2-Clause), Chart.js (MIT); Python: numpy, pandas, rasterio, shapely, scikit-image and others under their own open licences.
+- **Demo video music**: "Sleeping Alone" by Matthew C. Wright (https://www.matthewcwright.com/), CC BY 4.0 (https://creativecommons.org/licenses/by/4.0/), via chosic.com.
 - **This project's code and original content**: Apache License 2.0, see `LICENSE`.
 
 ## Limits (stated openly)
