@@ -3,250 +3,252 @@
   "A0_published": {
    "id": "A0_published",
    "family": "A",
-   "name": "Published table (no radar quality check, southwest in)",
+   "name": "Published table (radar quality check on, southwest in)",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 411586,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 358227,
    "active_ha": {
-    "winter": 233454,
-    "summer": 355318
+    "winter": 189283,
+    "summer": 317718
    },
-   "not_observed_ha": {
-    "winter": 69472,
-    "summer": 1232
+   "season_unknown_ha": {
+    "winter": 213534,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 401386.0,
-    "palm_grove": 29388.0,
-    "partly_seen_active": 21239.0,
-    "partly_seen_inactive": 44417.0,
-    "summer_only": 152066.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 50262.0,
-    "winter_only": 56047.0,
-    "year_round": 102584.0
+    "idle": 188713.0,
+    "palm_grove": 26465.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 115283.0,
+    "summer_only": 115251.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 31499.0,
+    "winter_only": 39948.0,
+    "year_round": 95822.0
    },
    "water_m3": {
-    "low": 4092841501,
-    "central": 7012868894,
-    "high": 11328400028
+    "low": 3614203821,
+    "central": 6128965936,
+    "high": 9870296018
    },
    "elec_kwh": {
-    "low": 1117504730,
-    "central": 3453403683,
-    "high": 7155563241
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 753227442,
-    "central": 2319399781,
-    "high": 4744436534
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 773313,
-    "central": 2389759,
-    "high": 5030360
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 986405,
-    "central": 3048262,
-    "high": 6316092
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 250897,
-    "central": 338068,
-    "high": 718657
+    "low": 168619,
+    "central": 227206,
+    "high": 482984
    },
    "fronds_t_dry": {
-    "low": 44081,
-    "central": 71119,
-    "high": 224559
+    "low": 39698,
+    "central": 64045,
+    "high": 202227
    },
    "summer_pumping_avg_mw": {
-    "low": 257.2,
-    "central": 792.1,
-    "high": 1620.4
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 787825,
-     "agreement": 0.585,
-     "chance_agreement": 0.492,
-     "kappa": 0.183,
-     "precision": 0.676,
-     "recall": 0.386,
-     "radar_ha": 233424,
-     "s2_ha": 408895
+     "validated_ha": 503574,
+     "agreement": 0.604,
+     "chance_agreement": 0.48,
+     "kappa": 0.238,
+     "precision": 0.744,
+     "recall": 0.483,
+     "radar_ha": 189283,
+     "s2_ha": 291661
     },
     "summer": {
-     "validated_ha": 856157,
-     "agreement": 0.569,
-     "chance_agreement": 0.45,
-     "kappa": 0.216,
-     "precision": 0.936,
-     "recall": 0.49,
-     "radar_ha": 355318,
-     "s2_ha": 678919
+     "validated_ha": 590936,
+     "agreement": 0.733,
+     "chance_agreement": 0.517,
+     "kappa": 0.446,
+     "precision": 0.931,
+     "recall": 0.685,
+     "radar_ha": 317718,
+     "s2_ha": 431993
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A1_floor": {
    "id": "A1_floor",
    "family": "A",
    "name": "Radar-verified floor: quality check on, southwest apart",
    "note": "",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 3489177077,
-    "central": 5912620754,
-    "high": 9519805983
+    "low": 3451275376,
+    "central": 5848524696,
+    "high": 9416669678
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
    "monte_carlo": {
     "n": 3000,
     "seed": 20261115,
     "water_m3": {
-     "p5": 4548549796.189204,
-     "p50": 6033482960.57317,
-     "p95": 7763432235.368181
+     "p5": 4499189878.032259,
+     "p50": 5968069567.820951,
+     "p95": 7679301774.567834
     },
     "elec_kwh": {
-     "p5": 2176566948.068334,
-     "p50": 3325609012.987641,
-     "p95": 4583012164.079241
+     "p5": 2152904285.2769256,
+     "p50": 3287255192.340579,
+     "p95": 4530024659.290323
     },
     "co2_t_grid": {
-     "p5": 1514989.0184899594,
-     "p50": 2314573.884503064,
-     "p95": 3190911.5115449084
+     "p5": 1497894.450825698,
+     "p50": 2288077.7284459355,
+     "p95": 3153945.775674179
     },
     "summer_pumping_avg_mw": {
-     "p5": 497.8158087355353,
-     "p50": 759.3501410809432,
-     "p95": 1042.2167270134164
+     "p5": 491.6734639678469,
+     "p50": 749.6241504862243,
+     "p95": 1028.5240261712931
     },
     "straw_t_dry": {
-     "p5": 188700.83909544974,
-     "p50": 268488.0017698978,
-     "p95": 394643.24786521395
+     "p5": 186765.6340743561,
+     "p50": 265734.54645078455,
+     "p95": 390596.0184068268
     },
     "fronds_t_dry": {
-     "p5": 57342.427251539826,
-     "p50": 84923.24425767048,
-     "p95": 135894.59842256067
+     "p5": 57298.17690794549,
+     "p50": 84857.710185995,
+     "p95": 135789.73047467216
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A1_southwest_line": {
    "id": "A1_southwest_line",
    "family": "A",
    "name": "Southwest regions alone (low confidence)",
    "note": "",
-   "fields": 21075,
-   "field_ha": 209875,
-   "farmed_ha": 13100,
+   "fields": 8744,
+   "field_ha": 79850,
+   "farmed_ha": 11971,
    "active_ha": {
-    "winter": 13046,
-    "summer": 13089
+    "winter": 11915,
+    "summer": 11971
    },
-   "not_observed_ha": {
-    "winter": 196089,
-    "summer": 196089
+   "season_unknown_ha": {
+    "winter": 67542,
+    "summer": 67542
    },
    "area_ha_by_class": {
-    "idle": 259.0,
-    "palm_grove": 711.0,
-    "radar_unusable": 196089.0,
-    "summer_only": 54.0,
-    "unseen": 427.0,
-    "wheat_rotation": 4916.0,
-    "winter_only": 11.0,
-    "year_round": 7408.0
+    "idle": 263.0,
+    "palm_grove": 568.0,
+    "radar_unusable": 67542.0,
+    "summer_only": 56.0,
+    "unseen": 74.0,
+    "wheat_rotation": 4678.0,
+    "year_round": 6669.0
    },
    "water_m3": {
-    "low": 179080047,
-    "central": 307626800,
-    "high": 497309730
+    "low": 162928445,
+    "central": 280441240,
+    "high": 453626340
    },
    "elec_kwh": {
     "low": 0,
@@ -269,14 +271,14 @@
     "high": 0
    },
    "straw_t_dry": {
-    "low": 11629,
-    "central": 15668,
-    "high": 33308
+    "low": 11042,
+    "central": 14876,
+    "high": 31625
    },
    "fronds_t_dry": {
-    "low": 1066,
-    "central": 1720,
-    "high": 5432
+    "low": 852,
+    "central": 1375,
+    "high": 4341
    },
    "summer_pumping_avg_mw": {
     "low": 0.0,
@@ -285,164 +287,165 @@
    },
    "validation": {
     "winter": {
-     "validated_ha": 13360,
-     "agreement": 0.552,
-     "chance_agreement": 0.55,
-     "kappa": 0.004,
-     "precision": 0.554,
-     "recall": 0.978,
-     "radar_ha": 13046,
-     "s2_ha": 7382
+     "validated_ha": 12234,
+     "agreement": 0.517,
+     "chance_agreement": 0.517,
+     "kappa": -0.001,
+     "precision": 0.518,
+     "recall": 0.974,
+     "radar_ha": 11915,
+     "s2_ha": 6338
     },
     "summer": {
-     "validated_ha": 13360,
-     "agreement": 0.939,
-     "chance_agreement": 0.924,
-     "kappa": 0.198,
-     "precision": 0.95,
-     "recall": 0.988,
-     "radar_ha": 13089,
-     "s2_ha": 12590
+     "validated_ha": 12234,
+     "agreement": 0.935,
+     "chance_agreement": 0.92,
+     "kappa": 0.188,
+     "precision": 0.946,
+     "recall": 0.987,
+     "radar_ha": 11971,
+     "s2_ha": 11485
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A4_both": {
    "id": "A4_both",
    "family": "A",
    "name": "Bracket floor: radar and Sentinel-2 agree (QC on, southwest in)",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 349962,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 344848,
    "active_ha": {
-    "winter": 182308,
-    "summer": 300529
+    "winter": 179901,
+    "summer": 295921
    },
-   "not_observed_ha": {
-    "winter": 346766,
-    "summer": 258450
+   "season_unknown_ha": {
+    "winter": 213534,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 201935.0,
-    "palm_grove": 26243.0,
-    "partly_seen_active": 47226.0,
-    "partly_seen_inactive": 57974.0,
-    "radar_unusable": 247518.0,
-    "summer_only": 115973.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 21267.0,
-    "winter_only": 48906.0,
-    "year_round": 90346.0
+    "idle": 199466.0,
+    "palm_grove": 26080.0,
+    "partly_seen_active": 46661.0,
+    "partly_seen_inactive": 57512.0,
+    "radar_unusable": 115283.0,
+    "summer_only": 113845.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 21016.0,
+    "winter_only": 48400.0,
+    "year_round": 88846.0
    },
    "water_m3": {
-    "low": 3434528772,
-    "central": 5830764512,
-    "high": 9393177647
+    "low": 3383946084,
+    "central": 5745696866,
+    "high": 9256522802
    },
    "elec_kwh": {
-    "low": 1042715319,
-    "central": 3210286440,
-    "high": 6657230705
+    "low": 1032219462,
+    "central": 3173091843,
+    "high": 6581552734
    },
    "elec_kwh_summer": {
-    "low": 697118539,
-    "central": 2141339103,
-    "high": 4386662315
+    "low": 689188965,
+    "central": 2112354752,
+    "high": 4328096115
    },
    "co2_t_grid": {
-    "low": 721559,
-    "central": 2221521,
-    "high": 4680033
+    "low": 714295,
+    "central": 2195782,
+    "high": 4626831
    },
    "co2_t_diesel": {
-    "low": 920389,
-    "central": 2833666,
-    "high": 5876223
+    "low": 911125,
+    "central": 2800835,
+    "high": 5809423
    },
    "straw_t_dry": {
-    "low": 165613,
-    "central": 223156,
-    "high": 474375
+    "low": 163826,
+    "central": 220747,
+    "high": 469254
    },
    "fronds_t_dry": {
-    "low": 39364,
-    "central": 63506,
-    "high": 200526
+    "low": 39120,
+    "central": 63112,
+    "high": 199283
    },
    "summer_pumping_avg_mw": {
-    "low": 238.1,
-    "central": 731.3,
-    "high": 1498.2
+    "low": 235.4,
+    "central": 721.4,
+    "high": 1478.2
    },
    "validation": {},
    "by_region": [
     {
      "region": "Al-Jouf",
-     "farmed_ha": 93194,
-     "wheat_ha": 14252,
-     "year_round_ha": 10425,
-     "water_m3": 1354153846,
+     "farmed_ha": 91386,
+     "wheat_ha": 14087,
+     "year_round_ha": 10346,
+     "water_m3": 1331041106,
      "mewa_agri_groundwater_m3": 2922151256,
      "gastat_wheat_ha": 37874,
      "gastat_fodder_ha": 82307
     },
     {
      "region": "Riyadh",
-     "farmed_ha": 92172,
-     "wheat_ha": 17407,
-     "year_round_ha": 39294,
-     "water_m3": 1685174590,
+     "farmed_ha": 91786,
+     "wheat_ha": 17292,
+     "year_round_ha": 39118,
+     "water_m3": 1678409828,
      "mewa_agri_groundwater_m3": 1889791325,
      "gastat_wheat_ha": 37708,
      "gastat_fodder_ha": 38036
     },
     {
      "region": "Hail",
-     "farmed_ha": 51979,
-     "wheat_ha": 16488,
-     "year_round_ha": 12172,
-     "water_m3": 807409832,
+     "farmed_ha": 51680,
+     "wheat_ha": 16418,
+     "year_round_ha": 12148,
+     "water_m3": 803397196,
      "mewa_agri_groundwater_m3": 1314327876,
      "gastat_wheat_ha": 26453,
      "gastat_fodder_ha": 29088
     },
     {
      "region": "Qassim",
-     "farmed_ha": 61352,
-     "wheat_ha": 14869,
-     "year_round_ha": 17625,
-     "water_m3": 1104358166,
+     "farmed_ha": 60416,
+     "wheat_ha": 14659,
+     "year_round_ha": 17317,
+     "water_m3": 1089010642,
      "mewa_agri_groundwater_m3": 1330675506,
      "gastat_wheat_ha": 25888,
      "gastat_fodder_ha": 18993
     },
     {
      "region": "Eastern",
-     "farmed_ha": 25375,
+     "farmed_ha": 25187,
      "wheat_ha": 493,
-     "year_round_ha": 324,
-     "water_m3": 379119856,
+     "year_round_ha": 316,
+     "water_m3": 376509706,
      "mewa_agri_groundwater_m3": 988741204,
      "gastat_wheat_ha": 18243,
      "gastat_fodder_ha": 20834
     },
     {
      "region": "Jazan",
-     "farmed_ha": 13050,
-     "wheat_ha": 4451,
-     "year_round_ha": 7115,
-     "water_m3": 291653944,
+     "farmed_ha": 11921,
+     "wheat_ha": 4275,
+     "year_round_ha": 6381,
+     "water_m3": 265324872,
      "mewa_agri_groundwater_m3": 386545306,
      "gastat_wheat_ha": 10518,
      "gastat_fodder_ha": 3419
     },
     {
      "region": "Tabuk",
-     "farmed_ha": 12839,
-     "wheat_ha": 2213,
-     "year_round_ha": 3391,
-     "water_m3": 208894278,
+     "farmed_ha": 12471,
+     "wheat_ha": 2192,
+     "year_round_ha": 3219,
+     "water_m3": 202003516,
      "mewa_agri_groundwater_m3": 651301500,
      "gastat_wheat_ha": 10183,
      "gastat_fodder_ha": 14795
@@ -508,165 +511,166 @@
      "gastat_fodder_ha": 4
     }
    ],
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A4_radar": {
    "id": "A4_radar",
    "family": "A",
    "name": "Bracket: radar rule (QC on, southwest in)",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 363512,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 358227,
    "active_ha": {
-    "winter": 192012,
-    "summer": 322559
+    "winter": 189283,
+    "summer": 317718
    },
-   "not_observed_ha": {
-    "winter": 346766,
-    "summer": 258450
+   "season_unknown_ha": {
+    "winter": 213534,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 191070.0,
-    "palm_grove": 26628.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 247518.0,
-    "summer_only": 117169.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 31996.0,
-    "winter_only": 40392.0,
-    "year_round": 97461.0
+    "idle": 188713.0,
+    "palm_grove": 26465.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 115283.0,
+    "summer_only": 115251.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 31499.0,
+    "winter_only": 39948.0,
+    "year_round": 95822.0
    },
    "water_m3": {
-    "low": 3668257124,
-    "central": 6220247554,
-    "high": 10017115713
+    "low": 3614203821,
+    "central": 6128965936,
+    "high": 9870296018
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 170838,
-    "central": 230198,
-    "high": 489344
+    "low": 168619,
+    "central": 227206,
+    "high": 482984
    },
    "fronds_t_dry": {
-    "low": 39942,
-    "central": 64438,
-    "high": 203470
+    "low": 39698,
+    "central": 64045,
+    "high": 202227
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 510623,
-     "agreement": 0.605,
+     "validated_ha": 503574,
+     "agreement": 0.604,
      "chance_agreement": 0.48,
-     "kappa": 0.239,
+     "kappa": 0.238,
      "precision": 0.744,
      "recall": 0.483,
-     "radar_ha": 192012,
-     "s2_ha": 295552
+     "radar_ha": 189283,
+     "s2_ha": 291661
     },
     "summer": {
-     "validated_ha": 598939,
+     "validated_ha": 590936,
      "agreement": 0.733,
-     "chance_agreement": 0.518,
-     "kappa": 0.447,
-     "precision": 0.932,
-     "recall": 0.686,
-     "radar_ha": 322559,
-     "s2_ha": 438254
+     "chance_agreement": 0.517,
+     "kappa": 0.446,
+     "precision": 0.931,
+     "recall": 0.685,
+     "radar_ha": 317718,
+     "s2_ha": 431993
     }
    },
    "by_region": [
     {
      "region": "Al-Jouf",
-     "farmed_ha": 100093,
-     "wheat_ha": 16091,
-     "year_round_ha": 11433,
-     "water_m3": 1475250932,
+     "farmed_ha": 98204,
+     "wheat_ha": 15905,
+     "year_round_ha": 11340,
+     "water_m3": 1450752686,
      "mewa_agri_groundwater_m3": 2922151256,
      "gastat_wheat_ha": 37874,
      "gastat_fodder_ha": 82307
     },
     {
      "region": "Riyadh",
-     "farmed_ha": 94876,
-     "wheat_ha": 17497,
-     "year_round_ha": 41133,
-     "water_m3": 1785212956,
+     "farmed_ha": 94494,
+     "wheat_ha": 17385,
+     "year_round_ha": 40954,
+     "water_m3": 1778149282,
      "mewa_agri_groundwater_m3": 1889791325,
      "gastat_wheat_ha": 37708,
      "gastat_fodder_ha": 38036
     },
     {
      "region": "Hail",
-     "farmed_ha": 53319,
-     "wheat_ha": 16983,
-     "year_round_ha": 13825,
-     "water_m3": 859153490,
+     "farmed_ha": 52971,
+     "wheat_ha": 16846,
+     "year_round_ha": 13782,
+     "water_m3": 854056760,
      "mewa_agri_groundwater_m3": 1314327876,
      "gastat_wheat_ha": 26453,
      "gastat_fodder_ha": 29088
     },
     {
      "region": "Qassim",
-     "farmed_ha": 62693,
-     "wheat_ha": 13837,
-     "year_round_ha": 19452,
-     "water_m3": 1176938652,
+     "farmed_ha": 61721,
+     "wheat_ha": 13621,
+     "year_round_ha": 19112,
+     "water_m3": 1160000192,
      "mewa_agri_groundwater_m3": 1330675506,
      "gastat_wheat_ha": 25888,
      "gastat_fodder_ha": 18993
     },
     {
      "region": "Eastern",
-     "farmed_ha": 26348,
+     "farmed_ha": 26160,
      "wheat_ha": 479,
-     "year_round_ha": 329,
-     "water_m3": 392547594,
+     "year_round_ha": 322,
+     "water_m3": 389937444,
      "mewa_agri_groundwater_m3": 988741204,
      "gastat_wheat_ha": 18243,
      "gastat_fodder_ha": 20834
     },
     {
      "region": "Jazan",
-     "farmed_ha": 13100,
-     "wheat_ha": 4927,
-     "year_round_ha": 7408,
-     "water_m3": 307626800,
+     "farmed_ha": 11971,
+     "wheat_ha": 4678,
+     "year_round_ha": 6669,
+     "water_m3": 280441240,
      "mewa_agri_groundwater_m3": 386545306,
      "gastat_wheat_ha": 10518,
      "gastat_fodder_ha": 3419
     },
     {
      "region": "Tabuk",
-     "farmed_ha": 13082,
-     "wheat_ha": 2574,
-     "year_round_ha": 3882,
-     "water_m3": 223517130,
+     "farmed_ha": 12706,
+     "wheat_ha": 2532,
+     "year_round_ha": 3644,
+     "water_m3": 215628332,
      "mewa_agri_groundwater_m3": 651301500,
      "gastat_wheat_ha": 10183,
      "gastat_fodder_ha": 14795
@@ -732,205 +736,206 @@
      "gastat_fodder_ha": 4
     }
    ],
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A4_s2fill": {
    "id": "A4_s2fill",
    "family": "A",
    "name": "Bracket: radar, unobserved winters from Sentinel-2 (QC on, southwest in)",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 543529,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 482606,
    "active_ha": {
-    "winter": 421310,
-    "summer": 322559
+    "winter": 362427,
+    "summer": 317718
    },
-   "not_observed_ha": {
-    "winter": 24,
-    "summer": 258450
+   "season_unknown_ha": {
+    "winter": 12,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 193107.0,
-    "palm_grove": 26622.0,
-    "partly_seen_active": 137489.0,
-    "partly_seen_inactive": 120729.0,
-    "radar_unusable": 24.0,
-    "summer_only": 122219.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 40111.0,
-    "winter_only": 83273.0,
-    "year_round": 133815.0
+    "idle": 190715.0,
+    "palm_grove": 26460.0,
+    "partly_seen_active": 82178.0,
+    "partly_seen_inactive": 43774.0,
+    "radar_unusable": 12.0,
+    "summer_only": 120179.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 39535.0,
+    "winter_only": 82503.0,
+    "year_round": 131752.0
    },
    "water_m3": {
-    "low": 4585459396,
-    "central": 8263324972,
-    "high": 13541348065
+    "low": 4338852560,
+    "central": 7696619036,
+    "high": 12557470700
    },
    "elec_kwh": {
-    "low": 1313901141,
-    "central": 4069797566,
-    "high": 8448102739
+    "low": 1301038868,
+    "central": 4023005614,
+    "high": 8352366418
    },
    "elec_kwh_summer": {
-    "low": 749430090,
-    "central": 2303167381,
-    "high": 4712396701
+    "low": 740965020,
+    "central": 2272488848,
+    "high": 4650415312
    },
    "co2_t_grid": {
-    "low": 909220,
-    "central": 2816304,
-    "high": 5939016
+    "low": 900319,
+    "central": 2783924,
+    "high": 5871713
    },
    "co2_t_diesel": {
-    "low": 1159761,
-    "central": 3592342,
-    "high": 7456994
+    "low": 1148407,
+    "central": 3551040,
+    "high": 7372489
    },
    "straw_t_dry": {
-    "low": 291186,
-    "central": 392365,
-    "high": 834072
+    "low": 288011,
+    "central": 388087,
+    "high": 824975
    },
    "fronds_t_dry": {
-    "low": 39933,
-    "central": 64424,
-    "high": 203425
+    "low": 39689,
+    "central": 64030,
+    "high": 202181
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.4
+    "low": 253.1,
+    "central": 776.1,
+    "high": 1588.3
    },
    "validation": {
     "summer": {
-     "validated_ha": 598939,
+     "validated_ha": 590936,
      "agreement": 0.733,
-     "chance_agreement": 0.518,
-     "kappa": 0.447,
-     "precision": 0.932,
-     "recall": 0.686,
-     "radar_ha": 322559,
-     "s2_ha": 438254
+     "chance_agreement": 0.517,
+     "kappa": 0.446,
+     "precision": 0.931,
+     "recall": 0.685,
+     "radar_ha": 317718,
+     "s2_ha": 431993
     }
    },
    "by_region": [
     {
      "region": "Al-Jouf",
-     "farmed_ha": 106704,
-     "wheat_ha": 24545,
-     "year_round_ha": 20635,
-     "water_m3": 1661955278,
+     "farmed_ha": 104676,
+     "wheat_ha": 24152,
+     "year_round_ha": 20240,
+     "water_m3": 1631915474,
      "mewa_agri_groundwater_m3": 2922151256,
      "gastat_wheat_ha": 37874,
      "gastat_fodder_ha": 82307
     },
     {
      "region": "Riyadh",
-     "farmed_ha": 147117,
-     "wheat_ha": 36664,
-     "year_round_ha": 53419,
-     "water_m3": 2397553778,
+     "farmed_ha": 146664,
+     "wheat_ha": 36545,
+     "year_round_ha": 53240,
+     "water_m3": 2389897454,
      "mewa_agri_groundwater_m3": 1889791325,
      "gastat_wheat_ha": 37708,
      "gastat_fodder_ha": 38036
     },
     {
      "region": "Hail",
-     "farmed_ha": 55206,
-     "wheat_ha": 19022,
-     "year_round_ha": 14173,
-     "water_m3": 880728308,
+     "farmed_ha": 54849,
+     "wheat_ha": 18877,
+     "year_round_ha": 14130,
+     "water_m3": 875558678,
      "mewa_agri_groundwater_m3": 1314327876,
      "gastat_wheat_ha": 26453,
      "gastat_fodder_ha": 29088
     },
     {
      "region": "Qassim",
-     "farmed_ha": 62877,
-     "wheat_ha": 14020,
-     "year_round_ha": 19474,
-     "water_m3": 1178767942,
+     "farmed_ha": 61904,
+     "wheat_ha": 13805,
+     "year_round_ha": 19134,
+     "water_m3": 1161829482,
      "mewa_agri_groundwater_m3": 1330675506,
      "gastat_wheat_ha": 25888,
      "gastat_fodder_ha": 18993
     },
     {
      "region": "Eastern",
-     "farmed_ha": 43458,
-     "wheat_ha": 21632,
-     "year_round_ha": 14824,
-     "water_m3": 752678986,
+     "farmed_ha": 43098,
+     "wheat_ha": 21449,
+     "year_round_ha": 14695,
+     "water_m3": 747007976,
      "mewa_agri_groundwater_m3": 988741204,
      "gastat_wheat_ha": 18243,
      "gastat_fodder_ha": 20834
     },
     {
      "region": "Jazan",
-     "farmed_ha": 82197,
-     "wheat_ha": 4927,
-     "year_round_ha": 7408,
-     "water_m3": 890633750,
+     "farmed_ha": 43091,
+     "wheat_ha": 4678,
+     "year_round_ha": 6669,
+     "water_m3": 543017590,
      "mewa_agri_groundwater_m3": 386545306,
      "gastat_wheat_ha": 10518,
      "gastat_fodder_ha": 3419
     },
     {
      "region": "Tabuk",
-     "farmed_ha": 13082,
-     "wheat_ha": 2574,
-     "year_round_ha": 3882,
-     "water_m3": 223517130,
+     "farmed_ha": 12706,
+     "wheat_ha": 2532,
+     "year_round_ha": 3644,
+     "water_m3": 215628332,
      "mewa_agri_groundwater_m3": 651301500,
      "gastat_wheat_ha": 10183,
      "gastat_fodder_ha": 14795
     },
     {
      "region": "Asir",
-     "farmed_ha": 18944,
+     "farmed_ha": 4966,
      "wheat_ha": 0,
      "year_round_ha": 0,
-     "water_m3": 159838650,
+     "water_m3": 41902650,
      "mewa_agri_groundwater_m3": 389563207,
      "gastat_wheat_ha": 8353,
      "gastat_fodder_ha": 960
     },
     {
      "region": "Makkah",
-     "farmed_ha": 5295,
+     "farmed_ha": 3264,
      "wheat_ha": 0,
      "year_round_ha": 0,
-     "water_m3": 44678250,
+     "water_m3": 27541350,
      "mewa_agri_groundwater_m3": 667280483,
      "gastat_wheat_ha": 3697,
      "gastat_fodder_ha": 3648
     },
     {
      "region": "Madinah",
-     "farmed_ha": 4283,
+     "farmed_ha": 4175,
      "wheat_ha": 0,
      "year_round_ha": 0,
-     "water_m3": 36134100,
+     "water_m3": 35225550,
      "mewa_agri_groundwater_m3": 666677574,
      "gastat_wheat_ha": 806,
      "gastat_fodder_ha": 1157
     },
     {
      "region": "Najran",
-     "farmed_ha": 2070,
+     "farmed_ha": 2060,
      "wheat_ha": 0,
      "year_round_ha": 0,
-     "water_m3": 17462250,
+     "water_m3": 17378550,
      "mewa_agri_groundwater_m3": 205767755,
      "gastat_wheat_ha": 405,
      "gastat_fodder_ha": 946
     },
     {
      "region": "Al-Baha",
-     "farmed_ha": 2296,
+     "farmed_ha": 1152,
      "wheat_ha": 0,
      "year_round_ha": 0,
-     "water_m3": 19376550,
+     "water_m3": 9715950,
      "mewa_agri_groundwater_m3": 134682573,
      "gastat_wheat_ha": 327,
      "gastat_fodder_ha": 312
@@ -946,192 +951,193 @@
      "gastat_fodder_ha": 4
     }
    ],
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A4_either": {
    "id": "A4_either",
    "family": "A",
    "name": "Bracket ceiling: radar or Sentinel-2 (QC on, southwest in)",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 857388,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 717107,
    "active_ha": {
-    "winter": 696090,
-    "summer": 701817
+    "winter": 633725,
+    "summer": 565487
    },
-   "not_observed_ha": {
-    "winter": 24,
+   "season_unknown_ha": {
+    "winter": 12,
     "summer": 0
    },
    "area_ha_by_class": {
     "idle": 1.0,
-    "palm_grove": 26705.0,
-    "partly_seen_active": 24.0,
-    "summer_only": 161273.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 136569.0,
-    "winter_only": 155570.0,
-    "year_round": 377245.0
+    "palm_grove": 26542.0,
+    "partly_seen_active": 12.0,
+    "summer_only": 83369.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 102847.0,
+    "winter_only": 151620.0,
+    "year_round": 352716.0
    },
    "water_m3": {
-    "low": 9457198493,
-    "central": 16337267568,
-    "high": 26454123605
+    "low": 8096190028,
+    "central": 13998878186,
+    "high": 22673775977
    },
    "elec_kwh": {
-    "low": 2233177154,
-    "central": 7366422743,
-    "high": 15367947536
+    "low": 2210367688,
+    "central": 7278087587,
+    "high": 15186384588
    },
    "elec_kwh_summer": {
-    "low": 1151600432,
-    "central": 3630079950,
-    "high": 7456945010
+    "low": 1139315828,
+    "central": 3584399818,
+    "high": 7364340132
    },
    "co2_t_grid": {
-    "low": 1545361,
-    "central": 5097571,
-    "high": 10803666
+    "low": 1529576,
+    "central": 5036443,
+    "high": 10676027
    },
    "co2_t_diesel": {
-    "low": 1971191,
-    "central": 6502218,
-    "high": 13565022
+    "low": 1951057,
+    "central": 6424246,
+    "high": 13404759
    },
    "straw_t_dry": {
-    "low": 689471,
-    "central": 929017,
-    "high": 1974865
+    "low": 600558,
+    "central": 809218,
+    "high": 1720192
    },
    "fronds_t_dry": {
-    "low": 40058,
-    "central": 64625,
-    "high": 204058
+    "low": 39813,
+    "central": 64231,
+    "high": 202814
    },
    "summer_pumping_avg_mw": {
-    "low": 393.3,
-    "central": 1239.8,
-    "high": 2546.8
+    "low": 389.1,
+    "central": 1224.2,
+    "high": 2515.1
    },
    "validation": {},
    "by_region": [
     {
      "region": "Al-Jouf",
-     "farmed_ha": 180454,
-     "wheat_ha": 60753,
-     "year_round_ha": 90797,
-     "water_m3": 3509701174,
+     "farmed_ha": 177264,
+     "wheat_ha": 59852,
+     "year_round_ha": 89020,
+     "water_m3": 3446478544,
      "mewa_agri_groundwater_m3": 2922151256,
      "gastat_wheat_ha": 37874,
      "gastat_fodder_ha": 82307
     },
     {
      "region": "Riyadh",
-     "farmed_ha": 168848,
-     "wheat_ha": 61790,
-     "year_round_ha": 93777,
-     "water_m3": 3358735498,
+     "farmed_ha": 168330,
+     "wheat_ha": 61585,
+     "year_round_ha": 93527,
+     "water_m3": 3349196196,
      "mewa_agri_groundwater_m3": 1889791325,
      "gastat_wheat_ha": 37708,
      "gastat_fodder_ha": 38036
     },
     {
      "region": "Hail",
-     "farmed_ha": 89589,
-     "wheat_ha": 30841,
-     "year_round_ha": 50227,
-     "water_m3": 1792156936,
+     "farmed_ha": 89013,
+     "wheat_ha": 30617,
+     "year_round_ha": 49989,
+     "water_m3": 1781597384,
      "mewa_agri_groundwater_m3": 1314327876,
      "gastat_wheat_ha": 26453,
      "gastat_fodder_ha": 29088
     },
     {
      "region": "Qassim",
-     "farmed_ha": 112922,
-     "wheat_ha": 47951,
-     "year_round_ha": 47649,
-     "water_m3": 2154632150,
+     "farmed_ha": 111223,
+     "wheat_ha": 47253,
+     "year_round_ha": 46897,
+     "water_m3": 2123702394,
      "mewa_agri_groundwater_m3": 1330675506,
      "gastat_wheat_ha": 25888,
      "gastat_fodder_ha": 18993
     },
     {
      "region": "Eastern",
-     "farmed_ha": 50951,
-     "wheat_ha": 23726,
-     "year_round_ha": 19746,
-     "water_m3": 928011018,
+     "farmed_ha": 50518,
+     "wheat_ha": 23485,
+     "year_round_ha": 19610,
+     "water_m3": 921455752,
      "mewa_agri_groundwater_m3": 988741204,
      "gastat_wheat_ha": 18243,
      "gastat_fodder_ha": 20834
     },
     {
      "region": "Jazan",
-     "farmed_ha": 160282,
-     "wheat_ha": 41400,
-     "year_round_ha": 40204,
-     "water_m3": 2843771152,
+     "farmed_ha": 66819,
+     "wheat_ha": 17986,
+     "year_round_ha": 24658,
+     "water_m3": 1285444160,
      "mewa_agri_groundwater_m3": 386545306,
      "gastat_wheat_ha": 10518,
      "gastat_fodder_ha": 3419
     },
     {
      "region": "Tabuk",
-     "farmed_ha": 31383,
-     "wheat_ha": 9893,
-     "year_round_ha": 17744,
-     "water_m3": 645803328,
+     "farmed_ha": 30809,
+     "wheat_ha": 9736,
+     "year_round_ha": 17350,
+     "water_m3": 632711618,
      "mewa_agri_groundwater_m3": 651301500,
      "gastat_wheat_ha": 10183,
      "gastat_fodder_ha": 14795
     },
     {
      "region": "Asir",
-     "farmed_ha": 42259,
-     "wheat_ha": 12061,
-     "year_round_ha": 6883,
-     "water_m3": 706718178,
+     "farmed_ha": 9323,
+     "wheat_ha": 2426,
+     "year_round_ha": 2540,
+     "water_m3": 167882378,
      "mewa_agri_groundwater_m3": 389563207,
      "gastat_wheat_ha": 8353,
      "gastat_fodder_ha": 960
     },
     {
      "region": "Makkah",
-     "farmed_ha": 9390,
-     "wheat_ha": 2561,
-     "year_round_ha": 2734,
-     "water_m3": 160881586,
+     "farmed_ha": 5897,
+     "wheat_ha": 964,
+     "year_round_ha": 2300,
+     "water_m3": 104701190,
      "mewa_agri_groundwater_m3": 667280483,
      "gastat_wheat_ha": 3697,
      "gastat_fodder_ha": 3648
     },
     {
      "region": "Madinah",
-     "farmed_ha": 4404,
-     "wheat_ha": 252,
-     "year_round_ha": 4030,
-     "water_m3": 106609684,
+     "farmed_ha": 4275,
+     "wheat_ha": 216,
+     "year_round_ha": 3958,
+     "water_m3": 104136878,
      "mewa_agri_groundwater_m3": 666677574,
      "gastat_wheat_ha": 806,
      "gastat_fodder_ha": 1157
     },
     {
      "region": "Najran",
-     "farmed_ha": 2103,
+     "farmed_ha": 2093,
      "wheat_ha": 132,
-     "year_round_ha": 1938,
-     "water_m3": 51030458,
+     "year_round_ha": 1928,
+     "water_m3": 50781590,
      "mewa_agri_groundwater_m3": 205767755,
      "gastat_wheat_ha": 405,
      "gastat_fodder_ha": 946
     },
     {
      "region": "Al-Baha",
-     "farmed_ha": 4803,
-     "wheat_ha": 780,
-     "year_round_ha": 1517,
-     "water_m3": 79216406,
+     "farmed_ha": 1541,
+     "wheat_ha": 214,
+     "year_round_ha": 937,
+     "water_m3": 30790102,
      "mewa_agri_groundwater_m3": 134682573,
      "gastat_wheat_ha": 327,
      "gastat_fodder_ha": 312
@@ -1147,1270 +1153,1283 @@
      "gastat_fodder_ha": 4
     }
    ],
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc0_swin_wradar": {
    "id": "A2_qc0_swin_wradar",
    "family": "A2",
    "name": "QC off, southwest in, winter radar only",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 411586,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 363002,
    "active_ha": {
-    "winter": 233454,
-    "summer": 355318
+    "winter": 191213,
+    "summer": 322113
    },
-   "not_observed_ha": {
-    "winter": 69472,
+   "season_unknown_ha": {
+    "winter": 68913,
     "summer": 1232
    },
    "area_ha_by_class": {
-    "idle": 401386.0,
-    "palm_grove": 29388.0,
-    "partly_seen_active": 21239.0,
-    "partly_seen_inactive": 44417.0,
-    "summer_only": 152066.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 50262.0,
-    "winter_only": 56047.0,
-    "year_round": 102584.0
+    "idle": 310071.0,
+    "palm_grove": 27736.0,
+    "partly_seen_active": 21074.0,
+    "partly_seen_inactive": 44035.0,
+    "summer_only": 145900.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 31703.0,
+    "winter_only": 40667.0,
+    "year_round": 95922.0
    },
    "water_m3": {
-    "low": 4092841501,
-    "central": 7012868894,
-    "high": 11328400028
+    "low": 3659619425,
+    "central": 6205542168,
+    "high": 9993405685
    },
    "elec_kwh": {
-    "low": 1117504730,
-    "central": 3453403683,
-    "high": 7155563241
+    "low": 1106108835,
+    "central": 3412871591,
+    "high": 7072727183
    },
    "elec_kwh_summer": {
-    "low": 753227442,
-    "central": 2319399781,
-    "high": 4744436534
+    "low": 744746524,
+    "central": 2288643049,
+    "high": 4682300479
    },
    "co2_t_grid": {
-    "low": 773313,
-    "central": 2389759,
-    "high": 5030360
+    "low": 765427,
+    "central": 2361710,
+    "high": 4972126
    },
    "co2_t_diesel": {
-    "low": 986405,
-    "central": 3048262,
-    "high": 6316092
+    "low": 976346,
+    "central": 3012485,
+    "high": 6242974
    },
    "straw_t_dry": {
-    "low": 250897,
-    "central": 338068,
-    "high": 718657
+    "low": 170797,
+    "central": 230141,
+    "high": 489223
    },
    "fronds_t_dry": {
-    "low": 44081,
-    "central": 71119,
-    "high": 224559
+    "low": 41603,
+    "central": 67120,
+    "high": 211934
    },
    "summer_pumping_avg_mw": {
-    "low": 257.2,
-    "central": 792.1,
-    "high": 1620.4
+    "low": 254.4,
+    "central": 781.6,
+    "high": 1599.1
    },
    "validation": {
     "winter": {
-     "validated_ha": 787825,
-     "agreement": 0.585,
-     "chance_agreement": 0.492,
-     "kappa": 0.183,
-     "precision": 0.676,
-     "recall": 0.386,
-     "radar_ha": 233424,
-     "s2_ha": 408895
+     "validated_ha": 648154,
+     "agreement": 0.572,
+     "chance_agreement": 0.47,
+     "kappa": 0.192,
+     "precision": 0.745,
+     "recall": 0.384,
+     "radar_ha": 191199,
+     "s2_ha": 371058
     },
     "summer": {
-     "validated_ha": 856157,
-     "agreement": 0.569,
-     "chance_agreement": 0.45,
-     "kappa": 0.216,
-     "precision": 0.936,
-     "recall": 0.49,
-     "radar_ha": 355318,
-     "s2_ha": 678919
+     "validated_ha": 715876,
+     "agreement": 0.631,
+     "chance_agreement": 0.474,
+     "kappa": 0.298,
+     "precision": 0.932,
+     "recall": 0.553,
+     "radar_ha": 322113,
+     "s2_ha": 542822
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc0_swin_ws2": {
    "id": "A2_qc0_swin_ws2",
    "family": "A2",
    "name": "QC off, southwest in, winter from Sentinel-2 where unobserved",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 453431,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 404511,
    "active_ha": {
-    "winter": 299537,
-    "summer": 355318
+    "winter": 256816,
+    "summer": 322113
    },
-   "not_observed_ha": {
+   "season_unknown_ha": {
     "winter": 0,
     "summer": 1232
    },
    "area_ha_by_class": {
-    "idle": 402947.0,
-    "palm_grove": 29382.0,
+    "idle": 311586.0,
+    "palm_grove": 27730.0,
     "partly_seen_active": 180.0,
     "partly_seen_inactive": 1011.0,
-    "summer_only": 153894.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 54493.0,
-    "winter_only": 97892.0,
-    "year_round": 117591.0
+    "summer_only": 147695.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 35924.0,
+    "winter_only": 82177.0,
+    "year_round": 110807.0
    },
    "water_m3": {
-    "low": 4364109733,
-    "central": 7589692206,
-    "high": 12313391420
+    "low": 3928787242,
+    "central": 6777934370,
+    "high": 10970843902
    },
    "elec_kwh": {
-    "low": 1211735366,
-    "central": 3707998421,
-    "high": 7683982729
+    "low": 1199698646,
+    "central": 3665806221,
+    "high": 7597734622
    },
    "elec_kwh_summer": {
-    "low": 753196081,
-    "central": 2319355432,
-    "high": 4744374645
+    "low": 744715419,
+    "central": 2288599056,
+    "high": 4682239086
    },
    "co2_t_grid": {
-    "low": 838521,
-    "central": 2565938,
-    "high": 5401839
+    "low": 830192,
+    "central": 2536741,
+    "high": 5341206
    },
    "co2_t_diesel": {
-    "low": 1069581,
-    "central": 3272988,
-    "high": 6782518
+    "low": 1058956,
+    "central": 3235746,
+    "high": 6706389
    },
    "straw_t_dry": {
-    "low": 359634,
-    "central": 484587,
-    "high": 1030123
+    "low": 278721,
+    "central": 375565,
+    "high": 798360
    },
    "fronds_t_dry": {
-    "low": 44072,
-    "central": 71104,
-    "high": 224514
+    "low": 41594,
+    "central": 67105,
+    "high": 211889
    },
    "summer_pumping_avg_mw": {
-    "low": 257.2,
-    "central": 792.1,
-    "high": 1620.3
+    "low": 254.3,
+    "central": 781.6,
+    "high": 1599.1
    },
    "validation": {
     "summer": {
-     "validated_ha": 856157,
-     "agreement": 0.569,
-     "chance_agreement": 0.45,
-     "kappa": 0.216,
-     "precision": 0.936,
-     "recall": 0.49,
-     "radar_ha": 355318,
-     "s2_ha": 678919
+     "validated_ha": 715876,
+     "agreement": 0.631,
+     "chance_agreement": 0.474,
+     "kappa": 0.298,
+     "precision": 0.932,
+     "recall": 0.553,
+     "radar_ha": 322113,
+     "s2_ha": 542822
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc0_swout_wradar": {
    "id": "A2_qc0_swout_wradar",
    "family": "A2",
    "name": "QC off, southwest out, winter radar only",
    "note": "",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 352602,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 348076,
    "active_ha": {
-    "winter": 179226,
-    "summer": 311724
+    "winter": 177427,
+    "summer": 307772
    },
-   "not_observed_ha": {
-    "winter": 69472,
+   "season_unknown_ha": {
+    "winter": 68913,
     "summer": 1232
    },
    "area_ha_by_class": {
-    "idle": 250922.0,
-    "palm_grove": 26132.0,
-    "partly_seen_active": 21239.0,
-    "partly_seen_inactive": 44417.0,
-    "summer_only": 147309.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27188.0,
-    "winter_only": 40656.0,
-    "year_round": 90078.0
+    "idle": 245220.0,
+    "palm_grove": 26112.0,
+    "partly_seen_active": 21074.0,
+    "partly_seen_inactive": 44035.0,
+    "summer_only": 144761.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26868.0,
+    "winter_only": 40083.0,
+    "year_round": 89179.0
    },
    "water_m3": {
-    "low": 3507716470,
-    "central": 5943600608,
-    "high": 9569475661
+    "low": 3467381469,
+    "central": 5874940176,
+    "high": 9458778815
    },
    "elec_kwh": {
-    "low": 1117504730,
-    "central": 3453403683,
-    "high": 7155563241
+    "low": 1106108835,
+    "central": 3412871591,
+    "high": 7072727183
    },
    "elec_kwh_summer": {
-    "low": 753227442,
-    "central": 2319399781,
-    "high": 4744436534
+    "low": 744746524,
+    "central": 2288643049,
+    "high": 4682300479
    },
    "co2_t_grid": {
-    "low": 773313,
-    "central": 2389759,
-    "high": 5030360
+    "low": 765427,
+    "central": 2361710,
+    "high": 4972126
    },
    "co2_t_diesel": {
-    "low": 986405,
-    "central": 3048262,
-    "high": 6316092
+    "low": 976346,
+    "central": 3012485,
+    "high": 6242974
    },
    "straw_t_dry": {
-    "low": 160112,
-    "central": 215746,
-    "high": 458622
+    "low": 158005,
+    "central": 212907,
+    "high": 452586
    },
    "fronds_t_dry": {
-    "low": 39198,
-    "central": 63239,
-    "high": 199682
+    "low": 39168,
+    "central": 63191,
+    "high": 199530
    },
    "summer_pumping_avg_mw": {
-    "low": 257.2,
-    "central": 792.1,
-    "high": 1620.4
+    "low": 254.4,
+    "central": 781.6,
+    "high": 1599.1
    },
    "validation": {
     "winter": {
-     "validated_ha": 578461,
-     "agreement": 0.563,
+     "validated_ha": 568417,
+     "agreement": 0.564,
      "chance_agreement": 0.463,
-     "kappa": 0.186,
-     "precision": 0.757,
-     "recall": 0.394,
-     "radar_ha": 179226,
-     "s2_ha": 344794
+     "kappa": 0.187,
+     "precision": 0.759,
+     "recall": 0.396,
+     "radar_ha": 177427,
+     "s2_ha": 339811
     },
     "summer": {
-     "validated_ha": 646708,
-     "agreement": 0.683,
+     "validated_ha": 636099,
+     "agreement": 0.685,
      "chance_agreement": 0.492,
-     "kappa": 0.376,
+     "kappa": 0.379,
      "precision": 0.931,
-     "recall": 0.612,
-     "radar_ha": 311724,
-     "s2_ha": 474043
+     "recall": 0.615,
+     "radar_ha": 307772,
+     "s2_ha": 465717
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc0_swout_ws2": {
    "id": "A2_qc0_swout_ws2",
    "family": "A2",
    "name": "QC off, southwest out, winter from Sentinel-2 where unobserved",
    "note": "",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 394446,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 389586,
    "active_ha": {
-    "winter": 245309,
-    "summer": 311724
+    "winter": 243030,
+    "summer": 307772
    },
-   "not_observed_ha": {
+   "season_unknown_ha": {
     "winter": 0,
     "summer": 1232
    },
    "area_ha_by_class": {
-    "idle": 252484.0,
-    "palm_grove": 26127.0,
+    "idle": 246734.0,
+    "palm_grove": 26107.0,
     "partly_seen_active": 180.0,
     "partly_seen_inactive": 1011.0,
-    "summer_only": 149137.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 31418.0,
-    "winter_only": 82500.0,
-    "year_round": 105084.0
+    "summer_only": 146556.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 31089.0,
+    "winter_only": 81592.0,
+    "year_round": 104063.0
    },
    "water_m3": {
-    "low": 3778984702,
-    "central": 6520423920,
-    "high": 10554467053
+    "low": 3736549286,
+    "central": 6447332378,
+    "high": 10436217032
    },
    "elec_kwh": {
-    "low": 1211735366,
-    "central": 3707998421,
-    "high": 7683982729
+    "low": 1199698646,
+    "central": 3665806221,
+    "high": 7597734622
    },
    "elec_kwh_summer": {
-    "low": 753196081,
-    "central": 2319355432,
-    "high": 4744374645
+    "low": 744715419,
+    "central": 2288599056,
+    "high": 4682239086
    },
    "co2_t_grid": {
-    "low": 838521,
-    "central": 2565938,
-    "high": 5401839
+    "low": 830192,
+    "central": 2536741,
+    "high": 5341206
    },
    "co2_t_diesel": {
-    "low": 1069581,
-    "central": 3272988,
-    "high": 6782518
+    "low": 1058956,
+    "central": 3235746,
+    "high": 6706389
    },
    "straw_t_dry": {
-    "low": 268849,
-    "central": 362266,
-    "high": 770088
+    "low": 265929,
+    "central": 358331,
+    "high": 761722
    },
    "fronds_t_dry": {
-    "low": 39189,
-    "central": 63225,
-    "high": 199637
+    "low": 39159,
+    "central": 63176,
+    "high": 199484
    },
    "summer_pumping_avg_mw": {
-    "low": 257.2,
-    "central": 792.1,
-    "high": 1620.3
+    "low": 254.3,
+    "central": 781.6,
+    "high": 1599.1
    },
    "validation": {
     "summer": {
-     "validated_ha": 646708,
-     "agreement": 0.683,
+     "validated_ha": 636099,
+     "agreement": 0.685,
      "chance_agreement": 0.492,
-     "kappa": 0.376,
+     "kappa": 0.379,
      "precision": 0.931,
-     "recall": 0.612,
-     "radar_ha": 311724,
-     "s2_ha": 474043
+     "recall": 0.615,
+     "radar_ha": 307772,
+     "s2_ha": 465717
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc1_swin_wradar": {
    "id": "A2_qc1_swin_wradar",
    "family": "A2",
    "name": "QC on, southwest in, winter radar only",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 363512,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 358227,
    "active_ha": {
-    "winter": 192012,
-    "summer": 322559
+    "winter": 189283,
+    "summer": 317718
    },
-   "not_observed_ha": {
-    "winter": 346766,
-    "summer": 258450
+   "season_unknown_ha": {
+    "winter": 213534,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 191070.0,
-    "palm_grove": 26628.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 247518.0,
-    "summer_only": 117169.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 31996.0,
-    "winter_only": 40392.0,
-    "year_round": 97461.0
+    "idle": 188713.0,
+    "palm_grove": 26465.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 115283.0,
+    "summer_only": 115251.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 31499.0,
+    "winter_only": 39948.0,
+    "year_round": 95822.0
    },
    "water_m3": {
-    "low": 3668257124,
-    "central": 6220247554,
-    "high": 10017115713
+    "low": 3614203821,
+    "central": 6128965936,
+    "high": 9870296018
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 170838,
-    "central": 230198,
-    "high": 489344
+    "low": 168619,
+    "central": 227206,
+    "high": 482984
    },
    "fronds_t_dry": {
-    "low": 39942,
-    "central": 64438,
-    "high": 203470
+    "low": 39698,
+    "central": 64045,
+    "high": 202227
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 510623,
-     "agreement": 0.605,
+     "validated_ha": 503574,
+     "agreement": 0.604,
      "chance_agreement": 0.48,
-     "kappa": 0.239,
+     "kappa": 0.238,
      "precision": 0.744,
      "recall": 0.483,
-     "radar_ha": 192012,
-     "s2_ha": 295552
+     "radar_ha": 189283,
+     "s2_ha": 291661
     },
     "summer": {
-     "validated_ha": 598939,
+     "validated_ha": 590936,
      "agreement": 0.733,
-     "chance_agreement": 0.518,
-     "kappa": 0.447,
-     "precision": 0.932,
-     "recall": 0.686,
-     "radar_ha": 322559,
-     "s2_ha": 438254
+     "chance_agreement": 0.517,
+     "kappa": 0.446,
+     "precision": 0.931,
+     "recall": 0.685,
+     "radar_ha": 317718,
+     "s2_ha": 431993
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc1_swin_ws2": {
    "id": "A2_qc1_swin_ws2",
    "family": "A2",
    "name": "QC on, southwest in, winter from Sentinel-2 where unobserved",
    "note": "",
-   "fields": 74418,
-   "field_ha": 881518,
-   "farmed_ha": 543529,
+   "fields": 60440,
+   "field_ha": 740700,
+   "farmed_ha": 482606,
    "active_ha": {
-    "winter": 421310,
-    "summer": 322559
+    "winter": 362427,
+    "summer": 317718
    },
-   "not_observed_ha": {
-    "winter": 24,
-    "summer": 258450
+   "season_unknown_ha": {
+    "winter": 12,
+    "summer": 126172
    },
    "area_ha_by_class": {
-    "idle": 193107.0,
-    "palm_grove": 26622.0,
-    "partly_seen_active": 137489.0,
-    "partly_seen_inactive": 120729.0,
-    "radar_unusable": 24.0,
-    "summer_only": 122219.0,
-    "unseen": 24129.0,
-    "wheat_rotation": 40111.0,
-    "winter_only": 83273.0,
-    "year_round": 133815.0
+    "idle": 190715.0,
+    "palm_grove": 26460.0,
+    "partly_seen_active": 82178.0,
+    "partly_seen_inactive": 43774.0,
+    "radar_unusable": 12.0,
+    "summer_only": 120179.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 39535.0,
+    "winter_only": 82503.0,
+    "year_round": 131752.0
    },
    "water_m3": {
-    "low": 4585459396,
-    "central": 8263324972,
-    "high": 13541348065
+    "low": 4338852560,
+    "central": 7696619036,
+    "high": 12557470700
    },
    "elec_kwh": {
-    "low": 1313901141,
-    "central": 4069797566,
-    "high": 8448102739
+    "low": 1301038868,
+    "central": 4023005614,
+    "high": 8352366418
    },
    "elec_kwh_summer": {
-    "low": 749430090,
-    "central": 2303167381,
-    "high": 4712396701
+    "low": 740965020,
+    "central": 2272488848,
+    "high": 4650415312
    },
    "co2_t_grid": {
-    "low": 909220,
-    "central": 2816304,
-    "high": 5939016
+    "low": 900319,
+    "central": 2783924,
+    "high": 5871713
    },
    "co2_t_diesel": {
-    "low": 1159761,
-    "central": 3592342,
-    "high": 7456994
+    "low": 1148407,
+    "central": 3551040,
+    "high": 7372489
    },
    "straw_t_dry": {
-    "low": 291186,
-    "central": 392365,
-    "high": 834072
+    "low": 288011,
+    "central": 388087,
+    "high": 824975
    },
    "fronds_t_dry": {
-    "low": 39933,
-    "central": 64424,
-    "high": 203425
+    "low": 39689,
+    "central": 64030,
+    "high": 202181
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.4
+    "low": 253.1,
+    "central": 776.1,
+    "high": 1588.3
    },
    "validation": {
     "summer": {
-     "validated_ha": 598939,
+     "validated_ha": 590936,
      "agreement": 0.733,
-     "chance_agreement": 0.518,
-     "kappa": 0.447,
-     "precision": 0.932,
-     "recall": 0.686,
-     "radar_ha": 322559,
-     "s2_ha": 438254
+     "chance_agreement": 0.517,
+     "kappa": 0.446,
+     "precision": 0.931,
+     "recall": 0.685,
+     "radar_ha": 317718,
+     "s2_ha": 431993
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc1_swout_wradar": {
    "id": "A2_qc1_swout_wradar",
    "family": "A2",
    "name": "QC on, southwest out, winter radar only",
    "note": "",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 3489177077,
-    "central": 5912620754,
-    "high": 9519805983
+    "low": 3451275376,
+    "central": 5848524696,
+    "high": 9416669678
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "A2_qc1_swout_ws2": {
    "id": "A2_qc1_swout_ws2",
    "family": "A2",
    "name": "QC on, southwest out, winter from Sentinel-2 where unobserved",
    "note": "",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 438021,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 431338,
    "active_ha": {
-    "winter": 315857,
-    "summer": 309470
+    "winter": 311215,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 4,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 0,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 192848.0,
-    "palm_grove": 25911.0,
-    "partly_seen_active": 45082.0,
-    "partly_seen_inactive": 17067.0,
-    "radar_unusable": 4.0,
-    "summer_only": 122164.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 35195.0,
-    "winter_only": 83261.0,
-    "year_round": 126407.0
+    "idle": 190452.0,
+    "palm_grove": 25891.0,
+    "partly_seen_active": 42880.0,
+    "partly_seen_inactive": 15542.0,
+    "summer_only": 120123.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 34857.0,
+    "winter_only": 82503.0,
+    "year_round": 125083.0
    },
    "water_m3": {
-    "low": 4092405435,
-    "central": 7176013772,
-    "high": 11669813673
+    "low": 4042401593,
+    "central": 7084604296,
+    "high": 11519432934
    },
    "elec_kwh": {
-    "low": 1313901141,
-    "central": 4069797566,
-    "high": 8448102739
+    "low": 1301038868,
+    "central": 4023005614,
+    "high": 8352366418
    },
    "elec_kwh_summer": {
-    "low": 749430090,
-    "central": 2303167381,
-    "high": 4712396701
+    "low": 740965020,
+    "central": 2272488848,
+    "high": 4650415312
    },
    "co2_t_grid": {
-    "low": 909220,
-    "central": 2816304,
-    "high": 5939016
+    "low": 900319,
+    "central": 2783924,
+    "high": 5871713
    },
    "co2_t_diesel": {
-    "low": 1159761,
-    "central": 3592342,
-    "high": 7456994
+    "low": 1148407,
+    "central": 3551040,
+    "high": 7372489
    },
    "straw_t_dry": {
-    "low": 279557,
-    "central": 376697,
-    "high": 800764
+    "low": 276969,
+    "central": 373210,
+    "high": 793350
    },
    "fronds_t_dry": {
-    "low": 38867,
-    "central": 62704,
-    "high": 197993
+    "low": 38837,
+    "central": 62655,
+    "high": 197840
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.4
+    "low": 253.1,
+    "central": 776.1,
+    "high": 1588.3
    },
    "validation": {
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B1_seasonal_100": {
    "id": "B1_seasonal_100",
    "family": "B",
    "name": "Fodder halt: year-round fields to seasonal winter fodder, 100% compliance",
    "note": "",
-   "scope_fields": 7454,
-   "scope_ha": 90053,
+   "scope_fields": 7322,
+   "scope_ha": 89153,
    "scope_by_region_ha": {
-    "Al Jawf Region": 11433.0,
-    "Al-Qassim Region": 19452.0,
-    "Eastern Region": 329.0,
-    "Hayel Region": 13825.0,
-    "Riyadh Region": 41133.0,
-    "Tabuk Region": 3882.0
+    "Al Jawf Region": 11340.0,
+    "Al-Qassim Region": 19112.0,
+    "Eastern Region": 322.0,
+    "Hayel Region": 13782.0,
+    "Riyadh Region": 40954.0,
+    "Tabuk Region": 3644.0
    },
    "baseline": {
-    "water_m3": 5912620754,
-    "elec_kwh": 3436151470,
-    "elec_kwh_summer": 2303296876,
-    "co2_t_grid": 2377820,
-    "co2_t_diesel": 3033034,
-    "straw_t_dry": 214530,
-    "fronds_t_dry": 62718
+    "water_m3": 5848524696,
+    "elec_kwh": 3395695652,
+    "elec_kwh_summer": 2272616418,
+    "co2_t_grid": 2349825,
+    "co2_t_diesel": 2997324,
+    "straw_t_dry": 212330,
+    "fronds_t_dry": 62670
    },
-   "baseline_summer_mw": 786.6,
-   "scope_baseline_water_m3": 2259203634,
+   "baseline_summer_mw": 776.2,
+   "scope_baseline_water_m3": 2236636926,
    "scope_baseline_water_per_ha_m3": 25088,
    "watchlist": "out/scenario_B1_watchlist.csv",
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 2416728108,
-    "central": 4413238970,
-    "high": 7258190178
+    "low": 2389538875,
+    "central": 4364119920,
+    "high": 7177644672
    },
    "elec_kwh": {
-    "low": 760150790,
-    "central": 2623203530,
-    "high": 5536079353
+    "low": 752101763,
+    "central": 2590970384,
+    "high": 5469111287
    },
    "elec_kwh_summer": {
-    "low": 522611023,
-    "central": 1690839583,
-    "high": 3450363189
+    "low": 516286380,
+    "central": 1666353907,
+    "high": 3400890235
    },
    "co2_t_grid": {
-    "low": 526025,
-    "central": 1815259,
-    "high": 3891863
+    "low": 520455,
+    "central": 1792954,
+    "high": 3844784
    },
    "co2_t_diesel": {
-    "low": 670975,
-    "central": 2315458,
-    "high": 4886601
+    "low": 663870,
+    "central": 2287006,
+    "high": 4827490
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 178.5,
-    "central": 577.5,
-    "high": 1178.4
+    "low": 176.3,
+    "central": 569.1,
+    "high": 1161.5
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 2
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B1_seasonal_50": {
    "id": "B1_seasonal_50",
    "family": "B",
    "name": "Fodder halt: year-round fields to seasonal winter fodder, 50% compliance",
    "note": "",
-   "scope_fields": 7454,
-   "scope_ha": 90053,
+   "scope_fields": 7322,
+   "scope_ha": 89153,
    "scope_by_region_ha": {
-    "Al Jawf Region": 11433.0,
-    "Al-Qassim Region": 19452.0,
-    "Eastern Region": 329.0,
-    "Hayel Region": 13825.0,
-    "Riyadh Region": 41133.0,
-    "Tabuk Region": 3882.0
+    "Al Jawf Region": 11340.0,
+    "Al-Qassim Region": 19112.0,
+    "Eastern Region": 322.0,
+    "Hayel Region": 13782.0,
+    "Riyadh Region": 40954.0,
+    "Tabuk Region": 3644.0
    },
    "baseline": {
-    "water_m3": 5912620754,
-    "elec_kwh": 3436151470,
-    "elec_kwh_summer": 2303296876,
-    "co2_t_grid": 2377820,
-    "co2_t_diesel": 3033034,
-    "straw_t_dry": 214530,
-    "fronds_t_dry": 62718
+    "water_m3": 5848524696,
+    "elec_kwh": 3395695652,
+    "elec_kwh_summer": 2272616418,
+    "co2_t_grid": 2349825,
+    "co2_t_diesel": 2997324,
+    "straw_t_dry": 212330,
+    "fronds_t_dry": 62670
    },
-   "baseline_summer_mw": 786.6,
-   "scope_baseline_water_m3": 2259203634,
+   "baseline_summer_mw": 776.2,
+   "scope_baseline_water_m3": 2236636926,
    "scope_baseline_water_per_ha_m3": 25088,
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 2952952592,
-    "central": 5162929862,
-    "high": 8388998080
+    "low": 2920407126,
+    "central": 5106322308,
+    "high": 8297157175
    },
    "elec_kwh": {
-    "low": 936677037,
-    "central": 3029677500,
-    "high": 6328854410
+    "low": 926962140,
+    "central": 2993333018,
+    "high": 6254028318
    },
    "elec_kwh_summer": {
-    "low": 636056068,
-    "central": 1997068230,
-    "high": 4081471701
+    "low": 628660851,
+    "central": 1969485162,
+    "high": 4025743166
    },
    "co2_t_grid": {
-    "low": 648181,
-    "central": 2096540,
-    "high": 4449184
+    "low": 641458,
+    "central": 2071389,
+    "high": 4396581
    },
    "co2_t_diesel": {
-    "low": 826791,
-    "central": 2674246,
-    "high": 5586370
+    "low": 818216,
+    "central": 2642165,
+    "high": 5520323
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 217.2,
-    "central": 682.1,
-    "high": 1393.9
+    "low": 214.7,
+    "central": 672.6,
+    "high": 1374.9
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B1_seasonal_25": {
    "id": "B1_seasonal_25",
    "family": "B",
    "name": "Fodder halt: year-round fields to seasonal winter fodder, 25% compliance",
    "note": "",
-   "scope_fields": 7454,
-   "scope_ha": 90053,
+   "scope_fields": 7322,
+   "scope_ha": 89153,
    "scope_by_region_ha": {
-    "Al Jawf Region": 11433.0,
-    "Al-Qassim Region": 19452.0,
-    "Eastern Region": 329.0,
-    "Hayel Region": 13825.0,
-    "Riyadh Region": 41133.0,
-    "Tabuk Region": 3882.0
+    "Al Jawf Region": 11340.0,
+    "Al-Qassim Region": 19112.0,
+    "Eastern Region": 322.0,
+    "Hayel Region": 13782.0,
+    "Riyadh Region": 40954.0,
+    "Tabuk Region": 3644.0
    },
    "baseline": {
-    "water_m3": 5912620754,
-    "elec_kwh": 3436151470,
-    "elec_kwh_summer": 2303296876,
-    "co2_t_grid": 2377820,
-    "co2_t_diesel": 3033034,
-    "straw_t_dry": 214530,
-    "fronds_t_dry": 62718
+    "water_m3": 5848524696,
+    "elec_kwh": 3395695652,
+    "elec_kwh_summer": 2272616418,
+    "co2_t_grid": 2349825,
+    "co2_t_diesel": 2997324,
+    "straw_t_dry": 212330,
+    "fronds_t_dry": 62670
    },
-   "baseline_summer_mw": 786.6,
-   "scope_baseline_water_m3": 2259203634,
+   "baseline_summer_mw": 776.2,
+   "scope_baseline_water_m3": 2236636926,
    "scope_baseline_water_per_ha_m3": 25088,
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 3221064835,
-    "central": 5537775308,
-    "high": 8954402032
+    "low": 3185841251,
+    "central": 5477423502,
+    "high": 8856913426
    },
    "elec_kwh": {
-    "low": 1024940160,
-    "central": 3232914485,
-    "high": 6725241939
+    "low": 1014392328,
+    "central": 3194514335,
+    "high": 6646486834
    },
    "elec_kwh_summer": {
-    "low": 692778590,
-    "central": 2150182553,
-    "high": 4397025957
+    "low": 684848086,
+    "central": 2121050790,
+    "high": 4338169632
    },
    "co2_t_grid": {
-    "low": 709259,
-    "central": 2237180,
-    "high": 4727844
+    "low": 701959,
+    "central": 2210607,
+    "high": 4672479
    },
    "co2_t_diesel": {
-    "low": 904700,
-    "central": 2853640,
-    "high": 5936255
+    "low": 895389,
+    "central": 2819745,
+    "high": 5866739
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 236.6,
-    "central": 734.4,
-    "high": 1501.7
+    "low": 233.9,
+    "central": 724.4,
+    "high": 1481.6
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 2
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B1_wheat_100": {
    "id": "B1_wheat_100",
    "family": "B",
    "name": "Fodder halt: year-round fields to winter wheat, 100% compliance",
    "note": "",
-   "scope_fields": 7454,
-   "scope_ha": 90053,
+   "scope_fields": 7322,
+   "scope_ha": 89153,
    "scope_by_region_ha": {
-    "Al Jawf Region": 11433.0,
-    "Al-Qassim Region": 19452.0,
-    "Eastern Region": 329.0,
-    "Hayel Region": 13825.0,
-    "Riyadh Region": 41133.0,
-    "Tabuk Region": 3882.0
+    "Al Jawf Region": 11340.0,
+    "Al-Qassim Region": 19112.0,
+    "Eastern Region": 322.0,
+    "Hayel Region": 13782.0,
+    "Riyadh Region": 40954.0,
+    "Tabuk Region": 3644.0
    },
    "baseline": {
-    "water_m3": 5912620754,
-    "elec_kwh": 3436151470,
-    "elec_kwh_summer": 2303296876,
-    "co2_t_grid": 2377820,
-    "co2_t_diesel": 3033034,
-    "straw_t_dry": 214530,
-    "fronds_t_dry": 62718
+    "water_m3": 5848524696,
+    "elec_kwh": 3395695652,
+    "elec_kwh_summer": 2272616418,
+    "co2_t_grid": 2349825,
+    "co2_t_diesel": 2997324,
+    "straw_t_dry": 212330,
+    "fronds_t_dry": 62670
    },
-   "baseline_summer_mw": 786.6,
-   "scope_baseline_water_m3": 2259203634,
+   "baseline_summer_mw": 776.2,
+   "scope_baseline_water_m3": 2236636926,
    "scope_baseline_water_per_ha_m3": 25088,
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 2416728108,
-    "central": 4413238970,
-    "high": 7258190178
+    "low": 2389538875,
+    "central": 4364119920,
+    "high": 7177644672
    },
    "elec_kwh": {
-    "low": 760150790,
-    "central": 2623203530,
-    "high": 5536079353
+    "low": 752101763,
+    "central": 2590970384,
+    "high": 5469111287
    },
    "elec_kwh_summer": {
-    "low": 522611023,
-    "central": 1690839583,
-    "high": 3450363189
+    "low": 516286380,
+    "central": 1666353907,
+    "high": 3400890235
    },
    "co2_t_grid": {
-    "low": 526025,
-    "central": 1815259,
-    "high": 3891863
+    "low": 520455,
+    "central": 1792954,
+    "high": 3844784
    },
    "co2_t_diesel": {
-    "low": 670975,
-    "central": 2315458,
-    "high": 4886601
+    "low": 663870,
+    "central": 2287006,
+    "high": 4827490
    },
    "straw_t_dry": {
-    "low": 371740,
-    "central": 500903,
-    "high": 1064798
+    "low": 367985,
+    "central": 495842,
+    "high": 1054041
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 178.5,
-    "central": 577.5,
-    "high": 1178.4
+    "low": 176.3,
+    "central": 569.1,
+    "high": 1161.5
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 2
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B1_fallow_100": {
    "id": "B1_fallow_100",
    "family": "B",
    "name": "Fodder halt: year-round fields to fallow, 100% compliance",
    "note": "",
-   "scope_fields": 7454,
-   "scope_ha": 90053,
+   "scope_fields": 7322,
+   "scope_ha": 89153,
    "scope_by_region_ha": {
-    "Al Jawf Region": 11433.0,
-    "Al-Qassim Region": 19452.0,
-    "Eastern Region": 329.0,
-    "Hayel Region": 13825.0,
-    "Riyadh Region": 41133.0,
-    "Tabuk Region": 3882.0
+    "Al Jawf Region": 11340.0,
+    "Al-Qassim Region": 19112.0,
+    "Eastern Region": 322.0,
+    "Hayel Region": 13782.0,
+    "Riyadh Region": 40954.0,
+    "Tabuk Region": 3644.0
    },
    "baseline": {
-    "water_m3": 5912620754,
-    "elec_kwh": 3436151470,
-    "elec_kwh_summer": 2303296876,
-    "co2_t_grid": 2377820,
-    "co2_t_diesel": 3033034,
-    "straw_t_dry": 214530,
-    "fronds_t_dry": 62718
+    "water_m3": 5848524696,
+    "elec_kwh": 3395695652,
+    "elec_kwh_summer": 2272616418,
+    "co2_t_grid": 2349825,
+    "co2_t_diesel": 2997324,
+    "straw_t_dry": 212330,
+    "fronds_t_dry": 62670
    },
-   "baseline_summer_mw": 786.6,
-   "scope_baseline_water_m3": 2259203634,
+   "baseline_summer_mw": 776.2,
+   "scope_baseline_water_m3": 2236636926,
    "scope_baseline_water_per_ha_m3": 25088,
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 2110752750,
-    "central": 3653417120,
-    "high": 5918974049
+    "low": 2086619840,
+    "central": 3611887770,
+    "high": 5851805689
    },
    "elec_kwh": {
-    "low": 659423305,
-    "central": 2211236760,
-    "high": 4597195540
+    "low": 652324826,
+    "central": 2183170509,
+    "high": 4539533738
    },
    "elec_kwh_summer": {
-    "low": 522611023,
-    "central": 1690839583,
-    "high": 3450363189
+    "low": 516286380,
+    "central": 1666353907,
+    "high": 3400890235
    },
    "co2_t_grid": {
-    "low": 456321,
-    "central": 1530178,
-    "high": 3231828
+    "low": 451409,
+    "central": 1510756,
+    "high": 3191291
    },
    "co2_t_diesel": {
-    "low": 582064,
-    "central": 1951822,
-    "high": 4057865
+    "low": 575798,
+    "central": 1927048,
+    "high": 4006968
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 178.5,
-    "central": 577.5,
-    "high": 1178.4
+    "low": 176.3,
+    "central": 569.1,
+    "high": 1161.5
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B2_lesa": {
    "id": "B2_lesa",
@@ -2419,125 +2438,126 @@
    "note": "",
    "by_rebound": {
     "0": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
-     "pumped_water_saved_m3": 307744281,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 291736629,
-     "summer_mw_saved": 69.7,
-     "co2_saved_t": 201882,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
+     "pumped_water_saved_m3": 307396395,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 291407317,
+     "summer_mw_saved": 69.6,
+     "co2_saved_t": 201654,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     },
     "0.5": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
-     "pumped_water_saved_m3": 153872141,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 195485669,
-     "summer_mw_saved": 46.6,
-     "co2_saved_t": 135276,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
+     "pumped_water_saved_m3": 153698198,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 195264923,
+     "summer_mw_saved": 46.5,
+     "co2_saved_t": 135123,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     },
     "1.0": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
      "pumped_water_saved_m3": 0,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 99234708,
-     "summer_mw_saved": 23.5,
-     "co2_saved_t": 68670,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 99122529,
+     "summer_mw_saved": 23.4,
+     "co2_saved_t": 68593,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     }
    },
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 3489177077,
-    "central": 5912620754,
-    "high": 9519805983
+    "low": 3451275376,
+    "central": 5848524696,
+    "high": 9416669678
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "B2_lepa": {
    "id": "B2_lepa",
@@ -2546,169 +2566,171 @@
    "note": "",
    "by_rebound": {
     "0": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
-     "pumped_water_saved_m3": 534503226,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 433580150,
-     "summer_mw_saved": 103.8,
-     "co2_saved_t": 300037,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
+     "pumped_water_saved_m3": 533899002,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 433090845,
+     "summer_mw_saved": 103.7,
+     "co2_saved_t": 299699,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     },
     "0.5": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
-     "pumped_water_saved_m3": 267251613,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 266407429,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
+     "pumped_water_saved_m3": 266949501,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 266106687,
      "summer_mw_saved": 63.6,
-     "co2_saved_t": 184354,
+     "co2_saved_t": 184146,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     },
     "1.0": {
-     "pivot_fields": 11597,
-     "pivot_ha": 214560,
-     "pivot_water_m3": 3385187096,
+     "pivot_fields": 11587,
+     "pivot_ha": 214363,
+     "pivot_water_m3": 3381360346,
      "pumped_water_saved_m3": 0,
-     "elec_baseline_with_pressure_kwh": 2216755837,
-     "elec_saved_kwh": 99234708,
-     "summer_mw_saved": 23.5,
-     "co2_saved_t": 68670,
+     "elec_baseline_with_pressure_kwh": 2214255193,
+     "elec_saved_kwh": 99122529,
+     "summer_mw_saved": 23.4,
+     "co2_saved_t": 68593,
      "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head saves energy even when all freed water is re-used"
     }
    },
-   "fields": 53343,
-   "field_ha": 671643,
-   "farmed_ha": 350412,
+   "fields": 51696,
+   "field_ha": 660849,
+   "farmed_ha": 346256,
    "active_ha": {
-    "winter": 178966,
-    "summer": 309470
+    "winter": 177368,
+    "summer": 305746
    },
-   "not_observed_ha": {
-    "winter": 150677,
-    "summer": 62362
+   "season_unknown_ha": {
+    "winter": 145992,
+    "summer": 58630
    },
    "area_ha_by_class": {
-    "idle": 190811.0,
-    "palm_grove": 25917.0,
-    "partly_seen_active": 49866.0,
-    "partly_seen_inactive": 55289.0,
-    "radar_unusable": 51429.0,
-    "summer_only": 117115.0,
-    "unseen": 23702.0,
-    "wheat_rotation": 27080.0,
-    "winter_only": 40381.0,
-    "year_round": 90053.0
+    "idle": 188449.0,
+    "palm_grove": 25897.0,
+    "partly_seen_active": 49242.0,
+    "partly_seen_inactive": 54886.0,
+    "radar_unusable": 47741.0,
+    "summer_only": 115194.0,
+    "unseen": 23518.0,
+    "wheat_rotation": 26821.0,
+    "winter_only": 39948.0,
+    "year_round": 89153.0
    },
    "water_m3": {
-    "low": 3489177077,
-    "central": 5912620754,
-    "high": 9519805983
+    "low": 3451275376,
+    "central": 5848524696,
+    "high": 9416669678
    },
    "elec_kwh": {
-    "low": 1113203284,
-    "central": 3436151470,
-    "high": 7121629468
+    "low": 1101822517,
+    "central": 3395695652,
+    "high": 7038945349
    },
    "elec_kwh_summer": {
-    "low": 749501112,
-    "central": 2303296876,
-    "high": 4712580213
+    "low": 741035322,
+    "central": 2272616418,
+    "high": 4650596097
    },
    "co2_t_grid": {
-    "low": 770337,
-    "central": 2377820,
-    "high": 5006505
+    "low": 762461,
+    "central": 2349825,
+    "high": 4948378
    },
    "co2_t_diesel": {
-    "low": 982608,
-    "central": 3033034,
-    "high": 6286139
+    "low": 972562,
+    "central": 2997324,
+    "high": 6213156
    },
    "straw_t_dry": {
-    "low": 159209,
-    "central": 214530,
-    "high": 456036
+    "low": 157577,
+    "central": 212330,
+    "high": 451359
    },
    "fronds_t_dry": {
-    "low": 38876,
-    "central": 62718,
-    "high": 198038
+    "low": 38846,
+    "central": 62670,
+    "high": 197885
    },
    "summer_pumping_avg_mw": {
-    "low": 256.0,
-    "central": 786.6,
-    "high": 1609.5
+    "low": 253.1,
+    "central": 776.2,
+    "high": 1588.3
    },
    "validation": {
     "winter": {
-     "validated_ha": 497263,
+     "validated_ha": 491340,
      "agreement": 0.606,
      "chance_agreement": 0.478,
      "kappa": 0.246,
-     "precision": 0.758,
-     "recall": 0.471,
-     "radar_ha": 178966,
-     "s2_ha": 288169
+     "precision": 0.759,
+     "recall": 0.472,
+     "radar_ha": 177368,
+     "s2_ha": 285323
     },
     "summer": {
-     "validated_ha": 585579,
+     "validated_ha": 578701,
      "agreement": 0.729,
      "chance_agreement": 0.513,
      "kappa": 0.443,
      "precision": 0.931,
      "recall": 0.677,
-     "radar_ha": 309470,
-     "s2_ha": 425664
+     "radar_ha": 305746,
+     "s2_ha": 420507
     }
    },
-   "seconds": 1
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C0_published": {
    "id": "C0_published",
    "family": "C",
-   "name": "As published: cement uncapped, valued at in-service retention",
-   "note": "Not consistent with Puro.earth 2025 v2 rule 6.2.4, which credits char in cement like char in soil",
-   "plants": 58,
-   "feed_used_t": 2874347,
-   "supply_t": 3344121,
+   "name": "As published: soil or nearest cement by haul, both unlimited (gross)",
+   "note": "The national page's siting: Puro crediting, no limit on soil absorption or cement uptake",
+   "plants": 54,
+   "feed_used_t": 2683780,
+   "supply_t": 3226186,
    "supply_by_feed_t": {
-    "fronds": 71119.0,
+    "fronds": 64045.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 338068.0
+    "straw": 227206.0
    },
    "feed_used_by_feed_t": {
-    "straw": 336418,
-    "fronds": 70063,
-    "litter": 730426,
-    "manure": 1737442
+    "straw": 225876,
+    "fronds": 63107,
+    "litter": 694941,
+    "manure": 1699854
    },
-   "radar_feed_share": 0.1414,
-   "char_t": 1170343,
-   "char_to_cement_t": 1170343,
-   "char_to_soil_t": 0,
+   "radar_feed_share": 0.1077,
+   "char_t": 1103170,
+   "char_to_cement_t": 167807,
+   "char_to_soil_t": 935363,
    "char_unplaced_t": 0,
-   "credited_tco2": 1125399,
-   "retained_tco2": 1607503,
-   "transport_tco2": 24213,
+   "credited_tco2": 1039431,
+   "retained_tco2": 1107693,
+   "transport_tco2": 17620,
    "feed_left_by_feed_t": {
-    "straw": 1650,
-    "fronds": 1056,
-    "litter": 100572,
-    "manure": 366495
+    "straw": 1330,
+    "fronds": 938,
+    "litter": 136057,
+    "manure": 404083
    },
    "avoided_cement_tco2_not_removal": {
-    "low": 702206,
-    "central": 866054,
-    "high": 1053309
+    "low": 100684,
+    "central": 124177,
+    "high": 151026
    },
    "plant_size_t": 50000,
-   "credit": "retention",
-   "outlets": "nearest cement, uncapped",
-   "seconds": 47
+   "credit": "puro",
+   "outlets": "soil or nearest cement by haul, both unlimited",
+   "seconds": 44,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F1": {
    "id": "C1_F1",
@@ -2716,29 +2738,29 @@
    "name": "Radar-measured feed (straw, fronds): the floor",
    "note": "",
    "plants": 4,
-   "feed_used_t": 190950,
-   "supply_t": 277247,
+   "feed_used_t": 190638,
+   "supply_t": 274999,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
-    "straw": 214530.0
+    "fronds": 62670.0,
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 146641,
-    "fronds": 44309,
+    "straw": 146304,
+    "fronds": 44335,
     "litter": 0,
     "manure": 0
    },
    "radar_feed_share": 1.0,
-   "char_t": 59374,
-   "char_to_cement_t": 59374,
+   "char_t": 59279,
+   "char_to_cement_t": 59279,
    "char_to_soil_t": 0,
    "char_unplaced_t": 0,
-   "credited_tco2": 102507,
-   "retained_tco2": 129912,
-   "transport_tco2": 1087,
+   "credited_tco2": 102347,
+   "retained_tco2": 129707,
+   "transport_tco2": 1086,
    "feed_left_by_feed_t": {
-    "straw": 67889,
-    "fronds": 18409,
+    "straw": 66026,
+    "fronds": 18334,
     "litter": 0,
     "manure": 0
    },
@@ -2746,7 +2768,7 @@
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 15775,
+     "char_t": 15776,
      "at_cap": false
     },
     {
@@ -2758,7 +2780,7 @@
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12612,
+     "char_t": 12516,
      "at_cap": false
     },
     {
@@ -2769,9 +2791,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 35624,
-    "central": 43937,
-    "high": 53437
+    "low": 35567,
+    "central": 43866,
+    "high": 53351
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -2786,7 +2808,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 2
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F2": {
    "id": "C1_F2",
@@ -2795,37 +2818,37 @@
    "note": "",
    "plants": 7,
    "feed_used_t": 350000,
-   "supply_t": 1108246,
+   "supply_t": 1105997,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 164313,
-    "fronds": 45437,
-    "litter": 140250,
+    "straw": 163049,
+    "fronds": 45419,
+    "litter": 141532,
     "manure": 0
    },
-   "radar_feed_share": 0.5993,
-   "char_t": 124911,
-   "char_to_cement_t": 65164,
-   "char_to_soil_t": 58696,
-   "char_unplaced_t": 1052,
-   "credited_tco2": 160790,
-   "retained_tco2": 190868,
-   "transport_tco2": 2090,
+   "radar_feed_share": 0.5956,
+   "char_t": 125063,
+   "char_to_cement_t": 64771,
+   "char_to_soil_t": 58946,
+   "char_unplaced_t": 1347,
+   "credited_tco2": 160321,
+   "retained_tco2": 190218,
+   "transport_tco2": 2100,
    "feed_left_by_feed_t": {
-    "straw": 50217,
-    "fronds": 17281,
-    "litter": 690748,
+    "straw": 49281,
+    "fronds": 17250,
+    "litter": 689466,
     "manure": 0
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21603,
+     "char_t": 21305,
      "at_cap": false
     },
     {
@@ -2837,7 +2860,7 @@
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
@@ -2848,9 +2871,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 39098,
-    "central": 48221,
-    "high": 58648
+    "low": 38863,
+    "central": 47931,
+    "high": 58294
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -2866,7 +2889,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 7
+   "seconds": 7,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3": {
    "id": "C1_F3",
@@ -2875,69 +2899,69 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202695,
-    "fronds": 48886,
+    "straw": 200629,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198418
+    "manure": 200503
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161799,
-   "char_to_cement_t": 78065,
-   "char_to_soil_t": 83733,
+   "radar_feed_share": 0.5544,
+   "char_t": 162038,
+   "char_to_cement_t": 77426,
+   "char_to_soil_t": 84612,
    "char_unplaced_t": 0,
-   "credited_tco2": 209558,
-   "retained_tco2": 245590,
-   "transport_tco2": 2576,
+   "credited_tco2": 208868,
+   "retained_tco2": 244605,
+   "transport_tco2": 2586,
    "feed_left_by_feed_t": {
-    "straw": 11835,
-    "fronds": 13832,
+    "straw": 11701,
+    "fronds": 13802,
     "litter": 830998,
-    "manure": 1905519
+    "manure": 1903434
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21603,
+     "char_t": 21305,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 17198,
+     "char_t": 17158,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 46839,
-    "central": 57768,
-    "high": 70258
+    "low": 46456,
+    "central": 57295,
+    "high": 69683
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -2949,7 +2973,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 13
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F1_25kt": {
    "id": "C1_F1_25kt",
@@ -2957,29 +2982,29 @@
    "name": "Radar-measured feed, 25 kt plants",
    "note": "",
    "plants": 8,
-   "feed_used_t": 199910,
-   "supply_t": 277247,
+   "feed_used_t": 199156,
+   "supply_t": 274999,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
-    "straw": 214530.0
+    "fronds": 62670.0,
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 153513,
-    "fronds": 46396,
+    "straw": 152776,
+    "fronds": 46380,
     "litter": 0,
     "manure": 0
    },
    "radar_feed_share": 1.0,
-   "char_t": 62160,
-   "char_to_cement_t": 62160,
+   "char_t": 61928,
+   "char_to_cement_t": 61928,
    "char_to_soil_t": 0,
    "char_unplaced_t": 0,
-   "credited_tco2": 107211,
-   "retained_tco2": 135902,
-   "transport_tco2": 1242,
+   "credited_tco2": 106819,
+   "retained_tco2": 135404,
+   "transport_tco2": 1238,
    "feed_left_by_feed_t": {
-    "straw": 61017,
-    "fronds": 16322,
+    "straw": 59554,
+    "fronds": 16290,
     "litter": 0,
     "manure": 0
    },
@@ -2987,7 +3012,7 @@
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 38849,
+     "char_t": 38618,
      "at_cap": false
     },
     {
@@ -3004,9 +3029,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 37296,
-    "central": 45998,
-    "high": 55944
+    "low": 37157,
+    "central": 45827,
+    "high": 55735
    },
    "plant_size_t": 25000,
    "credit": "puro",
@@ -3021,7 +3046,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 2
+   "seconds": 1,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F1_10kt": {
    "id": "C1_F1_10kt",
@@ -3029,29 +3055,29 @@
    "name": "Radar-measured feed, 10 kt plants",
    "note": "",
    "plants": 26,
-   "feed_used_t": 258436,
-   "supply_t": 277247,
+   "feed_used_t": 258223,
+   "supply_t": 274999,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
-    "straw": 214530.0
+    "fronds": 62670.0,
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 197920,
-    "fronds": 60515,
+    "straw": 197699,
+    "fronds": 60523,
     "litter": 0,
     "manure": 0
    },
    "radar_feed_share": 1.0,
-   "char_t": 80368,
-   "char_to_cement_t": 80368,
+   "char_t": 80304,
+   "char_to_cement_t": 80304,
    "char_to_soil_t": 0,
    "char_unplaced_t": 0,
-   "credited_tco2": 139038,
-   "retained_tco2": 176131,
-   "transport_tco2": 1216,
+   "credited_tco2": 138891,
+   "retained_tco2": 175954,
+   "transport_tco2": 1250,
    "feed_left_by_feed_t": {
-    "straw": 16610,
-    "fronds": 2203,
+    "straw": 14631,
+    "fronds": 2146,
     "litter": 0,
     "manure": 0
    },
@@ -3059,13 +3085,13 @@
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 25043,
+     "char_t": 25013,
      "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 2892,
+     "char_t": 2851,
      "at_cap": false
     },
     {
@@ -3077,19 +3103,19 @@
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 9222,
+     "char_t": 9251,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 15382,
+     "char_t": 15383,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     },
     {
@@ -3100,9 +3126,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 48221,
-    "central": 59472,
-    "high": 72331
+    "low": 48182,
+    "central": 59425,
+    "high": 72274
    },
    "plant_size_t": 10000,
    "credit": "puro",
@@ -3117,41 +3143,42 @@
     "straw",
     "fronds"
    ],
-   "seconds": 2
+   "seconds": 2,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_soil_unlimited": {
    "id": "C1_F3_soil_unlimited",
    "family": "C",
    "name": "All feeds, soil absorption unlimited",
    "note": "",
-   "plants": 54,
-   "feed_used_t": 2683472,
-   "supply_t": 3212182,
+   "plants": 53,
+   "feed_used_t": 2636594,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 213073,
-    "fronds": 61757,
-    "litter": 712799,
-    "manure": 1695839
+    "straw": 211000,
+    "fronds": 61732,
+    "litter": 704018,
+    "manure": 1659844
    },
-   "radar_feed_share": 0.1024,
-   "char_t": 1104722,
-   "char_to_cement_t": 3837,
-   "char_to_soil_t": 1100884,
+   "radar_feed_share": 0.1034,
+   "char_t": 1085140,
+   "char_to_cement_t": 3834,
+   "char_to_soil_t": 1081306,
    "char_unplaced_t": 0,
-   "credited_tco2": 1039468,
-   "retained_tco2": 1041238,
-   "transport_tco2": 18257,
+   "credited_tco2": 1018649,
+   "retained_tco2": 1020417,
+   "transport_tco2": 17697,
    "feed_left_by_feed_t": {
-    "straw": 1457,
-    "fronds": 961,
-    "litter": 118199,
-    "manure": 408098
+    "straw": 1330,
+    "fronds": 938,
+    "litter": 126980,
+    "manure": 444093
    },
    "cement_use": [
     {
@@ -3163,14 +3190,14 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 3654,
+     "char_t": 3651,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 2302,
-    "central": 2839,
-    "high": 3453
+    "low": 2300,
+    "central": 2837,
+    "high": 3451
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3182,7 +3209,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 42
+   "seconds": 41,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_soildose_0.5": {
    "id": "C1_F3_soildose_0.5",
@@ -3191,50 +3219,50 @@
    "note": "",
    "plants": 7,
    "feed_used_t": 350000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 197439,
-    "fronds": 48114,
+    "straw": 195505,
+    "fronds": 48096,
     "litter": 0,
-    "manure": 104446
+    "manure": 106398
    },
-   "radar_feed_share": 0.7016,
-   "char_t": 120279,
-   "char_to_cement_t": 76202,
-   "char_to_soil_t": 43359,
-   "char_unplaced_t": 718,
-   "credited_tco2": 170076,
-   "retained_tco2": 205248,
-   "transport_tco2": 1978,
+   "radar_feed_share": 0.696,
+   "char_t": 120503,
+   "char_to_cement_t": 75603,
+   "char_to_soil_t": 44140,
+   "char_unplaced_t": 760,
+   "credited_tco2": 169556,
+   "retained_tco2": 204451,
+   "transport_tco2": 1985,
    "feed_left_by_feed_t": {
-    "straw": 17091,
-    "fronds": 14604,
+    "straw": 16825,
+    "fronds": 14574,
     "litter": 830998,
-    "manure": 1999491
+    "manure": 1997539
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21566,
+     "char_t": 21269,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
@@ -3246,14 +3274,14 @@
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 45721,
-    "central": 56389,
-    "high": 68582
+    "low": 45362,
+    "central": 55946,
+    "high": 68043
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3265,7 +3293,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 11
+   "seconds": 11,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_soildose_2": {
    "id": "C1_F3_soildose_2",
@@ -3273,76 +3302,76 @@
    "name": "All feeds, soil dose 2 t/ha/yr",
    "note": "",
    "plants": 14,
-   "feed_used_t": 690776,
-   "supply_t": 3212182,
+   "feed_used_t": 690642,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 212302,
-    "fronds": 50543,
-    "litter": 15216,
-    "manure": 412714
+    "straw": 210101,
+    "fronds": 50525,
+    "litter": 15237,
+    "manure": 414779
    },
-   "radar_feed_share": 0.3805,
-   "char_t": 262200,
-   "char_to_cement_t": 81552,
-   "char_to_soil_t": 180455,
-   "char_unplaced_t": 193,
-   "credited_tco2": 301713,
-   "retained_tco2": 339357,
-   "transport_tco2": 4297,
+   "radar_feed_share": 0.3774,
+   "char_t": 262398,
+   "char_to_cement_t": 80872,
+   "char_to_soil_t": 180958,
+   "char_unplaced_t": 569,
+   "credited_tco2": 300195,
+   "retained_tco2": 337524,
+   "transport_tco2": 4305,
    "feed_left_by_feed_t": {
-    "straw": 2228,
-    "fronds": 12175,
-    "litter": 815782,
-    "manure": 1691223
+    "straw": 2229,
+    "fronds": 12144,
+    "litter": 815761,
+    "manure": 1689158
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21572,
+     "char_t": 21275,
      "at_cap": false
     },
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 2892,
+     "char_t": 2851,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 13193,
+     "char_t": 13097,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 17205,
+     "char_t": 17165,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 48931,
-    "central": 60348,
-    "high": 73397
+    "low": 48523,
+    "central": 59845,
+    "high": 72785
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3354,7 +3383,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 17
+   "seconds": 17,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_dose_0.25pct": {
    "id": "C1_F3_dose_0.25pct",
@@ -3363,32 +3393,32 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202593,
-    "fronds": 48869,
+    "straw": 200527,
+    "fronds": 48852,
     "litter": 0,
-    "manure": 198536
+    "manure": 200621
    },
-   "radar_feed_share": 0.5588,
-   "char_t": 161813,
-   "char_to_cement_t": 43298,
-   "char_to_soil_t": 118515,
+   "radar_feed_share": 0.5542,
+   "char_t": 162052,
+   "char_to_cement_t": 43179,
+   "char_to_soil_t": 118873,
    "char_unplaced_t": 0,
-   "credited_tco2": 209610,
-   "retained_tco2": 229593,
-   "transport_tco2": 2508,
+   "credited_tco2": 208918,
+   "retained_tco2": 228847,
+   "transport_tco2": 2518,
    "feed_left_by_feed_t": {
-    "straw": 11937,
-    "fronds": 13849,
+    "straw": 11803,
+    "fronds": 13818,
     "litter": 830998,
-    "manure": 1905401
+    "manure": 1903316
    },
    "cement_use": [
     {
@@ -3400,7 +3430,7 @@
     {
      "plant": "Bisha (Southern Province Cement)",
      "allowance_t": 3195,
-     "char_t": 1360,
+     "char_t": 1336,
      "at_cap": false
     },
     {
@@ -3442,14 +3472,14 @@
     {
      "plant": "Al-Kharj (Yamama Cement)",
      "allowance_t": 15150,
-     "char_t": 1600,
+     "char_t": 1505,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 25979,
-    "central": 32041,
-    "high": 38968
+    "low": 25907,
+    "central": 31952,
+    "high": 38861
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3461,7 +3491,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 13
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_dose_0.5pct": {
    "id": "C1_F3_dose_0.5pct",
@@ -3470,32 +3501,32 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202694,
-    "fronds": 48886,
+    "straw": 200629,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198419
+    "manure": 200503
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161798,
-   "char_to_cement_t": 59453,
-   "char_to_soil_t": 102345,
+   "radar_feed_share": 0.5544,
+   "char_t": 162038,
+   "char_to_cement_t": 59334,
+   "char_to_soil_t": 102704,
    "char_unplaced_t": 0,
-   "credited_tco2": 209647,
-   "retained_tco2": 237088,
-   "transport_tco2": 2487,
+   "credited_tco2": 208953,
+   "retained_tco2": 236341,
+   "transport_tco2": 2499,
    "feed_left_by_feed_t": {
-    "straw": 11836,
-    "fronds": 13832,
+    "straw": 11701,
+    "fronds": 13802,
     "litter": 830998,
-    "manure": 1905518
+    "manure": 1903434
    },
    "cement_use": [
     {
@@ -3513,7 +3544,7 @@
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 14200,
-     "char_t": 12606,
+     "char_t": 12510,
      "at_cap": false
     },
     {
@@ -3525,7 +3556,7 @@
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 9075,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     },
     {
@@ -3536,9 +3567,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 35672,
-    "central": 43995,
-    "high": 53508
+    "low": 35600,
+    "central": 43907,
+    "high": 53401
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3550,7 +3581,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 13
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_dose_2.5pct": {
    "id": "C1_F3_dose_2.5pct",
@@ -3559,69 +3591,69 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202695,
-    "fronds": 48886,
+    "straw": 200629,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198418
+    "manure": 200503
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161799,
-   "char_to_cement_t": 78065,
-   "char_to_soil_t": 83733,
+   "radar_feed_share": 0.5544,
+   "char_t": 162038,
+   "char_to_cement_t": 77426,
+   "char_to_soil_t": 84612,
    "char_unplaced_t": 0,
-   "credited_tco2": 209558,
-   "retained_tco2": 245590,
-   "transport_tco2": 2576,
+   "credited_tco2": 208868,
+   "retained_tco2": 244605,
+   "transport_tco2": 2586,
    "feed_left_by_feed_t": {
-    "straw": 11835,
-    "fronds": 13832,
+    "straw": 11701,
+    "fronds": 13802,
     "litter": 830998,
-    "manure": 1905519
+    "manure": 1903434
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 114250,
-     "char_t": 21603,
+     "char_t": 21305,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 37000,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 71000,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 42000,
-     "char_t": 17198,
+     "char_t": 17158,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 45375,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 46839,
-    "central": 57768,
-    "high": 70258
+    "low": 46456,
+    "central": 57295,
+    "high": 69683
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3633,7 +3665,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 13
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_dose_5pct": {
    "id": "C1_F3_dose_5pct",
@@ -3642,69 +3675,69 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202695,
-    "fronds": 48886,
+    "straw": 200629,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198418
+    "manure": 200503
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161799,
-   "char_to_cement_t": 78065,
-   "char_to_soil_t": 83733,
+   "radar_feed_share": 0.5544,
+   "char_t": 162038,
+   "char_to_cement_t": 77426,
+   "char_to_soil_t": 84612,
    "char_unplaced_t": 0,
-   "credited_tco2": 209558,
-   "retained_tco2": 245590,
-   "transport_tco2": 2576,
+   "credited_tco2": 208868,
+   "retained_tco2": 244605,
+   "transport_tco2": 2586,
    "feed_left_by_feed_t": {
-    "straw": 11835,
-    "fronds": 13832,
+    "straw": 11701,
+    "fronds": 13802,
     "litter": 830998,
-    "manure": 1905519
+    "manure": 1903434
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 228500,
-     "char_t": 21603,
+     "char_t": 21305,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 74000,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 142000,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 84000,
-     "char_t": 17198,
+     "char_t": 17158,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 90750,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 46839,
-    "central": 57768,
-    "high": 70258
+    "low": 46456,
+    "central": 57295,
+    "high": 69683
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3716,41 +3749,42 @@
     "straw",
     "fronds"
    ],
-   "seconds": 13
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C1_F3_all_feeds_to_cement": {
    "id": "C1_F3_all_feeds_to_cement",
    "family": "C",
    "name": "All feeds, manure and litter chars also allowed in cement",
    "note": "",
-   "plants": 36,
-   "feed_used_t": 1788554,
-   "supply_t": 3212182,
+   "plants": 35,
+   "feed_used_t": 1744667,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 206991,
-    "fronds": 60161,
-    "litter": 360187,
-    "manure": 1161214
+    "straw": 204582,
+    "fronds": 60027,
+    "litter": 346902,
+    "manure": 1133154
    },
-   "radar_feed_share": 0.1494,
-   "char_t": 726511,
-   "char_to_cement_t": 634712,
-   "char_to_soil_t": 89051,
-   "char_unplaced_t": 2750,
-   "credited_tco2": 701974,
-   "retained_tco2": 959987,
-   "transport_tco2": 16663,
+   "radar_feed_share": 0.1517,
+   "char_t": 708230,
+   "char_to_cement_t": 630674,
+   "char_to_soil_t": 75371,
+   "char_unplaced_t": 2186,
+   "credited_tco2": 684448,
+   "retained_tco2": 940005,
+   "transport_tco2": 15523,
    "feed_left_by_feed_t": {
-    "straw": 7539,
-    "fronds": 2557,
-    "litter": 470811,
-    "manure": 942723
+    "straw": 7748,
+    "fronds": 2642,
+    "litter": 484096,
+    "manure": 970783
    },
    "cement_use": [
     {
@@ -3762,8 +3796,8 @@
     {
      "plant": "Bisha (Southern Province Cement)",
      "allowance_t": 19170,
-     "char_t": 19170,
-     "at_cap": true
+     "char_t": 18199,
+     "at_cap": false
     },
     {
      "plant": "Al Ardiyat (Southern Province Cement (Tihama))",
@@ -3780,7 +3814,7 @@
     {
      "plant": "Duba (Tabuk Cement)",
      "allowance_t": 25650,
-     "char_t": 17913,
+     "char_t": 17885,
      "at_cap": false
     },
     {
@@ -3798,7 +3832,7 @@
     {
      "plant": "Rabigh (Arabian Cement)",
      "allowance_t": 50250,
-     "char_t": 42388,
+     "char_t": 43368,
      "at_cap": false
     },
     {
@@ -3834,7 +3868,7 @@
     {
      "plant": "Al Oyun (Saudi Cement)",
      "allowance_t": 95550,
-     "char_t": 41909,
+     "char_t": 37889,
      "at_cap": false
     },
     {
@@ -3869,9 +3903,9 @@
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 380827,
-    "central": 469687,
-    "high": 571241
+    "low": 378404,
+    "central": 466699,
+    "high": 567607
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -3885,7 +3919,8 @@
     "litter",
     "manure"
    ],
-   "seconds": 35
+   "seconds": 34,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C3_F3_retention": {
    "id": "C3_F3_retention",
@@ -3894,69 +3929,69 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202695,
-    "fronds": 48885,
+    "straw": 200817,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198418
+    "manure": 200316
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161800,
-   "char_to_cement_t": 78065,
-   "char_to_soil_t": 83733,
+   "radar_feed_share": 0.5549,
+   "char_t": 162015,
+   "char_to_cement_t": 77484,
+   "char_to_soil_t": 84533,
    "char_unplaced_t": 0,
-   "credited_tco2": 209535,
-   "retained_tco2": 245569,
-   "transport_tco2": 2597,
+   "credited_tco2": 208863,
+   "retained_tco2": 244626,
+   "transport_tco2": 2617,
    "feed_left_by_feed_t": {
-    "straw": 11835,
-    "fronds": 13833,
+    "straw": 11513,
+    "fronds": 13802,
     "litter": 830998,
-    "manure": 1905519
+    "manure": 1903621
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 22333,
+     "char_t": 21326,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12575,
+     "char_t": 12516,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 16468,
+     "char_t": 17158,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 46839,
-    "central": 57768,
-    "high": 70258
+    "low": 46490,
+    "central": 57338,
+    "high": 69736
    },
    "plant_size_t": 50000,
    "credit": "retention",
@@ -3968,7 +4003,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 14
+   "seconds": 13,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C3_E1_no_litter": {
    "id": "C3_E1_no_litter",
@@ -3977,68 +4013,68 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 2381184,
+   "supply_t": 2378936,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 202695,
-    "fronds": 48886,
+    "straw": 200629,
+    "fronds": 48868,
     "litter": 0,
-    "manure": 198418
+    "manure": 200503
    },
-   "radar_feed_share": 0.5591,
-   "char_t": 161799,
-   "char_to_cement_t": 78065,
-   "char_to_soil_t": 83733,
+   "radar_feed_share": 0.5544,
+   "char_t": 162038,
+   "char_to_cement_t": 77426,
+   "char_to_soil_t": 84612,
    "char_unplaced_t": 0,
-   "credited_tco2": 209558,
-   "retained_tco2": 245590,
-   "transport_tco2": 2576,
+   "credited_tco2": 208868,
+   "retained_tco2": 244605,
+   "transport_tco2": 2586,
    "feed_left_by_feed_t": {
-    "straw": 11835,
-    "fronds": 13832,
+    "straw": 11701,
+    "fronds": 13802,
     "litter": 0,
-    "manure": 1905519
+    "manure": 1903434
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21603,
+     "char_t": 21305,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 20792,
+     "char_t": 20611,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 12575,
+     "char_t": 12479,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 17198,
+     "char_t": 17158,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 46839,
-    "central": 57768,
-    "high": 70258
+    "low": 46456,
+    "central": 57295,
+    "high": 69683
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -4054,7 +4090,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 12
+   "seconds": 8,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C6_radius_50": {
    "id": "C6_radius_50",
@@ -4062,70 +4099,70 @@
    "name": "All feeds, haul radius 50 km",
    "note": "",
    "plants": 9,
-   "feed_used_t": 441750,
-   "supply_t": 3212182,
+   "feed_used_t": 438941,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 180143,
-    "fronds": 47642,
-    "litter": 10723,
-    "manure": 203239
+    "straw": 179160,
+    "fronds": 46929,
+    "litter": 13950,
+    "manure": 198902
    },
-   "radar_feed_share": 0.5156,
-   "char_t": 161075,
-   "char_to_cement_t": 70740,
-   "char_to_soil_t": 89771,
-   "char_unplaced_t": 564,
-   "credited_tco2": 202457,
-   "retained_tco2": 235108,
-   "transport_tco2": 2323,
+   "radar_feed_share": 0.5151,
+   "char_t": 160086,
+   "char_to_cement_t": 70208,
+   "char_to_soil_t": 89879,
+   "char_unplaced_t": 0,
+   "credited_tco2": 201104,
+   "retained_tco2": 233509,
+   "transport_tco2": 2330,
    "feed_left_by_feed_t": {
-    "straw": 34387,
-    "fronds": 15076,
-    "litter": 820275,
-    "manure": 1900698
+    "straw": 33170,
+    "fronds": 15740,
+    "litter": 817048,
+    "manure": 1905035
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 21537,
+     "char_t": 20714,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 19409,
+     "char_t": 19252,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 8641,
+     "char_t": 8564,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 15262,
+     "char_t": 15809,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5891,
+     "char_t": 5868,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 42444,
-    "central": 52348,
-    "high": 63666
+    "low": 42125,
+    "central": 51954,
+    "high": 63187
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -4137,7 +4174,8 @@
     "straw",
     "fronds"
    ],
-   "seconds": 14
+   "seconds": 12,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   },
   "C6_radius_150": {
    "id": "C6_radius_150",
@@ -4146,69 +4184,69 @@
    "note": "",
    "plants": 9,
    "feed_used_t": 450000,
-   "supply_t": 3212182,
+   "supply_t": 3209934,
    "supply_by_feed_t": {
-    "fronds": 62718.0,
+    "fronds": 62670.0,
     "litter": 830998.0,
     "manure": 2103937.0,
-    "straw": 214530.0
+    "straw": 212330.0
    },
    "feed_used_by_feed_t": {
-    "straw": 204619,
-    "fronds": 50015,
+    "straw": 202554,
+    "fronds": 49998,
     "litter": 0,
-    "manure": 195364
+    "manure": 197447
    },
-   "radar_feed_share": 0.5659,
-   "char_t": 161467,
-   "char_to_cement_t": 79023,
-   "char_to_soil_t": 82444,
+   "radar_feed_share": 0.5612,
+   "char_t": 161707,
+   "char_to_cement_t": 78384,
+   "char_to_soil_t": 83323,
    "char_unplaced_t": 0,
-   "credited_tco2": 209947,
-   "retained_tco2": 246420,
-   "transport_tco2": 2703,
+   "credited_tco2": 209260,
+   "retained_tco2": 245441,
+   "transport_tco2": 2714,
    "feed_left_by_feed_t": {
-    "straw": 9911,
-    "fronds": 12703,
+    "straw": 9776,
+    "fronds": 12672,
     "litter": 830998,
-    "manure": 1908573
+    "manure": 1906490
    },
    "cement_use": [
     {
      "plant": "Buraydah (Qassim Cement)",
      "allowance_t": 68550,
-     "char_t": 31200,
+     "char_t": 31201,
      "at_cap": false
     },
     {
      "plant": "Turaif (Al Jouf Cement)",
      "allowance_t": 22200,
-     "char_t": 21036,
+     "char_t": 20855,
      "at_cap": false
     },
     {
      "plant": "Marat (City Cement)",
      "allowance_t": 42600,
-     "char_t": 6477,
+     "char_t": 6227,
      "at_cap": false
     },
     {
      "plant": "Baqaa (Hail Cement)",
      "allowance_t": 25200,
-     "char_t": 14412,
+     "char_t": 14228,
      "at_cap": false
     },
     {
      "plant": "Al Mundfin (Najran Cement (Sultana))",
      "allowance_t": 27225,
-     "char_t": 5898,
+     "char_t": 5874,
      "at_cap": false
     }
    ],
    "avoided_cement_tco2_not_removal": {
-    "low": 47414,
-    "central": 58477,
-    "high": 71121
+    "low": 47030,
+    "central": 58004,
+    "high": 70546
    },
    "plant_size_t": 50000,
    "credit": "puro",
@@ -4220,11 +4258,12 @@
     "straw",
     "fronds"
    ],
-   "seconds": 16
+   "seconds": 14,
+   "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a"
   }
  },
- "run_id": "20a06d5-dirty fields:ce495ee0 manure:3be31789 params:994de661 scenario_params:77f65c5d cement:406f7f18 engine:c666ae26 supply:fd28312b siting:7e75da49",
- "published_table_quality_check": false,
+ "run_id": "af9c0f7-dirty fields:8fd33813 regions:0971603d boundaries:ece60aa9 manure:3be31789 cement:d30a60cf params:a66bb488 scenario_params:77f65c5d engine:bdd13dac supply:fd28312b siting:813e153a",
+ "published_table_quality_check": true,
  "scenario_params": {
   "_note": "Inputs for model/national_scenarios.py. Every other factor comes from model/params.json. ASSUMPTION marks a declared choice, not a sourced value.",
   "qc_thresholds": {

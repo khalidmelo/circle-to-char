@@ -1,9 +1,10 @@
 """Scenarios on top of the national baseline: data robustness, water and energy policy, biochar deployment.
 
-Reads, never writes, the outputs of model/national_supply.py and the siting inputs:
-  data/national/fields_national.csv, data/national/manure_points.csv, data/cement/saudi_cement.csv,
-  data/regions/R*/meta.json, model/params.json, data/national/official_2024.json,
-  model/scenario_params.json, model/scenario_cement_plants.csv
+Reads, never writes, the national inputs and outputs:
+  data/regions/R*/fields_radar.csv and meta.json (through national_supply.load_fields), data/national/regions.json,
+  sau_adm1.geojson and ne_50m_countries.geojson (admin_regions), data/national/fields_national.csv (baseline check),
+  data/national/manure_points.csv, data/cement/saudi_cement.csv (C0), model/params.json,
+  data/national/official_2024.json, model/scenario_params.json, model/scenario_cement_plants.csv
 Writes only: out/national_scenarios.json, out/scenario_*.csv
 
 Families
@@ -16,8 +17,9 @@ Families
                        per-plant cement caps (dose x 2024 output, low-ash chars only, haul limit) and a soil outlet
                        limited by the radar-active farmland within reach; sensitivities on dose, crediting, radius
 
-Water, energy and residues are computed by model/national_supply.flows itself; the classification mirrors
-national_supply and is checked against fields_national.csv on every run. C0 mirrors model/national_siting.py.
+Field tables are rebuilt with national_supply's own loader (quality check on and off) and accounted with
+national_supply.flows; the rebuild at the published setting must equal fields_national.csv column by column on every
+run. C0 calls national_siting.run itself. run_id fingerprints every input file.
 
 Usage: .venv/bin/python model/national_scenarios.py [scenario ids ...]   (default: all)
 """
@@ -55,7 +57,17 @@ def OFF():
 
 # ================================================================ fields: classification and accounting
 def load_fields():
+    """The published field table (written by model/national_supply.py)."""
     return pd.read_csv(ROOT / "data" / "national" / "fields_national.csv", low_memory=False)
+
+
+def base_table(qc):
+    """Field table built exactly as national_supply.main builds it, with the radar quality check on or off:
+    load_fields (dedupe, season flags), admin regions, fields abroad dropped, classes."""
+    df = SUP.admin_regions(SUP.load_fields(qc))
+    df = df[df.admin != "abroad"].drop(columns=["country"], errors="ignore").reset_index(drop=True)
+    df["class"] = df.apply(SUP.classify, axis=1)
+    return df
 
 
 def load_metas():
@@ -67,19 +79,14 @@ def _obj(flag, known):
     return pd.Series(np.where(known, flag, None), dtype=object).where(known, np.nan)
 
 
-def reclassify(df, qc=False, fill_winter_from_s2=False, season_rule="radar", metas=None):
-    """Season flags and classes as national_supply builds them, with options:
-      qc                   seasons failing the radar quality check become unobserved
+def reclassify(df, fill_winter_from_s2=False, season_rule="radar"):
+    """Season flags and classes as national_supply builds them (the input table already carries the quality-check
+    setting), with options:
       fill_winter_from_s2  an unobserved winter takes the Sentinel-2 winter flag
       season_rule          'radar' (default); 'both' = active only where radar and Sentinel-2 agree (unknown stays
                            unknown); 'either' = radar or Sentinel-2 active (a ceiling: fields are green pixels)"""
     d = df.copy().reset_index(drop=True)
     wa, sa = SUP.tri(d.winter_active), SUP.tri(d.summer_active)
-    if qc:
-        metas = metas or load_metas()
-        for se, ser in (("winter", wa), ("summer", sa)):
-            bad = [rid for rid, m in metas.items() if not SUP.season_ok(m, se, True)]
-            ser[d.region.isin(bad)] = np.nan
     radar_obs = (wa.notna() | sa.notna()).values  # palm groves need at least one season the radar itself observed
     s2w, s2s = SUP.tri(d.s2_winter_active), SUP.tri(d.s2_summer_active)
     seen = SUP.tri(d.radar_seen).eq(True)
@@ -116,8 +123,10 @@ def totals(d):
     t = {"fields": int(len(d)), "field_ha": round(float(d.area_ha.sum())),
          "farmed_ha": round(float(d[d.winter_active.eq(True) | d.summer_active.eq(True)].area_ha.sum())),
          "active_ha": {se: round(float(d[d[f"{se}_active"].eq(True)].area_ha.sum())) for se in ("winter", "summer")},
-         "not_observed_ha": {se: round(float(d[d[f"{se}_active"].isna() & SUP.tri(d.radar_seen).eq(True)].area_ha.sum()))
-                             for se in ("winter", "summer")},
+         # every radar-seen field whose season is unknown (incl. fields with neither season classified and palm groves
+         # with one season unknown); national_supply's season_not_observed_ha counts one-season-observed fields only
+         "season_unknown_ha": {se: round(float(d[d[f"{se}_active"].isna() & SUP.tri(d.radar_seen).eq(True)].area_ha.sum()))
+                               for se in ("winter", "summer")},
          "area_ha_by_class": d.groupby("class").area_ha.sum().round().to_dict()}
     for k in FLOW_KEYS:
         t[k] = {l: round(float(np.nansum(d[f"{k}_{l}"]))) for l in LV}
@@ -150,18 +159,26 @@ def validation(d, skip=()):
     return out
 
 
-def check_baseline(base_fields):
-    """The recomputed baseline must equal national_supply's published per-field values."""
-    d = accounting(reclassify(base_fields))
+def check_baseline(built, published):
+    """The table rebuilt with national_supply's loader and accounted with national_supply.flows must equal the
+    published fields_national.csv: same fields in the same order (uid) and every shared column equal."""
+    d = accounting(reclassify(built))
+    if len(d) != len(published) or not (d.uid.values == published.uid.values).all():
+        raise SystemExit(f"baseline mismatch: field lists differ ({len(d)} rebuilt vs {len(published)} published)")
     bad = []
-    if not (d["class"].values == base_fields["class"].values).all():
-        bad.append(f"class differs on {(d['class'].values != base_fields['class'].values).sum()} fields")
-    for c in ("water_m3_central", "elec_kwh_central", "straw_t_dry_central", "fronds_t_dry_central"):
-        a, b = np.nan_to_num(d[c].values), np.nan_to_num(base_fields[c].values)
-        if not np.allclose(a, b, atol=1.0):
-            bad.append(f"{c} differs (max {np.abs(a - b).max():.1f})")
+    for c in published.columns:
+        if c not in d.columns:
+            continue
+        a, b = d[c], published[c]
+        if pd.api.types.is_numeric_dtype(b) and pd.api.types.is_numeric_dtype(a):
+            ok = np.allclose(np.nan_to_num(a.values.astype(float)), np.nan_to_num(b.values.astype(float)), atol=1.0)
+        else:  # flags and labels: compare as text, gaps as empty
+            norm = lambda s: s.map(lambda v: "" if pd.isna(v) else str(v))  # noqa: E731
+            ok = (norm(a).values == norm(b).values).all()
+        if not ok:
+            bad.append(c)
     if bad:
-        raise SystemExit("baseline mismatch with fields_national.csv: " + "; ".join(bad))
+        raise SystemExit("baseline mismatch with fields_national.csv in columns: " + ", ".join(bad))
     return d
 
 
@@ -274,13 +291,11 @@ def retrofit(d, sp, eff_new, rebound):
 
 
 # ================================================================ C: biochar siting
-def cement_table(original=False):
-    """Cement outlets. original=True: data/cement/saudi_cement.csv as the published model uses it.
-    Otherwise model/scenario_cement_plants.csv (2024 sales per plant, corrected locations), with coordinates
-    missing there taken from the original CSV row by row."""
+def cement_table():
+    """Cement outlets for the capped scenarios: model/scenario_cement_plants.csv (2024 sales per plant, corrected
+    locations), with coordinates missing there taken from data/cement/saudi_cement.csv row by row (its first 19 rows
+    keep their order; rows added later sit at the end)."""
     c0 = pd.read_csv(ROOT / "data" / "cement" / "saudi_cement.csv")
-    if original:
-        return c0
     c = pd.read_csv(ROOT / SP()["cement_plants_file"]["value"])
     for i in range(min(len(c), len(c0))):
         if pd.isna(c.at[i, "lon"]) or pd.isna(c.at[i, "lat"]):
@@ -315,62 +330,29 @@ def supply_from(d, level, p, feeds=None):
         return NS.supply(level, p, feeds)
 
 
-def site(level, size_t, cement, p, feeds=None, radius_km=NS.RADIUS_KM):
-    """The published siting (model/national_siting.run): soil or the nearest cement plant, uncapped, cement credited
-    at in-service retention. Each plant also records its credited removal on the Puro basis."""
-    s = NS.supply(level, p, feeds)
-    lon, lat = s.lon.values, s.lat.values
-    dry = s.dry_t.values.astype(float).copy()
-    wpd, cpt, chpt, perm, feed = s.wet_per_dry.values, s.c_per_t.values, s.char_t_per_t.values, s.soil_perm.values, s.feed.values
-    ef, circ, ret = p["truck_kgco2e_per_tkm"] / 1000, p["road_circuity"], p["cement_retention"]
-    grid = s.assign(gx=(s.lon / 0.25).round() * 0.25, gy=(s.lat / 0.25).round() * 0.25)[["gx", "gy"]].drop_duplicates()
-    sites = pd.concat([pd.DataFrame({"lon": cement.lon, "lat": cement.lat, "kind": "cement", "name": cement.city.fillna("") + " cement"}),
-                       pd.DataFrame({"lon": grid.gx, "lat": grid.gy, "kind": "grid", "name": ""})], ignore_index=True)
-    s_lon, s_lat, s_kind, s_name = sites.lon.values, sites.lat.values, sites.kind.values, sites.name.values
-    dcem = NS.hav(s_lon[:, None], s_lat[:, None], cement.lon.values[None, :], cement.lat.values[None, :]) * circ
-    alive, plants = dry > 1e-6, []
-    while alive.any() and len(plants) < NS.MAX_PLANTS:
-        ia, best = np.flatnonzero(alive), None
-        for i in range(len(sites)):
-            d = NS.hav(s_lon[i], s_lat[i], lon[ia], lat[ia]) * circ
-            near = np.where(d <= radius_km)[0]
-            if not len(near) or dry[ia][near].sum() < 0.8 * size_t:
-                continue
-            o = near[np.argsort(d[near])]
-            k = int(np.searchsorted(np.cumsum(dry[ia][o]), size_t) + 1)
-            take = o[:min(k, len(o))]
-            g = ia[take]
-            w = dry[g].copy()
-            if w.sum() > size_t:
-                w[-1] -= w.sum() - size_t
-            feed_tkm = float((w * wpd[g] * d[take]).sum())
-            c_t, char_t = float((w * cpt[g]).sum()), float((w * chpt[g]).sum())
-            mean_km = float((w * d[take]).sum() / w.sum())
-            soil_rem = float((w * cpt[g] * perm[g]).sum()) * CO2_PER_C
-            j = int(np.argmin(dcem[i]))
-            soil_net = soil_rem - (feed_tkm + char_t * mean_km) * ef
-            cem_net = c_t * CO2_PER_C * ret - (feed_tkm + char_t * dcem[i, j]) * ef
-            to_cem = char_t if cem_net > soil_net else 0.0
-            net = max(soil_net, cem_net)
-            if best is None or net > best["net_removal_tco2"]:
-                haul = feed_tkm + to_cem * dcem[i, j] + (char_t - to_cem) * mean_km
-                best = {"lon": float(s_lon[i]), "lat": float(s_lat[i]), "kind": s_kind[i], "name": s_name[i],
-                        "feed_t_dry": float(w.sum()), "char_t": round(char_t), "char_to_cement_t": round(to_cem),
-                        "char_to_soil_t": round(char_t - to_cem), "char_unplaced_t": 0,
-                        "cement_parts": f"{cement.city.iloc[j]}:{round(to_cem)}@{round(float(dcem[i, j]))}km" if to_cem else "",
-                        "net_removal_tco2": net, "retained_tco2": round(net), "credited_tco2": round(soil_rem - haul * ef),
-                        "transport_tco2": round(haul * ef),
-                        **{f"feed_{f}": round(float(w[feed[g] == f].sum())) for f in ("straw", "fronds", "litter", "manure")},
-                        "_g": g, "_w": w}
-        if best is None:
-            break
-        g, w = best.pop("_g"), best.pop("_w")
-        dry[g] -= w
-        alive[g] = dry[g] > 1e-6
-        best["net_removal_tco2"] = round(best["net_removal_tco2"])
-        best["plant"] = len(plants) + 1
-        plants.append(best)
-    return pd.DataFrame(plants), s
+def published_siting(size_t):
+    """C0: the published siting itself (national_siting.run on the published table, closed cement plants dropped,
+    as national_siting.main does), translated to this engine's plant columns and summary."""
+    p = NS.params("central")
+    cem = pd.read_csv(ROOT / "data" / "cement" / "saudi_cement.csv")
+    if "status" in cem:
+        cem = cem[cem.status != "Closed"].reset_index(drop=True)
+    df, s = NS.run("central", size_t, cem, p)
+    if not len(df):
+        return df, s
+    to_cem = df.best_outlet.eq("cement")
+    # credited removal before transport, backed out of the rounded transport share (within ~1 t per plant)
+    before = df.net_removal_tco2 / (1 - df.transport_share.clip(upper=0.999999))
+    transport = before - df.net_removal_tco2
+    retained = np.where(to_cem, df["cement_retained_tco2"] - transport, df.net_removal_tco2)
+    out = pd.DataFrame({"lon": df.lon, "lat": df.lat, "kind": df.kind, "name": df["name"], "feed_t_dry": df.feed_t_dry,
+                        "char_t": df.char_t, "char_to_cement_t": np.where(to_cem, df.char_t, 0),
+                        "char_to_soil_t": np.where(to_cem, 0, df.char_t), "char_unplaced_t": 0,
+                        "cement_parts": np.where(to_cem, df.cement_name + ":" + df.char_t.astype(str) + "@" + df.cement_km.round().astype(int).astype(str) + "km", ""),
+                        "net_removal_tco2": df.net_removal_tco2, "credited_tco2": df.net_removal_tco2,
+                        "retained_tco2": np.round(retained), "transport_tco2": np.round(transport),
+                        **{f"feed_{f}": df[f"feed_{f}"] for f in ("straw", "fronds", "litter", "manure")}, "plant": df.plant})
+    return out, s
 
 
 def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", radius_km=NS.RADIUS_KM,
@@ -555,8 +537,8 @@ def scenarios(sp):
                                           "fields": {"qc": True, "drop_admin": sw}, "fodder": {"variant": v, "compliance": comp}}
     for lab, key in (("LESA", "lesa_efficiency"), ("LEPA", "lepa_efficiency")):
         S[f"B2_{lab.lower()}"] = {"family": "B2", "name": f"Pivot retrofit to {lab}", "fields": {"qc": True, "drop_admin": sw}, "retrofit": key}
-    S["C0_published"] = {"family": "C", "name": "As published: cement uncapped, valued at in-service retention", "published": True,
-                         "note": "Not consistent with Puro.earth 2025 v2 rule 6.2.4, which credits char in cement like char in soil"}
+    S["C0_published"] = {"family": "C", "name": "As published: soil or nearest cement by haul, both unlimited (gross)", "published": True,
+                         "note": "The national page's siting: Puro crediting, no limit on soil absorption or cement uptake"}
     base = {"fields": {"qc": True, "drop_admin": sw}, "credit": "puro", "dosage": c, "soil_dose": sp["soil_dose_t_per_ha"]["central"]}
     S["C1_F1"] = base | {"family": "C", "name": "Radar-measured feed (straw, fronds): the floor", "feeds": ("straw", "fronds")}
     S["C1_F2"] = base | {"family": "C", "name": "Radar feed + modelled litter", "feeds": ("straw", "fronds", "litter")}
@@ -578,10 +560,10 @@ def scenarios(sp):
     return S
 
 
-def table_for(base, spec, metas, sp):
+def table_for(bases, spec, metas, sp):
     f = spec.get("fields", {})
-    d = reclassify(base, qc=f.get("qc", False), fill_winter_from_s2=f.get("fill_winter_from_s2", False),
-                   season_rule=f.get("season_rule", "radar"), metas=metas)
+    d = reclassify(bases[bool(f.get("qc", False))], fill_winter_from_s2=f.get("fill_winter_from_s2", False),
+                   season_rule=f.get("season_rule", "radar"))
     if f.get("drop_admin"):
         d = d[~d.admin.isin(f["drop_admin"])].reset_index(drop=True)
     if f.get("keep_admin"):
@@ -602,11 +584,11 @@ def bracket_by_region(d):
     return rows
 
 
-def run_scenario(sid, spec, base, metas, sp):
+def run_scenario(sid, spec, bases, metas, sp):
     t0 = time.time()
     res = {"id": sid, "family": spec["family"], "name": spec["name"], "note": spec.get("note", "")}
     if spec["family"] in ("A", "A2", "B", "B2"):
-        d = accounting(table_for(base, spec, metas, sp))
+        d = accounting(table_for(bases, spec, metas, sp))
         if spec.get("fodder"):
             fz = spec["fodder"]
             regions = sp["mewa_fodder_halt_regions"]["values"]
@@ -635,11 +617,11 @@ def run_scenario(sid, spec, base, metas, sp):
         avoided = {k: sp["avoided_cement_tco2_per_t_char"][k] for k in LV}
         size = spec.get("size", 50000)
         if spec.get("published"):
-            cem = cement_table(original=True)
-            df, s = site("central", size, cem, p)
-            res |= siting_summary(df, s, avoided=avoided) | {"plant_size_t": size, "credit": "retention", "outlets": "nearest cement, uncapped"}
+            df, s = published_siting(size)
+            res |= siting_summary(df, s, avoided=avoided) | {"plant_size_t": size, "credit": "puro",
+                                                             "outlets": "soil or nearest cement by haul, both unlimited"}
         else:
-            d = accounting(table_for(base, spec, metas, sp))
+            d = accounting(table_for(bases, spec, metas, sp))
             s = supply_from(d, "central", p, spec.get("feeds"))
             cem = cement_table()
             allow0 = (cem.output_t * spec["dosage"]).values
@@ -670,36 +652,53 @@ def run_id():
     """Commit (with -dirty when the tree has changes) plus short hashes of every input that shapes the numbers."""
     import hashlib
     import subprocess
-    def h(rel):
-        p = ROOT / rel
-        return hashlib.sha256(p.read_bytes()).hexdigest()[:8] if p.exists() else "none"
+
+    def h(*paths):
+        m = hashlib.sha256()
+        for p in paths:
+            m.update(p.read_bytes() if p.exists() else b"none")
+        return m.hexdigest()[:8]
     try:
         commit = subprocess.run(["git", "-C", str(ROOT), "describe", "--always", "--dirty"], capture_output=True, text=True).stdout.strip()
     except Exception:
         commit = "?"
-    files = {"fields": "data/national/fields_national.csv", "manure": "data/national/manure_points.csv",
-             "params": "model/params.json", "scenario_params": "model/scenario_params.json",
-             "cement": "model/scenario_cement_plants.csv", "engine": "model/national_scenarios.py",
-             "supply": "model/national_supply.py", "siting": "model/national_siting.py"}
-    return f"{commit} " + " ".join(f"{k}:{h(v)}" for k, v in files.items())
+    nat = ROOT / "data" / "national"
+    region_files = sorted((ROOT / "data" / "regions").glob("R*/fields_radar.csv")) + sorted((ROOT / "data" / "regions").glob("R*/meta.json"))
+    parts = {"fields": h(nat / "fields_national.csv"), "regions": h(*region_files),
+             "boundaries": h(nat / "regions.json", nat / "sau_adm1.geojson", nat / "ne_50m_countries.geojson", nat / "official_2024.json"),
+             "manure": h(nat / "manure_points.csv"), "cement": h(ROOT / "data" / "cement" / "saudi_cement.csv", ROOT / "model" / "scenario_cement_plants.csv"),
+             "params": h(ROOT / "model" / "params.json"), "scenario_params": h(ROOT / "model" / "scenario_params.json"),
+             "engine": h(ROOT / "model" / "national_scenarios.py"), "supply": h(ROOT / "model" / "national_supply.py"),
+             "siting": h(ROOT / "model" / "national_siting.py")}
+    return f"{commit} " + " ".join(f"{k}:{v}" for k, v in parts.items())
 
 
 def main(ids=None):
     sp = SP()
-    base = load_fields()
-    check_baseline(base)
+    bases = {qc: base_table(qc) for qc in (False, True)}
+    published, pub_qc, errors = load_fields(), None, {}
+    for qc in (True, False):  # which quality-check setting was the published table built with?
+        try:
+            check_baseline(bases[qc], published)
+            pub_qc = qc
+            break
+        except SystemExit as e:
+            errors[qc] = str(e)
+    if pub_qc is None:
+        raise SystemExit(f"published table matches neither setting: QC on: {errors[True]}; QC off: {errors[False]}")
     metas = load_metas()
     S = scenarios(sp)
     outp = ROOT / "out" / "national_scenarios.json"
     out = json.loads(outp.read_text()) if (outp.exists() and ids) else {}
     out.setdefault("scenarios", {})
-    out["run_id"] = run_id()
-    summ = ROOT / "out" / "national_summary.json"
-    out["published_table_quality_check"] = json.loads(summ.read_text()).get("quality_check") if summ.exists() else None
-    if out["published_table_quality_check"]:
+    rid = run_id()
+    out["run_id"] = rid
+    out["published_table_quality_check"] = pub_qc
+    if out["published_table_quality_check"]:  # A0 mirrors the published table, whichever setting it was built with
         S["A0_published"]["name"] = "Published table (radar quality check on, southwest in)"
+        S["A0_published"]["fields"] = {"qc": True}
     for sid in (ids or list(S)):
-        out["scenarios"][sid] = run_scenario(sid, S[sid], base, metas, sp)
+        out["scenarios"][sid] = run_scenario(sid, S[sid], bases, metas, sp) | {"run_id": rid}
         outp.write_text(json.dumps(out, indent=1, default=str))
     out["scenario_params"] = json.loads((ROOT / "model" / "scenario_params.json").read_text())
     out["baseline_check"] = "classification and accounting reproduce data/national/fields_national.csv"
