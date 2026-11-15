@@ -7,12 +7,13 @@
 <meta name="description" content="NISAR radar audit of Qassim's farm circles: water, pumping energy and where their straw should become biochar.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <link rel="stylesheet" href="style.css">
+<noscript><style>#loading { display: none; }</style></noscript>
 </head>
 <body>
 <header>
   <div class="brand">
     <h1>Circle to Char</h1>
-    <p>NISAR radar reads Qassim's farm circles: which are farmed, what they cost in water and energy, and where their straw should become biochar.</p>
+    <p>NISAR radar reads Qassim's farm circles: which are farmed, what they cost in water and energy, and where their straw should become biochar. <a href="national.html">National view →</a> · <a href="scenarios.html">Scenarios →</a></p>
   </div>
   <div class="level" role="group" aria-label="Estimate">
     <span>Estimate</span>
@@ -25,6 +26,8 @@
 <main>
   <section id="mapwrap">
     <div id="map"></div>
+    <p id="loading" class="loading" role="status">Loading the field map and results…</p>
+    <noscript><p class="loading error">This map needs JavaScript to run.</p></noscript>
     <div class="maptools">
       <label>Layer
         <select id="group"></select>
@@ -100,5 +103,12 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <script src="app.js"></script>
+<script>
+  // app.js sets appStarted on its last line; if a script failed to load or threw first, say so instead of "Loading…"
+  if (!window.appStarted) {
+    var box = document.getElementById("loading");
+    if (box) { box.textContent = "The map could not start because a script did not load. Check your connection or script blocker, then reload."; box.className += " error"; }
+  }
+</script>
 </body>
 </html>

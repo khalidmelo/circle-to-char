@@ -17,7 +17,6 @@ async function getJSON(p) { const r = await fetch(p); if (!r.ok) throw new Error
 async function init() {
   [state.overlays, state.summary, state.fields] = await Promise.all([
     getJSON("data/overlays.json"), getJSON("data/summary.json"), getJSON("data/fields.geojson")]);
-  try { state.ts = await getJSON("data/timeseries.json"); } catch (e) { state.ts = {}; }
   try { addCement(await getJSON("data/cement.geojson")); } catch (e) { /* optional */ }
 
   const groups = [...new Set(state.overlays.map(o => o.group))];
@@ -41,6 +40,10 @@ async function init() {
   drawFields();
   setupDates();
   renderOverview(); renderValidation(); renderPlants(); renderParams();
+  $("loading")?.remove();
+  // The per-field radar record is the largest file and only the Field tab uses it: fetch it after the first view is up.
+  try { state.ts = await getJSON("data/timeseries.json"); } catch (e) { state.ts = {}; }
+  if (state.fieldShown) showField(state.fieldShown, false);  // a field clicked while it loaded: fill in its charts
 }
 
 function openTab(name) {
@@ -149,10 +152,11 @@ function renderPlants() {
   if ($("showplants").checked) state.plantLayer.addTo(map);
 }
 
-function showField(p) {
-  openTab("field");
+function showField(p, focus = true) {
+  if (focus) openTab("field");
+  state.fieldShown = p;
   const c = fieldClass(p);
-  $("fieldhint").textContent = `Field ${p.id}`;
+  $("fieldhint").textContent = state.ts ? `Field ${p.id}` : `Field ${p.id}: radar record still loading…`;
   $("fieldinfo").innerHTML = `<table>
     <tr><th>Radar class</th><td><span class="swatch" style="background:${COLORS[c]}"></span>${CLASS_NAME[c]}</td></tr>
     <tr><th>Area</th><td>${fmt(p.area_ha, 1)} ha</td></tr>
@@ -193,4 +197,9 @@ function renderParams() {
   $("params").innerHTML = `<table><tr><th>Factor</th><th class="num">Low</th><th class="num">Central</th><th class="num">High</th><th>Source</th></tr>${rows}</table>`;
 }
 
-init().catch(e => { document.body.insertAdjacentHTML("beforeend", `<p style="padding:16px">Could not load data: ${e.message}</p>`); });
+window.appStarted = true;  // read by the check that follows app.js in index.html
+init().catch(e => {
+  const box = $("loading");  // still there if the first data failed to load
+  if (box) { box.textContent = `Could not load data: ${e.message}`; box.classList.add("error"); }
+  else document.body.insertAdjacentHTML("beforeend", `<p style="padding:16px">Could not load data: ${e.message}</p>`);
+});
