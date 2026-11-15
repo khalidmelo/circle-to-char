@@ -1,35 +1,40 @@
 {
   "source": "radar",
-  "fields": 3244,
+  "fields": 4029,
   "area_ha_by_class": {
-    "idle": 9934.0,
-    "summer_only": 10431.0,
-    "winter_only": 2852.0,
-    "year_round": 11348.0
+    "idle": 9353.0,
+    "summer_only": 12577.0,
+    "winter_only": 2825.0,
+    "year_round": 23059.0
   },
   "water_m3": {
-    "low": 218830592.0,
-    "central": 396762886.0,
-    "high": 651286493.0
+    "low": 458883760.0,
+    "central": 760165316.0,
+    "high": 1215575168.0
   },
   "elec_kwh": {
-    "low": 81315430.0,
-    "central": 186749091.0,
-    "high": 371085288.0
+    "low": 170517034.0,
+    "central": 357795983.0,
+    "high": 692601578.0
+  },
+  "elec_kwh_summer": {
+    "low": 101372526.0,
+    "central": 210434854.0,
+    "high": 405992306.0
   },
   "co2_t_electric": {
-    "low": 56270.14,
-    "central": 129230.22,
-    "high": 260872.88999999998
+    "low": 117997.7,
+    "central": 247594.41000000003,
+    "high": 486898.77
   },
   "co2_t_diesel": {
-    "low": 71775.71,
-    "central": 164840.06,
-    "high": 327550.81
+    "low": 150512.4,
+    "central": 315820.26,
+    "high": 611347.7
   },
   "residue_t_dry": {
-    "low": 6730.9,
-    "central": 9070.1,
-    "high": 19281.6
+    "low": 6667.900000000001,
+    "central": 8983.5,
+    "high": 19098.700000000004
   }
 }

@@ -13,9 +13,10 @@ Outputs
   out/radar_preview.png
 
 Radar rule (set from the data, not tuned to Sentinel-2):
-  a field is "active" in a season if its seasonal peak HV backscatter (dB) is above
-  an Otsu threshold computed over all fields, i.e. the natural break between
-  crop canopy (volume scattering, high HV) and bare soil (low HV).
+  a field is "active" in a season if its seasonal peak HV backscatter (dB), measured above the
+  bare-desert median of the same date, beats the desert's own noise: median + 3 x (median - 16th
+  percentile) of the seasonal peaks of field-sized bare-desert patches. Crop canopy scatters
+  strongly at HV (volume scattering); bare soil does not.
 """
 import json
 import re
