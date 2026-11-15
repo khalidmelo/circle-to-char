@@ -1,0 +1,21 @@
+city,company,lon,lat,cement_sales_2024_mt,basis,note
+Buraydah,Qassim Cement,43.963160,26.491849,4.57,company 2024 cement sales,
+Bisha,Southern Province Cement,42.538201,19.520910,1.278,company 4.26 Mt split by clinker capacity (2.7 of 9.0 Mt),
+Al Ardiyat,Southern Province Cement (Tihama),,,2.13,company 4.26 Mt split by clinker capacity (4.5 of 9.0 Mt),coordinates from data/cement/saudi_cement.csv
+Ahad Al Masarihah,Southern Province Cement (Jazan),,,0.852,company 4.26 Mt split by clinker capacity (1.8 of 9.0 Mt),coordinates from data/cement/saudi_cement.csv
+Duba,Tabuk Cement,,,1.71,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Yanbu Al Bahr,Yanbu Cement,,,4.22,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Turaif,Al Jouf Cement,,,1.48,company 2024 cement sales,first Turaif row (about 38.68 E)
+Khulays,Alsafwa Cement,,,2.13,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Rabigh,Arabian Cement,,,3.35,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Marat,City Cement,,,2.84,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Jubail,Eastern Province Cement,,,2.58,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Baqaa,Hail Cement,,,1.68,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Al Mundfin,Najran Cement (Sultana),,,1.815,company 2.70 Mt split by cement capacity (4.1 of 6.1 Mt),coordinates from data/cement/saudi_cement.csv
+Turaif,Northern Region Cement,,,0.46,company 2024 cement sales,second Turaif row (about 39.13 E)
+Al Oyun,Saudi Cement,,,6.37,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Al-Muzahmiyya,Riyadh Cement,,,3.29,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Al Lith,United Cement Industrial,,,1.86,company 2024 cement sales,coordinates from data/cement/saudi_cement.csv
+Al-Kharj,Yamama Cement,47.531,24.702,6.06,company 2024 cement sales,active plant; replaces the closed Al-Manakh plant listed as Riyadh in data/cement/saudi_cement.csv
+Najran,Najran Cement (Aakfah grinding),,,0.885,company 2.70 Mt split by cement capacity (2.0 of 6.1 Mt),grinding unit; coordinates from data/cement/saudi_cement.csv
+Taif,Umm Al-Qura Cement,41.2618,21.9158,1.59,company 2024 cement sales,missing from data/cement/saudi_cement.csv

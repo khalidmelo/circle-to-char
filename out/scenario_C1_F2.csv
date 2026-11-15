@@ -1,0 +1,8 @@
+lon,lat,kind,name,feed_t_dry,char_t,char_to_cement_t,char_to_soil_t,char_unplaced_t,cement_parts,soil_haul_km,net_removal_tco2,credited_tco2,retained_tco2,transport_tco2,feed_straw,feed_fronds,feed_litter,feed_manure,plant
+44.0,26.25,grid,,50000.0,15775,15775,0,0,Buraydah (Qassim Cement):15775@27km,27.8,28048,28048,35328,213,24982,25018,0,0,1
+38.25,30.0,grid,,50000.0,15616,15616,0,0,Turaif (Al Jouf Cement):15616@163km,11.8,27170,27170,34377,301,34326,15674,0,0,2
+42.75,27.5,grid,,50000.0,15371,15371,0,0,Baqaa (Hail Cement):15371@96km,18.2,26003,26003,33099,246,48751,1249,0,0,3
+44.75,25.5,grid,,50000.0,16482,12575,3907,0,Marat (City Cement):12575@100km,38.9,24497,24497,30302,338,38452,2378,9170,0,4
+43.5,26.75,grid,,50000.0,19081,5791,13291,0,Buraydah (Qassim Cement):5791@54km,40.4,20846,20846,23519,255,17700,1102,31198,0,5
+44.0,26.0,grid,,50000.0,21286,36,21250,0,Buraydah (Qassim Cement):36@55km,55.0,17693,17693,17710,241,102,16,49882,0,6
+43.25,27.0,grid,,50000.0,21300,0,20248,1052,,62.7,16533,16533,16533,496,0,0,50000,0,7

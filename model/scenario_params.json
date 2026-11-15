@@ -1,0 +1,121 @@
+{
+  "_note": "Inputs for model/national_scenarios.py. Every other factor comes from model/params.json. ASSUMPTION marks a declared choice, not a sourced value.",
+  "qc_thresholds": {
+    "bg_max_db": -21.0,
+    "thr_max_db": 6.0,
+    "source": "Mirror of national_supply.py constants BG_MAX_DB and THR_MAX_DB, which the quality check uses (shown for reference; not read from here). A region-season is classified only if one desert-background date has HV at or below -21 dB (sand is about -23 to -27 dB; brighter backgrounds signal interference or non-sand ground) and its threshold is at most 6 dB above the desert median"
+  },
+  "southwest_admin": {
+    "values": [
+      "Jazan Region",
+      "'Asir Region",
+      "Najran Region",
+      "Al Bahah Region"
+    ],
+    "source": "Shield regions where Sentinel-2 greenness is largely rain-fed, spate or shallow-alluvial farming and the radar threshold is unreliable on non-sand ground; reported on a separate line"
+  },
+  "monte_carlo": {
+    "n": 3000,
+    "seed": 20261115,
+    "source": "Triangular(low, central, high) on each params.json factor; irrigation depths share one quantile, lift one quantile across regions, other factors independent"
+  },
+  "coverage_factor": {
+    "central": 0.878,
+    "source": "Share of WorldCover 2021 cropland + tree area inside the 60 processed boxes (data/national/regions.json). Documentation only: no scenario scales by it"
+  },
+  "mewa_fodder_halt_regions": {
+    "values": [
+      "Al Jawf Region",
+      "Riyadh Region",
+      "Hayel Region",
+      "Eastern Region",
+      "Al-Qassim Region",
+      "Tabuk Region"
+    ],
+    "source": "MEWA news item 'saudi-stopping-perennial-fodder-cultivation', 7 Jumada I 1448 AH: perennial fodder stops from 16 Nov 2026 in the sedimentary-shelf regions Al-Jouf, Riyadh, Hail, Eastern Province, Qassim and Tabuk; licensed seasonal fodder (Egyptian clover, Italian and annual ryegrass) allowed"
+  },
+  "fodder_compliance": {
+    "values": [
+      0.25,
+      0.5,
+      1.0
+    ],
+    "central": 1.0,
+    "source": "ASSUMPTION: share of each in-scope field's change that happens"
+  },
+  "mewa_water_per_ha": {
+    "perennial_m3": 32000,
+    "seasonal_max_m3": 9000,
+    "source": "Press reports of MEWA figures (Arab News, 28 Jan 2026; Okaz 2026); cross-check only, not used in the calculation"
+  },
+  "pivot_retrofit": {
+    "baseline_efficiency": 0.8,
+    "lesa_efficiency": 0.88,
+    "lepa_efficiency": 0.95,
+    "baseline_pressure_head_m": 17.6,
+    "low_pressure_head_m": 10.5,
+    "source": "Amosson et al. 2011, Economics of Irrigation Systems, Texas AgriLife Extension B-6113, Table 1 (US systems: LESA 88%, LEPA 95%; MESA 25 psi, LESA/LEPA 15 psi). The baseline 0.80 is kept equal to the model's central pivot efficiency (Table 1 gives 78% for MESA). No Saudi values found"
+  },
+  "rebound_share": {
+    "values": [
+      0,
+      0.5,
+      1.0
+    ],
+    "source": "Share of water freed by an efficiency upgrade that is used to irrigate more land when abstraction is not capped (Grafton et al. 2018, Science 361:748; Ward & Pulido-Velazquez 2008, PNAS 105:18215)"
+  },
+  "cement_plants_file": {
+    "value": "model/scenario_cement_plants.csv",
+    "source": "Yamama Cement sector statistics, company-level 2024 cement sales (local + export), 51.15 Mt in total; companies with several plants split by plant capacity (SPCC clinker capacities from the company website; Najran Cement 4.1 + 2.0 Mt). Yamama's active Al-Kharj plant replaces the closed Al-Manakh site; Umm Al-Qura added"
+  },
+  "cement_dosage_share": {
+    "values": [
+      0.0025,
+      0.005,
+      0.015,
+      0.025,
+      0.05
+    ],
+    "central": 0.015,
+    "source": "Char as a share of cement mass, applied to each plant's whole output (a technical ceiling, not likely uptake). Saudi date-palm frond char: no effect at 0.25%, up to +29% strength at 0.75-1.5% (Khan et al. 2022); 1-2% recommended (Gupta et al. 2018; Kua et al. 2019); typical 0.5-5% (Weber et al. 2026); losses usually beyond 2-5% (Hylton et al. 2024). The <2.5% optimum of Zhao et al. 2024 (Biochar 6:21) is not relied on: the co-publisher lists it as retracted while Crossref shows only a correction"
+  },
+  "cement_eligible_feeds": {
+    "values": [
+      "straw",
+      "fronds"
+    ],
+    "source": "Low-ash chars only: litter and manure chars fall below VM0044 v1.2's 50% carbon requirement for non-soil uses and have the thinnest evidence in cementitious materials"
+  },
+  "max_char_haul_km": {
+    "central": 300,
+    "source": "ASSUMPTION: farthest char is trucked to a cement or concrete outlet"
+  },
+  "soil_dose_t_per_ha": {
+    "values": [
+      0.5,
+      1.0,
+      2.0
+    ],
+    "central": 1.0,
+    "manure_litter_central": 0.5,
+    "return_radius_km": 100,
+    "source": "ASSUMPTION: annual char dose on radar-active fields within the return radius, cautious because chars are alkaline and Saudi farm soils are alkaline and salt-prone; manure and litter chars (high ash, salts) at half the dose. To be replaced by Saudi agronomic limits"
+  },
+  "min_outlet_share": {
+    "central": 0.8,
+    "source": "ASSUMPTION: a plant is built only if at least 80% of its char has an outlet (cement allowance or farmland within reach), mirroring the model's 80% minimum feed load"
+  },
+  "avoided_cement_tco2_per_t_char": {
+    "low": 0.6,
+    "central": 0.74,
+    "high": 0.9,
+    "source": "If a tonne of char replaces a tonne of cement: KAPSARC 2025 (Odeh & Belaid) modelled 0.60-0.66 t CO2/t cement (direct); Climate TRACE v6 national total over USGS output about 0.74; Yamama sustainability reports 0.66-0.90. An emission reduction, never a removal; with about 45 Mt of clinker in stock at end-2024, replaced cement may not cut clinker output at once"
+  },
+  "haul_radius_km": {
+    "values": [
+      50,
+      150
+    ],
+    "source": "Sensitivity around the 100 km assumption in model/national_siting.py"
+  }
+}

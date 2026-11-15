@@ -1,0 +1,8 @@
+lon,lat,kind,name,feed_t_dry,char_t,char_to_cement_t,char_to_soil_t,char_unplaced_t,cement_parts,soil_haul_km,net_removal_tco2,credited_tco2,retained_tco2,transport_tco2,feed_straw,feed_fronds,feed_litter,feed_manure,plant
+44.0,26.25,grid,,50000.0,15775,15775,0,0,Buraydah (Qassim Cement):15775@27km,37.5,28048,28048,35328,213,24982,25018,0,0,1
+38.25,30.0,grid,,50000.0,15616,15616,0,0,Turaif (Al Jouf Cement):15616@163km,16.9,27170,27170,34377,301,34326,15674,0,0,2
+42.75,27.5,grid,,50000.0,15371,15371,0,0,Baqaa (Hail Cement):15371@96km,25.0,26003,26003,33099,246,48751,1249,0,0,3
+44.75,25.5,grid,,50000.0,16445,12575,3870,0,Marat (City Cement):12575@100km,49.4,24744,24744,30549,339,38452,2378,0,9170,4
+43.5,26.75,grid,,50000.0,18957,5791,13166,0,Buraydah (Qassim Cement):5791@54km,54.0,21654,21654,24327,291,17700,1102,0,31198,5
+38.5,30.0,grid,,50000.0,19169,5176,13993,0,Turaif (Al Jouf Cement):5176@158km,26.2,21273,21273,23662,338,16502,339,0,33159,6
+44.75,20.25,grid,,50000.0,18946,5898,12330,718,Al Mundfin (Najran Cement (Sultana)):5898@196km,23.9,21184,21184,23906,250,16726,2354,0,30919,7

@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Circle to Char: Scenarios</title>
+<meta name="description" content="What-if scenarios on the NISAR radar farm record for Saudi Arabia: a radar-verified floor with uncertainty, a pre-rule baseline for MEWA's perennial-fodder halt, irrigation retrofits, and how much carbon biochar can really remove under realistic outlets.">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<link rel="stylesheet" href="style.css">
+<style>
+  .delta.down { color: #0f6e6a; } .delta.up { color: #b23a00; }
+  .q { color: var(--muted); font-size: 12px; margin: 2px 0 0; }
+  td .sub, .sub { display: block; color: var(--muted); font-size: 11px; }
+  select#csel { font: inherit; max-width: 100%; }
+  .card { border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
+  .card .big { display: block; }
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">
+    <h1>Circle to Char <span class="tag">Scenarios</span></h1>
+    <p>What-ifs on the measured NISAR farm record: a radar-verified floor with uncertainty, a field-level baseline for MEWA's perennial-fodder halt, irrigation retrofits, and how much carbon biochar can remove under realistic outlets. <a href="national.html">National view →</a></p>
+  </div>
+</header>
+<main>
+  <section id="mapwrap">
+    <div id="map"></div>
+    <div class="maptools">
+      <label>Biochar scenario <select id="csel"></select></label>
+      <label class="chk"><input id="showwatch" type="checkbox"> Fodder-halt watch-list</label>
+      <p class="legend"><span class="swatch" style="background:#5b2c83"></span>char mostly to cement <span class="swatch" style="background:#0f6e6a"></span>char mostly to soil <span class="swatch" style="background:#b23a00"></span>year-round field on the watch-list · rings: cement plants (size = 2024 output, fill = share of char allowance used)</p>
+    </div>
+  </section>
+  <aside>
+    <nav class="tabs">
+      <button data-tab="A" class="on">Headline</button>
+      <button data-tab="B">Fodder halt</button>
+      <button data-tab="R">Retrofits</button>
+      <button data-tab="C">Biochar</button>
+      <button data-tab="P">Assumptions</button>
+    </nav>
+    <div id="tab-A" class="tab on"><div id="ta"></div></div>
+    <div id="tab-B" class="tab"><div id="tb"></div></div>
+    <div id="tab-R" class="tab"><div id="tr"></div></div>
+    <div id="tab-C" class="tab"><div id="tc"></div></div>
+    <div id="tab-P" class="tab"><div id="tp"></div></div>
+  </aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script src="scenarios.js"></script>
+</body>
+</html>
