@@ -1,0 +1,4 @@
+lon,lat,kind,name,feed_t_dry,load,mean_haul_km,char_t,soil_net_tco2,cement_net_tco2,cement_km,cement_name,best_outlet,net_removal_tco2,cement_retained_tco2,transport_share,feed_straw,feed_fronds,feed_litter,feed_manure,plant
+44.0,26.0,grid,,50000.0,1.0,59.8,14550,24496,24502,54.8,Buraydah,cement,24502,30121,0.0134,33335,16665,0,0,1
+42.75,27.25,grid,,49317.0,0.98634,44.0,13946,22667,22582,121.6,Baqaa,soil,22667,0,0.0108,47890,1427,0,0,2
+38.5,30.0,grid,,47206.6,0.944132,32.5,13580,22661,22527,158.3,Turaif,soil,22661,0,0.0076,37281,9925,0,0,3

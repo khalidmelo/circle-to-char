@@ -43,10 +43,15 @@
     "central": 1.0,
     "source": "ASSUMPTION: share of each in-scope field's change that happens"
   },
-  "mewa_water_per_ha": {
+  "s2_tier": {
+    "value": "combined",
+    "source": "Which radar + Sentinel-2 tier of model/national_supply.py (s2_tier) every Sentinel-2 row runs on: family B_s2, the bracket row A4_s2fill and the A2 *_ws2 rows, so the scenarios page shows one Sentinel-2 tier. 'combined' applies every fill: winter fill, the unobserved season of partly-seen fields outside the Arabian Shield, and fields with no usable radar season outside the Shield classified from Sentinel-2 alone (an upper bound for them); it is the per-field class_s2 that data/national/fields_national.csv carries and the national page maps. 'seasons' applies the first two fills only"
+  },
+  "press_water_per_ha": {
     "perennial_m3": 32000,
     "seasonal_max_m3": 9000,
-    "source": "Press reports of MEWA figures (Arab News, 28 Jan 2026; Okaz 2026); cross-check only, not used in the calculation"
+    "source": "Press figures: ~32,000 m3/ha for perennials from Estidamah via SPA (Arab News, 28 Jan 2026); seasonal at most 9,000 m3/ha (Okaz, 26 Jan 2026, unattributed); not found in MEWA's own releases",
+    "note": "Cross-check only, not used in the calculation"
   },
   "pivot_retrofit": {
     "baseline_efficiency": 0.8,
@@ -54,7 +59,7 @@
     "lepa_efficiency": 0.95,
     "baseline_pressure_head_m": 17.6,
     "low_pressure_head_m": 10.5,
-    "source": "Amosson et al. 2011, Economics of Irrigation Systems, Texas AgriLife Extension B-6113, Table 1 (US systems: LESA 88%, LEPA 95%; MESA 25 psi, LESA/LEPA 15 psi). The baseline 0.80 is kept equal to the model's central pivot efficiency (Table 1 gives 78% for MESA). No Saudi values found"
+    "source": "Amosson et al. 2011, Economics of Irrigation Systems, Texas AgriLife Extension B-6113, Table 1 (US systems: LESA 88%, LEPA 95%; MESA 25 psi, LESA/LEPA 15 psi). The baseline 0.80 is kept equal to the model's central pivot efficiency (Table 1 gives 78% for MESA). The baseline pressure head must equal params.json pivot_pressure_head_m (central), which the headline energy already adds on pivot fields: the retrofit is computed against the headline's own head (static lift + drawdown + pivot pressure head) and lowers only its pressure part, so nothing is counted twice (the engine stops if the two differ). No Saudi values found"
   },
   "rebound_share": {
     "values": [
@@ -82,9 +87,14 @@
   "cement_eligible_feeds": {
     "values": [
       "straw",
+      "fronds",
+      "manure"
+    ],
+    "vm0044_values": [
+      "straw",
       "fronds"
     ],
-    "source": "Low-ash chars only: litter and manure chars fall below VM0044 v1.2's 50% carbon requirement for non-soil uses and have the thinnest evidence in cementitious materials"
+    "source": "Puro.earth Biochar Methodology 2025 v2 (default): char in long-lived construction material (Table 3.2 row BE3, concrete and cement mortar) is eligible at the WBC-Material level (Table 3.3: heavy metals declared, no limit; 8 EFSA PAH at most 4 mg/kg DM), and Puro sets no minimum carbon content: its only carbonisation gate is H/C_org below 0.70 (rule 3.5.1). So every char that passes the gate may go to cement: values lists the chars of the credited supply, and the engine adds any other feed whose char passes the gate at a row's params (poultry litter in the C_upside rows, counted at its upside H/C); a feed that fails the gate (poultry litter at params.json's values) is not in the credited supply at all. Manure char sent to cement would still need measured 8 EFSA PAH at or below 4 mg/kg. vm0044_values: the Verra sensitivity C3_F3_vm0044_cement, where VM0044 v1.2 (p.8) requires at least 50% carbon by dry weight for non-soil uses, which litter and manure chars fall below, so only straw and frond chars go to cement"
   },
   "max_char_haul_km": {
     "central": 300,

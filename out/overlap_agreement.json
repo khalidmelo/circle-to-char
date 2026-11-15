@@ -1,0 +1,199 @@
+{
+ "rule": "Fields mapped by two neighbouring region boxes (shared pixels at least half of the smaller field), each copy classified against its own box's desert background and threshold under the national rules (quality check, WorldCover filter); agreement and Cohen's kappa between the two boxes' radar flags, weighted by the shared area, over pairs where both boxes observed the season. Sentinel-2 flags of the same pairs are the control (winter: over the radar's own dates; summer: Jun-Oct).",
+ "quality_check": true,
+ "national_supply_sha256": "6ed336c8ef5c25fa7d30758ddda66102ccae4661dd18acf4d9e666dabefa06cc",
+ "box_pairs_touching": 73,
+ "box_pairs_with_shared_fields": 54,
+ "field_pairs": 4449,
+ "field_pairs_ha": 45923,
+ "winter": {
+  "pairs": 3500,
+  "ha": 39097,
+  "agreement": 0.875,
+  "kappa": 0.667,
+  "disagreement_ha": 4902,
+  "disagreement_share": 0.125,
+  "disagreement_over_mean_active": 0.506,
+  "active_ha_box_a": 7958,
+  "active_ha_box_b": 11403,
+  "same_radar_dates": {
+   "pairs": 2532,
+   "ha": 28824,
+   "agreement": 0.888,
+   "kappa": 0.697,
+   "disagreement_ha": 3223,
+   "disagreement_share": 0.112,
+   "disagreement_over_mean_active": 0.466,
+   "active_ha_box_a": 5640,
+   "active_ha_box_b": 8195
+  },
+  "different_radar_dates": {
+   "pairs": 968,
+   "ha": 10273,
+   "agreement": 0.837,
+   "kappa": 0.588,
+   "disagreement_ha": 1678,
+   "disagreement_share": 0.163,
+   "disagreement_over_mean_active": 0.608,
+   "active_ha_box_a": 2317,
+   "active_ha_box_b": 3207
+  },
+  "s2_control": {
+   "agreement": 0.976,
+   "kappa": 0.951,
+   "ha": 39097
+  },
+  "largest_disagreements": [
+   {
+    "box_a": "R36",
+    "box_b": "R40",
+    "same_radar_dates": true,
+    "pairs": 111,
+    "ha": 1953,
+    "agreement": 0.47,
+    "disagreement_ha": 1036,
+    "active_ha_box_a": 124,
+    "active_ha_box_b": 1159
+   },
+   {
+    "box_a": "R08",
+    "box_b": "R39",
+    "same_radar_dates": true,
+    "pairs": 715,
+    "ha": 7050,
+    "agreement": 0.889,
+    "disagreement_ha": 785,
+    "active_ha_box_a": 2218,
+    "active_ha_box_b": 3003
+   },
+   {
+    "box_a": "R02",
+    "box_b": "R23",
+    "same_radar_dates": false,
+    "pairs": 318,
+    "ha": 3544,
+    "agreement": 0.845,
+    "disagreement_ha": 551,
+    "active_ha_box_a": 279,
+    "active_ha_box_b": 788
+   },
+   {
+    "box_a": "R51",
+    "box_b": "R60",
+    "same_radar_dates": false,
+    "pairs": 216,
+    "ha": 1728,
+    "agreement": 0.781,
+    "disagreement_ha": 379,
+    "active_ha_box_a": 1206,
+    "active_ha_box_b": 913
+   },
+   {
+    "box_a": "R08",
+    "box_b": "R33",
+    "same_radar_dates": true,
+    "pairs": 238,
+    "ha": 2449,
+    "agreement": 0.856,
+    "disagreement_ha": 352,
+    "active_ha_box_a": 672,
+    "active_ha_box_b": 1024
+   }
+  ]
+ },
+ "summer": {
+  "pairs": 3627,
+  "ha": 40299,
+  "agreement": 0.823,
+  "kappa": 0.63,
+  "disagreement_ha": 7148,
+  "disagreement_share": 0.177,
+  "disagreement_over_mean_active": 0.446,
+  "active_ha_box_a": 15449,
+  "active_ha_box_b": 16581,
+  "same_radar_dates": {
+   "pairs": 2569,
+   "ha": 29116,
+   "agreement": 0.815,
+   "kappa": 0.609,
+   "disagreement_ha": 5387,
+   "disagreement_share": 0.185,
+   "disagreement_over_mean_active": 0.487,
+   "active_ha_box_a": 10267,
+   "active_ha_box_b": 11861
+  },
+  "different_radar_dates": {
+   "pairs": 1058,
+   "ha": 11182,
+   "agreement": 0.843,
+   "kappa": 0.682,
+   "disagreement_ha": 1760,
+   "disagreement_share": 0.157,
+   "disagreement_over_mean_active": 0.355,
+   "active_ha_box_a": 5182,
+   "active_ha_box_b": 4720
+  },
+  "s2_control": {
+   "agreement": 0.997,
+   "kappa": 0.994,
+   "ha": 40299
+  },
+  "largest_disagreements": [
+   {
+    "box_a": "R08",
+    "box_b": "R39",
+    "same_radar_dates": true,
+    "pairs": 715,
+    "ha": 7050,
+    "agreement": 0.835,
+    "disagreement_ha": 1160,
+    "active_ha_box_a": 2252,
+    "active_ha_box_b": 3413
+   },
+   {
+    "box_a": "R35",
+    "box_b": "R36",
+    "same_radar_dates": true,
+    "pairs": 322,
+    "ha": 5362,
+    "agreement": 0.838,
+    "disagreement_ha": 869,
+    "active_ha_box_a": 2391,
+    "active_ha_box_b": 1522
+   },
+   {
+    "box_a": "R36",
+    "box_b": "R40",
+    "same_radar_dates": true,
+    "pairs": 111,
+    "ha": 1953,
+    "agreement": 0.623,
+    "disagreement_ha": 737,
+    "active_ha_box_a": 367,
+    "active_ha_box_b": 1103
+   },
+   {
+    "box_a": "R08",
+    "box_b": "R33",
+    "same_radar_dates": true,
+    "pairs": 238,
+    "ha": 2449,
+    "agreement": 0.728,
+    "disagreement_ha": 666,
+    "active_ha_box_a": 524,
+    "active_ha_box_b": 1189
+   },
+   {
+    "box_a": "R20",
+    "box_b": "R24",
+    "same_radar_dates": true,
+    "pairs": 264,
+    "ha": 3088,
+    "agreement": 0.807,
+    "disagreement_ha": 596,
+    "active_ha_box_a": 636,
+    "active_ha_box_b": 40
+   }
+  ]
+ }
+}

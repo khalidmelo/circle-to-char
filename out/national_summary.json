@@ -1,6 +1,6 @@
 {
  "regions_done": 60,
- "fields": 60440,
+ "fields": 60132,
  "quality_check": true,
  "quality_check_rule": "season left unobserved if the desert background is above -21.0 dB on every date or the threshold exceeds 6.0 dB",
  "quality_check_rejected": {
@@ -47,74 +47,135 @@
    "R59"
   ]
  },
- "field_ha": 740700,
- "farmed_ha": 358227,
+ "field_ha": 738163,
+ "farmed_ha": 357315,
  "area_ha_by_class": {
-  "idle": 188713.0,
+  "idle": 188347.0,
   "palm_grove": 26465.0,
-  "partly_seen_active": 49242.0,
-  "partly_seen_inactive": 54886.0,
-  "radar_unusable": 115283.0,
-  "summer_only": 115251.0,
+  "partly_seen_active": 49234.0,
+  "partly_seen_inactive": 54783.0,
+  "radar_unusable": 114126.0,
+  "summer_only": 115199.0,
   "unseen": 23592.0,
-  "wheat_rotation": 31499.0,
-  "winter_only": 39948.0,
-  "year_round": 95822.0
+  "wheat_rotation": 31448.0,
+  "winter_only": 39939.0,
+  "year_round": 95030.0
  },
  "active_ha": {
-  "winter": 189283,
-  "summer": 317718
+  "winter": 188431,
+  "summer": 316815
  },
  "season_not_observed_ha": {
-  "winter": 93446,
-  "summer": 10681
+  "winter": 93438,
+  "summer": 10578
  },
  "outside_saudi_dropped_ha": 1381,
  "water_m3": {
-  "low": 3614203821.0,
-  "central": 6128965936.0,
-  "high": 9870296018.0
+  "low": 3601027031.0,
+  "central": 6107198184.0,
+  "high": 9835516623.0
  },
  "elec_kwh": {
-  "low": 1101822517.0,
-  "central": 3395695652.0,
-  "high": 7038945349.0
+  "low": 1242839010.0,
+  "central": 3734156894.0,
+  "high": 8478937317.0
  },
  "elec_kwh_summer": {
-  "low": 741035322.0,
-  "central": 2272616418.0,
-  "high": 4650596097.0
+  "low": 840368734.0,
+  "central": 2473853847.0,
+  "high": 5593675535.0
  },
  "co2_t_grid": {
-  "low": 762461.06,
-  "central": 2349824.5700000003,
-  "high": 4948377.960000001
+  "low": 860043.8,
+  "central": 2584035.5,
+  "high": 5960695.2
  },
  "co2_t_diesel": {
-  "low": 972562.49,
-  "central": 2997324.04,
-  "high": 6213155.55
+  "low": 1097029.1,
+  "central": 3296070.3,
+  "high": 7484208.2
  },
  "straw_t_dry": {
-  "low": 168618.7,
-  "central": 227206.0,
-  "high": 482984.4
+  "low": 168477.5,
+  "central": 227015.7,
+  "high": 482579.9
  },
  "fronds_t_dry": {
-  "low": 39697.799999999996,
-  "central": 64044.600000000006,
-  "high": 202226.59999999998
+  "low": 39697.8,
+  "central": 64044.6,
+  "high": 202226.6
  },
  "summer_pumping_avg_mw": {
-  "low": 253.1,
-  "central": 776.2,
-  "high": 1588.3
+  "low": 287.0,
+  "central": 844.9,
+  "high": 1910.4
+ },
+ "wheat_ha": 71387,
+ "year_round_ha": 95030,
+ "pumping_head": {
+  "rule": "head = static depth to water + drawdown + pivot pressure (pivots only)",
+  "detail": "Pumping electricity per field = pumped water x rho g x head / pump wire-to-water efficiency (pump_wire_to_water_eff). Head = the static depth to water of the field's lift region (lift_m in data/national/official_2024.json; Riyadh fields south of 21.5 N use Wadi Dawasir, regions without a depth source the fallback) + drawdown_m + pivot_pressure_head_m on centre pivots that are not palm groves (model/params.json), all at the same level (low, central, high). Pivot-shaped palm groves get no pivot pressure: palm groves are not sprinkler pivots (the scenarios' pivot retrofit leaves them out too); on the radar + Sentinel-2 tier the tier's own class decides. Arabian Shield fields get water but no energy.",
+  "pivot_rule": "centre pivot = circularity above 0.75 and at least 10 ha (the rule of scripts/region_pipeline.py and scripts/s2_fields.py); pivot pressure goes to centre pivots that are not palm groves, since palm groves are not sprinkler pivots",
+  "drawdown_m": {
+   "low": 4,
+   "central": 10,
+   "high": 20
+  },
+  "pivot_pressure_head_m": {
+   "low": 10.5,
+   "central": 17.6,
+   "high": 25.4
+  },
+  "notes": {
+   "_shield": "Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha): shallow alluvial or rainfed/spate systems; pumping energy is not estimated, so their zero energy is a lower bound. Lifted by the fallback head, the irrigated Shield fields (Jazan) would need about 0.13 TWh a year at central (0.06-0.25 TWh; see shield_no_energy)",
+   "_age": "The depths were measured between 1979 and 2009 (Hail undated). Water levels have fallen since, by about 1-4 m a year where measured, so today's lifts are probably deeper. Static depth is about 87% of the pumping head used here, so adding the measured declines would raise pumping electricity by roughly 16-25%"
+  },
+  "pivot_fields": 23477,
+  "pivot_ha": 437400,
+  "pivot_share_of_pumped_water": {
+   "low": 0.5745,
+   "central": 0.5782,
+   "high": 0.5793
+  },
+  "mean_head_m": {
+   "low": 87.2,
+   "central": 154.6,
+   "high": 218.1
+  },
+  "palm_grove_pivots": {
+   "rule": "pivot-shaped palm groves (is_pivot, class palm_grove) get no pivot pressure; pressure_elec_kwh_not_charged is what the pivot pressure head would add on their water outside the Arabian Shield (in no total)",
+   "fields": 275,
+   "ha": 5426,
+   "pressure_elec_kwh_not_charged": {
+    "low": 3557454,
+    "central": 9773164,
+    "high": 22480384
+   }
+  },
+  "elec_kwh_by_component": {
+   "static_depth": {
+    "low": 1099883604,
+    "central": 3246978590,
+    "high": 7129351170
+   },
+   "drawdown": {
+    "low": 56996848,
+    "central": 241466079,
+    "high": 777565007
+   },
+   "pivot_pressure": {
+    "low": 85958457,
+    "central": 245712185,
+    "high": 572020916
+   }
+  },
+  "components_rule": "the radar-only electricity split by head component (fields outside the Arabian Shield; the three add up to elec_kwh); pivot_fields, pivot_ha and pivot_share_of_pumped_water count the pivots that carry pivot pressure (pivot_rule: palm groves left out); mean_head_m and pivot_share_of_pumped_water are weighted by the water pumped outside the Shield"
  },
  "vs_official": {
-  "radar_winter_only_ha": 39948,
-  "radar_wheat_ha": 71446,
+  "radar_winter_only_ha": 39939,
+  "radar_wheat_ha": 71387,
   "gastat_wheat_ha": 180455,
-  "radar_year_round_ha": 95823,
+  "radar_year_round_ha": 95031,
   "gastat_fodder_ha": 214500,
   "palms_est": [
    2646544,
@@ -122,10 +183,1377 @@
   ],
   "gastat_palms": 37565146,
   "water_m3": [
-   3614203821,
-   6128965936,
-   9870296018
+   3601027031,
+   6107198184,
+   9835516623
   ],
   "mewa_agri_groundwater_m3": 11561310000
- }
+ },
+ "worldcover_filter": {
+  "rule": "fields whose ESA WorldCover v200 majority class (fields_labels.tif against worldcover.tif, 40 m) is mangrove (95), herbaceous wetland (90) or open water (80) are dropped; built-up (50) is kept",
+  "fields": 308,
+  "ha": 2536,
+  "by_class": {
+   "mangrove": {
+    "fields": 115,
+    "ha": 1199
+   },
+   "herbaceous_wetland": {
+    "fields": 50,
+    "ha": 425
+   },
+   "open_water": {
+    "fields": 143,
+    "ha": 913
+   }
+  },
+  "by_region": {
+   "R16": 1141,
+   "R03": 774,
+   "R21": 206,
+   "R17": 118,
+   "R43": 103,
+   "R13": 83,
+   "R45": 18,
+   "R01": 18,
+   "R22": 18,
+   "R56": 16,
+   "R27": 10,
+   "R11": 9,
+   "R55": 8,
+   "R15": 8,
+   "R06": 4,
+   "R34": 3,
+   "R08": 2
+  },
+  "majority_unknown_fields": 0
+ },
+ "field_size": {
+  "rule": "Green patches (seasonal maximum NDVI above 0.40 in winter or summer, after a one-pixel opening) of at least 18 pixels (2.88 ha at 40 m) are kept, then a watershed cuts touching fields apart; the cut pieces can be smaller (the smallest field is 0.80 ha). Fields under 3 ha are kept: they are parts of real patches, so dropping them would remove farmed area.",
+  "min_patch_px": 18,
+  "min_patch_ha": 2.88,
+  "smallest_field_ha": 0.8,
+  "fields_under_3ha": 3364,
+  "ha_under_3ha": 7069,
+  "share_of_field_area_under_3ha": 0.0096,
+  "share_of_fields_under_3ha": 0.0559,
+  "fields_under_min_patch": 3019,
+  "ha_under_min_patch": 6075,
+  "water_m3_central_under_3ha": 64469994,
+  "area_ha_by_class_under_3ha": {
+   "idle": 591,
+   "palm_grove": 1102,
+   "partly_seen_active": 77,
+   "partly_seen_inactive": 101,
+   "radar_unusable": 3426,
+   "summer_only": 200,
+   "unseen": 99,
+   "wheat_rotation": 262,
+   "winter_only": 152,
+   "year_round": 1059
+  }
+ },
+ "shield_no_energy": {
+  "note": "Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha): shallow alluvial or rainfed/spate systems; pumping energy is not estimated, so their zero energy is a lower bound. Lifted by the fallback head, the irrigated Shield fields (Jazan) would need about 0.13 TWh a year at central (0.06-0.25 TWh; see shield_no_energy)",
+  "fields": 10029,
+  "field_ha": 87874,
+  "fields_with_water": 1115,
+  "field_ha_with_water": 11076,
+  "water_m3": {
+   "low": 149841740,
+   "central": 258845438,
+   "high": 419133055
+  },
+  "share_of_water": {
+   "low": 0.0416,
+   "central": 0.0424,
+   "high": 0.0426
+  },
+  "by_admin": {
+   "Makkah": {
+    "fields": 846,
+    "field_ha": 5913,
+    "fields_with_water": 0,
+    "water_m3_central": 0
+   },
+   "Madinah": {
+    "fields": 705,
+    "field_ha": 4275,
+    "fields_with_water": 0,
+    "water_m3_central": 0
+   },
+   "Asir": {
+    "fields": 1567,
+    "field_ha": 9390,
+    "fields_with_water": 0,
+    "water_m3_central": 0
+   },
+   "Jazan": {
+    "fields": 6284,
+    "field_ha": 64682,
+    "fields_with_water": 1115,
+    "water_m3_central": 258845438
+   },
+   "Najran": {
+    "fields": 394,
+    "field_ha": 2093,
+    "fields_with_water": 0,
+    "water_m3_central": 0
+   },
+   "Al-Baha": {
+    "fields": 233,
+    "field_ha": 1522,
+    "fields_with_water": 0,
+    "water_m3_central": 0
+   }
+  },
+  "indicative_elec_kwh_at_fallback_lift": {
+   "low": 58813612,
+   "central": 131197038,
+   "high": 248382596
+  },
+  "indicative_rule": "not in any total: the same water pumped against the fallback head (head = static depth to water + drawdown + pivot pressure (pivots only)): fallback static depth 90/111/121 m (the Qassim range) + drawdown 4/10/20 m + pivot pressure 10.5/17.6/25.4 m on pivots that are not palm groves, to size what the electricity, CO2 and MW totals leave out"
+ },
+ "classification_range": {
+  "rule": "Every region's desert threshold shifted by -1 dB (looser: more fields active) and +1 dB (stricter: fewer) on the stored per-field HV above the desert median, in every season the quality check accepts; the same season, palm, class and accounting rules as the radar-only totals (including the pumping head: head = static depth to water + drawdown + pivot pressure (pivots only)), at the same low/central/high factors. Shifting by 0 dB reproduces the published flags.",
+  "shift_db": {
+   "minus_1db": -1.0,
+   "plus_1db": 1.0
+  },
+  "zero_shift_check": {
+   "fields": 60132,
+   "fields_identical": 60081,
+   "share_identical": 0.99915,
+   "by_season": {
+    "winter": {
+     "share_identical": 0.99963,
+     "fields_differ": 22,
+     "ha_differ": 344.8
+    },
+    "summer": {
+     "share_identical": 0.99952,
+     "fields_differ": 29,
+     "ha_differ": 427.2
+    }
+   },
+   "farmed_ha": 356869,
+   "published_farmed_ha": 357315,
+   "water_m3_central": 6097937670.0,
+   "published_water_m3_central": 6107198184.0,
+   "why_not_100": "thresholds and HV values are stored rounded to 0.01 dB"
+  },
+  "minus_1db": {
+   "fields": 60132,
+   "field_ha": 738163,
+   "farmed_ha": 462115,
+   "area_ha_by_class": {
+    "idle": 107623.0,
+    "palm_grove": 26532.0,
+    "partly_seen_active": 73272.0,
+    "partly_seen_inactive": 30708.0,
+    "radar_unusable": 114126.0,
+    "summer_only": 110321.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 56732.0,
+    "winter_only": 42302.0,
+    "year_round": 152956.0
+   },
+   "active_ha": {
+    "winter": 274341,
+    "summer": 418944
+   },
+   "season_not_observed_ha": {
+    "winter": 93402,
+    "summer": 10578
+   },
+   "wheat_ha": 99033,
+   "year_round_ha": 152956,
+   "water_m3": {
+    "low": 4921733616.0,
+    "central": 8351861250.0,
+    "high": 13452836489.0
+   },
+   "elec_kwh": {
+    "low": 1699548185.0,
+    "central": 5196809663.0,
+    "high": 11880524088.0
+   },
+   "elec_kwh_summer": {
+    "low": 1114337908.0,
+    "central": 3310905295.0,
+    "high": 7514237082.0
+   },
+   "co2_t_grid": {
+    "low": 1176086.4,
+    "central": 3596190.9,
+    "high": 8352012.0
+   },
+   "co2_t_diesel": {
+    "low": 1500158.1,
+    "central": 4587128.8,
+    "high": 10486730.2
+   },
+   "straw_t_dry": {
+    "low": 233720.3,
+    "central": 314930.8,
+    "high": 669463.6
+   },
+   "fronds_t_dry": {
+    "low": 39798.0,
+    "central": 64206.5,
+    "high": 202737.6
+   },
+   "summer_pumping_avg_mw": {
+    "low": 380.6,
+    "central": 1130.8,
+    "high": 2566.3
+   }
+  },
+  "plus_1db": {
+   "fields": 60132,
+   "field_ha": 738163,
+   "farmed_ha": 266412,
+   "area_ha_by_class": {
+    "idle": 257024.0,
+    "palm_grove": 26258.0,
+    "partly_seen_active": 27139.0,
+    "partly_seen_inactive": 77010.0,
+    "radar_unusable": 114126.0,
+    "summer_only": 87814.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 20744.0,
+    "winter_only": 36006.0,
+    "year_round": 68451.0
+   },
+   "active_ha": {
+    "winter": 146912,
+    "summer": 230072
+   },
+   "season_not_observed_ha": {
+    "winter": 93561,
+    "summer": 10588
+   },
+   "wheat_ha": 56750,
+   "year_round_ha": 68451,
+   "water_m3": {
+    "low": 2681252893.0,
+    "central": 4557279322.0,
+    "high": 7344203651.0
+   },
+   "elec_kwh": {
+    "low": 917129102.0,
+    "central": 2723088672.0,
+    "high": 6147726163.0
+   },
+   "elec_kwh_summer": {
+    "low": 603975456.0,
+    "central": 1755851340.0,
+    "high": 3948223319.0
+   },
+   "co2_t_grid": {
+    "low": 634652.6,
+    "central": 1884376.5,
+    "high": 4321853.2
+   },
+   "co2_t_diesel": {
+    "low": 809531.1,
+    "central": 2403618.2,
+    "high": 5426489.4
+   },
+   "straw_t_dry": {
+    "low": 133935.2,
+    "central": 180469.9,
+    "high": 383632.6
+   },
+   "fronds_t_dry": {
+    "low": 39387.2,
+    "central": 63543.1,
+    "high": 200643.3
+   },
+   "summer_pumping_avg_mw": {
+    "low": 206.3,
+    "central": 599.7,
+    "high": 1348.4
+   }
+  },
+  "corners": {
+   "water_m3": {
+    "low": 2681252893.0,
+    "high": 13452836489.0
+   },
+   "elec_kwh": {
+    "low": 917129102.0,
+    "high": 11880524088.0
+   },
+   "elec_kwh_summer": {
+    "low": 603975456.0,
+    "high": 7514237082.0
+   },
+   "co2_t_grid": {
+    "low": 634652.6,
+    "high": 8352012.0
+   },
+   "co2_t_diesel": {
+    "low": 809531.1,
+    "high": 10486730.2
+   },
+   "straw_t_dry": {
+    "low": 133935.2,
+    "high": 669463.6
+   },
+   "fronds_t_dry": {
+    "low": 39387.2,
+    "high": 202737.6
+   },
+   "summer_pumping_avg_mw": {
+    "low": 206.3,
+    "high": 2566.3
+   }
+  },
+  "corners_rule": "low = minimum over {-1 dB, published, +1 dB} of the low-factor total; high = maximum of the high-factor total"
+ },
+ "s2_filled": {
+  "rule": "Radar + Sentinel-2 tier, published next to the radar-only totals and never replacing them; the area it adds is measured by Sentinel-2, not by the radar. Green = the field's median seasonal-maximum NDVI above 0.40 (s2_winter_active over 1 Nov-15 Mar, s2_summer_active over 10 Jun-31 Oct). (a) Winter fill: a field the radar calls not farmed in any season it observed (radar idle: winter observed and not active, summer not active or not observed) that Sentinel-2 sees green over 1 Nov-15 Mar and not green over 10 Jun-31 Oct counts as winter-farmed (audit nd-8). Fields the radar sees farmed in summer are not filled. (b) Outside the Arabian Shield, the season the radar did not observe on a partly-seen field takes the Sentinel-2 flag for that season. (c) Outside the Shield, fields with no usable radar season (radar not usable, or outside the swath) are classified from the two Sentinel-2 flags alone, a separate tier. Every mapped field is green in at least one window (the field mask is Sentinel-2 green), so (c) counts all of its fields as farmed: an upper bound for them. (d) A filled field farmed in both seasons gets the year-round (perennial) depth only if the spring check marks it perennial (not brown over 20 Apr-5 Jun) and Sentinel-2 sees it green in both windows; otherwise it is a rotation (winter plus summer depth). Palm groves among the filled fields: tree cover of 30% or more, farmed in every known season and not brown in spring; radar palm groves are never refilled. (e) Wheat straw on fields that are wheat-pattern only through Sentinel-2 is capped per administrative region at GASTAT 2024 wheat area minus the radar wheat already there: the cap goes first to (a)/(b) fields, then to (c) fields, pro rata by area. Water, energy and CO2 are not capped; energy uses the same pumping head as the radar-only totals, with pivot pressure decided by the tier's own class (none on its palm groves).",
+  "radar_plus_s2_seasons": {
+   "scope": "all 60,132 mapped fields: radar classes with fills (a) and (b); the 5,019 fields of fill (c) keep their radar class (no water)",
+   "fields": 60132,
+   "field_ha": 738163,
+   "farmed_ha": 498690,
+   "area_ha_by_class": {
+    "idle": 101755.0,
+    "palm_grove": 26465.0,
+    "radar_unusable": 114126.0,
+    "summer_only": 128979.0,
+    "unseen": 23592.0,
+    "wheat_rotation": 40298.0,
+    "winter_only": 172464.0,
+    "year_round": 130484.0
+   },
+   "active_ha": {
+    "winter": 364906,
+    "summer": 326018
+   },
+   "season_not_observed_ha": {
+    "winter": 0,
+    "summer": 0
+   },
+   "wheat_ha": 212762,
+   "year_round_ha": 130484,
+   "water_m3": {
+    "low": 4421808778.0,
+    "central": 7857069610.0,
+    "high": 12825341937.0
+   },
+   "elec_kwh": {
+    "low": 1549352669.0,
+    "central": 4871204552.0,
+    "high": 11202790923.0
+   },
+   "elec_kwh_summer": {
+    "low": 863216924.0,
+    "central": 2557887785.0,
+    "high": 5803870734.0
+   },
+   "co2_t_grid": {
+    "low": 1072149.2,
+    "central": 3370873.8,
+    "high": 7875564.7
+   },
+   "co2_t_diesel": {
+    "low": 1367583.7,
+    "central": 4299721.8,
+    "high": 9888505.2
+   },
+   "straw_t_dry": {
+    "low": 371831.2,
+    "central": 501027.5,
+    "high": 1065059.2
+   },
+   "fronds_t_dry": {
+    "low": 39697.8,
+    "central": 64044.6,
+    "high": 202226.6
+   },
+   "summer_pumping_avg_mw": {
+    "low": 294.8,
+    "central": 873.6,
+    "high": 1982.2
+   },
+   "s2_filled_fields": 14099,
+   "s2_filled_ha": 192611,
+   "straw_t_dry_uncapped": {
+    "low": 502124.7,
+    "central": 676594.3,
+    "high": 1438266.0
+   },
+   "wheat_ha_straw_credited": 157554
+  },
+  "s2_only_fields": {
+   "scope": "only the 5,019 fields of fill (c): no usable radar season, outside the Arabian Shield, classified from Sentinel-2 alone",
+   "fields": 5019,
+   "field_ha": 60937,
+   "farmed_ha": 60937,
+   "area_ha_by_class": {
+    "palm_grove": 4662.0,
+    "summer_only": 4871.0,
+    "wheat_rotation": 6224.0,
+    "winter_only": 16233.0,
+    "year_round": 28947.0
+   },
+   "active_ha": {
+    "winter": 56066,
+    "summer": 44704
+   },
+   "season_not_observed_ha": {
+    "winter": 0,
+    "summer": 0
+   },
+   "wheat_ha": 22458,
+   "year_round_ha": 28947,
+   "water_m3": {
+    "low": 675728941.0,
+    "central": 1171893538.0,
+    "high": 1899755654.0
+   },
+   "elec_kwh": {
+    "low": 265095163.0,
+    "central": 699650284.0,
+    "high": 1479808545.0
+   },
+   "elec_kwh_summer": {
+    "low": 133685803.0,
+    "central": 334222826.0,
+    "high": 696808750.0
+   },
+   "co2_t_grid": {
+    "low": 183445.4,
+    "central": 484157.8,
+    "high": 1040306.5
+   },
+   "co2_t_diesel": {
+    "low": 233994.0,
+    "central": 617566.8,
+    "high": 1306201.0
+   },
+   "straw_t_dry": {
+    "low": 0.0,
+    "central": 0.0,
+    "high": 0.0
+   },
+   "fronds_t_dry": {
+    "low": 6992.4,
+    "central": 11282.3,
+    "high": 35619.5
+   },
+   "summer_pumping_avg_mw": {
+    "low": 45.7,
+    "central": 114.1,
+    "high": 238.0
+   },
+   "s2_filled_fields": 5019,
+   "s2_filled_ha": 60937,
+   "straw_t_dry_uncapped": {
+    "low": 53001.3,
+    "central": 71417.1,
+    "high": 151812.5
+   },
+   "wheat_ha_straw_credited": 0
+  },
+  "combined": {
+   "scope": "all 60,132 mapped fields with fills (a), (b) and (c): water, energy, CO2, straw, fronds and farmed area = radar_plus_s2_seasons + s2_only_fields (fields, field area and class areas do not add up)",
+   "fields": 60132,
+   "field_ha": 738163,
+   "farmed_ha": 559628,
+   "area_ha_by_class": {
+    "idle": 101755.0,
+    "palm_grove": 31127.0,
+    "radar_unusable": 76692.0,
+    "summer_only": 133850.0,
+    "unseen": 89.0,
+    "wheat_rotation": 46522.0,
+    "winter_only": 188697.0,
+    "year_round": 159431.0
+   },
+   "active_ha": {
+    "winter": 420973,
+    "summer": 370722
+   },
+   "season_not_observed_ha": {
+    "winter": 0,
+    "summer": 0
+   },
+   "wheat_ha": 235220,
+   "year_round_ha": 159431,
+   "water_m3": {
+    "low": 5097537719.0,
+    "central": 9028963148.0,
+    "high": 14725097591.0
+   },
+   "elec_kwh": {
+    "low": 1814447832.0,
+    "central": 5570854836.0,
+    "high": 12682599468.0
+   },
+   "elec_kwh_summer": {
+    "low": 996902727.0,
+    "central": 2892110611.0,
+    "high": 6500679484.0
+   },
+   "co2_t_grid": {
+    "low": 1255594.7,
+    "central": 3855031.5,
+    "high": 8915871.2
+   },
+   "co2_t_diesel": {
+    "low": 1601577.8,
+    "central": 4917288.6,
+    "high": 11194706.2
+   },
+   "straw_t_dry": {
+    "low": 371831.2,
+    "central": 501027.5,
+    "high": 1065059.2
+   },
+   "fronds_t_dry": {
+    "low": 46690.2,
+    "central": 75326.9,
+    "high": 237846.1
+   },
+   "summer_pumping_avg_mw": {
+    "low": 340.5,
+    "central": 987.7,
+    "high": 2220.2
+   },
+   "s2_filled_fields": 19118,
+   "s2_filled_ha": 253549,
+   "straw_t_dry_uncapped": {
+    "low": 555126.0,
+    "central": 748011.4,
+    "high": 1590078.5
+   },
+   "wheat_ha_straw_credited": 157554
+  },
+  "caps": {
+   "rule": "per administrative region: cap = max(0, GASTAT 2024 wheat area - radar wheat-pattern area (winter-only + rotation)); Sentinel-2-filled wheat-pattern area is credited with straw up to the cap, first fills (a)/(b), then Sentinel-2-only fields, pro rata by area; a straw factor is null where the region has no such area",
+   "by_region": {
+    "Asir": {
+     "gastat_wheat_ha": 8353,
+     "radar_wheat_ha": 0,
+     "cap_ha": 8353,
+     "s2_wheat_ha_seasons": 0,
+     "credited_ha_seasons": 0,
+     "straw_factor_seasons": null,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Al-Baha": {
+     "gastat_wheat_ha": 327,
+     "radar_wheat_ha": 0,
+     "cap_ha": 327,
+     "s2_wheat_ha_seasons": 0,
+     "credited_ha_seasons": 0,
+     "straw_factor_seasons": null,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Al-Jouf": {
+     "gastat_wheat_ha": 37874,
+     "radar_wheat_ha": 15905,
+     "cap_ha": 21969,
+     "s2_wheat_ha_seasons": 37676,
+     "credited_ha_seasons": 21969,
+     "straw_factor_seasons": 0.5831,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Madinah": {
+     "gastat_wheat_ha": 806,
+     "radar_wheat_ha": 0,
+     "cap_ha": 806,
+     "s2_wheat_ha_seasons": 0,
+     "credited_ha_seasons": 0,
+     "straw_factor_seasons": null,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Qassim": {
+     "gastat_wheat_ha": 25888,
+     "radar_wheat_ha": 13616,
+     "cap_ha": 12272,
+     "s2_wheat_ha_seasons": 25681,
+     "credited_ha_seasons": 12272,
+     "straw_factor_seasons": 0.4778,
+     "s2_wheat_ha_s2_only": 810,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": 0.0
+    },
+    "Eastern": {
+     "gastat_wheat_ha": 18243,
+     "radar_wheat_ha": 479,
+     "cap_ha": 17764,
+     "s2_wheat_ha_seasons": 25686,
+     "credited_ha_seasons": 17764,
+     "straw_factor_seasons": 0.6916,
+     "s2_wheat_ha_s2_only": 5329,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": 0.0
+    },
+    "Hail": {
+     "gastat_wheat_ha": 26453,
+     "radar_wheat_ha": 16843,
+     "cap_ha": 9610,
+     "s2_wheat_ha_seasons": 15554,
+     "credited_ha_seasons": 9610,
+     "straw_factor_seasons": 0.6179,
+     "s2_wheat_ha_s2_only": 1815,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": 0.0
+    },
+    "Jazan": {
+     "gastat_wheat_ha": 10518,
+     "radar_wheat_ha": 4627,
+     "cap_ha": 5891,
+     "s2_wheat_ha_seasons": 18,
+     "credited_ha_seasons": 18,
+     "straw_factor_seasons": 1.0,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Makkah": {
+     "gastat_wheat_ha": 3697,
+     "radar_wheat_ha": 0,
+     "cap_ha": 3697,
+     "s2_wheat_ha_seasons": 0,
+     "credited_ha_seasons": 0,
+     "straw_factor_seasons": null,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Najran": {
+     "gastat_wheat_ha": 405,
+     "radar_wheat_ha": 0,
+     "cap_ha": 405,
+     "s2_wheat_ha_seasons": 0,
+     "credited_ha_seasons": 0,
+     "straw_factor_seasons": null,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    },
+    "Riyadh": {
+     "gastat_wheat_ha": 37708,
+     "radar_wheat_ha": 17385,
+     "cap_ha": 20323,
+     "s2_wheat_ha_seasons": 32548,
+     "credited_ha_seasons": 20323,
+     "straw_factor_seasons": 0.6244,
+     "s2_wheat_ha_s2_only": 14504,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": 0.0
+    },
+    "Tabuk": {
+     "gastat_wheat_ha": 10183,
+     "radar_wheat_ha": 2532,
+     "cap_ha": 7651,
+     "s2_wheat_ha_seasons": 4211,
+     "credited_ha_seasons": 4211,
+     "straw_factor_seasons": 1.0,
+     "s2_wheat_ha_s2_only": 0,
+     "credited_ha_s2_only": 0,
+     "straw_factor_s2_only": null
+    }
+   },
+   "effect": {
+    "radar_plus_s2_seasons": {
+     "straw_t_dry_uncapped": {
+      "low": 502124.7,
+      "central": 676594.3,
+      "high": 1438266.0
+     },
+     "straw_t_dry_capped": {
+      "low": 371831.2,
+      "central": 501027.5,
+      "high": 1065059.2
+     },
+     "s2_wheat_ha": 141375,
+     "s2_wheat_ha_credited": 86166
+    },
+    "combined": {
+     "straw_t_dry_uncapped": {
+      "low": 555126.0,
+      "central": 748011.4,
+      "high": 1590078.5
+     },
+     "straw_t_dry_capped": {
+      "low": 371831.2,
+      "central": 501027.5,
+      "high": 1065059.2
+     },
+     "s2_wheat_ha": 163832,
+     "s2_wheat_ha_credited": 86166
+    }
+   },
+   "regions_capped": [
+    "Al-Jouf",
+    "Eastern",
+    "Hail",
+    "Qassim",
+    "Riyadh"
+   ]
+  },
+  "fills": {
+   "winter_fill": {
+    "rule": "radar idle only: winter observed and not active, summer not active or not observed; Sentinel-2 green over 1 Nov-15 Mar and not over 10 Jun-31 Oct",
+    "fields": 6853,
+    "ha": 89963,
+    "by_radar_class": {
+     "idle": 88595,
+     "partly_seen_inactive": 1368
+    },
+    "in_shield_ha": 18,
+    "pivots_ha": 61054,
+    "radar_summer_active_not_filled": {
+     "fields": 548,
+     "ha": 8410,
+     "by_radar_class": {
+      "summer_only": 8410
+     }
+    }
+   },
+   "season_fill": {
+    "winter": {
+     "fields": 6573,
+     "ha": 93438,
+     "s2_green_ha": 86513
+    },
+    "summer": {
+     "fields": 797,
+     "ha": 10578,
+     "s2_green_ha": 9203
+    }
+   },
+   "s2_only": {
+    "fields": 5019,
+    "ha": 60937,
+    "by_radar_class": {
+     "radar_unusable": 37435,
+     "unseen": 23503
+    },
+    "by_region": {
+     "R17": 19210,
+     "R12": 17574,
+     "R13": 7386,
+     "R30": 5948,
+     "R38": 4282,
+     "R56": 2591,
+     "R14": 1731,
+     "R33": 1697,
+     "R51": 336,
+     "R27": 183
+    }
+   },
+   "palm_spring_check": {
+    "rule": "filled and Sentinel-2-only fields become palm groves only if not brown in spring; these fields met the other palm conditions but are brown in spring",
+    "fields": 5,
+    "ha": 40,
+    "palm_ha_filled": 0,
+    "palm_ha_s2_only": 4662
+   },
+   "filled_two_season": {
+    "year_round_ha": 64401,
+    "year_round_ha_by_fill": {
+     "s2_only": 28947,
+     "season_fill": 35454
+    },
+    "wheat_rotation_ha": 15074,
+    "spring_not_brown_but_not_green_in_both_windows_ha": 775,
+    "year_round_extra_water_m3_over_rotation": {
+     "low": 273704080,
+     "central": 264043936,
+     "high": 329364910
+    },
+    "note": "filled fields farmed in both seasons: year-round (perennial) depth where the spring check marks them perennial and Sentinel-2 sees them green in both windows, rotation depth otherwise; year_round_extra_water_m3_over_rotation is what the perennial depth adds over treating every one of them as a rotation"
+   }
+  },
+  "vs_official": {
+   "rule": "each administrative region's tier totals against GASTAT 2024 wheat and fodder (year-round fields) and MEWA 2024 agricultural groundwater; an overshoot is a tier total above the official whole-region figure although the boxes cover only part of each region's farmland. wheat_ha is the uncapped wheat pattern; *_wheat_credited_ha is the area credited with straw after the cap. Water: [low, central, high]",
+   "regions": [
+    {
+     "region": "Al-Jouf",
+     "gastat_wheat_ha": 37874,
+     "gastat_fodder_ha": 82307,
+     "mewa_agri_groundwater_m3": 2922151256,
+     "radar_wheat_ha": 15905,
+     "radar_year_round_ha": 11340,
+     "radar_water_m3": [
+      857143305,
+      1450752686,
+      2334974761
+     ],
+     "seasons_wheat_ha": 53582,
+     "seasons_wheat_credited_ha": 37874,
+     "seasons_year_round_ha": 19997,
+     "seasons_water_m3": [
+      1114930701,
+      1980846046,
+      3233243632
+     ],
+     "combined_wheat_ha": 53582,
+     "combined_wheat_credited_ha": 37874,
+     "combined_year_round_ha": 19997,
+     "combined_water_m3": [
+      1114930701,
+      1980846046,
+      3233243632
+     ]
+    },
+    {
+     "region": "Riyadh",
+     "gastat_wheat_ha": 37708,
+     "gastat_fodder_ha": 38036,
+     "mewa_agri_groundwater_m3": 1889791325,
+     "radar_wheat_ha": 17385,
+     "radar_year_round_ha": 40954,
+     "radar_water_m3": [
+      1054506168,
+      1778048882,
+      2858564732
+     ],
+     "seasons_wheat_ha": 49933,
+     "seasons_wheat_credited_ha": 37708,
+     "seasons_year_round_ha": 53029,
+     "seasons_water_m3": [
+      1257440765,
+      2204061440,
+      3583925071
+     ],
+     "combined_wheat_ha": 64437,
+     "combined_wheat_credited_ha": 37708,
+     "combined_year_round_ha": 71063,
+     "combined_water_m3": [
+      1700330274,
+      2971533850,
+      4827786454
+     ]
+    },
+    {
+     "region": "Hail",
+     "gastat_wheat_ha": 26453,
+     "gastat_fodder_ha": 29088,
+     "mewa_agri_groundwater_m3": 1314327876,
+     "radar_wheat_ha": 16843,
+     "radar_year_round_ha": 13782,
+     "radar_water_m3": [
+      491624505,
+      854028410,
+      1385105830
+     ],
+     "seasons_wheat_ha": 32397,
+     "seasons_wheat_credited_ha": 26453,
+     "seasons_year_round_ha": 14142,
+     "seasons_water_m3": [
+      547284290,
+      989838806,
+      1623688879
+     ],
+     "combined_wheat_ha": 34211,
+     "combined_wheat_credited_ha": 26453,
+     "combined_year_round_ha": 18585,
+     "combined_water_m3": [
+      638585037,
+      1144677964,
+      1873056463
+     ]
+    },
+    {
+     "region": "Qassim",
+     "gastat_wheat_ha": 25888,
+     "gastat_fodder_ha": 18993,
+     "mewa_agri_groundwater_m3": 1330675506,
+     "radar_wheat_ha": 13616,
+     "radar_year_round_ha": 19112,
+     "radar_water_m3": [
+      683944131,
+      1159956992,
+      1868111721
+     ],
+     "seasons_wheat_ha": 39297,
+     "seasons_wheat_credited_ha": 25888,
+     "seasons_year_round_ha": 19134,
+     "seasons_water_m3": [
+      771372885,
+      1376922282,
+      2250474359
+     ],
+     "combined_wheat_ha": 40108,
+     "combined_wheat_credited_ha": 25888,
+     "combined_year_round_ha": 19875,
+     "combined_water_m3": [
+      787993947,
+      1406486668,
+      2298747631
+     ]
+    },
+    {
+     "region": "Eastern",
+     "gastat_wheat_ha": 18243,
+     "gastat_fodder_ha": 20834,
+     "mewa_agri_groundwater_m3": 988741204,
+     "radar_wheat_ha": 479,
+     "radar_year_round_ha": 322,
+     "radar_water_m3": [
+      236822575,
+      389937444,
+      622363822
+     ],
+     "seasons_wheat_ha": 26165,
+     "seasons_wheat_credited_ha": 18243,
+     "seasons_year_round_ha": 14660,
+     "seasons_water_m3": [
+      439424946,
+      795245416,
+      1304723563
+     ],
+     "combined_wheat_ha": 31494,
+     "combined_wheat_credited_ha": 18243,
+     "combined_year_round_ha": 20389,
+     "combined_water_m3": [
+      564342569,
+      1015263000,
+      1662976978
+     ]
+    },
+    {
+     "region": "Jazan",
+     "gastat_wheat_ha": 10518,
+     "gastat_fodder_ha": 3419,
+     "mewa_agri_groundwater_m3": 386545306,
+     "radar_wheat_ha": 4627,
+     "radar_year_round_ha": 5877,
+     "radar_water_m3": [
+      149841740,
+      258845438,
+      419133055
+     ],
+     "seasons_wheat_ha": 4644,
+     "seasons_wheat_credited_ha": 4644,
+     "seasons_year_round_ha": 5877,
+     "seasons_water_m3": [
+      149901540,
+      258993938,
+      419394793
+     ],
+     "combined_wheat_ha": 4644,
+     "combined_wheat_credited_ha": 4644,
+     "combined_year_round_ha": 5877,
+     "combined_water_m3": [
+      149901540,
+      258993938,
+      419394793
+     ]
+    },
+    {
+     "region": "Tabuk",
+     "gastat_wheat_ha": 10183,
+     "gastat_fodder_ha": 14795,
+     "mewa_agri_groundwater_m3": 651301500,
+     "radar_wheat_ha": 2532,
+     "radar_year_round_ha": 3644,
+     "radar_water_m3": [
+      127144607,
+      215628332,
+      347262702
+     ],
+     "seasons_wheat_ha": 6743,
+     "seasons_wheat_credited_ha": 6743,
+     "seasons_year_round_ha": 3644,
+     "seasons_water_m3": [
+      141453651,
+      251161682,
+      409891640
+     ],
+     "combined_wheat_ha": 6743,
+     "combined_wheat_credited_ha": 6743,
+     "combined_year_round_ha": 3644,
+     "combined_water_m3": [
+      141453651,
+      251161682,
+      409891640
+     ]
+    },
+    {
+     "region": "Asir",
+     "gastat_wheat_ha": 8353,
+     "gastat_fodder_ha": 960,
+     "mewa_agri_groundwater_m3": 389563207,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "region": "Makkah",
+     "gastat_wheat_ha": 3697,
+     "gastat_fodder_ha": 3648,
+     "mewa_agri_groundwater_m3": 667280483,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "region": "Madinah",
+     "gastat_wheat_ha": 806,
+     "gastat_fodder_ha": 1157,
+     "mewa_agri_groundwater_m3": 666677574,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "region": "Najran",
+     "gastat_wheat_ha": 405,
+     "gastat_fodder_ha": 946,
+     "mewa_agri_groundwater_m3": 205767755,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "region": "Al-Baha",
+     "gastat_wheat_ha": 327,
+     "gastat_fodder_ha": 312,
+     "mewa_agri_groundwater_m3": 134682573,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    },
+    {
+     "region": "N. Borders",
+     "gastat_wheat_ha": 1,
+     "gastat_fodder_ha": 4,
+     "mewa_agri_groundwater_m3": 13813794,
+     "radar_wheat_ha": 0,
+     "radar_year_round_ha": 0,
+     "radar_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "seasons_wheat_ha": 0,
+     "seasons_wheat_credited_ha": 0,
+     "seasons_year_round_ha": 0,
+     "seasons_water_m3": [
+      0,
+      0,
+      0
+     ],
+     "combined_wheat_ha": 0,
+     "combined_wheat_credited_ha": 0,
+     "combined_year_round_ha": 0,
+     "combined_water_m3": [
+      0,
+      0,
+      0
+     ]
+    }
+   ],
+   "overshoots": [
+    {
+     "region": "Al-Jouf",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "wheat_ha",
+     "value": 53582,
+     "official": 37874,
+     "ratio": 1.41,
+     "radar_only": 15905
+    },
+    {
+     "region": "Al-Jouf",
+     "tier": "combined",
+     "metric": "wheat_ha",
+     "value": 53582,
+     "official": 37874,
+     "ratio": 1.41,
+     "radar_only": 15905
+    },
+    {
+     "region": "Riyadh",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "wheat_ha",
+     "value": 49933,
+     "official": 37708,
+     "ratio": 1.32,
+     "radar_only": 17385
+    },
+    {
+     "region": "Riyadh",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "year_round_ha",
+     "value": 53029,
+     "official": 38036,
+     "ratio": 1.39,
+     "radar_only": 40954
+    },
+    {
+     "region": "Riyadh",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "water_m3_central",
+     "value": 2204061440,
+     "official": 1889791325,
+     "ratio": 1.17,
+     "radar_only": 1778048882
+    },
+    {
+     "region": "Riyadh",
+     "tier": "combined",
+     "metric": "wheat_ha",
+     "value": 64437,
+     "official": 37708,
+     "ratio": 1.71,
+     "radar_only": 17385
+    },
+    {
+     "region": "Riyadh",
+     "tier": "combined",
+     "metric": "year_round_ha",
+     "value": 71063,
+     "official": 38036,
+     "ratio": 1.87,
+     "radar_only": 40954
+    },
+    {
+     "region": "Riyadh",
+     "tier": "combined",
+     "metric": "water_m3_central",
+     "value": 2971533850,
+     "official": 1889791325,
+     "ratio": 1.57,
+     "radar_only": 1778048882
+    },
+    {
+     "region": "Hail",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "wheat_ha",
+     "value": 32397,
+     "official": 26453,
+     "ratio": 1.22,
+     "radar_only": 16843
+    },
+    {
+     "region": "Hail",
+     "tier": "combined",
+     "metric": "wheat_ha",
+     "value": 34211,
+     "official": 26453,
+     "ratio": 1.29,
+     "radar_only": 16843
+    },
+    {
+     "region": "Qassim",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "wheat_ha",
+     "value": 39297,
+     "official": 25888,
+     "ratio": 1.52,
+     "radar_only": 13616
+    },
+    {
+     "region": "Qassim",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "year_round_ha",
+     "value": 19134,
+     "official": 18993,
+     "ratio": 1.01,
+     "radar_only": 19112
+    },
+    {
+     "region": "Qassim",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "water_m3_central",
+     "value": 1376922282,
+     "official": 1330675506,
+     "ratio": 1.03,
+     "radar_only": 1159956992
+    },
+    {
+     "region": "Qassim",
+     "tier": "combined",
+     "metric": "wheat_ha",
+     "value": 40108,
+     "official": 25888,
+     "ratio": 1.55,
+     "radar_only": 13616
+    },
+    {
+     "region": "Qassim",
+     "tier": "combined",
+     "metric": "year_round_ha",
+     "value": 19875,
+     "official": 18993,
+     "ratio": 1.05,
+     "radar_only": 19112
+    },
+    {
+     "region": "Qassim",
+     "tier": "combined",
+     "metric": "water_m3_central",
+     "value": 1406486668,
+     "official": 1330675506,
+     "ratio": 1.06,
+     "radar_only": 1159956992
+    },
+    {
+     "region": "Eastern",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "wheat_ha",
+     "value": 26165,
+     "official": 18243,
+     "ratio": 1.43,
+     "radar_only": 479
+    },
+    {
+     "region": "Eastern",
+     "tier": "combined",
+     "metric": "wheat_ha",
+     "value": 31494,
+     "official": 18243,
+     "ratio": 1.73,
+     "radar_only": 479
+    },
+    {
+     "region": "Eastern",
+     "tier": "combined",
+     "metric": "water_m3_central",
+     "value": 1015263000,
+     "official": 988741204,
+     "ratio": 1.03,
+     "radar_only": 389937444
+    },
+    {
+     "region": "Jazan",
+     "tier": "radar_plus_s2_seasons",
+     "metric": "year_round_ha",
+     "value": 5877,
+     "official": 3419,
+     "ratio": 1.72,
+     "radar_only": 5877
+    },
+    {
+     "region": "Jazan",
+     "tier": "combined",
+     "metric": "year_round_ha",
+     "value": 5877,
+     "official": 3419,
+     "ratio": 1.72,
+     "radar_only": 5877
+    }
+   ]
+  }
+ },
+ "national_supply_sha256": "6ed336c8ef5c25fa7d30758ddda66102ccae4661dd18acf4d9e666dabefa06cc"
 }

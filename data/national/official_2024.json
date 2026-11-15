@@ -106,9 +106,9 @@
  "lift_m": {
   "Al-Jouf": {
    "low": 65,
-   "central": 200,
+   "central": 158,
    "high": 250,
-   "source": "Saq 65-297 m (Ahmed et al. 2015, Environ Earth Sci 74:1303, Table 1); Sakaka static 200 m (1979) and Tawil max 250 m bgl (ESCWA-BGR 2013 Ch.13 p.360, Ch.17 p.429)"
+   "source": "Low: MEWA monitoring wells 2-3 in the Wadi As-Sirhan depression, about 62-67 m below ground in May 2015 (Othman et al. 2018 Fig. 6). High: Tawil aquifer, maximum 250 m below ground (ESCWA-BGR 2013 Ch.17 p.429, after Abunayyan & BRGM 2008). Central = midpoint (derived; no typical level is published for the Busayta farms). The earlier 200 m was a 1979 level near the Iraqi border, in a different aquifer system"
   },
   "Tabuk": {
    "low": 50,
@@ -124,29 +124,30 @@
   },
   "Qassim": {
    "low": 90,
-   "central": 114,
-   "high": 138,
-   "source": "Al-Salamah & Nassar 2009, J Appl Sci 9(19):3555: Saq at Buraydah 90-138 m (2006)"
+   "central": 111,
+   "high": 121,
+   "source": "Al-Salamah & Nassar 2009, J Appl Sci 9(19):3555-3561, Table 1: Saq aquifer in 17 municipal wells of central Buraidah, 2006, 90-121 m (mean 110.8). The text also gives 90-138 and 90-131 m; the table is used"
   },
   "Riyadh": {
-   "low": 91,
+   "low": 90,
    "central": 111,
-   "high": 130,
-   "source": "Alharbi 2023, JKSUS doi:10.1016/j.jksus.2023.102847: Biyadh 92-130 m (Wadi Sahba/Al-Kharj); 91-111 m (preprint)"
+   "high": 121,
+   "source": "No depth source found for the fields at 44.2-45.9 E; the Qassim 2006 range (Al-Salamah & Nassar 2009 Table 1) is used as the nearest analogue and flagged. Alharbi 2023 (JKSUS 102847, 92-130 m) applies to Wadi Sahba at 47-48 E"
   },
   "WadiDawasir": {
    "low": 90,
-   "central": 120,
-   "high": 150,
-   "source": "ESCWA-BGR 2013 Ch.11 pp.326-327: Wajid ~150 m bgl, 90-100 m west of Wadi ad-Dawasir; central = midpoint (derived)"
+   "central": 150,
+   "high": 198,
+   "source": "ESCWA-BGR 2013 Ch.11: 90-100 m below ground west of the wadi (p.326, 1980s sources) and about 150 m in the farming area (p.327, Bashour 2009), falling about 3 m/yr; high = 150 + 16 yr x 3 m/yr (derived)"
   },
   "_fallback": {
    "low": 90,
-   "central": 114,
-   "high": 138,
-   "source": "No regional depth found (Eastern, Northern Borders); Qassim range used and flagged"
+   "central": 111,
+   "high": 121,
+   "source": "No current depth found for the Eastern Region or Northern Borders: the Qassim range is used and flagged. ESCWA-BGR 2013 Ch.15 pp.398-399 gives early-1980s levels only (under 25 m in the Dammam, 160 m in the Umm er Radhuma)"
   },
-  "_shield": "Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha): shallow alluvial or rainfed/spate systems; pumping energy not estimated"
+  "_shield": "Arabian Shield regions (Makkah, Madinah, Asir, Jazan, Najran, Al-Baha): shallow alluvial or rainfed/spate systems; pumping energy is not estimated, so their zero energy is a lower bound. Lifted by the fallback head, the irrigated Shield fields (Jazan) would need about 0.13 TWh a year at central (0.06-0.25 TWh; see shield_no_energy)",
+  "_age": "The depths were measured between 1979 and 2009 (Hail undated). Water levels have fallen since, by about 1-4 m a year where measured, so today's lifts are probably deeper. Static depth is about 87% of the pumping head used here, so adding the measured declines would raise pumping electricity by roughly 16-25%"
  },
  "mwan": {
   "agri_total_kt": 39960,
@@ -159,8 +160,9 @@
    "broiler": 5.51,
    "manure": 8.35
   },
-  "streams_basis": "MWAN-based estimates for 2030 back-cast to 2024 at 1.44%/yr; wet or dry not stated",
-  "source": "MWAN (National Center for Waste Management), national waste inventory, National Waste Management Strategy (2023)"
+  "streams_basis": "KAPSARC authors' 2030 estimates from MWAN data, back-cast to 2024 at 1.44%/yr; wet or dry not stated",
+  "source": "MWAN (National Center for Waste Management), national waste inventory, National Waste Management Strategy (2023)",
+  "streams_source": "Odeh & Muslemani 2025, KAPSARC Discussion Paper DP64 (Dec 2025), Fig. 1 and text p.11: the authors' 2030 estimates from MWAN 2023 data (CAGR 1.44%), back-cast here to 2024 at 1.44%/yr; wet or dry basis not stated"
  },
  "mewa_fodder_halt": {
   "effective": "2026-11-16",

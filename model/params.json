@@ -86,9 +86,9 @@
   },
   "pumping_lift_m": {
     "low": 90,
-    "central": 114,
-    "high": 138,
-    "source": "Al-Salamah & Nassar 2009, J. Appl. Sci. 9(19):3555: depth to water in Saq aquifer at Buraydah 90-138 m (2006). Central = midpoint (derived). Lower bound today: excludes later drawdown, pivot pressure and friction"
+    "central": 111,
+    "high": 121,
+    "source": "Al-Salamah & Nassar 2009, J. Appl. Sci. 9(19):3555-3561, Table 1: depth to water in 17 municipal wells in central Buraidah, 2006, 90-121 m (mean 110.8). The paper's text also gives 90-138 (Methods) and 90-131 m (Results); the table is used. Static depth: drawdown and pivot pressure are added separately"
   },
   "pump_wire_to_water_eff": {
     "low": 0.66,
@@ -175,10 +175,10 @@
     "source": "Layer manure, total solids per hen on hand per year: low USDA NRCS AWMFH (2008) Table 4-16(a) as transferred (4.37); central IPCC 2019 Table 10.13A Middle East high-productivity hens 5.21 kg VS / ASABE D384.2 VS:TS 0.735 = 7.09; high ASABE D384.2 as excreted (AWMFH Table 4-11(a)) 8.11"
   },
   "cattle_manure_kg_dry_per_head": {
-    "low": 1368,
-    "central": 1604,
-    "high": 2135,
-    "source": "Total solids per head per year: IPCC 2019 Table 10.13A Middle East dairy VS (low-productivity 1,163; mean 1,363 kg) / VS:TS 0.85 (USDA NRCS AWMFH Table 4-5 note 3); high: ASABE D384.2 total solids by animal class applied to the GASTAT 2024 herd (232,950 milking cows, dry cows, heifers, calves, bulls and 41,913 traditional cattle) = 2,135 (derived)"
+    "low": 1640,
+    "central": 2050,
+    "high": 2350,
+    "source": "Herd-average total solids per head-year on the GASTAT 2024 herd (516,323 head, 92% in barn-housed specialized projects; 11,674 L per milking cow; GASTAT Livestock Statistics 2024 Tables 1-4, 1-7, 4-1). Low ~1,640 = IPCC 2019 Tier 1 split: Middle East high-productivity dairy VS (Table 10.13A, 8.4 kg/t/d x 510 kg, Table 10A.5) on the 257,803 adult females and the other-cattle rate (9.3 kg/t/d x 362 kg) on the rest, / VS:TS 0.85 (USDA NRCS AWMFH Table 4-5 note 3) (derived). Central 2,050 = ASABE D384.2 total solids by animal class (AWMFH Tables 4-5a, 4-8a) at the GASTAT milk yield; high 2,350 = same at 125 lb milk/day (derived)"
   },
   "small_ruminant_manure_kg_dry_per_head": {
     "low": 110,
@@ -187,16 +187,16 @@
     "source": "Total solids per head per year: IPCC 2019 Table 10.13A/10A.5 VS (sheep 93.9, goats 91.1 kg) / VS:TS (sheep 0.83, AWMFH Table 4-13; goats 0.822, Zhang et al. 2013 PLoS ONE 8:e66845); high uses VS 72% of TS (Hayat, Odeh & Elshurafa 2025, KAPSARC DP KS-2025-DP28, Table A6)"
   },
   "collectable_share_cattle": {
-    "low": 0.54,
-    "central": 0.56,
-    "high": 0.58,
-    "source": "IPCC 2019 Tables 10A.6/10A.8 Middle East: 46% (dairy) / 42% (other cattle) deposited on pasture; collectable = 1 - pasture share (derived)"
+    "low": 0.56,
+    "central": 0.9,
+    "high": 0.96,
+    "source": "Low = IPCC 2019 Table 10A.6 Middle East (1 - pasture share). High = 0.919 x 1.0 + 0.081 x 0.54 = 0.96: GASTAT Livestock Statistics 2024 puts 474,410 of 516,323 cattle in barn-housed specialized projects (Tables 1-3, 1-4, 4-1), which also report organic-fertilizer production from manure (Table 1-8). Central 0.90 leaves room for flushed or liquid handling (assumption)"
   },
   "collectable_share_small_ruminants": {
-    "low": 0.5,
+    "low": 0.3,
     "central": 0.5,
-    "high": 0.5,
-    "source": "IPCC 2019 Table 10A.9 Middle East sheep/goats: 50% pasture, 50% drylot; collectable = drylot share (derived)"
+    "high": 0.7,
+    "source": "0.534 x c_holdings + 0.466 x c_landless, with 53.4% / 46.6% of sheep and goats on land holdings / landless desert and town-outskirt holdings (GASTAT Agricultural Census 2015, Tables 6-1, 6-2); c_holdings 0.6/0.8/1.0 and c_landless 0/0.15/0.3 are assumptions guided by the feeding and grazing shares in Aljumaah et al. 2014, giving 0.32/0.50/0.67 (rounded). The central equals the IPCC 2019 Table 10A.8 Middle East drylot share (50%). No study measures how much small-ruminant manure is collectable in Saudi Arabia"
   },
   "collectable_share_poultry": {
     "low": 1.0,
@@ -232,11 +232,11 @@
     "low": 0,
     "central": 0,
     "high": 0,
-    "source": "GASTAT Livestock Statistics 2024: sheep 22,055,779; goats 7,339,749; cattle 516 thousand; broiler barn capacity 274,069,031; layer capacity 55,101,080. Agricultural Statistics 2024: date palms 37,565,146. Livestock Statistics 2024 (Excel, published 20 Nov 2025) Tables 1-4, 2-1, 2-2, 3-1 to 3-3, 4-1: broilers produced 1,316,175,048 (2023: 1,165,355,341); broiler capacity 274,069,031 places is the most birds held on one day; eggs 8.42 bn table + 1.89 bn hatching; milking cows 232,950; camels 2,235,296",
+    "source": "GASTAT Livestock Statistics 2024: sheep 22,055,779; goats 7,339,749; cattle 516,323 (Tables 1-4/1-5 specialized 474,410 + 4-1 traditional 41,913); broiler barn capacity 274,069,031; layer capacity 55,101,080. Agricultural Statistics 2024: date palms 37,565,146. Livestock Statistics 2024 (Excel, published 20 Nov 2025) Tables 1-4, 2-1, 2-2, 3-1 to 3-3, 4-1: broilers produced 1,316,175,048 (2023: 1,165,355,341); broiler capacity 274,069,031 places is the most birds held on one day; eggs 8.42 bn table + 1.89 bn hatching; milking cows 232,950; camels 2,235,296",
     "values": {
       "sheep": 22055779,
       "goats": 7339749,
-      "cattle": 516000,
+      "cattle": 516323,
       "broiler_places": 274069031,
       "layer_places": 55101080,
       "date_palms": 37565146,
@@ -275,14 +275,14 @@
     "source": "Puro.earth Biochar Methodology 2025 v2, Table 6.1 p.101: persistence PF (%) = M - a x H/C_org over 200 years, M and a by soil temperature; a stream with H/C_org >= 0.70 is ineligible (rule 3.5.1)"
   },
   "h_c_org_straw": {
-    "low": 0.391,
-    "central": 0.391,
+    "low": 0.397,
+    "central": 0.394,
     "high": 0.391,
     "range": [
       0.322,
       0.528
     ],
-    "source": "Derived: molar H/C_org = (H/1.008)/(C/12.011) from the C and H contents of four wheat/barley straw chars at 500-600 C in Sedmihradska et al. 2020 Table 7 (mean 0.391; bounds 0.322-0.528); persistence 0.697 / 0.708 / 0.730 at 33 / 30 / 25 C"
+    "source": "Sedmihradska et al. 2020 Table 7, four wheat/barley straw chars at 500-600 C: molar H/C on total carbon (Puro Eq. 6.5) = 0.391; x1.007 organic-carbon correction for grass chars (Enders et al. 2012) = 0.394; x1.015 if all Ca and K were carbonate = 0.397 (derived)"
   },
   "h_c_org_fronds": {
     "low": 0.358,
@@ -295,24 +295,60 @@
     "source": "Derived from Usman et al. 2015 Table 1 (Saudi date palm chars): H 2.11% at 500 C (1.74% at 600 C) over an assumed organic carbon of 70.8% gives H/C_org 0.358 (0.295); persistence 0.712 / 0.722 / 0.743"
   },
   "h_c_org_litter": {
-    "low": 0.69,
-    "central": 0.69,
-    "high": 0.69,
+    "low": 0.73,
+    "central": 0.72,
+    "high": 0.71,
+    "upside": 0.69,
     "range": [
-      0.15,
-      0.72
+      0.7,
+      0.8
     ],
-    "source": "Tsai & Chang 2021, Agronomy 11:1692, Table 1: bedded broiler litter char at 600 C, H/C 0.69 on TOTAL carbon (no inorganic-carbon correction). On the organic-carbon basis Puro requires it is about 0.70-0.73, at or above the 0.70 gate, so litter's eligibility is uncertain; credited here as eligible. Persistence 0.563 / 0.579 / 0.611"
+    "source": "Organic-carbon basis, which Puro.earth 2025 v2 rule 6.1.6 requires (C_org = C_tot - C_inorg; the low-inorganic-carbon shortcut is for wood chars only). Tsai & Chang 2021, Agronomy 11:1692, Table 1: bedded broiler-litter chars have H/C 0.69 (600 C) and 0.71 (500 C) on TOTAL carbon. They are alkaline (pH 9.7-9.8) and rich in Ca and K, so part of their carbon is carbonate and H/C on organic carbon is higher: up to 0.726 (600 C) and 0.752 (500 C) if all Ca, K and Mg were carbonate, and about 0.80 with Tsai's 600 C hydrogen over this file's central litter-char organic C of 39.6% (derived; range 0.70-0.80). 0.73 / 0.72 / 0.71 are estimates in that range, so litter char fails rule 3.5.1 (H/C_org strictly below 0.70) and earns no credit at any level. Contaminants: Puro's Table 3.3 soil limits (WBC-Agro) apply only in the absence of Saudi biochar or soil-amendment rules (rule 3.6.9(b)); use in cement (Table 3.2, BE3) needs only a heavy-metal declaration (WBC-Material; its PAH, PCB and PCDD/F limits still apply). The contaminant evidence is mixed. US broiler-litter chars exceed WBC-Agro for arsenic (25.1 / 29.5 mg/kg DM against 20) and copper (213 / 310 against 200) (Cantrell et al. 2012, Bioresour. Technol. 107:419, Table 5, 350 / 700 C). Saudi broiler litter (Korish & Attia 2020, Animals 10:727, Table 3, Jeddah, dry basis: As 0.0005 mg/kg or less, Cu 23-29 mg/kg) implies a char that passes As and Cu, while Ni (23-54 mg/kg in the litter, about 54-127 mg/kg in char at this file's 42.6% yield with full retention, derived) may exceed the limit of 100. A measured Saudi char is needed. 'upside' 0.69 is the previous treatment (the total-carbon value, persistence 0.579 at 30 C): a hypothetical upper bound, never credited. Two modules read it: model/national_siting.py for its litter-upside runs (central_litter_upside_50kt, central_litter_upside_boxes_50kt) and model/national_scenarios.py in litter_upside() for its C3_E1 litter-upside scenarios"
+  },
+  "_soil_use": {
+    "note": "Soil-use status of each feed's char against Puro.earth 2025 v2 Table 3.3 (WBC-Agro limits, rules 3.6.9-3.6.11), for the page. Use in cement or concrete (Table 3.2, BE3) needs only a heavy-metal declaration (WBC-Material; its PAH, PCB and PCDD/F limits still apply), and char in cement is credited with the same soil model (rule 6.2.4). The siting applies no contaminant screen: it credits every feed that passes the H/C_org gate (rule 3.5.1), with the outlet chosen by haul. 'stream' is the siting stream the feed belongs to",
+    "regulation": "No Saudi biochar regulation was found, so Puro's Table 3.3 applies (rule 3.6.9(b)). Registration with MEWA is still required: the GCC Law on Fertilizers and Agricultural Soil Conditioners (Royal Decree M/47 of 15/7/1427 H, Arts. 6-7), in force in Saudi Arabia, requires registration and a licence before a soil conditioner is produced or traded. If MEWA applied the GCC organic-fertilizer limits instead (implementing regulation of 2004: Cu 150, Zn 350, Ni 50, As 15 mg/kg, pH at most 7.5), cattle- and sheep-manure chars would fail on Zn or Ni, and chars made at 500-600 C (pH about 9.6-10.5) would fail on pH, so biochar would need its own registration route",
+    "straw": {
+      "stream": "straw",
+      "status": "pass",
+      "outlet": "soil or cement",
+      "note": "Measured: wheat- and barley-straw chars at 500-600 C have As, Cd, Cu, Pb and Zn below quantification, Cr 2, Ni 0.8-1.6 and Hg below 0.1 mg/kg, and PAH below 0.5 mg/kg (Sedmihradska et al. 2020 Table 7; Czech straw), far below WBC-Agro"
+    },
+    "fronds": {
+      "stream": "fronds",
+      "status": "unmeasured",
+      "outlet": "soil or cement",
+      "note": "No trace-metal totals for date-palm char were found (Usman et al. 2015 Table 1 reports only Ca, Mg, K and Na). A plant char is expected to pass, but a Saudi frond char needs a lab analysis against WBC-Agro"
+    },
+    "cattle_manure": {
+      "stream": "manure",
+      "status": "pass",
+      "outlet": "soil or cement",
+      "note": "Measured: dairy and feedlot-manure chars at 350-700 C (Cantrell et al. 2012 Table 5, US) and cattle-manure chars at 500 C (Cely et al. 2015 Table 4, Spain) are within WBC-Agro for every metal reported"
+    },
+    "sheep_goat_manure": {
+      "stream": "manure",
+      "status": "uncertain",
+      "outlet": "cement only until measured",
+      "note": "A sheep-manure char has Ni 99-110 mg/kg at 500-650 C, at or above the WBC-Agro limit of 100 (Wang et al. 2019 Table 1; Hunan, China); its other metals pass, and As and Hg were not measured. No goat or Saudi data. Treat as cement-only until a Saudi char is measured for Ni, As and Cd. Plant outlets in the siting are chosen by haul, and soil-use status is not enforced, so the siting sends some sheep and goat char to soil. Enforcing cement-only would change removal by under 0.5% to first order (sites fixed) and by 0 to +2% with sites re-chosen (50 kt central re-runs on the earlier manure supply), a negligible effect on the headline, because char in cement earns the same credit (rule 6.2.4)"
+    },
+    "litter": {
+      "stream": "litter",
+      "status": "excluded",
+      "contaminants": "uncertain",
+      "outlet": "none (fails the H/C_org gate)",
+      "note": "Excluded by the H/C_org gate (rule 3.5.1; see h_c_org_litter), so not credited in soil or cement. Contaminant status uncertain: US broiler-litter chars exceed WBC-Agro for As and Cu (Cantrell et al. 2012 Table 5), but Saudi broiler litter (Korish & Attia 2020 Table 3) implies a char that passes As and Cu, with Ni of about 54-127 mg/kg (derived) that may exceed 100. Layer manure (nearly a third of the poultry stream) is merged into this stream; measured layer- and chicken-manure chars pass the gate and WBC-Agro (Wystalska et al. 2023; Lataf et al. 2022), but it is not split out here"
+    }
   },
   "h_c_org_manure": {
-    "low": 0.56,
+    "low": 0.69,
     "central": 0.56,
-    "high": 0.56,
+    "high": 0.38,
     "range": [
       0.28,
       0.75
     ],
-    "source": "Assumption: a class value for cattle-manure chars at 600 C (not a measurement). Measured manure chars in the Woolf et al. 2021 dataset span about 0.55-1.09 at 400-550 C (cow manure 0.72 at 550 C), so manure's eligibility is uncertain; credited here as eligible. Persistence 0.621 / 0.635 / 0.662"
+    "source": "Organic-carbon basis assumed (Puro 2025 v2 rule 6.1.6). Measured manure chars at 550-600 C: 0.28-0.43 (Enders et al. 2012 SI Table S3), 0.41-0.42 (poultry manure: Lataf et al. 2022 Table 4; Wystalska et al. 2023 Table 4), 0.72 (cow manure at 550 C, Singh et al. 2012 via Woolf et al. 2021 SI). About two-thirds of the manure stream (64% at central, with the GASTAT-based cattle factors) is sheep and goat manure, whose char has not been measured, so cattle-manure chars stand in. Low = the highest value under the 0.70 gate; at 0.70 or above manure would earn nothing"
   },
   "palm_frond_dry_matter": {
     "low": 0.924,
@@ -335,13 +371,25 @@
   "broiler_litter_kg_dry_per_bird": {
     "low": 0.32,
     "central": 0.44,
-    "high": 0.74,
-    "source": "Bedded broiler litter per bird produced (applied to GASTAT 2024 birds produced, 1,316,175,048): low Coufal et al. 2006, Poultry Sci. 85:398 (228 g dry litter per kg live weight per flock x 1.40 kg); central Berry 1997 via MSU Ext. P3601 Table 2 (0.311 kg DM per kg live weight x 1.40 kg); high all excreted solids, IPCC 2019 Table 10.13A Middle East broilers (0.52 kg VS over 42 d) / ASABE D384.2 VS:TS 0.75 + GASTAT 2023 wood shavings 0.05 kg. Market live weight 1.40 kg (USDA FAS GAIN 2006)"
+    "high": 0.71,
+    "source": "Bedded broiler litter per bird produced (applied to GASTAT 2024 birds produced, 1,316,175,048): low Coufal et al. 2006, Poultry Sci. 85:398 (228 g dry litter per kg live weight per flock x 1.40 kg); central Berry 1997 via MSU Ext. P3601 Table 2 (0.311 kg DM per kg live weight x 1.40 kg); high all excreted solids, IPCC 2019 Table 10.13A Middle East broilers (0.52 kg VS over 42 d) / ASABE D384.2 VS:TS 0.75 + GASTAT 2024 wood shavings 0.05 kg. Market live weight 1.40 kg (USDA FAS GAIN 2006) | High corrected to 0.71 = 0.52/0.75 + 0.021 kg GASTAT 2024 wood shavings per bird (Table 2-3: 27,287 t / 1,316 M birds)"
   },
   "layers_on_hand": {
     "low": 36054074,
-    "central": 36054074,
+    "central": 37592741,
     "high": 55101080,
-    "source": "Laying hens: GASTAT 2024 eggs (8,420,841,886 table + 1,890,623,330 hatching) / 286 eggs per layer on hand (USDA NASS Chickens and Eggs 2023, transferred) = 36.05 M; high = GASTAT layer capacity 55.10 M (includes parent and grandparent flocks)"
+    "source": "Laying hens on hand: central = GASTAT 2024 table eggs 8,420,841,886 / 286 per hen (USDA NASS Chickens and Eggs 2023) + hatching eggs 1,890,623,330 / 232 per breeder hen (Aviagen Ross 308 PS 2021: 178.5 hatching eggs over 40 weeks) = 37.6 M (derived); low = all eggs / 286 = 36.05 M; high = GASTAT layer capacity 55.10 M (includes parent and grandparent flocks)"
+  },
+  "pivot_pressure_head_m": {
+    "low": 10.5,
+    "central": 17.6,
+    "high": 25.4,
+    "source": "Discharge head at a centre pivot, added to the lift for pivot fields: low 15 psi = 10.5 m, central 25 psi = 17.6 m (Amosson et al. 2011 Table 1, 15-25 psi; the same value as the retrofit scenario's baseline), high 30 psi + 4.3 m pivot height = 25.4 m (Amosson: some applicators need 20-30 psi; height from Al-Ghobari 2014 Table 1) (derived)"
+  },
+  "drawdown_m": {
+    "low": 4,
+    "central": 10,
+    "high": 20,
+    "source": "Drawdown of the pumping level below the static water level, added to the lift: derived with the Cooper-Jacob equation from the aquifer parameters in ESCWA-BGR 2013 Ch.10 Table 2 (40 m is an outer bound)"
   }
 }

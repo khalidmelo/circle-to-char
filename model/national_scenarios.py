@@ -1,25 +1,49 @@
 """Scenarios on top of the national baseline: data robustness, water and energy policy, biochar deployment.
 
 Reads, never writes, the national inputs and outputs:
-  data/regions/R*/fields_radar.csv and meta.json (through national_supply.load_fields), data/national/regions.json,
-  sau_adm1.geojson and ne_50m_countries.geojson (admin_regions), data/national/fields_national.csv (baseline check),
-  data/national/manure_points.csv, data/cement/saudi_cement.csv (C0), model/params.json,
-  data/national/official_2024.json, model/scenario_params.json, model/scenario_cement_plants.csv
-Writes only: out/national_scenarios.json, out/scenario_*.csv
+  data/regions/R*/fields_radar.csv, meta.json and the WorldCover rasters (through national_supply.load_fields),
+  data/national/regions.json, sau_adm1.geojson and ne_50m_countries.geojson (admin_regions),
+  data/national/fields_national.csv (baseline check), data/national/manure_points.csv, data/cement/saudi_cement.csv (C0),
+  model/params.json, data/national/official_2024.json, model/scenario_params.json, model/scenario_cement_plants.csv
+Writes only: out/national_scenarios.json, out/scenario_*.csv (a full run removes scenario tables it did not write)
 
 Families
-  A  data robustness   A0 published table; A1 radar-verified floor (quality check on, southwest apart) with Monte
-                       Carlo ranges and validation on the same table; A2 grid of data rules; A4 floor-to-ceiling
-                       bracket against official statistics
-  B  water and energy  B1 MEWA perennial-fodder halt from 16 Nov 2026 (pre-rule baseline, savings, watch-list);
-                       B2 pivot retrofits with and without a cap on re-use of freed water
-  C  biochar           C0 published siting; C1 radar-verified floor and modelled upside under realistic outlets:
-                       per-plant cement caps (dose x 2024 output, low-ash chars only, haul limit) and a soil outlet
-                       limited by the radar-active farmland within reach; sensitivities on dose, crediting, radius
+  A         data robustness   A0 published table; A1 radar-verified floor (quality check on, southwest apart) with
+                              Monte Carlo ranges and validation on the same table; A2 grid of data rules (quality check
+                              on or off, southwest in or out, radar seasons only or the radar + Sentinel-2 tier); A4
+                              floor-to-ceiling bracket against official statistics
+  B         water and energy  B1 MEWA perennial-fodder halt from 16 Nov 2026 (pre-rule baseline, savings) on the radar
+                              table: the floor
+  B_s2                        B1 again on national_supply's own radar + Sentinel-2 tier (scenario_params s2_tier;
+                              'combined' is the per-field class_s2 of fields_national.csv that the national page maps):
+                              the upper value; its watch-list flags the fields with a season taken from Sentinel-2 and
+                              codes how each got it (radar, season fill, Sentinel-2 only, outside the radar swath)
+  B2                          pivot retrofits with and without a cap on re-use of freed water, against the headline's
+                              own pumping head (static lift + drawdown + pivot pressure head)
+  C         biochar           C0 published siting; C1 radar-measured floor and radar feed + modelled manure under
+                              realistic outlets: per-plant cement caps (dose x 2024 output, haul limit) and a soil
+                              outlet limited by the radar-active farmland within reach, at 50, 25 and 10 kt plants;
+                              sensitivities on dose, crediting, radius. Under Puro 2025 v2 cement may take every char that
+                              passes the H/C_org gate, so no farmland needs keeping for other chars: char goes to
+                              cement only where that beats farmland after haul, then to farmland, then what farmland
+                              cannot take to cement plants with allowance left (audit sc-3). C3_F3_vm0044_cement keeps
+                              Verra VM0044's rule (straw and frond chars only, sent to cement first so farmland stays
+                              free for manure char) as a labelled sensitivity
+  C_upside                    never credited: while poultry litter fails Puro's H/C_org gate in params.json, the
+                              C3_E1_litter_upside rows count it at params.json's h_c_org_litter 'upside' value (its
+                              total-carbon H/C), a hypothetical upper bound, at 50, 25 and 10 kt and with soil unlimited.
+                              If litter passes the gate it is credited in C1_F3, and C1_F2 and C3_E1_no_litter return
 
-Field tables are rebuilt with national_supply's own loader (quality check on and off) and accounted with
-national_supply.flows; the rebuild at the published setting must equal fields_national.csv column by column on every
-run. C0 calls national_siting.run itself. run_id fingerprints every input file.
+Every Sentinel-2 fill (A4_s2fill, the A2 *_ws2 rows, B_s2) is national_supply's own radar + Sentinel-2 tier, the one
+scenario_params s2_tier names, so the scenarios page shows one Sentinel-2 tier; the engine's own Sentinel-2 rules are
+only the bracket's floor (A4_both) and ceiling (A4_either).
+
+Field tables are rebuilt with national_supply's own loader (quality check on and off; the WorldCover drop is part of
+it) and accounted with national_supply.flows (its pumping head included). The rebuild at the published setting, with
+national_supply.s2_tier's columns added as national_supply.main adds them, must equal fields_national.csv column by
+column on every run. C0 calls national_siting.run itself. run_id fingerprints every input file; it names the commit only
+when the working tree is clean (a run made before its commit would otherwise stamp a commit that does not hold its
+inputs).
 
 Usage: .venv/bin/python model/national_scenarios.py [scenario ids ...]   (default: all)
 """
@@ -40,10 +64,18 @@ import national_siting as NS  # noqa: E402
 import national_supply as SUP  # noqa: E402
 
 LV = ("low", "central", "high")
+SEASONS = ("winter", "summer")
 RHO_G = 1000 * 9.81
 CO2_PER_C = 44 / 12
 FLOW_KEYS = ("water_m3", "elec_kwh", "elec_kwh_summer", "co2_t_grid", "co2_t_diesel", "straw_t_dry", "fronds_t_dry")
 IRRIGATED = ("winter_only", "summer_only", "wheat_rotation", "year_round", "palm_grove", "partly_seen_active")
+FEEDS = ("straw", "fronds", "litter", "manure")
+WATCHLIST = "scenario_B1_watchlist.csv"
+# watch-list fill_code: how a field got its seasons (watchlist())
+FILL_CODES = {"radar": 0, "season_fill": 1, "s2_only": 2, "unseen": 3}
+AREA_KEYS = ("farmed_ha", "active_ha", "area_ha_by_class")  # pre-halt in B1 records: published as baseline_*
+# post_halt.area_ha_by_class: the class the scope fields take after a halt at full compliance
+POST_HALT_CLASS = {"seasonal": "seasonal_fodder", "wheat": "winter_only", "fallow": "fallow"}
 
 
 def SP():
@@ -63,7 +95,7 @@ def load_fields():
 
 def base_table(qc):
     """Field table built exactly as national_supply.main builds it, with the radar quality check on or off:
-    load_fields (dedupe, season flags), admin regions, fields abroad dropped, classes."""
+    load_fields (dedupe, WorldCover drop, season flags), admin regions, fields abroad dropped, classes."""
     df = SUP.admin_regions(SUP.load_fields(qc))
     df = df[df.admin != "abroad"].drop(columns=["country"], errors="ignore").reset_index(drop=True)
     df["class"] = df.apply(SUP.classify, axis=1)
@@ -79,20 +111,21 @@ def _obj(flag, known):
     return pd.Series(np.where(known, flag, None), dtype=object).where(known, np.nan)
 
 
-def reclassify(df, fill_winter_from_s2=False, season_rule="radar"):
+def _shield(d):
+    return SUP.tri(d.shield).eq(True) if d.shield.dtype == object else d.shield.astype(bool)
+
+
+def reclassify(df, season_rule="radar"):
     """Season flags and classes as national_supply builds them (the input table already carries the quality-check
-    setting), with options:
-      fill_winter_from_s2  an unobserved winter takes the Sentinel-2 winter flag
-      season_rule          'radar' (default); 'both' = active only where radar and Sentinel-2 agree (unknown stays
-                           unknown); 'either' = radar or Sentinel-2 active (a ceiling: fields are green pixels)"""
+    setting), with one option:
+      season_rule  'radar' (default); 'both' = active only where radar and Sentinel-2 agree (unknown stays unknown);
+                   'either' = radar or Sentinel-2 active (a ceiling: fields are green pixels)
+    Seasons the radar did not observe are filled only by national_supply's own radar + Sentinel-2 tier (s2_table)."""
     d = df.copy().reset_index(drop=True)
     wa, sa = SUP.tri(d.winter_active), SUP.tri(d.summer_active)
     radar_obs = (wa.notna() | sa.notna()).values  # palm groves need at least one season the radar itself observed
     s2w, s2s = SUP.tri(d.s2_winter_active), SUP.tri(d.s2_summer_active)
     seen = SUP.tri(d.radar_seen).eq(True)
-    if fill_winter_from_s2:
-        fill = wa.isna() & seen & s2w.notna()
-        wa[fill] = s2w[fill]
     if season_rule == "both":
         wa = _obj((wa.eq(True) & s2w.eq(True)).values, wa.notna().values)
         sa = _obj((sa.eq(True) & s2s.eq(True)).values, sa.notna().values)
@@ -110,8 +143,9 @@ def reclassify(df, fill_winter_from_s2=False, season_rule="radar"):
 
 
 def accounting(d, p=None, eff_override=None):
-    """national_supply.flows on a copy. eff_override (a number) is an irrigation upgrade: each level's efficiency
-    becomes max(its value, eff_override), so an upgrade never makes a system less efficient."""
+    """national_supply.flows on a copy (its pumping head puts pivot pressure on national_supply.pressure_pivots, by this
+    table's own class, so palm groves get none). eff_override (a number) is an irrigation upgrade: each level's
+    efficiency becomes max(its value, eff_override), so an upgrade never makes a system less efficient."""
     p = p or SUP.P()
     if eff_override is not None:
         base = p["pivot_application_efficiency"]
@@ -119,14 +153,31 @@ def accounting(d, p=None, eff_override=None):
     return SUP.flows(d.copy(), p, eff_override=eff_override)
 
 
+def s2_table(d, tier="combined"):
+    """national_supply's radar + Sentinel-2 tier on an accounted table d, as national_supply.main builds it (its
+    flows, with wheat straw on Sentinel-2-filled fields capped per region): 'combined' (every fill; the class_s2 of
+    fields_national.csv) or 'seasons' (winter fill and the unobserved season of partly-seen fields only). Adds s2_fill
+    (the fill that changed the field, '' for none), s2_filled, and winter_from_s2 / summer_from_s2 (that season's flag
+    came from Sentinel-2, so it has no radar margin)."""
+    if tier not in ("combined", "seasons"):
+        raise SystemExit(f"unknown Sentinel-2 tier {tier!r}: use 'combined' or 'seasons'")
+    comb, seasons, masks, _ = SUP.s2_tier(d, SUP.P(), OFF())
+    t = (comb if tier == "combined" else seasons).copy()
+    only = masks["c"] if tier == "combined" else pd.Series(False, index=t.index)  # 'seasons' keeps their radar class
+    t["winter_from_s2"] = (masks["a"] | masks["bw"] | only).values.astype(bool)
+    t["summer_from_s2"] = (masks["bs"] | only).values.astype(bool)
+    t["s2_filled"] = t.s2_fill.ne("").values
+    return t
+
+
 def totals(d):
     t = {"fields": int(len(d)), "field_ha": round(float(d.area_ha.sum())),
          "farmed_ha": round(float(d[d.winter_active.eq(True) | d.summer_active.eq(True)].area_ha.sum())),
-         "active_ha": {se: round(float(d[d[f"{se}_active"].eq(True)].area_ha.sum())) for se in ("winter", "summer")},
+         "active_ha": {se: round(float(d[d[f"{se}_active"].eq(True)].area_ha.sum())) for se in SEASONS},
          # every radar-seen field whose season is unknown (incl. fields with neither season classified and palm groves
          # with one season unknown); national_supply's season_not_observed_ha counts one-season-observed fields only
          "season_unknown_ha": {se: round(float(d[d[f"{se}_active"].isna() & SUP.tri(d.radar_seen).eq(True)].area_ha.sum()))
-                               for se in ("winter", "summer")},
+                               for se in SEASONS},
          "area_ha_by_class": d.groupby("class").area_ha.sum().round().to_dict()}
     for k in FLOW_KEYS:
         t[k] = {l: round(float(np.nansum(d[f"{k}_{l}"]))) for l in LV}
@@ -134,16 +185,19 @@ def totals(d):
     return t
 
 
-def validation(d, skip=()):
+def validation(d, skip=(), exclude=None):
     """Area-weighted agreement of radar season flags with Sentinel-2 on this table, over fields where both are
-    known (winter: Sentinel-2 over the radar's own Dec-Jan dates; summer: Sentinel-2 Jun-Oct). Seasons in skip
-    (filled from Sentinel-2) are not validated against Sentinel-2."""
+    known (winter: Sentinel-2 over the radar's own Dec-Jan dates; summer: Sentinel-2 Jun-Oct). Seasons in skip, and
+    per season the fields in exclude ({season: boolean mask}), took their flag from Sentinel-2 and are not validated
+    against it."""
     out = {}
     for se, ref in (("winter", "s2_winter_check"), ("summer", "s2_summer_active")):
         if se in skip:
             continue
         r, s = SUP.tri(d[f"{se}_active"]), SUP.tri(d[ref])
         m = r.notna() & s.notna()
+        if exclude is not None and se in exclude:
+            m &= ~pd.Series(np.asarray(exclude[se], dtype=bool), index=d.index)
         if not m.any():
             continue
         w, r, s = d.area_ha[m].values, r[m].astype(bool).values, s[m].astype(bool).values
@@ -160,16 +214,26 @@ def validation(d, skip=()):
 
 
 def check_baseline(built, published):
-    """The table rebuilt with national_supply's loader and accounted with national_supply.flows must equal the
-    published fields_national.csv: same fields in the same order (uid) and every shared column equal."""
+    """The table rebuilt with national_supply's loader and accounted with national_supply.flows, with
+    national_supply.s2_tier's columns added as national_supply.main adds them (class_s2, s2_fill, straw and fronds of
+    the combined tier), must equal the published fields_national.csv: same fields in the same order (uid), and every
+    published column present in the rebuild and equal."""
     d = accounting(reclassify(built))
     if len(d) != len(published) or not (d.uid.values == published.uid.values).all():
         raise SystemExit(f"baseline mismatch: field lists differ ({len(d)} rebuilt vs {len(published)} published)")
+    comb = s2_table(d, "combined")
+    pub = d.copy()
+    pub["class_s2"], pub["s2_fill"] = comb["class"].values, comb["s2_fill"].values
+    for k in ("straw_t_dry", "fronds_t_dry"):
+        for lv in LV:
+            pub[f"{k}_s2_{lv}"] = comb[f"{k}_{lv}"].values
+    missing = [c for c in published.columns if c not in pub.columns]
+    if missing:
+        raise SystemExit("baseline mismatch: published columns the rebuild does not make (mirror national_supply.main): "
+                         + ", ".join(missing))
     bad = []
     for c in published.columns:
-        if c not in d.columns:
-            continue
-        a, b = d[c], published[c]
+        a, b = pub[c], published[c]
         if pd.api.types.is_numeric_dtype(b) and pd.api.types.is_numeric_dtype(a):
             ok = np.allclose(np.nan_to_num(a.values.astype(float)), np.nan_to_num(b.values.astype(float)), atol=1.0)
         else:  # flags and labels: compare as text, gaps as empty
@@ -180,6 +244,19 @@ def check_baseline(built, published):
     if bad:
         raise SystemExit("baseline mismatch with fields_national.csv in columns: " + ", ".join(bad))
     return d
+
+
+# ================================================================ pumping head: national_supply's own rule
+def pivot_fields(d):
+    """The fields national_supply.flows adds the pivot pressure head on (national_supply.pressure_pivots: centre pivots,
+    circularity above 0.75 and at least 10 ha, that are not palm groves, by the class of the table at hand)."""
+    return SUP.pressure_pivots(d)
+
+
+def head_m(d, lv, p=None, off=None):
+    """Total pumping head of each field at a level, national_supply.pump_head_m (the head flows uses): static depth of
+    the field's lift region + drawdown + pivot pressure head on centre pivots that are not palm groves, in metres."""
+    return SUP.pump_head_m(d, p or SUP.P(), (off or OFF())["lift_m"], lv)
 
 
 def _tri_ppf(u, lo, mode, hi):
@@ -193,7 +270,9 @@ def _tri_ppf(u, lo, mode, hi):
 
 def monte_carlo(d, sp):
     """P5/P50/P95 of the totals: triangular(low, central, high) per factor; irrigation depths share one quantile,
-    lift one quantile across regions, everything else independent. Vectorised on class x lift-region areas."""
+    static lift one quantile across regions, everything else independent, drawdown and the pivot pressure head
+    included (the head of national_supply.flows, pressure on its pressure_pivots only). Vectorised on class x
+    lift-region x pivot areas."""
     mc = sp["monte_carlo"]
     rng = np.random.default_rng(mc["seed"])
     n = mc["n"]
@@ -203,23 +282,28 @@ def monte_carlo(d, sp):
     part_w = cls.eq("partly_seen_active") & d.winter_active.eq(True)
     groups = {"win": cls.eq("winter_only") | part_w, "smr": cls.eq("summer_only") | part_s, "rot": cls.eq("wheat_rotation"),
               "yr": cls.isin(["year_round", "palm_grove"])}
-    shield = SUP.tri(d.shield).eq(True) if d.shield.dtype == object else d.shield.astype(bool)
+    shield, piv = _shield(d), pivot_fields(d)
     keys = sorted(d.lift_key.unique())
     A = {g: np.array([d.area_ha[m & (d.lift_key == k)].sum() for k in keys]) for g, m in groups.items()}
-    Ae = {g: np.array([d.area_ha[m & (d.lift_key == k) & ~shield].sum() for k in keys]) for g, m in groups.items()}
+    Ae = {(g, pv): np.array([d.area_ha[m & (d.lift_key == k) & ~shield & (piv == pv)].sum() for k in keys])
+          for g, m in groups.items() for pv in (False, True)}  # non-shield area, off and on pivots
     ud, ue, ul = rng.random(n), rng.random(n), rng.random(n)
     ind = {k: rng.random(n) for k in ("pump", "grid", "straw", "palms", "resid")}
+    ind |= {k: rng.random(n) for k in ("drawdown", "pressure")}  # drawn last, so every earlier factor keeps its draws
     t = lambda key, u: _tri_ppf(u, p[key]["low"], p[key]["central"], p[key]["high"])  # noqa: E731
     win, smr, yr = t("irrigation_mm_winter_only", ud), t("irrigation_mm_summer_crop", ud), t("irrigation_mm_year_round", ud)
     eff = t("pivot_application_efficiency", ue)
     lift = np.stack([_tri_ppf(ul, lifts[k]["low"], lifts[k]["central"], lifts[k]["high"]) for k in keys], axis=1)  # n x regions
+    dd, pr = t("drawdown_m", ind["drawdown"])[:, None], t("pivot_pressure_head_m", ind["pressure"])[:, None]
+    head = {False: lift + dd, True: lift + dd + pr}
     depth = {"win": win, "smr": smr, "rot": win + smr, "yr": yr}
     share = {"win": 0 * win, "smr": 1 + 0 * win, "rot": smr / (win + smr), "yr": 0.5 + 0 * win}
     water = sum(depth[g] * 10 / eff * A[g].sum() for g in groups)          # m3 (mm x 10 = m3/ha)
-    we = {g: (depth[g] * 10 / eff)[:, None] * Ae[g][None, :] for g in groups}  # n x regions, non-shield
+    work = {g: sum(((depth[g] * 10 / eff)[:, None] * Ae[g, pv][None, :] * head[pv]).sum(axis=1) for pv in (False, True))
+            for g in groups}  # m3 x m, non-shield
     pe = t("pump_wire_to_water_eff", ind["pump"])
-    elec = sum((we[g] * lift).sum(axis=1) for g in groups) * RHO_G / 3.6e6 / pe
-    elec_s = sum((we[g] * lift).sum(axis=1) * share[g] for g in groups) * RHO_G / 3.6e6 / pe
+    elec = sum(work.values()) * RHO_G / 3.6e6 / pe
+    elec_s = sum(work[g] * share[g] for g in groups) * RHO_G / 3.6e6 / pe
     co2 = elec * t("grid_kgco2e_per_kwh", ind["grid"]) / 1000
     a_wheat = float(d.area_ha[cls.isin(["winter_only", "wheat_rotation"])].sum())
     a_palm = float(d.area_ha[cls.eq("palm_grove")].sum())
@@ -232,11 +316,13 @@ def monte_carlo(d, sp):
 
 # ================================================================ B: water and energy policy
 def fodder_halt(d, regions, variant="seasonal", compliance=1.0):
-    """MEWA perennial-fodder halt. Year-round fields in the named regions switch to seasonal winter fodder
-    ('seasonal': winter depth, no straw because forage is cut green), to winter wheat ('wheat': straw on), or go
-    fallow ('fallow'). compliance scales each field's change. Returns (accounted table, scope mask, baseline)."""
+    """MEWA perennial-fodder halt on an accounted table d, whose flows are the pre-halt baseline (on the Sentinel-2
+    tier, the tier's own flows with its straw cap). Year-round fields in the named regions switch to seasonal winter
+    fodder ('seasonal': winter depth, no straw because forage is cut green), to winter wheat ('wheat': straw on), or go
+    fallow ('fallow'); only those fields' flows change, each by the share 'compliance' of its change.
+    On the Sentinel-2 tier, straw on fields converted to wheat is not capped: the tier's GASTAT 2024 cap describes the
+    pre-halt wheat area. Returns (accounted table, scope mask, baseline)."""
     scope = d["class"].eq("year_round") & d.admin.isin(regions)
-    base = accounting(d)
     sw = d.copy()
     sw.loc[scope, "class"] = "fallow" if variant == "fallow" else "winter_only"
     sw = accounting(sw)
@@ -244,53 +330,169 @@ def fodder_halt(d, regions, variant="seasonal", compliance=1.0):
         for l in LV:
             sw.loc[scope, f"straw_t_dry_{l}"] = 0.0
     cols = [f"{k}_{l}" for k in FLOW_KEYS for l in LV]
-    out = base.copy()
-    out[cols] = base[cols].values + compliance * (sw[cols].fillna(0).values - base[cols].fillna(0).values)
-    return out, scope, base
+    out = d.copy()
+    before = d.loc[scope, cols]
+    out.loc[scope, cols] = before.values + compliance * (sw.loc[scope, cols].fillna(0).values - before.fillna(0).values)
+    return out, scope, d
+
+
+def post_halt_areas(d, scope, variant):
+    """Areas after a halt at full compliance (audit sc-4), on the pre-halt table d: the scope fields go fallow (not
+    farmed) or are farmed in winter only, labelled POST_HALT_CLASS: 'seasonal_fodder' (no straw; the accounting runs
+    them at the winter-crop depth) or 'winter_only' (winter wheat, the class that carries straw everywhere else)."""
+    lab = POST_HALT_CLASS[variant]
+    x = d[["area_ha", "class", "winter_active", "summer_active"]].copy()
+    x["winter_active"], x["summer_active"] = x.winter_active.astype(object), x.summer_active.astype(object)
+    x.loc[scope, "class"] = lab
+    x.loc[scope, "winter_active"] = variant != "fallow"
+    x.loc[scope, "summer_active"] = False
+    what = {"seasonal": "licensed seasonal winter fodder, farmed in winter only at the winter-crop irrigation depth and "
+                        "cut green, so no straw",
+            "wheat": "winter wheat, farmed in winter only, with straw", "fallow": "not farmed"}[variant]
+    return {"farmed_ha": round(float(x[x.winter_active.eq(True) | x.summer_active.eq(True)].area_ha.sum())),
+            "active_ha": {se: round(float(x[x[f"{se}_active"].eq(True)].area_ha.sum())) for se in SEASONS},
+            "area_ha_by_class": x.groupby("class").area_ha.sum().round().to_dict(),
+            "note": f"At full compliance. The scope fields (year-round before the halt) are counted as '{lab}': {what}. "
+                    "Every other field keeps its pre-halt class and seasons"}
+
+
+def halt_regions(d, scope, regions):
+    """Per MEWA halt region, on the pre-halt table: year-round area in scope, GASTAT 2024 fodder (all fodder, licensed
+    seasonal fodder included), and the fields that may hold more year-round fields: active in one season with the
+    other not observed, or with neither season classified (radar_unusable)."""
+    off = OFF()["regions"]
+    part = d["class"].eq("partly_seen_active")
+    rows = []
+    for r in regions:
+        x = d.admin.eq(r)
+        rows.append({"admin": r, "scope_ha": round(float(d.area_ha[x & scope].sum())),
+                     "gastat_fodder_ha": off.get(r, {}).get("fodder_ha"),
+                     "summer_active_winter_unknown_ha": round(float(d.area_ha[x & part & d.summer_active.eq(True)].sum())),
+                     "winter_active_summer_unknown_ha": round(float(d.area_ha[x & part & d.winter_active.eq(True)].sum())),
+                     "radar_unusable_ha": round(float(d.area_ha[x & d["class"].eq("radar_unusable")].sum()))})
+    return rows
 
 
 def watchlist(d, scope, metas):
+    """Fields in the halt scope with their radar margins above the region-season desert threshold. A season whose
+    flag came from Sentinel-2 (winter_from_s2 / summer_from_s2 on the Sentinel-2 tier) has no radar margin; s2_filled
+    marks the fields with such a season, s2_fill names the fill (national_supply.s2_tier) and fill_code (FILL_CODES)
+    says how the field got its seasons: 0 radar only; 1 a season filled from Sentinel-2 on a field the radar observed
+    (season or winter fill); 2 classified from Sentinel-2 alone where the radar covered the field but could classify
+    no season; 3 classified from Sentinel-2 alone outside the swath of every radar date used (radar class 'unseen')."""
     thr = {rid: m.get("validation", {}).get("thresholds_db", {}) for rid, m in metas.items()}
-    w = d.loc[scope, ["uid", "region", "admin", "lon", "lat", "area_ha", "tree_frac", "hv_above_desert_winter", "hv_above_desert_summer"]].copy()
-    for se in ("winter", "summer"):
+    flags = {c: (d[c] if c in d else False) for c in ("s2_filled", "winter_from_s2", "summer_from_s2")}
+    d = d.assign(**flags, s2_fill=d["s2_fill"] if "s2_fill" in d else "")
+    fill, seen = d.s2_fill.fillna("").astype(str), SUP.tri(d.radar_seen).eq(True)
+    d = d.assign(fill_code=np.select([fill.eq("s2_only") & ~seen, fill.eq("s2_only"), fill.ne("")],
+                                     [FILL_CODES["unseen"], FILL_CODES["s2_only"], FILL_CODES["season_fill"]],
+                                     FILL_CODES["radar"]))
+    w = d.loc[scope, ["uid", "region", "admin", "lon", "lat", "area_ha", "tree_frac", "hv_above_desert_winter",
+                      "hv_above_desert_summer", "s2_filled", "s2_fill", "fill_code"]].copy()
+    for se in SEASONS:
         t = w.region.map(lambda r: thr.get(r, {}).get(se, np.nan))
         w[f"{se}_margin_db"] = (w[f"hv_above_desert_{se}"] - t).round(2)
+        w.loc[d.loc[scope, f"{se}_from_s2"].values.astype(bool), f"{se}_margin_db"] = np.nan
     return w.sort_values("area_ha", ascending=False)
 
 
 def retrofit(d, sp, eff_new, rebound):
-    """Pivot retrofit (central level): pivots (circularity > 0.75, >= 10 ha, irrigated class) move from medium-
-    pressure sprinklers (efficiency and pressure head from scenario_params) to the new efficiency at low pressure.
-    Energy counts static lift plus pressure head. Uncapped, a share 'rebound' of the freed water irrigates new land."""
+    """Pivot retrofit (central level): sprinkler pivots (national_supply.pressure_pivots fields, centre pivots that are
+    not palm groves, in an irrigated class) move from medium-pressure sprinklers to the new efficiency at low pressure.
+    The baseline is the headline's own accounting on those fields: their water (central efficiency, rescaled to the
+    baseline efficiency) pumped against the headline's head (national_supply.pump_head_m: static depth + drawdown +
+    pivot pressure head). The retrofit lowers only the pressure part of that head, so the pressure the headline already
+    counts is not added again. Uncapped, a share 'rebound' of the freed water irrigates new land at the new pressure."""
     r0 = sp["pivot_retrofit"]
-    p, lifts = SUP.P(), OFF()["lift_m"]
+    p = SUP.P()
     sprinkled = [c for c in IRRIGATED if c != "palm_grove"]  # palm groves are not on sprinkler pivots
-    piv = (d.circularity > 0.75) & (d.area_ha >= 10) & d["class"].isin(sprinkled)
-    shield = SUP.tri(d.shield).eq(True) if d.shield.dtype == object else d.shield.astype(bool)
-    lift = d.lift_key.map(lambda k: lifts[k]["central"])
+    piv = pivot_fields(d) & d["class"].isin(sprinkled)
+    shield = _shield(d)
+    head0 = head_m(d, "central", p)  # the headline's head; on these pivots it holds pivot_pressure_head_m (central)
+    head1 = head0 - float(p["pivot_pressure_head_m"]["central"]) + r0["low_pressure_head_m"]  # the pivots afterwards
     pe, ef = p["pump_wire_to_water_eff"]["central"], p["grid_kgco2e_per_kwh"]["central"]
     w0 = d.water_m3_central.where(piv, 0.0) * p["pivot_application_efficiency"]["central"] / r0["baseline_efficiency"]
     w1 = w0 * r0["baseline_efficiency"] / eff_new
-    e = lambda w, h: (w * RHO_G * (lift + h) / 3.6e6 / pe).where(~shield, 0.0)  # noqa: E731
+    e = lambda w, h: (w * RHO_G * h / 3.6e6 / pe).where(~shield, 0.0)  # noqa: E731
     share = (d.elec_kwh_summer_central / d.elec_kwh_central).where(d.elec_kwh_central > 0, 0.0).fillna(0)
-    e0, e1 = e(w0, r0["baseline_pressure_head_m"]), e(w1, r0["low_pressure_head_m"])
+    e0, e1 = e(w0, head0), e(w1, head1)
     freed = (w0 - w1).sum()
     reuse = rebound * freed
-    dw_e = ((w0 - w1) * RHO_G * (lift + r0["low_pressure_head_m"]) / 3.6e6 / pe).where(~shield, 0.0)  # freed water re-pumped
+    dw_e = e(w0 - w1, head1)  # freed water re-pumped at the new pressure
     e_reuse, es_reuse = rebound * dw_e.sum(), rebound * (dw_e * share).sum()
     es0, es1 = (e0 * share).sum(), (e1 * share).sum()
     return {"pivot_fields": int(piv.sum()), "pivot_ha": round(float(d.area_ha[piv].sum())),
             "pivot_water_m3": round(float(w0.sum())), "pumped_water_saved_m3": round(float(freed - reuse)),
-            "elec_baseline_with_pressure_kwh": round(float(e0.sum())),
+            "elec_baseline_kwh": round(float(e0.sum())),
+            "headline_elec_kwh": round(float(np.nansum(d.elec_kwh_central.where(piv & ~shield, 0.0)))),
+            "baseline_pressure_head_m": float(p["pivot_pressure_head_m"]["central"]),
             "elec_saved_kwh": round(float(e0.sum() - e1.sum() - e_reuse)),
             "summer_mw_saved": round(float(es0 - es1 - es_reuse) / (122 * 24) / 1000, 1),
             "co2_saved_t": round(float((e0.sum() - e1.sum() - e_reuse) * ef / 1000)),
             "note": "Pumped water saved, not consumptive use: crop water need is unchanged; how much of the losses "
-                    "returned to the aquifer is unknown, so depletion saved is at most this. The lower pressure head "
-                    "saves energy even when all freed water is re-used"}
+                    "returned to the aquifer is unknown, so depletion saved is at most this. The baseline is the "
+                    "headline's own pumping on these pivots (static lift + drawdown + pivot pressure head; "
+                    "elec_baseline_kwh equals headline_elec_kwh while the baseline efficiency equals the central one); "
+                    "the retrofit lowers only the pressure part. The lower pressure head saves energy even when all "
+                    "freed water is re-used"}
 
 
 # ================================================================ C: biochar siting
+def litter_credited(p=None):
+    """Does poultry-litter char pass Puro's H/C_org gate (rule 3.5.1) at the central level of params.json?"""
+    return NS.persistence(p or NS.params("central"), "litter") > 0
+
+
+def litter_upside():
+    """params.json override for the litter upside: h_c_org_litter at its 'upside' value (the total-carbon H/C, the
+    earlier treatment, which model/national_siting.py also uses for its labelled upside)."""
+    raw = json.loads((ROOT / "model" / "params.json").read_text())
+    return {"h_c_org_litter": raw["h_c_org_litter"]["upside"]}
+
+
+def cement_feeds(sp, p, rule="puro"):
+    """Feeds whose char may go to cement, each only if its char passes the H/C_org gate at these params. 'puro'
+    (default; Puro 2025 v2 sets no carbon minimum for construction uses): scenario_params cement_eligible_feeds.values
+    (the chars of the credited supply) and any other feed whose char passes the gate (poultry litter in the C_upside
+    rows). 'vm0044' (Verra sensitivity): vm0044_values, straw and frond chars only (VM0044 v1.2: at least 50% carbon
+    for non-soil uses)."""
+    ce = sp["cement_eligible_feeds"]
+    if rule == "puro":
+        cand = list(ce["values"]) + [f for f in FEEDS if f not in ce["values"]]
+    elif rule == "vm0044":
+        cand = list(ce["vm0044_values"])
+    else:
+        raise SystemExit(f"unknown cement rule {rule!r}: use 'puro' or 'vm0044'")
+    return tuple(f for f in cand if NS.persistence(p, f) > 0)
+
+
+def routes_by_haul(soil, feeds, cement_feeds):
+    """site2's outlet rule (audit sc-3): True when char goes to cement only where cement beats soil after haul, which
+    holds when soil is unlimited (soil None) or every feed in the supply may go to cement (the Puro default); False
+    only where chars that cannot go to cement compete for limited farmland (the VM0044 sensitivity)."""
+    return soil is None or set(feeds) <= set(cement_feeds)
+
+
+def outlets_note(soil, by_haul, max_char_haul_km):
+    """The outlet rule of a site2 record in one line (C0 carries its own)."""
+    if soil is None:
+        return (f"farmland unlimited; cement capped, within {max_char_haul_km:g} km: char goes to cement only where it "
+                "earns more than in soil after haul")
+    reach = f"farmland within {soil['radius_km']:g} km and cement within {max_char_haul_km:g} km, both capped"
+    if by_haul:
+        return (f"{reach}: cement where it earns more than farmland after haul, then farmland, then what farmland cannot "
+                "take to the nearest cement plants with allowance left (audit sc-3); soil-use status (params.json "
+                "_soil_use) is not enforced, so sheep and goat manure char, cement-only until measured, can go to farmland")
+    return (f"{reach}: cement-eligible chars to cement wherever allowance remains, keeping farmland for the chars only "
+            "soil can take, then farmland")
+
+
+def in_supply(s):
+    """Feeds actually in a supply table (streams failing the H/C_org gate are already left out), in FEEDS order."""
+    present = set(s.feed)
+    return [f for f in FEEDS if f in present]
+
+
 def cement_table():
     """Cement outlets for the capped scenarios: model/scenario_cement_plants.csv (2024 sales per plant, corrected
     locations), with coordinates missing there taken from data/cement/saudi_cement.csv row by row (its first 19 rows
@@ -351,7 +553,7 @@ def published_siting(size_t):
                         "cement_parts": np.where(to_cem, df.cement_name + ":" + df.char_t.astype(str) + "@" + df.cement_km.round().astype(int).astype(str) + "km", ""),
                         "net_removal_tco2": df.net_removal_tco2, "credited_tco2": df.net_removal_tco2,
                         "retained_tco2": np.round(retained), "transport_tco2": np.round(transport),
-                        **{f"feed_{f}": df[f"feed_{f}"] for f in ("straw", "fronds", "litter", "manure")}, "plant": df.plant})
+                        **{f"feed_{f}": df[f"feed_{f}"] for f in FEEDS}, "plant": df.plant})
     return out, s
 
 
@@ -360,17 +562,25 @@ def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", r
     """Greedy siting with realistic outlets.
       s          supply (national_siting.supply format)
       cement     cement outlets (lon, lat, city) with 'allowance' = char each can take (t/yr); only chars of
-                 cement_feeds may go there, nearest first within max_char_haul_km, and only where cement beats soil
+                 cement_feeds may go there, nearest first within max_char_haul_km
       soil       None (unlimited soil, char returned along the feed haul) or a dict: lon, lat, cap (char-dose units
                  per field, t/yr at the central dose), units ({feed: units per t char}), radius_km. Char that finds
                  no capacity within the radius is unplaced and earns nothing.
       credit     'puro' (char in cement credited like soil, Puro 2025 v2 rule 6.2.4) or 'retention' (in-service)
       min_outlet_share  a site is built only if at least this share of its char has an outlet
+    Outlets (routes_by_haul). When soil is unlimited or every char in the supply may go to cement (the Puro default),
+    char goes to cement only where cement beats soil per tonne after haul, then to farmland, and what farmland cannot
+    take to the nearest cement plants with allowance left within max_char_haul_km. Only when chars that cannot go to
+    cement compete for limited farmland (the VM0044 sensitivity) does cement-eligible char go to cement wherever
+    allowance remains, keeping farmland for the chars only soil can take. Audit sc-3 (char forced to cement while
+    nearer farmland had room) is closed by this rule; its pure-haul fix, with no cement fallback once farmland is
+    full, cut C1_F3 by about 43% in review.
     Every plant records credited (Puro) and retained (in-service) removal, net of truck emissions."""
     lon, lat = s.lon.values, s.lat.values
     dry = s.dry_t.values.astype(float).copy()
     wpd, cpt, chpt, perm, feed = s.wet_per_dry.values, s.c_per_t.values, s.char_t_per_t.values, s.soil_perm.values, s.feed.values
     elig = np.isin(feed, cement_feeds)
+    by_haul = routes_by_haul(soil, set(feed), cement_feeds)
     ef, circ, ret = p["truck_kgco2e_per_tkm"] / 1000, p["road_circuity"], p["cement_retention"]
     grid = s.assign(gx=(s.lon / 0.25).round() * 0.25, gy=(s.lat / 0.25).round() * 0.25)[["gx", "gy"]].drop_duplicates()
     parts_s = [pd.DataFrame({"lon": grid.gx, "lat": grid.gy, "kind": "grid", "name": ""})]
@@ -392,7 +602,8 @@ def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", r
             near_f.append((idx[o], dd[idx][o]))
         unit = np.vectorize(lambda f: soil["units"].get(f, 1.0))(feed)
         # with farmland the binding outlet, a plant draws its most valuable feed first: cement-eligible chars, then
-        # the highest credit per unit of farmland (straw/fronds > manure > litter); distance breaks ties
+        # the highest credit per unit of farmland (straw/fronds > manure > litter); distance breaks ties. When every
+        # char in the supply may go to cement (the Puro default), that is simply nearest first
         val = cpt * perm * CO2_PER_C / chpt / unit
         prio = np.where(elig, -np.inf, -val)
     alive, plants = dry > 1e-6, []
@@ -431,27 +642,44 @@ def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", r
                 soil_km = float((cc[:kk] * fd[:kk]).sum() / max(cc[:kk].sum(), 1e-9)) if kk else 0.0
             else:
                 avail, soil_km = np.inf, mean_km
-            # cement option for eligible char. With farmland limited (a shared, depleting outlet), eligible char goes
-            # to cement wherever allowance remains within the haul limit, keeping farmland for chars only soil can take;
-            # with soil unlimited, only where cement beats soil per tonne after haul
-            parts, left = [], char_e
+            # cement option for eligible char, nearest plant first within the haul limit. By haul (soil unlimited, or
+            # every char may go to cement): only where cement beats soil per tonne after haul. Otherwise (chars that
+            # cannot go to cement compete for limited farmland): wherever allowance remains, keeping farmland for them
+            parts, left, cem_val = [], char_e, (g_e if credit == "retention" else f_e)
             if allow is not None and char_e > 0:
-                cem_val = g_e if credit == "retention" else f_e
                 for j in np.argsort(dcem[i]):
                     if left <= 1e-9 or dcem[i, j] > max_char_haul_km:
                         break
                     worth = cem_val - dcem[i, j] * ef
-                    if allow[j] <= 0 or worth <= 0 or (soil is None and worth <= f_e - soil_km * ef):
+                    if allow[j] <= 0 or worth <= 0 or (by_haul and worth <= f_e - soil_km * ef):
                         continue
                     a = min(left, allow[j])
                     parts.append((j, a))
                     left -= a
-            to_cem = char_e - left
             # soil placement: eligible remainder first (higher persistence, lower salts), then the rest
             units_left = avail
             soil_e = min(left, units_left / u_e) if u_e else left
             units_left -= soil_e * u_e
             soil_o = min(char_o, units_left / u_o) if u_o else char_o
+            # eligible char farmland could not take: nearest cement plants with allowance left within the haul limit,
+            # net of what this candidate already sends to each (it only finds room when routing by haul held char back)
+            rest = left - soil_e
+            if allow is not None and rest > 1e-9:
+                took = {}
+                for j, a in parts:
+                    took[j] = took.get(j, 0.0) + a
+                for j in np.argsort(dcem[i]):
+                    if rest <= 1e-9 or dcem[i, j] > max_char_haul_km:
+                        break
+                    room = allow[j] - took.get(j, 0.0)
+                    if room <= 1e-9 or cem_val - dcem[i, j] * ef <= 0:
+                        continue
+                    a = min(rest, room)
+                    parts.append((j, a))
+                    took[j] = took.get(j, 0.0) + a
+                    rest -= a
+                left = soil_e + rest
+            to_cem = char_e - left
             unplaced = (left - soil_e) + (char_o - soil_o)
             if min_outlet_share and unplaced > (1 - min_outlet_share) * (char_e + char_o) + 1e-9:
                 continue  # no developer builds a plant whose char has nowhere to go
@@ -468,7 +696,7 @@ def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", r
                                                  for j, a in parts),
                         "soil_haul_km": round(soil_km, 1), "net_removal_tco2": net, "credited_tco2": round(credited),
                         "retained_tco2": round(retained), "transport_tco2": round(haul * ef),
-                        **{f"feed_{f}": round(float(w[feed[g] == f].sum())) for f in ("straw", "fronds", "litter", "manure")},
+                        **{f"feed_{f}": round(float(w[feed[g] == f].sum())) for f in FEEDS},
                         "_g": g, "_w": w, "_parts": parts, "_i": i, "_soil_units": soil_e * u_e + soil_o * u_o}
         if best is None:
             break
@@ -493,7 +721,7 @@ def site2(s, size_t, p, cement=None, allowance=None, soil=None, credit="puro", r
 def siting_summary(df, s, cement=None, allow0=None, allow=None, avoided=None):
     if not len(df):
         return {"plants": 0, "credited_tco2": 0, "retained_tco2": 0, "supply_t": round(float(s.dry_t.sum()))}
-    fu = {f: round(float(df[f"feed_{f}"].sum())) for f in ("straw", "fronds", "litter", "manure")}
+    fu = {f: round(float(df[f"feed_{f}"].sum())) for f in FEEDS}
     out = {"plants": int(len(df)), "feed_used_t": round(float(df.feed_t_dry.sum())), "supply_t": round(float(s.dry_t.sum())),
            "supply_by_feed_t": s.groupby("feed").dry_t.sum().round().to_dict(), "feed_used_by_feed_t": fu,
            "radar_feed_share": round((fu["straw"] + fu["fronds"]) / max(float(df.feed_t_dry.sum()), 1), 4),
@@ -513,9 +741,24 @@ def siting_summary(df, s, cement=None, allow0=None, allow=None, avoided=None):
 
 
 # ================================================================ scenario registry
+def s2_tier_note(tier, qc=True):
+    """What the radar + Sentinel-2 tier of the Sentinel-2 records (A4_s2fill, A2 *_ws2, B_s2) holds, in brief (the full
+    rule is national_supply.S2_RULE, published as s2_filled.rule in out/national_summary.json)."""
+    maps = ((" (the class_s2 the national page maps)" if qc else " (the same tier rule applied to the quality-check-off "
+            "table, so not the national page's class_s2)") if tier == "combined" else "")
+    only = (", and fields with no usable radar season outside the Shield classified from Sentinel-2 alone (an upper "
+            "bound for them)") if tier == "combined" else ""
+    return (f"Radar + Sentinel-2 tier '{tier}' of model/national_supply.py{maps}: radar flags, a Sentinel-2 winter on "
+            "radar-idle fields, the season the radar did not observe on partly-seen fields outside the Arabian Shield"
+            f"{only}. A filled field is year-round only if spring is not brown and Sentinel-2 is green in both windows; "
+            "full rule: s2_filled.rule in out/national_summary.json")
+
+
 def scenarios(sp):
     dos, sw = sp["cement_dosage_share"], tuple(sp["southwest_admin"]["values"])
     c = dos["central"]
+    lit = litter_credited()  # litter is in the credited supply only while its char passes the H/C_org gate
+    s2t = sp["s2_tier"]["value"]
     S = {
         "A0_published": {"family": "A", "name": "Published table (no radar quality check, southwest in)", "fields": {}},
         "A1_floor": {"family": "A", "name": "Radar-verified floor: quality check on, southwest apart", "fields": {"qc": True, "drop_admin": sw},
@@ -523,47 +766,93 @@ def scenarios(sp):
         "A1_southwest_line": {"family": "A", "name": "Southwest regions alone (low confidence)", "fields": {"qc": True, "keep_admin": sw}},
         "A4_both": {"family": "A", "name": "Bracket floor: radar and Sentinel-2 agree (QC on, southwest in)", "fields": {"qc": True, "season_rule": "both"}, "bracket": True},
         "A4_radar": {"family": "A", "name": "Bracket: radar rule (QC on, southwest in)", "fields": {"qc": True}, "bracket": True},
-        "A4_s2fill": {"family": "A", "name": "Bracket: radar, unobserved winters from Sentinel-2 (QC on, southwest in)", "fields": {"qc": True, "fill_winter_from_s2": True}, "bracket": True},
+        # the Sentinel-2 rows of A use national_supply's tier, as B_s2 does: one Sentinel-2 tier on the page
+        "A4_s2fill": {"family": "A", "name": "Bracket: radar + Sentinel-2 tier (QC on, southwest in)", "fields": {"qc": True, "s2_tier": s2t}, "bracket": True,
+                      "note": s2_tier_note(s2t)},
         "A4_either": {"family": "A", "name": "Bracket ceiling: radar or Sentinel-2 (QC on, southwest in)", "fields": {"qc": True, "season_rule": "either"}, "bracket": True},
     }
     for qc in (False, True):
         for swo in (False, True):
             for fill in (False, True):
-                S[f"A2_qc{int(qc)}_sw{'out' if swo else 'in'}_w{'s2' if fill else 'radar'}"] = {
-                    "family": "A2", "name": f"QC {'on' if qc else 'off'}, southwest {'out' if swo else 'in'}, winter {'from Sentinel-2 where unobserved' if fill else 'radar only'}",
-                    "fields": {"qc": qc, "drop_admin": sw if swo else (), "fill_winter_from_s2": fill}}
-    for v, comp in [("seasonal", c_) for c_ in sorted(sp["fodder_compliance"]["values"], reverse=True)] + [("wheat", 1.0), ("fallow", 1.0)]:
-        S[f"B1_{v}_{int(comp * 100)}"] = {"family": "B", "name": f"Fodder halt: year-round fields to {'seasonal winter fodder' if v == 'seasonal' else 'winter wheat' if v == 'wheat' else 'fallow'}, {int(comp * 100)}% compliance",
-                                          "fields": {"qc": True, "drop_admin": sw}, "fodder": {"variant": v, "compliance": comp}}
+                spec = {"family": "A2", "name": f"QC {'on' if qc else 'off'}, southwest {'out' if swo else 'in'}, {'radar + Sentinel-2 tier' if fill else 'radar only'}",
+                        "fields": {"qc": qc, "drop_admin": sw if swo else ()}}
+                if fill:
+                    spec |= {"fields": spec["fields"] | {"s2_tier": s2t}, "note": s2_tier_note(s2t, qc)}
+                S[f"A2_qc{int(qc)}_sw{'out' if swo else 'in'}_w{'s2' if fill else 'radar'}"] = spec
+    # B1 on the radar table (family B, the floor) and on national_supply's radar + Sentinel-2 tier (family B_s2, the
+    # upper value; same id with suffix _s2fill)
+    halt = [("seasonal", c_) for c_ in sorted(sp["fodder_compliance"]["values"], reverse=True)] + [("wheat", 1.0), ("fallow", 1.0)]
+    for tier in ("radar", "radar_s2"):
+        for v, comp in halt:
+            sid = f"B1_{v}_{int(comp * 100)}"
+            to = "seasonal winter fodder" if v == "seasonal" else "winter wheat" if v == "wheat" else "fallow"
+            spec = {"family": "B", "tier": tier, "name": f"Fodder halt: year-round fields to {to}, {int(comp * 100)}% compliance",
+                    "fields": {"qc": True, "drop_admin": sw}, "fodder": {"variant": v, "compliance": comp}}
+            if tier == "radar_s2":
+                cap = (". Straw on the converted fields is not capped: the tier's GASTAT 2024 wheat cap describes the "
+                       "pre-halt wheat area") if v == "wheat" else ""
+                spec |= {"family": "B_s2", "radar_tier_id": sid, "fields": spec["fields"] | {"s2_tier": s2t},
+                         "name": f"Fodder halt, radar + Sentinel-2 tier: year-round fields to {to}, {int(comp * 100)}% compliance",
+                         "note": s2_tier_note(s2t) + cap}
+                sid += "_s2fill"
+            S[sid] = spec
     for lab, key in (("LESA", "lesa_efficiency"), ("LEPA", "lepa_efficiency")):
         S[f"B2_{lab.lower()}"] = {"family": "B2", "name": f"Pivot retrofit to {lab}", "fields": {"qc": True, "drop_admin": sw}, "retrofit": key}
     S["C0_published"] = {"family": "C", "name": "As published: soil or nearest cement by haul, both unlimited (gross)", "published": True,
                          "note": "The national page's siting: Puro crediting, no limit on soil absorption or cement uptake"}
-    base = {"fields": {"qc": True, "drop_admin": sw}, "credit": "puro", "dosage": c, "soil_dose": sp["soil_dose_t_per_ha"]["central"]}
+    # Puro 2025 v2 (default): cement may take every char that passes the H/C_org gate
+    base = {"fields": {"qc": True, "drop_admin": sw}, "credit": "puro", "cement_rule": "puro", "dosage": c,
+            "soil_dose": sp["soil_dose_t_per_ha"]["central"]}
+    F3 = "All feeds" if lit else "Radar feed + manure"  # C1_F3 runs every feed that passes the gate
     S["C1_F1"] = base | {"family": "C", "name": "Radar-measured feed (straw, fronds): the floor", "feeds": ("straw", "fronds")}
-    S["C1_F2"] = base | {"family": "C", "name": "Radar feed + modelled litter", "feeds": ("straw", "fronds", "litter")}
-    S["C1_F3"] = base | {"family": "C", "name": "All feeds: radar feed + modelled litter and manure", "feeds": None}
+    if lit:  # with litter out of the credited supply this run would repeat C1_F1
+        S["C1_F2"] = base | {"family": "C", "name": "Radar feed + modelled litter", "feeds": ("straw", "fronds", "litter")}
+    S["C1_F3"] = base | {"family": "C", "name": "All feeds: radar feed + modelled litter and manure" if lit else "Radar feed + modelled manure",
+                         "feeds": None}
     S["C1_F1_25kt"] = S["C1_F1"] | {"name": "Radar-measured feed, 25 kt plants", "size": 25000}
     S["C1_F1_10kt"] = S["C1_F1"] | {"name": "Radar-measured feed, 10 kt plants", "size": 10000}
-    S["C1_F3_soil_unlimited"] = S["C1_F3"] | {"name": "All feeds, soil absorption unlimited", "soil_dose": None}
+    S["C1_F3_25kt"] = S["C1_F3"] | {"name": f"{F3}, 25 kt plants", "size": 25000}
+    S["C1_F3_10kt"] = S["C1_F3"] | {"name": f"{F3}, 10 kt plants", "size": 10000}
+    S["C1_F3_soil_unlimited"] = S["C1_F3"] | {"name": f"{F3}, soil absorption unlimited", "soil_dose": None}
     for sd in sp["soil_dose_t_per_ha"]["values"]:
         if sd != sp["soil_dose_t_per_ha"]["central"]:
-            S[f"C1_F3_soildose_{sd:g}"] = S["C1_F3"] | {"name": f"All feeds, soil dose {sd:g} t/ha/yr", "soil_dose": sd}
+            S[f"C1_F3_soildose_{sd:g}"] = S["C1_F3"] | {"name": f"{F3}, soil dose {sd:g} t/ha/yr", "soil_dose": sd}
     for v in dos["values"]:
         if v != c:
-            S[f"C1_F3_dose_{100 * v:g}pct"] = S["C1_F3"] | {"name": f"All feeds, cement dose {100 * v:g}%", "dosage": v}
-    S["C1_F3_all_feeds_to_cement"] = S["C1_F3"] | {"name": "All feeds, manure and litter chars also allowed in cement", "cement_feeds": ("straw", "fronds", "litter", "manure")}
-    S["C3_F3_retention"] = S["C1_F3"] | {"name": "All feeds, sited for in-service retention in cement (not Puro)", "credit": "retention"}
-    S["C3_E1_no_litter"] = base | {"family": "C", "name": "Litter fails the H/Corg gate: radar feed + manure", "feeds": ("straw", "fronds", "manure")}
+            S[f"C1_F3_dose_{100 * v:g}pct"] = S["C1_F3"] | {"name": f"{F3}, cement dose {100 * v:g}%", "dosage": v}
+    S["C3_F3_vm0044_cement"] = S["C1_F3"] | {
+        "name": f"{F3}, Verra VM0044 cement rule: only straw and frond chars in cement (sensitivity)", "cement_rule": "vm0044",
+        "note": "Verra sensitivity, Puro crediting otherwise: VM0044 v1.2 admits only chars of at least 50% carbon to "
+                "non-soil uses, which manure and litter chars fall below; Puro 2025 v2 sets no carbon minimum, so the "
+                "other rows let every char that passes its H/C_org gate into cement. With manure char limited to "
+                "farmland, straw and frond chars here go to cement wherever allowance remains, keeping farmland for it; "
+                "the other rows send char to cement only where that beats farmland after haul"}
+    S["C3_F3_retention"] = S["C1_F3"] | {"name": f"{F3}, sited for in-service retention in cement (not Puro)", "credit": "retention"}
+    if lit:
+        S["C3_E1_no_litter"] = base | {"family": "C", "name": "Litter fails the H/Corg gate: radar feed + manure", "feeds": ("straw", "fronds", "manure")}
+    else:  # litter fails the gate: what it would add if a measured char passed it and Puro's soil-use limits
+        ov = litter_upside()
+        why = (f"Not credited, a hypothetical upper bound: litter char counted at H/C {ov['h_c_org_litter']:g}, its "
+               "total-carbon value (the earlier treatment), as if a measured char's H/C_org passed Puro's gate (rule "
+               "3.5.1) and the char met the Table 3.3 limits for soil use (rules 3.6.9-3.6.10); litter char may also "
+               "go to cement (Table 3.2 BE3: WBC-Material declaration and 8 EFSA PAH at or below 4 mg/kg)")
+        up = {"family": "C_upside", "upside": True, "params_override": ov, "note": why}
+        for of, tail in (("C1_F3", ""), ("C1_F3_25kt", ", 25 kt plants"), ("C1_F3_10kt", ", 10 kt plants"),
+                         ("C1_F3_soil_unlimited", ", soil absorption unlimited")):
+            S["C3_E1_litter_upside" + of[len("C1_F3"):]] = S[of] | up | {
+                "name": f"Upside, not credited: + poultry litter if its char were eligible{tail}", "upside_of": of}
     for r in sp["haul_radius_km"]["values"]:
-        S[f"C6_radius_{int(r)}"] = S["C1_F3"] | {"name": f"All feeds, haul radius {int(r)} km", "radius": r}
+        S[f"C6_radius_{int(r)}"] = S["C1_F3"] | {"name": f"{F3}, haul radius {int(r)} km", "radius": r}
     return S
 
 
 def table_for(bases, spec, metas, sp):
+    """The accounted field table of a scenario: its data rules, national_supply.flows, and on the Sentinel-2 tier the
+    tier's own flows (built on the whole table, as national_supply.main builds it, before any region is set apart)."""
     f = spec.get("fields", {})
-    d = reclassify(bases[bool(f.get("qc", False))], fill_winter_from_s2=f.get("fill_winter_from_s2", False),
-                   season_rule=f.get("season_rule", "radar"))
+    d = accounting(reclassify(bases[bool(f.get("qc", False))], season_rule=f.get("season_rule", "radar")))
+    if f.get("s2_tier"):
+        d = s2_table(d, f["s2_tier"])
     if f.get("drop_admin"):
         d = d[~d.admin.isin(f["drop_admin"])].reset_index(drop=True)
     if f.get("keep_admin"):
@@ -587,42 +876,69 @@ def bracket_by_region(d):
 def run_scenario(sid, spec, bases, metas, sp):
     t0 = time.time()
     res = {"id": sid, "family": spec["family"], "name": spec["name"], "note": spec.get("note", "")}
-    if spec["family"] in ("A", "A2", "B", "B2"):
-        d = accounting(table_for(bases, spec, metas, sp))
+    if spec["family"] in ("A", "A2", "B", "B_s2", "B2"):
+        f = spec.get("fields", {})
+        d = table_for(bases, spec, metas, sp)
+        if f.get("s2_tier"):  # what the tier adds to this table (before any halt)
+            fl = d.s2_filled
+            res |= {"s2_tier": f["s2_tier"], "s2_filled_fields": int(fl.sum()), "s2_filled_ha": round(float(d.area_ha[fl].sum())),
+                    "s2_filled_ha_by_fill": {k: round(float(v)) for k, v in d[fl].groupby("s2_fill").area_ha.sum().items()}}
         if spec.get("fodder"):
             fz = spec["fodder"]
             regions = sp["mewa_fodder_halt_regions"]["values"]
             d, scope, b0 = fodder_halt(d, regions, fz["variant"], fz["compliance"])
-            res |= {"scope_fields": int(scope.sum()), "scope_ha": round(float(d.area_ha[scope].sum())),
+            tot = lambda t, k: float(np.nansum(t[f"{k}_central"]))  # noqa: E731
+            res |= {"tier": spec["tier"], "scope_fields": int(scope.sum()), "scope_ha": round(float(d.area_ha[scope].sum())),
                     "scope_by_region_ha": d[scope].groupby("admin").area_ha.sum().round().to_dict(),
-                    "baseline": {k: round(float(np.nansum(b0[f"{k}_central"]))) for k in FLOW_KEYS},
-                    "baseline_summer_mw": round(float(np.nansum(b0.elec_kwh_summer_central)) / (122 * 24) / 1000, 1),
+                    "baseline": {k: round(tot(b0, k)) for k in FLOW_KEYS},
+                    "baseline_summer_mw": round(tot(b0, "elec_kwh_summer") / (122 * 24) / 1000, 1),
                     "scope_baseline_water_m3": round(float(b0.water_m3_central[scope].sum())),
-                    "scope_baseline_water_per_ha_m3": round(float(b0.water_m3_central[scope].sum() / max(b0.area_ha[scope].sum(), 1)))}
-            if fz["variant"] == "seasonal" and fz["compliance"] == 1.0:
-                watchlist(d, scope, metas).to_csv(ROOT / "out" / "scenario_B1_watchlist.csv", index=False)
-                res["watchlist"] = "out/scenario_B1_watchlist.csv"
+                    "scope_baseline_water_per_ha_m3": round(float(b0.water_m3_central[scope].sum() / max(b0.area_ha[scope].sum(), 1))),
+                    # central savings against this record's own baseline (the radar and Sentinel-2 tiers differ)
+                    "saved": {k: round(tot(b0, k) - tot(d, k)) for k in ("water_m3", "elec_kwh", "elec_kwh_summer", "co2_t_grid", "co2_t_diesel")}
+                             | {"summer_mw": round((tot(b0, "elec_kwh_summer") - tot(d, "elec_kwh_summer")) / (122 * 24) / 1000, 1)},
+                    "straw_t_dry_change": round(tot(d, "straw_t_dry") - tot(b0, "straw_t_dry")),
+                    "halt_regions": halt_regions(b0, scope, regions)}
+            if spec["tier"] == "radar_s2":
+                fl = scope & b0.s2_filled
+                res |= {"radar_tier_id": spec["radar_tier_id"],
+                        "scope_s2_filled_fields": int(fl.sum()), "scope_s2_filled_ha": round(float(b0.area_ha[fl].sum())),
+                        "scope_s2_filled_ha_by_fill": {k: round(float(v)) for k, v in b0[fl].groupby("s2_fill").area_ha.sum().items()}}
+                if fz["variant"] == "seasonal" and fz["compliance"] == 1.0:  # the watch-list: this scope, S2 seasons flagged
+                    watchlist(b0, scope, metas).to_csv(ROOT / "out" / WATCHLIST, index=False)
+                    res["watchlist"] = f"out/{WATCHLIST}"
         if spec.get("retrofit"):
             res |= {"by_rebound": {str(r): retrofit(d, sp, sp["pivot_retrofit"][spec["retrofit"]], r) for r in sp["rebound_share"]["values"]}}
         res |= totals(d)
-        f = spec.get("fields", {})
-        skip = {"winter", "summer"} if f.get("season_rule", "radar") != "radar" else ({"winter"} if f.get("fill_winter_from_s2") else set())
-        res["validation"] = validation(d, skip)
+        if spec.get("fodder"):  # audit sc-4: classes and areas are the pre-halt ones; post-halt only at full compliance
+            for k in AREA_KEYS:
+                res[f"baseline_{k}"] = res.pop(k)
+            if spec["fodder"]["compliance"] == 1.0:
+                res["post_halt"] = post_halt_areas(b0, scope, spec["fodder"]["variant"])
+        if f.get("s2_tier"):  # seasons taken from Sentinel-2 are not validated against it
+            skip, excl = set(), {se: d[f"{se}_from_s2"].values for se in SEASONS}
+        else:  # 'both' and 'either' use Sentinel-2 in every season
+            skip, excl = ({"winter", "summer"} if f.get("season_rule", "radar") != "radar" else set()), None
+        res["validation"] = validation(d, skip, excl)
         if spec.get("mc"):
             res["monte_carlo"] = monte_carlo(d, sp)
         if spec.get("bracket"):
             res["by_region"] = bracket_by_region(d)
-    else:
-        p = NS.params("central")
+    else:  # C (credited) and C_upside (not credited): biochar siting
+        p = NS.params("central") | spec.get("params_override", {})
         avoided = {k: sp["avoided_cement_tco2_per_t_char"][k] for k in LV}
         size = spec.get("size", 50000)
         if spec.get("published"):
             df, s = published_siting(size)
-            res |= siting_summary(df, s, avoided=avoided) | {"plant_size_t": size, "credit": "puro",
+            fs = in_supply(s)
+            res |= siting_summary(df, s, avoided=avoided) | {"plant_size_t": size, "credit": "puro", "feeds": fs,
+                                                             "cement_rule": "puro", "cement_feeds": fs,
                                                              "outlets": "soil or nearest cement by haul, both unlimited"}
         else:
-            d = accounting(table_for(bases, spec, metas, sp))
+            d = table_for(bases, spec, metas, sp)
             s = supply_from(d, "central", p, spec.get("feeds"))
+            rule = spec.get("cement_rule", "puro")
+            cf = cement_feeds(sp, p, rule)
             cem = cement_table()
             allow0 = (cem.output_t * spec["dosage"]).values
             soil = None
@@ -631,25 +947,31 @@ def run_scenario(sid, spec, bases, metas, sp):
                 ml = sp["soil_dose_t_per_ha"]["manure_litter_central"] / sp["soil_dose_t_per_ha"]["central"]
                 soil = {"lon": act.lon.values, "lat": act.lat.values, "cap": (act.area_ha * spec["soil_dose"]).values,
                         "units": {"litter": 1 / ml, "manure": 1 / ml}, "radius_km": sp["soil_dose_t_per_ha"]["return_radius_km"]}
+            haul = sp["max_char_haul_km"]["central"]
             df, allow = site2(s, size, p, cement=cem, allowance=allow0, soil=soil, credit=spec["credit"],
-                              radius_km=spec.get("radius", NS.RADIUS_KM), max_char_haul_km=sp["max_char_haul_km"]["central"],
-                              cement_feeds=tuple(spec.get("cement_feeds", sp["cement_eligible_feeds"]["values"])),
-                              min_outlet_share=sp["min_outlet_share"]["central"] if soil is not None else 0.0)
+                              radius_km=spec.get("radius", NS.RADIUS_KM), max_char_haul_km=haul,
+                              cement_feeds=cf, min_outlet_share=sp["min_outlet_share"]["central"] if soil is not None else 0.0)
+            fs = in_supply(s)
             res |= siting_summary(df, s, cem, allow0, allow, avoided) | {
                 "plant_size_t": size, "credit": spec["credit"], "dosage": spec["dosage"], "soil_dose": spec.get("soil_dose"),
-                "radius_km": spec.get("radius", NS.RADIUS_KM), "feeds": list(spec["feeds"]) if spec.get("feeds") else "all",
-                "cement_feeds": list(spec.get("cement_feeds", sp["cement_eligible_feeds"]["values"]))}
+                "radius_km": spec.get("radius", NS.RADIUS_KM), "feeds": fs, "cement_rule": rule,
+                "cement_feeds": [x for x in fs if x in cf], "outlets": outlets_note(soil, routes_by_haul(soil, fs, cf), haul)}
+        res["persistence"] = {f: round(NS.persistence(p, f), 4) for f in FEEDS}  # 0 = fails the H/C_org gate, not credited
+        if spec.get("upside"):
+            res |= {"upside": True, "upside_of": spec["upside_of"], "params_override": spec["params_override"]}
         df.to_csv(ROOT / "out" / f"scenario_{sid}.csv", index=False)
     res["seconds"] = round(time.time() - t0)
-    brief = {k: res.get(k) for k in ("plants", "credited_tco2", "char_unplaced_t", "farmed_ha") if k in res}
+    brief = {k: res.get(k) for k in ("plants", "credited_tco2", "char_unplaced_t", "farmed_ha", "baseline_farmed_ha") if k in res}
     if "water_m3" in res:
         brief["water_bn_m3"] = round(res["water_m3"]["central"] / 1e9, 2)
     print(sid, json.dumps(brief), f"{res['seconds']}s", flush=True)
     return res
 
 
-def run_id():
-    """Commit (with -dirty when the tree has changes) plus short hashes of every input that shapes the numbers."""
+def run_inputs():
+    """Short hashes of every input that shapes the numbers, and the commit only when the working tree is clean (no
+    tracked file changed). A run made before its commit gets no commit rather than a '-dirty' one: the hashes of the
+    engine, supply and siting code and of the data identify it."""
     import hashlib
     import subprocess
 
@@ -658,23 +980,44 @@ def run_id():
         for p in paths:
             m.update(p.read_bytes() if p.exists() else b"none")
         return m.hexdigest()[:8]
+
+    def git(*args):
+        return subprocess.run(["git", "-C", str(ROOT), *args], capture_output=True, text=True, check=True).stdout.strip()
     try:
-        commit = subprocess.run(["git", "-C", str(ROOT), "describe", "--always", "--dirty"], capture_output=True, text=True).stdout.strip()
-    except Exception:
-        commit = "?"
+        commit = None if git("status", "--porcelain", "--untracked-files=no") else (git("rev-parse", "--short", "HEAD") or None)
+    except Exception:  # no git, or not a repository
+        commit = None
     nat = ROOT / "data" / "national"
     region_files = sorted((ROOT / "data" / "regions").glob("R*/fields_radar.csv")) + sorted((ROOT / "data" / "regions").glob("R*/meta.json"))
-    parts = {"fields": h(nat / "fields_national.csv"), "regions": h(*region_files),
-             "boundaries": h(nat / "regions.json", nat / "sau_adm1.geojson", nat / "ne_50m_countries.geojson", nat / "official_2024.json"),
-             "manure": h(nat / "manure_points.csv"), "cement": h(ROOT / "data" / "cement" / "saudi_cement.csv", ROOT / "model" / "scenario_cement_plants.csv"),
-             "params": h(ROOT / "model" / "params.json"), "scenario_params": h(ROOT / "model" / "scenario_params.json"),
-             "engine": h(ROOT / "model" / "national_scenarios.py"), "supply": h(ROOT / "model" / "national_supply.py"),
-             "siting": h(ROOT / "model" / "national_siting.py")}
-    return f"{commit} " + " ".join(f"{k}:{v}" for k, v in parts.items())
+    return {"commit": commit, "fields": h(nat / "fields_national.csv"), "regions": h(*region_files),
+            "boundaries": h(nat / "regions.json", nat / "sau_adm1.geojson", nat / "ne_50m_countries.geojson", nat / "official_2024.json"),
+            "manure": h(nat / "manure_points.csv"), "cement": h(ROOT / "data" / "cement" / "saudi_cement.csv", ROOT / "model" / "scenario_cement_plants.csv"),
+            "params": h(ROOT / "model" / "params.json"), "scenario_params": h(ROOT / "model" / "scenario_params.json"),
+            "engine": h(ROOT / "model" / "national_scenarios.py"), "supply": h(ROOT / "model" / "national_supply.py"),
+            "siting": h(ROOT / "model" / "national_siting.py")}
+
+
+def run_id(inputs=None):
+    """The run stamp as one line of name:hash pairs, led by commit:<sha> only when the tree was clean."""
+    return " ".join(f"{k}:{v}" for k, v in (inputs or run_inputs()).items() if v)
+
+
+def check_inputs(sp):
+    """Stop before any run when scenario inputs contradict the headline's: the retrofit must start from the pivot
+    pressure head the headline energy already counts."""
+    a, b = sp["pivot_retrofit"]["baseline_pressure_head_m"], SUP.P()["pivot_pressure_head_m"]["central"]
+    if abs(float(a) - float(b)) > 1e-9:
+        raise SystemExit(f"scenario_params pivot_retrofit.baseline_pressure_head_m ({a}) differs from params.json "
+                         f"pivot_pressure_head_m central ({b}), the head the headline energy uses on pivots")
 
 
 def main(ids=None):
     sp = SP()
+    check_inputs(sp)
+    S = scenarios(sp)
+    unknown = [i for i in (ids or []) if i not in S]
+    if unknown:
+        raise SystemExit(f"unknown scenario ids: {' '.join(unknown)}; known: {' '.join(S)}")
     bases = {qc: base_table(qc) for qc in (False, True)}
     published, pub_qc, errors = load_fields(), None, {}
     for qc in (True, False):  # which quality-check setting was the published table built with?
@@ -687,13 +1030,14 @@ def main(ids=None):
     if pub_qc is None:
         raise SystemExit(f"published table matches neither setting: QC on: {errors[True]}; QC off: {errors[False]}")
     metas = load_metas()
-    S = scenarios(sp)
     outp = ROOT / "out" / "national_scenarios.json"
     out = json.loads(outp.read_text()) if (outp.exists() and ids) else {}
     out.setdefault("scenarios", {})
-    rid = run_id()
-    out["run_id"] = rid
+    rin = run_inputs()
+    rid = run_id(rin)
+    out["run_id"], out["run_inputs"] = rid, rin
     out["published_table_quality_check"] = pub_qc
+    out["litter_credited"] = bool(litter_credited())
     if out["published_table_quality_check"]:  # A0 mirrors the published table, whichever setting it was built with
         S["A0_published"]["name"] = "Published table (radar quality check on, southwest in)"
         S["A0_published"]["fields"] = {"qc": True}
@@ -701,8 +1045,14 @@ def main(ids=None):
         out["scenarios"][sid] = run_scenario(sid, S[sid], bases, metas, sp) | {"run_id": rid}
         outp.write_text(json.dumps(out, indent=1, default=str))
     out["scenario_params"] = json.loads((ROOT / "model" / "scenario_params.json").read_text())
-    out["baseline_check"] = "classification and accounting reproduce data/national/fields_national.csv"
+    out["baseline_check"] = ("classification, accounting and the radar + Sentinel-2 tier reproduce "
+                             "data/national/fields_national.csv")
     outp.write_text(json.dumps(out, indent=1, default=str))
+    if not ids:  # a full run replaces the last one: drop scenario tables it did not write (renamed or retired ids)
+        keep = {f"scenario_{sid}.csv" for sid in S} | {WATCHLIST}
+        for f in (ROOT / "out").glob("scenario_*.csv"):
+            if f.name not in keep:
+                f.unlink()
 
 
 if __name__ == "__main__":

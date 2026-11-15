@@ -1,134 +1,183 @@
 {
  "central_10kt": {
-  "plants": 314,
-  "feed_used_t": 3133226,
-  "supply_t": 3226186,
+  "basis": "Central: every factor at its central value. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 10000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 279,
+  "plants_outside_boxes": 157,
+  "distinct_sites": 250,
+  "feed_used_t": 2784046,
+  "feed_outside_boxes_t": 1611530,
+  "supply_t": 2884468,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "litter": 830998.0,
-   "manure": 2103937.0,
-   "straw": 227206.0
+   "manure": 2593407.0,
+   "straw": 227016.0
   },
-  "net_removal_tco2": 1214656,
-  "cement_outlet_plants": 14,
-  "cement_retained_tco2": 76489,
+  "uncredited_supply_by_feed_t": {
+   "litter": 842447
+  },
+  "net_removal_tco2": 1101052,
+  "cement_outlet_plants": 16,
+  "cement_retained_tco2": 86340,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0089,
+  "median_transport_share": 0.0095,
   "feed_used_by_feed_t": {
-   "straw": 227206,
-   "fronds": 64045,
-   "litter": 807301,
-   "manure": 2034674
+   "straw": 226978,
+   "fronds": 63935,
+   "litter": 0,
+   "manure": 2493133
   },
   "credited_by_feed_tco2": {
-   "straw": 118800,
-   "fronds": 38909,
-   "litter": 289233,
-   "manure": 779976
+   "straw": 118464,
+   "fronds": 38843,
+   "litter": 0,
+   "manure": 955722
   },
   "capped": false,
-  "supply_left_t": 92960,
+  "supply_left_t": 100422,
   "feeds": "all",
   "radius_km": 100.0
  },
  "central_25kt": {
-  "plants": 117,
-  "feed_used_t": 2909985,
-  "supply_t": 3226186,
+  "basis": "Central: every factor at its central value. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 25000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 104,
+  "plants_outside_boxes": 57,
+  "distinct_sites": 100,
+  "feed_used_t": 2587644,
+  "feed_outside_boxes_t": 1439109,
+  "supply_t": 2884468,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "litter": 830998.0,
-   "manure": 2103937.0,
-   "straw": 227206.0
+   "manure": 2593407.0,
+   "straw": 227016.0
   },
-  "net_removal_tco2": 1126490,
-  "cement_outlet_plants": 11,
-  "cement_retained_tco2": 150945,
+  "uncredited_supply_by_feed_t": {
+   "litter": 842447
+  },
+  "net_removal_tco2": 1022178,
+  "cement_outlet_plants": 9,
+  "cement_retained_tco2": 122720,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0118,
+  "median_transport_share": 0.0136,
   "feed_used_by_feed_t": {
-   "straw": 224558,
-   "fronds": 63100,
-   "litter": 765276,
-   "manure": 1857052
+   "straw": 224419,
+   "fronds": 63081,
+   "litter": 0,
+   "manure": 2300144
   },
   "credited_by_feed_tco2": {
-   "straw": 117415,
-   "fronds": 38335,
-   "litter": 274177,
-   "manure": 711886
+   "straw": 117128,
+   "fronds": 38324,
+   "litter": 0,
+   "manure": 881742
   },
   "capped": false,
-  "supply_left_t": 316200,
+  "supply_left_t": 296824,
   "feeds": "all",
   "radius_km": 100.0
  },
  "central_50kt": {
-  "plants": 54,
-  "feed_used_t": 2683780,
-  "supply_t": 3226186,
+  "basis": "Central: every factor at its central value. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 47,
+  "plants_outside_boxes": 23,
+  "distinct_sites": 43,
+  "feed_used_t": 2317845,
+  "feed_outside_boxes_t": 1158521,
+  "supply_t": 2884468,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "litter": 830998.0,
-   "manure": 2103937.0,
-   "straw": 227206.0
+   "manure": 2593407.0,
+   "straw": 227016.0
   },
-  "net_removal_tco2": 1039431,
+  "uncredited_supply_by_feed_t": {
+   "litter": 842447
+  },
+  "net_removal_tco2": 916512,
   "cement_outlet_plants": 8,
-  "cement_retained_tco2": 221718,
+  "cement_retained_tco2": 216018,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.0159,
+  "median_transport_share": 0.0184,
   "feed_used_by_feed_t": {
-   "straw": 225876,
-   "fronds": 63107,
-   "litter": 694941,
-   "manure": 1699856
+   "straw": 225930,
+   "fronds": 63239,
+   "litter": 0,
+   "manure": 2028676
   },
   "credited_by_feed_tco2": {
-   "straw": 118104,
-   "fronds": 38340,
-   "litter": 248977,
-   "manure": 651626
+   "straw": 117917,
+   "fronds": 38420,
+   "litter": 0,
+   "manure": 777677
   },
   "capped": false,
-  "supply_left_t": 542406,
+  "supply_left_t": 566623,
   "feeds": "all",
   "radius_km": 100.0
  },
  "central_radar_10kt": {
+  "basis": "Central, radar-measured residues only: wheat straw and palm fronds from the mapped fields of the 60 processed region boxes; no modelled manure or litter. Greedy siting is path-dependent: a near-tie between sites can add or drop a whole plant, which is why radar-only removal is not monotonic in plant size.",
+  "level": "central",
+  "size_t": 10000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": null,
   "plants": 27,
+  "plants_outside_boxes": 3,
+  "distinct_sites": 26,
   "feed_used_t": 268223,
-  "supply_t": 291251,
+  "feed_outside_boxes_t": 79,
+  "supply_t": 291060,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "straw": 227206.0
+   "straw": 227016.0
   },
-  "net_removal_tco2": 144757,
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 144560,
   "cement_outlet_plants": 2,
-  "cement_retained_tco2": 13663,
+  "cement_retained_tco2": 13664,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
   "median_transport_share": 0.0043,
@@ -139,13 +188,13 @@
    "manure": 0
   },
   "credited_by_feed_tco2": {
-   "straw": 107898,
+   "straw": 107701,
    "fronds": 37585,
    "litter": 0,
    "manure": 0
   },
   "capped": false,
-  "supply_left_t": 23027,
+  "supply_left_t": 22837,
   "feeds": [
    "straw",
    "fronds"
@@ -153,38 +202,51 @@
   "radius_km": 100.0
  },
  "central_radar_25kt": {
-  "plants": 8,
-  "feed_used_t": 196520,
-  "supply_t": 291251,
+  "basis": "Central, radar-measured residues only: wheat straw and palm fronds from the mapped fields of the 60 processed region boxes; no modelled manure or litter. Greedy siting is path-dependent: a near-tie between sites can add or drop a whole plant, which is why radar-only removal is not monotonic in plant size.",
+  "level": "central",
+  "size_t": 25000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": null,
+  "plants": 7,
+  "plants_outside_boxes": 1,
+  "distinct_sites": 7,
+  "feed_used_t": 175000,
+  "feed_outside_boxes_t": 142,
+  "supply_t": 291060,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "straw": 227206.0
+   "straw": 227016.0
   },
-  "net_removal_tco2": 106026,
-  "cement_outlet_plants": 1,
-  "cement_retained_tco2": 18310,
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 94536,
+  "cement_outlet_plants": 2,
+  "cement_retained_tco2": 35647,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
-  "median_transport_share": 0.005,
+  "median_transport_share": 0.0046,
   "feed_used_by_feed_t": {
-   "straw": 150199,
-   "fronds": 46320,
+   "straw": 131090,
+   "fronds": 43910,
    "litter": 0,
    "manure": 0
   },
   "credited_by_feed_tco2": {
-   "straw": 78535,
-   "fronds": 28141,
+   "straw": 68418,
+   "fronds": 26677,
    "litter": 0,
    "manure": 0
   },
   "capped": false,
-  "supply_left_t": 94731,
+  "supply_left_t": 116060,
   "feeds": [
    "straw",
    "fronds"
@@ -192,38 +254,783 @@
   "radius_km": 100.0
  },
  "central_radar_50kt": {
+  "basis": "Central, radar-measured residues only: wheat straw and palm fronds from the mapped fields of the 60 processed region boxes; no modelled manure or litter. Greedy siting is path-dependent: a near-tie between sites can add or drop a whole plant, which is why radar-only removal is not monotonic in plant size.",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": null,
   "plants": 4,
-  "feed_used_t": 192879,
-  "supply_t": 291251,
+  "plants_outside_boxes": 0,
+  "distinct_sites": 4,
+  "feed_used_t": 192869,
+  "feed_outside_boxes_t": 142,
+  "supply_t": 291060,
   "supply_by_feed_t": {
    "fronds": 64045.0,
-   "straw": 227206.0
+   "straw": 227016.0
   },
-  "net_removal_tco2": 103933,
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 103786,
   "cement_outlet_plants": 0,
   "cement_retained_tco2": 0,
   "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
   "persistence": {
-   "straw": 0.7081,
+   "straw": 0.7068,
    "fronds": 0.7223,
-   "litter": 0.5792,
+   "litter": 0.0,
    "manure": 0.6352
   },
   "median_transport_share": 0.0057,
   "feed_used_by_feed_t": {
-   "straw": 148137,
+   "straw": 148127,
    "fronds": 44742,
    "litter": 0,
    "manure": 0
   },
   "credited_by_feed_tco2": {
-   "straw": 77457,
+   "straw": 77310,
    "fronds": 27182,
    "litter": 0,
    "manure": 0
   },
   "capped": false,
-  "supply_left_t": 98372,
+  "supply_left_t": 98191,
+  "feeds": [
+   "straw",
+   "fronds"
+  ],
+  "radius_km": 100.0
+ },
+ "central_radar_s2_50kt": {
+  "basis": "Central, radar + Sentinel-2 residues (Sentinel-2 fills capped at GASTAT wheat): wheat straw and palm fronds from the mapped fields of the 60 processed region boxes, where Sentinel-2 adds winter crops the radar missed and classifies seasons and fields the radar could not observe; no modelled manure or litter; an upper value: fields with no usable radar season count as farmed, and only wheat straw is capped at GASTAT (fronds are not).",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar_s2",
+  "livestock_coverage": null,
+  "plants": 8,
+  "plants_outside_boxes": 0,
+  "distinct_sites": 8,
+  "feed_used_t": 398237,
+  "feed_outside_boxes_t": 700,
+  "supply_t": 576354,
+  "supply_by_feed_t": {
+   "fronds": 75327.0,
+   "straw": 501028.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 210527,
+  "cement_outlet_plants": 2,
+  "cement_retained_tco2": 68991,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.0,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0057,
+  "feed_used_by_feed_t": {
+   "straw": 350824,
+   "fronds": 47413,
+   "litter": 0,
+   "manure": 0
+  },
+  "credited_by_feed_tco2": {
+   "straw": 183101,
+   "fronds": 28805,
+   "litter": 0,
+   "manure": 0
+  },
+  "capped": false,
+  "supply_left_t": 178118,
+  "feeds": [
+   "straw",
+   "fronds"
+  ],
+  "radius_km": 100.0
+ },
+ "central_boxes_10kt": {
+  "basis": "Same coverage: central with manure cut to the 60 processed region boxes (bounding boxes of R01-R60), where the radar maps straw and fronds, so every stream shares the radar coverage; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 10000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "boxes",
+  "plants": 115,
+  "plants_outside_boxes": 10,
+  "distinct_sites": 91,
+  "feed_used_t": 1147330,
+  "feed_outside_boxes_t": 190,
+  "supply_t": 1184111,
+  "supply_by_feed_t": {
+   "fronds": 64045.0,
+   "manure": 893050.0,
+   "straw": 227016.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 266410
+  },
+  "net_removal_tco2": 481811,
+  "cement_outlet_plants": 5,
+  "cement_retained_tco2": 26791,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.0,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0067,
+  "feed_used_by_feed_t": {
+   "straw": 226524,
+   "fronds": 63745,
+   "litter": 0,
+   "manure": 857061
+  },
+  "credited_by_feed_tco2": {
+   "straw": 118227,
+   "fronds": 38727,
+   "litter": 0,
+   "manure": 328547
+  },
+  "capped": false,
+  "supply_left_t": 36781,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "central_boxes_25kt": {
+  "basis": "Same coverage: central with manure cut to the 60 processed region boxes (bounding boxes of R01-R60), where the radar maps straw and fronds, so every stream shares the radar coverage; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 25000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "boxes",
+  "plants": 43,
+  "plants_outside_boxes": 3,
+  "distinct_sites": 39,
+  "feed_used_t": 1070530,
+  "feed_outside_boxes_t": 149,
+  "supply_t": 1184111,
+  "supply_by_feed_t": {
+   "fronds": 64045.0,
+   "manure": 893050.0,
+   "straw": 227016.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 266410
+  },
+  "net_removal_tco2": 448008,
+  "cement_outlet_plants": 5,
+  "cement_retained_tco2": 67090,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.0,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0097,
+  "feed_used_by_feed_t": {
+   "straw": 223947,
+   "fronds": 51492,
+   "litter": 0,
+   "manure": 795092
+  },
+  "credited_by_feed_tco2": {
+   "straw": 116882,
+   "fronds": 31283,
+   "litter": 0,
+   "manure": 304792
+  },
+  "capped": false,
+  "supply_left_t": 113581,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "central_boxes_50kt": {
+  "basis": "Same coverage: central with manure cut to the 60 processed region boxes (bounding boxes of R01-R60), where the radar maps straw and fronds, so every stream shares the radar coverage; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {},
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "boxes",
+  "plants": 21,
+  "plants_outside_boxes": 1,
+  "distinct_sites": 19,
+  "feed_used_t": 1028268,
+  "feed_outside_boxes_t": 149,
+  "supply_t": 1184111,
+  "supply_by_feed_t": {
+   "fronds": 64045.0,
+   "manure": 893050.0,
+   "straw": 227016.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 266410
+  },
+  "net_removal_tco2": 428338,
+  "cement_outlet_plants": 3,
+  "cement_retained_tco2": 80325,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.0,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0131,
+  "feed_used_by_feed_t": {
+   "straw": 211063,
+   "fronds": 49970,
+   "litter": 0,
+   "manure": 767234
+  },
+  "credited_by_feed_tco2": {
+   "straw": 110158,
+   "fronds": 30358,
+   "litter": 0,
+   "manure": 294113
+  },
+  "capped": false,
+  "supply_left_t": 155843,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "central_litter_upside_50kt": {
+  "basis": "Total if litter char were credited (hypothetical upper bound: litter at H/C 0.69, its total-carbon value; a char that met Puro's organic-carbon gate would be made hotter and yield less); subtract central_50kt for the increment. Litter and manure are modelled for all of Saudi Arabia.",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {
+   "h_c_org_litter": 0.69
+  },
+  "credited": false,
+  "upside_of": "central_50kt",
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 65,
+  "plants_outside_boxes": 35,
+  "distinct_sites": 64,
+  "feed_used_t": 3230900,
+  "feed_outside_boxes_t": 1843626,
+  "supply_t": 3726915,
+  "supply_by_feed_t": {
+   "fronds": 64045.0,
+   "litter": 842447.0,
+   "manure": 2593407.0,
+   "straw": 227016.0
+  },
+  "net_removal_tco2": 1243812,
+  "cement_outlet_plants": 6,
+  "cement_retained_tco2": 166968,
+  "credited_basis": "not credited: hypothetical upper bound with litter at its total-carbon H/C 0.69 (h_c_org_litter upside)",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.5792,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0169,
+  "feed_used_by_feed_t": {
+   "straw": 225715,
+   "fronds": 63038,
+   "litter": 737341,
+   "manure": 2204805
+  },
+  "credited_by_feed_tco2": {
+   "straw": 117805,
+   "fronds": 38298,
+   "litter": 264168,
+   "manure": 845194
+  },
+  "capped": false,
+  "supply_left_t": 496015,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "central_litter_upside_boxes_50kt": {
+  "basis": "Total if litter char were credited (hypothetical upper bound: litter at H/C 0.69, its total-carbon value; a char that met Puro's organic-carbon gate would be made hotter and yield less); subtract central_boxes_50kt for the increment. Litter and manure cut to the 60 processed region boxes (bounding boxes of R01-R60), where the radar maps straw and fronds.",
+  "level": "central",
+  "size_t": 50000,
+  "overrides": {
+   "h_c_org_litter": 0.69
+  },
+  "credited": false,
+  "upside_of": "central_boxes_50kt",
+  "residue_tier": "radar",
+  "livestock_coverage": "boxes",
+  "plants": 27,
+  "plants_outside_boxes": 2,
+  "distinct_sites": 26,
+  "feed_used_t": 1326137,
+  "feed_outside_boxes_t": 149,
+  "supply_t": 1450521,
+  "supply_by_feed_t": {
+   "fronds": 64045.0,
+   "litter": 266410.0,
+   "manure": 893050.0,
+   "straw": 227016.0
+  },
+  "net_removal_tco2": 536182,
+  "cement_outlet_plants": 2,
+  "cement_retained_tco2": 55627,
+  "credited_basis": "not credited: hypothetical upper bound with litter at its total-carbon H/C 0.69 (h_c_org_litter upside)",
+  "persistence": {
+   "straw": 0.7068,
+   "fronds": 0.7223,
+   "litter": 0.5792,
+   "manure": 0.6352
+  },
+  "median_transport_share": 0.0127,
+  "feed_used_by_feed_t": {
+   "straw": 217164,
+   "fronds": 50691,
+   "litter": 243832,
+   "manure": 814449
+  },
+  "credited_by_feed_tco2": {
+   "straw": 113342,
+   "fronds": 30797,
+   "litter": 87358,
+   "manure": 312212
+  },
+  "capped": false,
+  "supply_left_t": 124384,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "low_10kt": {
+  "basis": "Low corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (hottest, 33 C) all take their least favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "low",
+  "size_t": 10000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 155,
+  "plants_outside_boxes": 86,
+  "distinct_sites": 143,
+  "feed_used_t": 1540058,
+  "feed_outside_boxes_t": 846024,
+  "supply_t": 1641210,
+  "supply_by_feed_t": {
+   "fronds": 39698.0,
+   "manure": 1433035.0,
+   "straw": 168478.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 577360
+  },
+  "net_removal_tco2": 410072,
+  "cement_outlet_plants": 10,
+  "cement_retained_tco2": 36162,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.6943,
+   "fronds": 0.7117,
+   "litter": 0.0,
+   "manure": 0.5632
+  },
+  "median_transport_share": 0.018,
+  "feed_used_by_feed_t": {
+   "straw": 168217,
+   "fronds": 39494,
+   "litter": 0,
+   "manure": 1332347
+  },
+  "credited_by_feed_tco2": {
+   "straw": 77649,
+   "fronds": 22389,
+   "litter": 0,
+   "manure": 317782
+  },
+  "capped": false,
+  "supply_left_t": 101152,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "low_25kt": {
+  "basis": "Low corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (hottest, 33 C) all take their least favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "low",
+  "size_t": 25000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 56,
+  "plants_outside_boxes": 27,
+  "distinct_sites": 54,
+  "feed_used_t": 1383807,
+  "feed_outside_boxes_t": 690476,
+  "supply_t": 1641210,
+  "supply_by_feed_t": {
+   "fronds": 39698.0,
+   "manure": 1433035.0,
+   "straw": 168478.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 577360
+  },
+  "net_removal_tco2": 370609,
+  "cement_outlet_plants": 6,
+  "cement_retained_tco2": 59154,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.6943,
+   "fronds": 0.7117,
+   "litter": 0.0,
+   "manure": 0.5632
+  },
+  "median_transport_share": 0.0278,
+  "feed_used_by_feed_t": {
+   "straw": 167598,
+   "fronds": 39396,
+   "litter": 0,
+   "manure": 1176813
+  },
+  "credited_by_feed_tco2": {
+   "straw": 77364,
+   "fronds": 22333,
+   "litter": 0,
+   "manure": 280685
+  },
+  "capped": false,
+  "supply_left_t": 257403,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "low_50kt": {
+  "basis": "Low corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (hottest, 33 C) all take their least favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "low",
+  "size_t": 50000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 24,
+  "plants_outside_boxes": 10,
+  "distinct_sites": 24,
+  "feed_used_t": 1181091,
+  "feed_outside_boxes_t": 560438,
+  "supply_t": 1641210,
+  "supply_by_feed_t": {
+   "fronds": 39698.0,
+   "manure": 1433035.0,
+   "straw": 168478.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 577360
+  },
+  "net_removal_tco2": 316773,
+  "cement_outlet_plants": 3,
+  "cement_retained_tco2": 53991,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.6943,
+   "fronds": 0.7117,
+   "litter": 0.0,
+   "manure": 0.5632
+  },
+  "median_transport_share": 0.0364,
+  "feed_used_by_feed_t": {
+   "straw": 146170,
+   "fronds": 37169,
+   "litter": 0,
+   "manure": 997752
+  },
+  "credited_by_feed_tco2": {
+   "straw": 67473,
+   "fronds": 21071,
+   "litter": 0,
+   "manure": 237976
+  },
+  "capped": false,
+  "supply_left_t": 460119,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "low_radar_50kt": {
+  "basis": "Low corner: straw and frond supply, char yields and organic carbon, char H/C_org of straw, straw dry matter and soil temperature (hottest, 33 C) all take their least favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Radar-measured residues only: wheat straw and palm fronds from the mapped fields of the 60 processed region boxes; no modelled manure or litter.",
+  "level": "low",
+  "size_t": 50000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": null,
+  "plants": 3,
+  "plants_outside_boxes": 0,
+  "distinct_sites": 3,
+  "feed_used_t": 146524,
+  "feed_outside_boxes_t": 85,
+  "supply_t": 208175,
+  "supply_by_feed_t": {
+   "fronds": 39698.0,
+   "straw": 168478.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 69830,
+  "cement_outlet_plants": 1,
+  "cement_retained_tco2": 30121,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.6943,
+   "fronds": 0.7117,
+   "litter": 0.0,
+   "manure": 0.5632
+  },
+  "median_transport_share": 0.0108,
+  "feed_used_by_feed_t": {
+   "straw": 118506,
+   "fronds": 28017,
+   "litter": 0,
+   "manure": 0
+  },
+  "credited_by_feed_tco2": {
+   "straw": 54703,
+   "fronds": 15883,
+   "litter": 0,
+   "manure": 0
+  },
+  "capped": false,
+  "supply_left_t": 61652,
+  "feeds": [
+   "straw",
+   "fronds"
+  ],
+  "radius_km": 100.0
+ },
+ "high_10kt": {
+  "basis": "High corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (coolest, 25 C) all take their most favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "high",
+  "size_t": 10000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 442,
+  "plants_outside_boxes": 241,
+  "distinct_sites": 361,
+  "feed_used_t": 4413003,
+  "feed_outside_boxes_t": 2401738,
+  "supply_t": 4514991,
+  "supply_by_feed_t": {
+   "fronds": 202227.0,
+   "manure": 3830184.0,
+   "straw": 482580.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 1374966
+  },
+  "net_removal_tco2": 2488473,
+  "cement_outlet_plants": 14,
+  "cement_retained_tco2": 104904,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7298,
+   "fronds": 0.743,
+   "litter": 0.0,
+   "manure": 0.7342
+  },
+  "median_transport_share": 0.0054,
+  "feed_used_by_feed_t": {
+   "straw": 482526,
+   "fronds": 202227,
+   "litter": 0,
+   "manure": 3728250
+  },
+  "credited_by_feed_tco2": {
+   "straw": 280766,
+   "fronds": 127980,
+   "litter": 0,
+   "manure": 2095646
+  },
+  "capped": false,
+  "supply_left_t": 101988,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "high_25kt": {
+  "basis": "High corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (coolest, 25 C) all take their most favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "high",
+  "size_t": 25000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 172,
+  "plants_outside_boxes": 92,
+  "distinct_sites": 160,
+  "feed_used_t": 4274010,
+  "feed_outside_boxes_t": 2281101,
+  "supply_t": 4514991,
+  "supply_by_feed_t": {
+   "fronds": 202227.0,
+   "manure": 3830184.0,
+   "straw": 482580.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 1374966
+  },
+  "net_removal_tco2": 2404759,
+  "cement_outlet_plants": 8,
+  "cement_retained_tco2": 153121,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7298,
+   "fronds": 0.743,
+   "litter": 0.0,
+   "manure": 0.7342
+  },
+  "median_transport_share": 0.0077,
+  "feed_used_by_feed_t": {
+   "straw": 480512,
+   "fronds": 201360,
+   "litter": 0,
+   "manure": 3592138
+  },
+  "credited_by_feed_tco2": {
+   "straw": 279594,
+   "fronds": 127432,
+   "litter": 0,
+   "manure": 2019137
+  },
+  "capped": false,
+  "supply_left_t": 240981,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "high_50kt": {
+  "basis": "High corner: crop-residue and manure supply, char yields and organic carbon, char H/C_org of straw and manure, straw dry matter and soil temperature (coolest, 25 C) all take their most favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Feeds: wheat straw and palm fronds from the radar-mapped fields of the 60 processed region boxes, and cattle, sheep and goat manure modelled for all of Saudi Arabia; poultry litter is not credited (its char's H/C_org is at or above 0.70 on the organic-carbon basis, rule 3.5.1).",
+  "level": "high",
+  "size_t": 50000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": "kingdom",
+  "plants": 80,
+  "plants_outside_boxes": 38,
+  "distinct_sites": 76,
+  "feed_used_t": 3967163,
+  "feed_outside_boxes_t": 2037524,
+  "supply_t": 4514991,
+  "supply_by_feed_t": {
+   "fronds": 202227.0,
+   "manure": 3830184.0,
+   "straw": 482580.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 1374966
+  },
+  "net_removal_tco2": 2228581,
+  "cement_outlet_plants": 5,
+  "cement_retained_tco2": 191488,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7298,
+   "fronds": 0.743,
+   "litter": 0.0,
+   "manure": 0.7342
+  },
+  "median_transport_share": 0.0103,
+  "feed_used_by_feed_t": {
+   "straw": 469102,
+   "fronds": 199808,
+   "litter": 0,
+   "manure": 3298252
+  },
+  "credited_by_feed_tco2": {
+   "straw": 272955,
+   "fronds": 126450,
+   "litter": 0,
+   "manure": 1853944
+  },
+  "capped": false,
+  "supply_left_t": 547828,
+  "feeds": "all",
+  "radius_km": 100.0
+ },
+ "high_radar_50kt": {
+  "basis": "High corner: straw and frond supply, char yields and organic carbon, char H/C_org of straw, straw dry matter and soil temperature (coolest, 25 C) all take their most favourable values at once; palm-frond char has one H/C_org value at every level. This is not a probability interval. Road circuity and the truck emission factor are held at central, so the corners bracket removal. Radar-measured residues only: wheat straw and palm fronds from the mapped fields of the 60 processed region boxes; no modelled manure or litter.",
+  "level": "high",
+  "size_t": 50000,
+  "overrides": {
+   "road_circuity": 1.0,
+   "truck_kgco2e_per_tkm": 0.0784
+  },
+  "credited": true,
+  "residue_tier": "radar",
+  "livestock_coverage": null,
+  "plants": 11,
+  "plants_outside_boxes": 1,
+  "distinct_sites": 10,
+  "feed_used_t": 540580,
+  "feed_outside_boxes_t": 317,
+  "supply_t": 684806,
+  "supply_by_feed_t": {
+   "fronds": 202227.0,
+   "straw": 482580.0
+  },
+  "uncredited_supply_by_feed_t": {
+   "litter": 0
+  },
+  "net_removal_tco2": 320522,
+  "cement_outlet_plants": 2,
+  "cement_retained_tco2": 82068,
+  "credited_basis": "Puro.earth 2025 v2: soil persistence model for soil and cement (rule 6.2.4), H/C_org < 0.70 gate; soil absorption not limited",
+  "persistence": {
+   "straw": 0.7298,
+   "fronds": 0.743,
+   "litter": 0.0,
+   "manure": 0.7342
+  },
+  "median_transport_share": 0.0042,
+  "feed_used_by_feed_t": {
+   "straw": 388850,
+   "fronds": 151730,
+   "litter": 0,
+   "manure": 0
+  },
+  "credited_by_feed_tco2": {
+   "straw": 226259,
+   "fronds": 96023,
+   "litter": 0,
+   "manure": 0
+  },
+  "capped": false,
+  "supply_left_t": 144226,
   "feeds": [
    "straw",
    "fronds"

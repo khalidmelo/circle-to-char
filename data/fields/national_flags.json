@@ -1,0 +1,30 @@
+{
+ "csv": "data/fields/national_flags.csv",
+ "csv_md5": "3a42a1fa2811aaf5f23ef3f74d717307",
+ "national_table": "data/national/fields_national.csv",
+ "national_table_md5": "ec7c4e1d660d5ea97c53eaa228cfa599",
+ "national_fields": 60132,
+ "fields": 4029,
+ "field_ha": 47814.1,
+ "min_overlap": 0.5,
+ "matched_fields": 3323,
+ "matched_ha": 40982.8,
+ "unmatched_fields": 706,
+ "unmatched_ha": 6831.3,
+ "no_national_overlap_fields": 255,
+ "no_national_overlap_ha": 1305.8,
+ "matched_spring_brown": {
+  "brown": 1145,
+  "not_brown": 2178,
+  "no_clear_look": 0
+ },
+ "tree_frac_source_codes": {
+  "wc": "worldcover_deep_pixels",
+  "nat": "national_field"
+ },
+ "tree_frac_source": {
+  "wc": 4029,
+  "nat": 0,
+  "none": 0
+ }
+}

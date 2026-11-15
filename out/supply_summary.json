@@ -3,38 +3,780 @@
   "fields": 4029,
   "area_ha_by_class": {
     "idle": 9353.0,
+    "palm_grove": 6969.0,
     "summer_only": 12577.0,
+    "wheat_rotation": 3124.0,
     "winter_only": 2825.0,
-    "year_round": 23059.0
+    "year_round": 12966.0
+  },
+  "fields_by_class": {
+    "idle": 756,
+    "palm_grove": 672,
+    "summer_only": 900,
+    "wheat_rotation": 223,
+    "winter_only": 264,
+    "year_round": 1214
   },
   "water_m3": {
-    "low": 458883760.0,
-    "central": 760165316.0,
-    "high": 1215575168.0
+    "low": 445607950.0,
+    "central": 747358062.0,
+    "high": 1199599572.0
   },
   "elec_kwh": {
-    "low": 170517034.0,
-    "central": 357795983.0,
-    "high": 692601578.0
+    "low": 176613459.0,
+    "central": 383841272.0,
+    "high": 722728214.0
   },
   "elec_kwh_summer": {
-    "low": 101372526.0,
-    "central": 210434854.0,
-    "high": 405992306.0
+    "low": 108596133.0,
+    "central": 230813282.0,
+    "high": 431959502.0
   },
   "co2_t_electric": {
-    "low": 117997.7,
-    "central": 247594.41000000003,
-    "high": 486898.77
+    "low": 122216.69,
+    "central": 265618.06,
+    "high": 508077.89
   },
   "co2_t_diesel": {
-    "low": 150512.4,
-    "central": 315820.26,
-    "high": 611347.7
+    "low": 155894.09,
+    "central": 338810.05000000005,
+    "high": 637939.56
   },
   "residue_t_dry": {
-    "low": 6667.900000000001,
-    "central": 8983.5,
-    "high": 19098.700000000004
+    "low": 14039.900000000001,
+    "central": 18916.8,
+    "high": 40214.899999999994
+  },
+  "fronds_t_dry": {
+    "low": 10454.4,
+    "central": 16865.5,
+    "high": 53250.6
+  },
+  "field_ha": 47814,
+  "farmed_ha": 38461,
+  "active_ha": {
+    "winter": 25884,
+    "summer": 35636
+  },
+  "season_not_observed_ha": {
+    "winter": 0,
+    "summer": 0
+  },
+  "wheat_ha": 5949,
+  "year_round_ha": 12966,
+  "co2_t_grid": {
+    "low": 122216.7,
+    "central": 265618.1,
+    "high": 508077.9
+  },
+  "straw_t_dry": {
+    "low": 14039.9,
+    "central": 18916.8,
+    "high": 40214.9
+  },
+  "summer_pumping_avg_mw": {
+    "low": 37.1,
+    "central": 78.8,
+    "high": 147.5
+  },
+  "pumping_head": {
+    "rule": "head = static depth to water + drawdown + pivot pressure (pivots only)",
+    "detail": "Pumping electricity per field = pumped water x rho g x head / pump wire-to-water efficiency (pump_wire_to_water_eff), as in the national run. Head = pumping_lift_m (static depth to water, Buraidah 2006; equal to the national run's Qassim lift, lift_m.Qassim of data/national/official_2024.json, at every level, or the run stops) + drawdown_m + pivot_pressure_head_m on centre pivots that are not palm groves (model/params.json), all at the same level (low, central, high). Pivot-shaped palm groves get no pivot pressure: palm groves are not sprinkler pivots (as in the national run, whose pivot retrofit scenario leaves them out too).",
+    "pivot_rule": "centre pivot = circularity above 0.75 and at least 10 ha (model/national_supply.is_pivot; the rule of scripts/s2_fields.py's is_pivot column); pivot pressure goes to centre pivots that are not palm groves, since palm groves are not sprinkler pivots (model/national_supply.pressure_pivots)",
+    "pumping_lift_m": {
+      "low": 90,
+      "central": 111,
+      "high": 121
+    },
+    "drawdown_m": {
+      "low": 4,
+      "central": 10,
+      "high": 20
+    },
+    "pivot_pressure_head_m": {
+      "low": 10.5,
+      "central": 17.6,
+      "high": 25.4
+    },
+    "notes": {
+      "depth_age": "This box's depth to water (pumping_lift_m) was measured at Buraidah in 2006. At a decline of  0.5-2 m a year (Buscarlet et al. 2024 (Al Ula, Saq-Disi system; cited by Salem & Yihdego 2026, Discover Geoscience 4:203, ref 46), used as an analogue: no measured decline at Buraidah after 2006 was found) the water would be 10-40 m deeper by 2026, which would add 31-123 GWh a year (+8% to +32%) to the central pumping electricity; this is in no total",
+      "national_lift_table_age": "National lift table (all regions, national figures): The depths were measured between 1979 and 2009 (Hail undated). Water levels have fallen since, by about 1-4 m a year where measured, so today's lifts are probably deeper. Static depth is about 87% of the pumping head used here, so adding the measured declines would raise pumping electricity by roughly 16-25%"
+    },
+    "depth_age_sensitivity": {
+      "rule": "extra head = decline rate x 20 years (2006-2026) on every field's pumped water, electricity = water x rho g x extra head / pump_wire_to_water_eff at each level; share = that electricity over the radar-only elec_kwh at the same level; [slow, fast] decline",
+      "depth_year": 2006,
+      "season_year": 2026,
+      "decline_m_per_yr": [
+        0.5,
+        2.0
+      ],
+      "decline_source": "Buscarlet et al. 2024 (Al Ula, Saq-Disi system; cited by Salem & Yihdego 2026, Discover Geoscience 4:203, ref 46), used as an analogue: no measured decline at Buraidah after 2006 was found",
+      "extra_head_m": [
+        10.0,
+        40.0
+      ],
+      "extra_elec_gwh": {
+        "low": [
+          18.4,
+          73.6
+        ],
+        "central": [
+          30.9,
+          123.4
+        ],
+        "high": [
+          49.5,
+          198.1
+        ]
+      },
+      "extra_share_of_elec_kwh": {
+        "low": [
+          0.1042,
+          0.4167
+        ],
+        "central": [
+          0.0804,
+          0.3216
+        ],
+        "high": [
+          0.0685,
+          0.2741
+        ]
+      }
+    },
+    "pivot_fields": 674,
+    "pivot_ha": 12706,
+    "pivot_share_of_pumped_water": {
+      "low": 0.19,
+      "central": 0.1929,
+      "high": 0.1937
+    },
+    "palm_grove_pivots": {
+      "rule": "pivot-shaped palm groves (is_pivot, class palm_grove) get no pivot pressure; pressure_elec_kwh_not_charged is what the pivot pressure head would add on their water (in no total)",
+      "fields": 12,
+      "ha": 168,
+      "pressure_elec_kwh_not_charged": {
+        "low": 111774,
+        "central": 307070,
+        "high": 706328
+      }
+    },
+    "mean_head_m": {
+      "low": 96.0,
+      "central": 124.4,
+      "high": 145.9
+    },
+    "elec_kwh_by_component": {
+      "static_depth": {
+        "low": 165583863,
+        "central": 342510803,
+        "high": 599299953
+      },
+      "drawdown": {
+        "low": 7359283,
+        "central": 30856829,
+        "high": 99057843
+      },
+      "pivot_pressure": {
+        "low": 3670312,
+        "central": 10473670,
+        "high": 24370451
+      }
+    },
+    "components_rule": "the electricity split by head component (the three add up to elec_kwh, up to the rounding of each field's electricity); pivot_fields, pivot_ha and pivot_share_of_pumped_water count the pivots that carry pivot pressure (pivot_rule: palm groves left out); mean_head_m and pivot_share_of_pumped_water are weighted by pumped water"
+  },
+  "national_flags": {
+    "file": "data/fields/national_flags.csv",
+    "meta_file": "data/fields/national_flags.json",
+    "national_table_md5": "ec7c4e1d660d5ea97c53eaa228cfa599",
+    "national_table_current": true,
+    "matched_fields": 3323,
+    "matched_ha": 40983,
+    "unmatched_fields": 706,
+    "unmatched_ha": 6831,
+    "two_season_no_spring_check": {
+      "fields": 294,
+      "ha": 2591
+    },
+    "tree_frac_source": {
+      "worldcover_deep_pixels": 4029
+    },
+    "palm_grove": {
+      "fields": 672,
+      "ha": 6969,
+      "unmatched_fields": 130,
+      "unmatched_ha": 1108
+    }
+  },
+  "classification_range": {
+    "rule": "Both desert thresholds (out/background.json, unrounded) shifted by -1 dB (looser: more fields active) and +1 dB (stricter: fewer) on the stored per-field seasonal peak HV above the desert median; the same palm, class and accounting rules as the radar-only totals (including the pumping head: head = static depth to water + drawdown + pivot pressure (pivots only)), at the same low/central/high factors. Shifting by 0 dB reproduces the published flags.",
+    "thresholds_db": {
+      "winter": 2.6413,
+      "summer": 1.9587
+    },
+    "shift_db": {
+      "minus_1db": -1.0,
+      "plus_1db": 1.0
+    },
+    "zero_shift_check": {
+      "fields": 4029,
+      "fields_identical": 4029,
+      "share_identical": 1.0,
+      "by_season": {
+        "winter": {
+          "share_identical": 1.0,
+          "fields_differ": 0,
+          "ha_differ": 0.0
+        },
+        "summer": {
+          "share_identical": 1.0,
+          "fields_differ": 0,
+          "ha_differ": 0.0
+        }
+      },
+      "farmed_ha": 38461,
+      "published_farmed_ha": 38461,
+      "water_m3_central": 747358062.0,
+      "published_water_m3_central": 747358062.0
+    },
+    "minus_1db": {
+      "fields": 4029,
+      "field_ha": 47814,
+      "farmed_ha": 42836,
+      "area_ha_by_class": {
+        "idle": 4978.0,
+        "palm_grove": 6969.0,
+        "summer_only": 11779.0,
+        "wheat_rotation": 4815.0,
+        "winter_only": 2818.0,
+        "year_round": 16454.0
+      },
+      "active_ha": {
+        "winter": 31057,
+        "summer": 40018
+      },
+      "season_not_observed_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "wheat_ha": 7633,
+      "year_round_ha": 16454,
+      "water_m3": {
+        "low": 511576206.0,
+        "central": 860307289.0,
+        "high": 1382018390.0
+      },
+      "elec_kwh": {
+        "low": 203380075.0,
+        "central": 443563892.0,
+        "high": 836574144.0
+      },
+      "elec_kwh_summer": {
+        "low": 122188248.0,
+        "central": 259852812.0,
+        "high": 486589685.0
+      },
+      "co2_t_grid": {
+        "low": 140739.1,
+        "central": 306946.0,
+        "high": 588111.6
+      },
+      "co2_t_diesel": {
+        "low": 179520.5,
+        "central": 391526.2,
+        "high": 738429.4
+      },
+      "straw_t_dry": {
+        "low": 18014.5,
+        "central": 24272.9,
+        "high": 51599.5
+      },
+      "fronds_t_dry": {
+        "low": 10454.4,
+        "central": 16865.5,
+        "high": 53250.6
+      },
+      "summer_pumping_avg_mw": {
+        "low": 41.7,
+        "central": 88.7,
+        "high": 166.2
+      }
+    },
+    "plus_1db": {
+      "fields": 4029,
+      "field_ha": 47814,
+      "farmed_ha": 33427,
+      "area_ha_by_class": {
+        "idle": 14387.0,
+        "palm_grove": 6969.0,
+        "summer_only": 10325.0,
+        "wheat_rotation": 2317.0,
+        "winter_only": 3049.0,
+        "year_round": 10767.0
+      },
+      "active_ha": {
+        "winter": 23101,
+        "summer": 30378
+      },
+      "season_not_observed_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "wheat_ha": 5366,
+      "year_round_ha": 10767,
+      "water_m3": {
+        "low": 386539105.0,
+        "central": 648881787.0,
+        "high": 1041821580.0
+      },
+      "elec_kwh": {
+        "low": 152680964.0,
+        "central": 331840037.0,
+        "high": 624400463.0
+      },
+      "elec_kwh_summer": {
+        "low": 92254654.0,
+        "central": 195884342.0,
+        "high": 366218283.0
+      },
+      "co2_t_grid": {
+        "low": 105655.3,
+        "central": 229633.2,
+        "high": 438953.4
+      },
+      "co2_t_diesel": {
+        "low": 134769.3,
+        "central": 292909.3,
+        "high": 551147.4
+      },
+      "straw_t_dry": {
+        "low": 12663.7,
+        "central": 17062.2,
+        "high": 36272.2
+      },
+      "fronds_t_dry": {
+        "low": 10454.4,
+        "central": 16865.5,
+        "high": 53250.6
+      },
+      "summer_pumping_avg_mw": {
+        "low": 31.5,
+        "central": 66.9,
+        "high": 125.1
+      }
+    },
+    "corners": {
+      "water_m3": {
+        "low": 386539105.0,
+        "high": 1382018390.0
+      },
+      "elec_kwh": {
+        "low": 152680964.0,
+        "high": 836574144.0
+      },
+      "elec_kwh_summer": {
+        "low": 92254654.0,
+        "high": 486589685.0
+      },
+      "co2_t_grid": {
+        "low": 105655.3,
+        "high": 588111.6
+      },
+      "co2_t_diesel": {
+        "low": 134769.3,
+        "high": 738429.4
+      },
+      "straw_t_dry": {
+        "low": 12663.7,
+        "high": 51599.5
+      },
+      "fronds_t_dry": {
+        "low": 10454.4,
+        "high": 53250.6
+      },
+      "summer_pumping_avg_mw": {
+        "low": 31.5,
+        "high": 166.2
+      }
+    },
+    "corners_rule": "low = minimum over {-1 dB, published, +1 dB} of the low-factor total; high = maximum of the high-factor total"
+  },
+  "s2_filled": {
+    "rule": "Radar + Sentinel-2 tier, published next to the radar-only totals and never replacing them; the area it adds is measured by Sentinel-2, not by the radar. Classes and flows come from model/national_supply.s2_tier itself, run on the deep dive's own Sentinel-2 flags: green = the field's median seasonal-maximum NDVI above 0.40 (s2_winter_active over 1 Nov-31 Jan, s2_summer_active over 15 Jun-31 Oct; the national flags use 1 Nov-15 Mar and 10 Jun-31 Oct, so this winter window misses wheat that greens only in February-March). (a) Winter fill: a field the radar calls not farmed in either season (radar idle) that Sentinel-2 sees green in winter and not green in summer counts as winter-farmed. Fields the radar sees farmed in summer are not filled. (b) Season fill and (c) Sentinel-2-only fields fill nothing here: the radar observed both seasons on every deep field. (d) A filled field farmed in both seasons gets the year-round (perennial) depth only if the national spring check marks it perennial (not brown over 20 Apr-5 Jun) and Sentinel-2 sees it green in both windows; otherwise it is a rotation (winter plus summer depth). Palm groves among the filled fields: tree cover of 30% or more, farmed in every known season and not brown in spring; radar palm groves are never refilled. (e) Wheat straw on fields that are wheat-pattern only through Sentinel-2 is credited at the national run's straw factor for the field's administrative region (out/national_summary.json s2_filled.caps.by_region, Qassim), so the deep tier follows the national cap: the national cap (GASTAT 2024 wheat area minus the national radar wheat) goes first to the region's national fills (a)/(b), then to its fill (c), pro rata by area; straw_factor_seasons applies here to fills (a) and (b), straw_factor_s2_only to (c). The cap from the box's own radar wheat is kept as a diagnostic only. Water, energy and CO2 are not capped; energy uses the same pumping head as the radar-only totals. Checks (the run stops and writes nothing): the national function keeps the radar class of every field it does not fill, and its flows equal this module's on the same classes within one rounding unit; the cap entry's wheat areas equal those of data/national/fields_national.csv (the same national run), and the national flags were made from that table (its md5 in data/fields/national_flags.json).",
+    "radar_plus_s2_seasons": {
+      "scope": "all 4,029 deep-dive fields: radar classes with the winter fill (a); fills (b) and (c) do not occur here",
+      "fields": 4029,
+      "field_ha": 47814,
+      "farmed_ha": 43533,
+      "area_ha_by_class": {
+        "idle": 4281.0,
+        "palm_grove": 6969.0,
+        "summer_only": 12577.0,
+        "wheat_rotation": 3124.0,
+        "winter_only": 7897.0,
+        "year_round": 12966.0
+      },
+      "active_ha": {
+        "winter": 30956,
+        "summer": 35636
+      },
+      "season_not_observed_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "wheat_ha": 11021,
+      "year_round_ha": 12966,
+      "water_m3": {
+        "low": 462841358.0,
+        "central": 790153392.0,
+        "high": 1275028058.0
+      },
+      "elec_kwh": {
+        "low": 183557317.0,
+        "central": 406284465.0,
+        "high": 769344406.0
+      },
+      "elec_kwh_summer": {
+        "low": 108596141.0,
+        "central": 230813048.0,
+        "high": 431959498.0
+      },
+      "co2_t_grid": {
+        "low": 127021.7,
+        "central": 281148.4,
+        "high": 540849.3
+      },
+      "co2_t_diesel": {
+        "low": 162023.3,
+        "central": 358620.2,
+        "high": 679086.9
+      },
+      "straw_t_dry": {
+        "low": 19758.7,
+        "central": 26622.5,
+        "high": 56596.8
+      },
+      "fronds_t_dry": {
+        "low": 10454.4,
+        "central": 16865.5,
+        "high": 53250.6
+      },
+      "summer_pumping_avg_mw": {
+        "low": 37.1,
+        "central": 78.8,
+        "high": 147.5
+      },
+      "s2_filled_fields": 420,
+      "s2_filled_ha": 5072,
+      "straw_t_dry_uncapped": {
+        "low": 26009.7,
+        "central": 35046.4,
+        "high": 74501.0
+      },
+      "wheat_ha_straw_credited": 8372
+    },
+    "s2_only_fields": {
+      "scope": "only the fields of fill (c), classified from Sentinel-2 alone: none in the deep dive (every field has radar values in both seasons)",
+      "fields": 0,
+      "field_ha": 0,
+      "farmed_ha": 0,
+      "area_ha_by_class": {},
+      "active_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "season_not_observed_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "wheat_ha": 0,
+      "year_round_ha": 0,
+      "water_m3": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "elec_kwh": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "elec_kwh_summer": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "co2_t_grid": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "co2_t_diesel": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "straw_t_dry": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "fronds_t_dry": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "summer_pumping_avg_mw": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "s2_filled_fields": 0,
+      "s2_filled_ha": 0,
+      "straw_t_dry_uncapped": {
+        "low": 0.0,
+        "central": 0.0,
+        "high": 0.0
+      },
+      "wheat_ha_straw_credited": 0
+    },
+    "combined": {
+      "scope": "all 4,029 deep-dive fields with every fill; equal to radar_plus_s2_seasons, as fill (c) is empty",
+      "fields": 4029,
+      "field_ha": 47814,
+      "farmed_ha": 43533,
+      "area_ha_by_class": {
+        "idle": 4281.0,
+        "palm_grove": 6969.0,
+        "summer_only": 12577.0,
+        "wheat_rotation": 3124.0,
+        "winter_only": 7897.0,
+        "year_round": 12966.0
+      },
+      "active_ha": {
+        "winter": 30956,
+        "summer": 35636
+      },
+      "season_not_observed_ha": {
+        "winter": 0,
+        "summer": 0
+      },
+      "wheat_ha": 11021,
+      "year_round_ha": 12966,
+      "water_m3": {
+        "low": 462841358.0,
+        "central": 790153392.0,
+        "high": 1275028058.0
+      },
+      "elec_kwh": {
+        "low": 183557317.0,
+        "central": 406284465.0,
+        "high": 769344406.0
+      },
+      "elec_kwh_summer": {
+        "low": 108596141.0,
+        "central": 230813048.0,
+        "high": 431959498.0
+      },
+      "co2_t_grid": {
+        "low": 127021.7,
+        "central": 281148.4,
+        "high": 540849.3
+      },
+      "co2_t_diesel": {
+        "low": 162023.3,
+        "central": 358620.2,
+        "high": 679086.9
+      },
+      "straw_t_dry": {
+        "low": 19758.7,
+        "central": 26622.5,
+        "high": 56596.8
+      },
+      "fronds_t_dry": {
+        "low": 10454.4,
+        "central": 16865.5,
+        "high": 53250.6
+      },
+      "summer_pumping_avg_mw": {
+        "low": 37.1,
+        "central": 78.8,
+        "high": 147.5
+      },
+      "s2_filled_fields": 420,
+      "s2_filled_ha": 5072,
+      "straw_t_dry_uncapped": {
+        "low": 26009.7,
+        "central": 35046.4,
+        "high": 74501.0
+      },
+      "wheat_ha_straw_credited": 8372
+    },
+    "caps": {
+      "rule": "per administrative region, the national run's straw factors (out/national_summary.json s2_filled.caps.by_region, as published to 4 decimals; 'national' is that entry for the whole region): national cap = max(0, GASTAT 2024 wheat area - the national radar wheat-pattern area (winter-only + rotation)), shared pro rata over the national Sentinel-2-filled wheat-pattern area, first fills (a)/(b) (straw_factor_seasons), then Sentinel-2-only fields (straw_factor_s2_only). The deep dive's Sentinel-2-filled wheat-pattern area is credited with straw at those factors (credited_ha_*). Checked against data/national/fields_national.csv, the table the national flags came from",
+      "by_region": {
+        "Qassim": {
+          "factor_source": "out/national_summary.json s2_filled.caps.by_region.Qassim",
+          "straw_factor_seasons": 0.4778,
+          "straw_factor_s2_only": 0.0,
+          "s2_wheat_ha_seasons": 5072,
+          "credited_ha_seasons": 2423,
+          "s2_wheat_ha_s2_only": 0,
+          "credited_ha_s2_only": 0,
+          "national": {
+            "gastat_wheat_ha": 25888,
+            "radar_wheat_ha": 13616,
+            "cap_ha": 12272,
+            "s2_wheat_ha_seasons": 25681,
+            "credited_ha_seasons": 12272,
+            "straw_factor_seasons": 0.4778,
+            "s2_wheat_ha_s2_only": 810,
+            "credited_ha_s2_only": 0,
+            "straw_factor_s2_only": 0.0
+          }
+        }
+      },
+      "box_only_diagnostic": {
+        "rule": "not applied: the cap model/national_supply.s2_tier computes on the deep table alone, GASTAT 2024 wheat of the whole region minus the deep dive's radar wheat-pattern area; the box is a small part of the region, so this cap barely binds",
+        "by_region": {
+          "Qassim": {
+            "gastat_wheat_ha": 25888,
+            "radar_wheat_ha": 5949,
+            "cap_ha": 19939,
+            "s2_wheat_ha_seasons": 5072,
+            "credited_ha_seasons": 5072,
+            "straw_factor_seasons": 1.0,
+            "s2_wheat_ha_s2_only": 0,
+            "credited_ha_s2_only": 0,
+            "straw_factor_s2_only": null
+          }
+        }
+      },
+      "effect": {
+        "radar_plus_s2_seasons": {
+          "straw_t_dry_uncapped": {
+            "low": 26009.7,
+            "central": 35046.4,
+            "high": 74501.0
+          },
+          "straw_t_dry_capped": {
+            "low": 19758.7,
+            "central": 26622.5,
+            "high": 56596.8
+          },
+          "s2_wheat_ha": 5072,
+          "s2_wheat_ha_credited": 2423
+        },
+        "combined": {
+          "straw_t_dry_uncapped": {
+            "low": 26009.7,
+            "central": 35046.4,
+            "high": 74501.0
+          },
+          "straw_t_dry_capped": {
+            "low": 19758.7,
+            "central": 26622.5,
+            "high": 56596.8
+          },
+          "s2_wheat_ha": 5072,
+          "s2_wheat_ha_credited": 2423
+        }
+      },
+      "regions_capped": [
+        "Qassim"
+      ]
+    },
+    "fills": {
+      "winter_fill": {
+        "rule": "radar idle only: winter and summer observed and not active; Sentinel-2 green over 1 Nov-31 Jan and not over 15 Jun-31 Oct",
+        "fields": 420,
+        "ha": 5072,
+        "by_radar_class": {
+          "idle": 5072
+        },
+        "in_shield_ha": 0,
+        "pivots_ha": 1734,
+        "radar_summer_active_not_filled": {
+          "fields": 27,
+          "ha": 431,
+          "by_radar_class": {
+            "summer_only": 431
+          }
+        }
+      },
+      "season_fill": {
+        "winter": {
+          "fields": 0,
+          "ha": 0,
+          "s2_green_ha": 0
+        },
+        "summer": {
+          "fields": 0,
+          "ha": 0,
+          "s2_green_ha": 0
+        }
+      },
+      "s2_only": {
+        "fields": 0,
+        "ha": 0,
+        "by_radar_class": {},
+        "by_region": {}
+      },
+      "palm_spring_check": {
+        "rule": "filled fields become palm groves only if not brown in spring; these fields met the other palm conditions but are brown in spring",
+        "fields": 0,
+        "ha": 0,
+        "palm_ha_filled": 0,
+        "palm_ha_s2_only": 0
+      },
+      "filled_two_season": {
+        "year_round_ha": 0,
+        "year_round_ha_by_fill": {},
+        "wheat_rotation_ha": 0,
+        "spring_not_brown_but_not_green_in_both_windows_ha": 0,
+        "year_round_extra_water_m3_over_rotation": {
+          "low": 0,
+          "central": 0,
+          "high": 0
+        },
+        "note": "filled fields farmed in both seasons: year-round (perennial) depth where the spring check marks them perennial and Sentinel-2 sees them green in both windows, rotation depth otherwise; year_round_extra_water_m3_over_rotation is what the perennial depth adds over treating every one of them as a rotation"
+      },
+      "not_applicable": "season_fill and s2_only are empty: the radar observed both seasons on every deep field"
+    },
+    "vs_official": {
+      "rule": "each administrative region's tier totals against GASTAT 2024 wheat and fodder (year-round fields) and MEWA 2024 agricultural groundwater for the whole region; the deep-dive box covers a small part of it. wheat_ha is the uncapped wheat pattern; *_wheat_credited_ha is the area credited with straw after the cap. Water: [low, central, high]",
+      "regions": [
+        {
+          "region": "Qassim",
+          "gastat_wheat_ha": 25888,
+          "gastat_fodder_ha": 18993,
+          "mewa_agri_groundwater_m3": 1330675506,
+          "radar_wheat_ha": 5949,
+          "radar_year_round_ha": 12966,
+          "radar_water_m3": [
+            445607950,
+            747358062,
+            1199599572
+          ],
+          "seasons_wheat_ha": 11021,
+          "seasons_wheat_credited_ha": 8372,
+          "seasons_year_round_ha": 12966,
+          "seasons_water_m3": [
+            462841358,
+            790153392,
+            1275028058
+          ],
+          "combined_wheat_ha": 11021,
+          "combined_wheat_credited_ha": 8372,
+          "combined_year_round_ha": 12966,
+          "combined_water_m3": [
+            462841358,
+            790153392,
+            1275028058
+          ]
+        }
+      ],
+      "overshoots": []
+    }
   }
 }
