@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Aquifer outlook, SkyMeter</title>
+<meta name="description" content="Can NISAR radar see the ground sinking as Qassim's farms pump the aquifer? A radar interferometry pilot over one NISAR frame: not detectable yet, why, what irrigation does to the radar signal, and how long a record would need to be.">
+<meta name="theme-color" content="#ffffff">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="SkyMeter">
+<meta property="og:title" content="Aquifer outlook, SkyMeter">
+<meta property="og:description" content="A NISAR radar interferometry pilot over Qassim: ground sinking from pumping is not detectable yet. The noise floor, the false movement on irrigated fields and the time to detection.">
+<meta property="og:image" content="https://khalidmelo.github.io/circle-to-char/img/hero-1200.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="675">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="aquifer.css?v=3">
+</head>
+<body class="doc">
+<a class="skip" href="#main">Skip to the results</a>
+<nav class="site" aria-label="SkyMeter pages">
+  <a class="home" href="./"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="img/skymeter.svg#mark"/></svg><span class="brand-word">SkyMeter</span></a>
+  <a href="national.html">National<span class="long"> record</span></a>
+  <a href="aquifer.html" aria-current="page">Aquifer<span class="long"> outlook</span></a>
+  <a href="qassim.html">Qassim<span class="long"> radar deep dive</span></a>
+  <a class="code" href="https://github.com/khalidmelo/circle-to-char"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-code"/></svg>Code</a>
+</nav>
+<header class="page">
+  <div class="brand">
+    <h1>Aquifer outlook</h1>
+    <p>Can NISAR radar see the ground sinking as farms pump the aquifer under Qassim? This pilot tests one radar frame over the pivot fields west of Buraydah. The honest answer is not yet; the page shows why, and how long a record it would take.</p>
+    <div class="page-meta"><span class="stamp"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-satellite"/></svg><span id="stamptext">NISAR L-band radar interferometry (InSAR)</span></span></div>
+  </div>
+</header>
+
+<main id="main" class="doc" tabindex="-1">
+  <div class="doc-wrap">
+
+    <!-- The answer first, in plain words, with the numbers -->
+    <section class="verdict" aria-labelledby="answer-h">
+      <h2 class="verdict-h" id="answer-h">Not detectable yet</h2>
+      <p class="verdict-lead" id="lead">Loading the pilot's results…</p>
+      <noscript><p class="alert"><span>This page draws its figures and tables with JavaScript. Turn it on to see the results.</span></p></noscript>
+      <div id="loadfail" hidden></div>
+      <div class="kpis" id="kpis"></div>
+      <div id="signal"></div>
+      <details class="more" id="techsum" hidden><summary>The pilot's technical summary, word for word</summary><p class="tech" id="conclusion"></p></details>
+      <nav class="toc" aria-label="On this page">
+        <p class="toc-h">On this page</p>
+        <ul>
+          <li><a href="#why">Why not yet</a></li>
+          <li><a href="#farms">False movement on farms</a></li>
+          <li><a href="#when">How long it would take</a></li>
+          <li><a href="#meaning">What it means</a></li>
+          <li><a href="#pairs">The radar pairs</a></li>
+          <li><a href="#method">Method and caveats</a></li>
+        </ul>
+      </nav>
+    </section>
+
+    <section id="why" aria-labelledby="why-h">
+      <h2 id="why-h">Why not yet: the signal is smaller than the noise</h2>
+      <div class="prose">
+        <p>Radar interferometry (InSAR) compares the phase of the radar echo from two passes of the satellite over the same ground. If the ground moved toward or away from the satellite between the passes, the phase shifts. The atmosphere, the ionosphere and changes at the surface shift it too, so every pair of passes carries some noise. To see the ground sinking, the sinking has to add up to more than that noise.</p>
+        <p id="why-noise" hidden></p>
+        <p id="why-deramp" hidden></p>
+      </div>
+      <div class="figs" id="figs-why"></div>
+    </section>
+
+    <section id="farms" aria-labelledby="farms-h">
+      <h2 id="farms-h">Irrigation shows up as false movement</h2>
+      <div class="prose">
+        <p>Over a field, the radar echo comes partly from the soil and the crop. When a field is irrigated, the soil gets wet and the crop grows, which changes how the radar wave travels into them. That shifts the phase even though the ground has not moved. Because the change points the same way pass after pass, adding pairs up makes it look like steady sinking.</p>
+        <p id="farms-pairs" hidden></p>
+        <p id="farms-sum" hidden></p>
+        <p class="callout"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-info"/></svg><span><b>No displacement map of fields is published.</b> Values summed from short pairs over farms would be false movement from water in the soil, not ground motion.</span></p>
+      </div>
+      <div class="figs" id="figs-farms"></div>
+    </section>
+
+    <section id="when" aria-labelledby="when-h">
+      <h2 id="when-h">How long until sinking could be seen</h2>
+      <div class="prose">
+        <p>It depends on how the radar pairs are processed. Today's NISAR interferogram products pair each pass with the next one. Chaining those short pairs adds up their noise and any bias. A network that also pairs passes months apart follows slow movement directly, with much less build-up. A full year is the shortest record that can separate sinking from the yearly cycle of soil moisture.</p>
+        <p id="when-text" hidden></p>
+      </div>
+      <div class="card" id="det-card" hidden>
+        <h3 class="card-h" id="det-h">Years of continuous record needed to detect each rate</h3>
+        <div class="table-scroll" id="det-table" tabindex="0" role="region" aria-labelledby="det-h"></div>
+        <p class="note" id="det-note"></p>
+      </div>
+      <div class="figs" id="figs-when"></div>
+    </section>
+
+    <section id="meaning" aria-labelledby="meaning-h">
+      <h2 id="meaning-h">What this means for groundwater monitoring</h2>
+      <div class="prose">
+        <ul class="points" id="meaning-list"><li>Loading…</li></ul>
+      </div>
+    </section>
+
+    <section id="pairs" aria-labelledby="pairs-h">
+      <h2 id="pairs-h">The radar pairs</h2>
+      <div class="prose">
+        <p>Each row is one interferogram: the radar pass on the reference date compared with the pass on the secondary date. Noise is measured over stable desert; the field columns give the median apparent movement of fields relative to the nearby desert, where below zero means away from the satellite. Rain over the area between the two dates is from NASA POWER.</p>
+      </div>
+      <div class="card"><div class="table-scroll" id="pairs-table" tabindex="0" role="region" aria-labelledby="pairs-h"><p class="note">Loading…</p></div></div>
+    </section>
+
+    <section id="method" aria-labelledby="method-h">
+      <h2 id="method-h">Method notes and caveats</h2>
+      <div class="card" id="facts-card" hidden>
+        <h3 class="card-h">The pilot in brief</h3>
+        <dl class="kv" id="facts"></dl>
+      </div>
+      <h3 id="caveats-h">Caveats</h3>
+      <ul class="notes-list" id="caveats"><li>Loading…</li></ul>
+      <h3 id="notes-h">Method notes</h3>
+      <ul class="notes-list" id="method-notes"><li>Loading…</li></ul>
+      <h3 id="sources-h" hidden>Published subsidence rates used for comparison</h3>
+      <ul class="notes-list" id="sources" hidden></ul>
+      <p class="download" id="download" hidden></p>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-foot">
+  <div class="in">
+    <p><b>Data:</b> NASA-ISRO NISAR L-band interferograms (GUNW), from the ASF DAAC; NASA POWER weather; ESA Sentinel-2 and WorldCover, via the Microsoft Planetary Computer; Copernicus DEM; ECMWF weather model delays computed with RAiDER.</p>
+    <p>Code and data: <a href="https://github.com/khalidmelo/circle-to-char">github.com/khalidmelo/circle-to-char</a></p>
+  </div>
+</footer>
+
+<dialog class="zoom" id="zoom" aria-labelledby="zoom-title">
+  <div class="zoom-bar">
+    <p class="zoom-title" id="zoom-title"></p>
+    <button type="button" class="zoom-size" id="zoom-size" aria-pressed="false">Actual size</button>
+    <button type="button" class="zoom-close" id="zoom-close" aria-label="Close the enlarged figure"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-close"/></svg></button>
+  </div>
+  <div class="zoom-body" id="zoom-body"><img id="zoom-img" src="data:," alt=""></div>
+</dialog>
+
+<script src="aquifer.js?v=1"></script>
+</body>
+</html>

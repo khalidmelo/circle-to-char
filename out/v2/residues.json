@@ -1,0 +1,120 @@
+{
+ "method": "Residue inventory and biochar scenarios (SkyMeter v2). No plant siting.\n\nStraw  = winter-cereal cycle area x straw yield (params straw_t_dry_per_ha). A field counts if its crop cycles\n         (crop_types.cycle_seq) include a winter_cereal cycle, so wheat grown before a summer crop (double_crop)\n         or inside a multi-cycle field is counted; split pivots count only their non-perennial share.\nFronds = GASTAT 2024 date-palm count x dry fronds per palm (params palm_residue_kg_dry_per_palm). The mapped\n         tree-crop area x palms per ha x kg per palm is reported beside it as the share the map sees (palms\n         outside the mapped farm boxes, in oases and gardens, are many).\nBiochar scenarios: carbon removal per dry tonne = char yield x char organic carbon x 44/12 x persistence\n         (Puro.earth 2025 v2, model/national_siting.persistence; soil and cement outlets are credited alike,\n         rule 6.2.4). Scenarios vary the share of residue collected (25 / 50 / 75%); low and high use the\n         params low/high factors. Truck haulage, plant energy and the economics are not netted out: these are\n         technical potentials, not projects. Poultry litter and manure stay as v1 modelled context (litter fails\n         the H/C_org < 0.70 gate and is not credited).",
+ "fields_classified": 60132,
+ "fields_total": 60132,
+ "winter_cereal_cycle_ha": 211384,
+ "tree_crop_ha_mapped": 77817,
+ "gastat_date_palms": 37565146,
+ "straw_t_dry": {
+  "low": 498867,
+  "central": 672203,
+  "high": 1428959
+ },
+ "fronds_t_dry_national": {
+  "low": 563477,
+  "central": 751303,
+  "high": 1063094
+ },
+ "fronds_t_dry_mapped": {
+  "low": 116726,
+  "central": 188318,
+  "high": 594602
+ },
+ "removal_t_co2_per_t_dry": {
+  "low": {
+   "straw": 0.4616,
+   "fronds": 0.5669
+  },
+  "central": {
+   "straw": 0.5219,
+   "fronds": 0.6075
+  },
+  "high": {
+   "straw": 0.5819,
+   "fronds": 0.6329
+  }
+ },
+ "scenarios": [
+  {
+   "level": "low",
+   "collected_share": 0.25,
+   "straw_t_co2": 57570,
+   "fronds_t_co2": 79858,
+   "total_t_co2": 137427
+  },
+  {
+   "level": "low",
+   "collected_share": 0.5,
+   "straw_t_co2": 115139,
+   "fronds_t_co2": 159716,
+   "total_t_co2": 274855
+  },
+  {
+   "level": "low",
+   "collected_share": 0.75,
+   "straw_t_co2": 172709,
+   "fronds_t_co2": 239573,
+   "total_t_co2": 412282
+  },
+  {
+   "level": "central",
+   "collected_share": 0.25,
+   "straw_t_co2": 87709,
+   "fronds_t_co2": 114110,
+   "total_t_co2": 201818
+  },
+  {
+   "level": "central",
+   "collected_share": 0.5,
+   "straw_t_co2": 175417,
+   "fronds_t_co2": 228220,
+   "total_t_co2": 403637
+  },
+  {
+   "level": "central",
+   "collected_share": 0.75,
+   "straw_t_co2": 263126,
+   "fronds_t_co2": 342330,
+   "total_t_co2": 605455
+  },
+  {
+   "level": "high",
+   "collected_share": 0.25,
+   "straw_t_co2": 207866,
+   "fronds_t_co2": 168196,
+   "total_t_co2": 376062
+  },
+  {
+   "level": "high",
+   "collected_share": 0.5,
+   "straw_t_co2": 415732,
+   "fronds_t_co2": 336392,
+   "total_t_co2": 752124
+  },
+  {
+   "level": "high",
+   "collected_share": 0.75,
+   "straw_t_co2": 623598,
+   "fronds_t_co2": 504588,
+   "total_t_co2": 1128186
+  }
+ ],
+ "straw_ha_by_admin": {
+  "Riyadh Region": 54421,
+  "Al Jawf Region": 48788,
+  "Al-Qassim Region": 42236,
+  "Eastern Region": 27911,
+  "Hayel Region": 27215,
+  "Tabuk Region": 7096,
+  "Jazan Region": 2720,
+  "Makkah Region": 375,
+  "'Asir Region": 164,
+  "Al Madinah Region": 155,
+  "Al Bahah Region": 152,
+  "Najran Region": 151
+ },
+ "v1_modelled_context": {},
+ "published_range_t": {
+  "note": "published national agricultural-residue estimates span ~0.46 Mt to ~47 Mt (method-dependent)"
+ }
+}

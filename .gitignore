@@ -10,6 +10,7 @@ data/nisar
 data/s2
 data/regions
 data/glw
+data/landsat
 data/fields/*.tif
 data/fields/radar_timeseries.csv
 logs/

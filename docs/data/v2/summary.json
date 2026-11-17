@@ -1,0 +1,1505 @@
+{
+ "generated": "2026-11-17",
+ "season": "2025-11-01 to 2026-10-31",
+ "coverage": {
+  "boxes_processed": 60,
+  "boxes_total": 114,
+  "fields": 60132,
+  "area_ha": 738163,
+  "radar_qc_boxes": 42,
+  "radar_qc_area_ha": 622008,
+  "crop_tree_share_of_worldcover": 0.878,
+  "crop_tree_share_rule": "ESA WorldCover 2021 cropland plus tree cover inside the processed boxes, as a share of that cover in all 114 farming boxes (WorldCover clusters of at least 1,500 ha, cut into boxes of at most 0.6 degrees); scattered farmland outside the boxes is not in either figure"
+ },
+ "crops": [
+  {
+   "code": 1,
+   "key": "perennial_forage",
+   "name": "Perennial forage (alfalfa, Rhodes grass)",
+   "fields": 20999,
+   "area_ha": 304195,
+   "share": 0.4121,
+   "median_et_mm": 1797,
+   "water_bn_m3": 6.832
+  },
+  {
+   "code": 2,
+   "key": "winter_cereal",
+   "name": "Winter cereal (wheat, barley)",
+   "fields": 10341,
+   "area_ha": 143305,
+   "share": 0.1941,
+   "median_et_mm": 618,
+   "water_bn_m3": 1.11
+  },
+  {
+   "code": 3,
+   "key": "double_crop",
+   "name": "Winter cereal then summer crop",
+   "fields": 2747,
+   "area_ha": 42457,
+   "share": 0.0575,
+   "median_et_mm": 1348,
+   "water_bn_m3": 0.735
+  },
+  {
+   "code": 4,
+   "key": "summer_crop",
+   "name": "Summer crop",
+   "fields": 2914,
+   "area_ha": 33376,
+   "share": 0.0452,
+   "median_et_mm": 822,
+   "water_bn_m3": 0.375
+  },
+  {
+   "code": 5,
+   "key": "tree_crop",
+   "name": "Tree crop (palms, orchards)",
+   "fields": 9885,
+   "area_ha": 77817,
+   "share": 0.1054,
+   "median_et_mm": 1528,
+   "water_bn_m3": 1.459
+  },
+  {
+   "code": 6,
+   "key": "autumn_crop",
+   "name": "Autumn crop",
+   "fields": 2673,
+   "area_ha": 27948,
+   "share": 0.0379,
+   "median_et_mm": 555,
+   "water_bn_m3": 0.207
+  },
+  {
+   "code": 7,
+   "key": "spring_crop",
+   "name": "Spring crop",
+   "fields": 1407,
+   "area_ha": 14573,
+   "share": 0.0197,
+   "median_et_mm": 803,
+   "water_bn_m3": 0.155
+  },
+  {
+   "code": 8,
+   "key": "winter_fodder",
+   "name": "Winter fodder",
+   "fields": 31,
+   "area_ha": 421,
+   "share": 0.0006,
+   "median_et_mm": 871,
+   "water_bn_m3": 0.005
+  },
+  {
+   "code": 9,
+   "key": "multi_cycle",
+   "name": "Several crop cycles",
+   "fields": 4013,
+   "area_ha": 56325,
+   "share": 0.0763,
+   "median_et_mm": 1168,
+   "water_bn_m3": 0.877
+  },
+  {
+   "code": 10,
+   "key": "fallow",
+   "name": "No crop this season",
+   "fields": 4982,
+   "area_ha": 36471,
+   "share": 0.0494,
+   "median_et_mm": 555,
+   "water_bn_m3": 0.0
+  },
+  {
+   "code": 0,
+   "key": "insufficient_data",
+   "name": "Too few clear looks",
+   "fields": 140,
+   "area_ha": 1276,
+   "share": 0.0017,
+   "median_et_mm": 1047,
+   "water_bn_m3": 0.019
+  }
+ ],
+ "winter_cereal_cycle_ha": 214343,
+ "halt": {
+  "effective": "2026-11-16",
+  "regions": [
+   {
+    "region": "Al-Jouf",
+    "perennial_ha": 77268,
+    "fields": 5819,
+    "water_bn_m3_central": 1.693,
+    "gastat_fodder_ha": 82307,
+    "gastat_wheat_ha": 37874,
+    "mapped_winter_cereal_cycle_ha": 49121,
+    "mewa_agri_groundwater_bn_m3": 2.922,
+    "mapped_water_bn_m3_central": 2.794
+   },
+   {
+    "region": "Riyadh",
+    "perennial_ha": 69157,
+    "fields": 4462,
+    "water_bn_m3_central": 1.878,
+    "gastat_fodder_ha": 38036,
+    "gastat_wheat_ha": 37708,
+    "mapped_winter_cereal_cycle_ha": 55269,
+    "mewa_agri_groundwater_bn_m3": 1.89,
+    "mapped_water_bn_m3_central": 3.237
+   },
+   {
+    "region": "Hail",
+    "perennial_ha": 44740,
+    "fields": 2860,
+    "water_bn_m3_central": 1.013,
+    "gastat_fodder_ha": 29088,
+    "gastat_wheat_ha": 26453,
+    "mapped_winter_cereal_cycle_ha": 27708,
+    "mewa_agri_groundwater_bn_m3": 1.314,
+    "mapped_water_bn_m3_central": 1.565
+   },
+   {
+    "region": "Eastern",
+    "perennial_ha": 20724,
+    "fields": 1411,
+    "water_bn_m3_central": 0.509,
+    "gastat_fodder_ha": 20834,
+    "gastat_wheat_ha": 18243,
+    "mapped_winter_cereal_cycle_ha": 28400,
+    "mewa_agri_groundwater_bn_m3": 0.989,
+    "mapped_water_bn_m3_central": 0.994
+   },
+   {
+    "region": "Qassim",
+    "perennial_ha": 30942,
+    "fields": 2054,
+    "water_bn_m3_central": 0.68,
+    "gastat_fodder_ha": 18993,
+    "gastat_wheat_ha": 25888,
+    "mapped_winter_cereal_cycle_ha": 42937,
+    "mewa_agri_groundwater_bn_m3": 1.331,
+    "mapped_water_bn_m3_central": 1.532
+   },
+   {
+    "region": "Tabuk",
+    "perennial_ha": 15285,
+    "fields": 881,
+    "water_bn_m3_central": 0.368,
+    "gastat_fodder_ha": 14795,
+    "gastat_wheat_ha": 10183,
+    "mapped_winter_cereal_cycle_ha": 7160,
+    "mewa_agri_groundwater_bn_m3": 0.651,
+    "mapped_water_bn_m3_central": 0.582
+   }
+  ],
+  "perennial_ha": 258115,
+  "fields": 17487,
+  "water_bn_m3_central": 6.142,
+  "stand_ha": {
+   "established": 186787,
+   "new": 71328,
+   "ended": 31438,
+   "within": 3181
+  },
+  "source": "MEWA news release, 7 Jumada I 1448 AH: halt of perennial fodder cultivation in the sedimentary-shelf regions from 16 November 2026; seasonal fodder allowed under licence (Council of Ministers Resolution No. 66, per Argaam, 26 Jan 2026)",
+  "url": "https://www.mewa.gov.sa/ar/MediaCenter/News/Pages/saudi-stopping-perennial-fodder-cultivation.aspx"
+ },
+ "water": {
+  "gross_bn_m3": {
+   "low": 9.399,
+   "central": 11.775,
+   "high": 15.822
+  },
+  "net_bn_m3": {
+   "low": 8.339,
+   "central": 9.147,
+   "high": 10.286
+  },
+  "benchmark_bn_m3": {
+   "low": 3.601,
+   "central": 6.107,
+   "high": 9.836
+  },
+  "shelf_groundwater_bn_m3": {
+   "low": 8.579,
+   "central": 10.703,
+   "high": 14.309
+  },
+  "shield_undetermined_bn_m3": {
+   "low": 0.82,
+   "central": 1.072,
+   "high": 1.513
+  },
+  "noncrop_et_bn_m3": {
+   "low": 0.191,
+   "central": 0.209,
+   "high": 0.231
+  },
+  "shield_ha": 87874,
+  "mewa_shelf_regions_bn_m3": 9.11,
+  "mewa_bn_m3": 11.56,
+  "radar_qc_boxes_gross_bn_m3": 10.083,
+  "methods_area_share": {
+   "thermal": 0.6901,
+   "mixed": 0.0129,
+   "ndvi_calibrated": 0.2609,
+   "kc_tree": 0.0288,
+   "insufficient": 0.0073
+  },
+  "qc": {
+   "R01": {
+    "accepted": 42,
+    "overpasses": 54,
+    "dT_ratio": 0.929,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R02": {
+    "accepted": 37,
+    "overpasses": 111,
+    "dT_ratio": 1.011,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R03": {
+    "accepted": 34,
+    "overpasses": 109,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "region"
+    }
+   },
+   "R04": {
+    "accepted": 48,
+    "overpasses": 55,
+    "dT_ratio": 1.004,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R05": {
+    "accepted": 43,
+    "overpasses": 90,
+    "dT_ratio": 1.014,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R06": {
+    "accepted": 39,
+    "overpasses": 51,
+    "dT_ratio": 1.038,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R07": {
+    "accepted": 33,
+    "overpasses": 55,
+    "dT_ratio": 1.054,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R08": {
+    "accepted": 84,
+    "overpasses": 104,
+    "dT_ratio": 1.04,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R09": {
+    "accepted": 75,
+    "overpasses": 107,
+    "dT_ratio": 0.978,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R10": {
+    "accepted": 37,
+    "overpasses": 55,
+    "dT_ratio": 1.039,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R11": {
+    "accepted": 39,
+    "overpasses": 51,
+    "dT_ratio": 1.076,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R12": {
+    "accepted": 48,
+    "overpasses": 55,
+    "dT_ratio": 0.988,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R13": {
+    "accepted": 39,
+    "overpasses": 55,
+    "dT_ratio": 1.025,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R14": {
+    "accepted": 43,
+    "overpasses": 105,
+    "dT_ratio": 0.928,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R15": {
+    "accepted": 47,
+    "overpasses": 55,
+    "dT_ratio": 1.005,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R16": {
+    "accepted": 43,
+    "overpasses": 54,
+    "dT_ratio": 0.64,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R17": {
+    "accepted": 44,
+    "overpasses": 53,
+    "dT_ratio": 0.97,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R18": {
+    "accepted": 77,
+    "overpasses": 108,
+    "dT_ratio": 1.124,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R19": {
+    "accepted": 86,
+    "overpasses": 110,
+    "dT_ratio": 0.998,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R20": {
+    "accepted": 36,
+    "overpasses": 77,
+    "dT_ratio": 1.033,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R21": {
+    "accepted": 40,
+    "overpasses": 105,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R22": {
+    "accepted": 44,
+    "overpasses": 108,
+    "dT_ratio": 1.048,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R23": {
+    "accepted": 84,
+    "overpasses": 112,
+    "dT_ratio": 0.953,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R24": {
+    "accepted": 77,
+    "overpasses": 112,
+    "dT_ratio": 0.998,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R25": {
+    "accepted": 40,
+    "overpasses": 56,
+    "dT_ratio": 1.201,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R26": {
+    "accepted": 75,
+    "overpasses": 106,
+    "dT_ratio": 0.994,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R27": {
+    "accepted": 42,
+    "overpasses": 110,
+    "dT_ratio": 1.016,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R28": {
+    "accepted": 76,
+    "overpasses": 107,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R29": {
+    "accepted": 46,
+    "overpasses": 55,
+    "dT_ratio": 0.997,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R30": {
+    "accepted": 82,
+    "overpasses": 105,
+    "dT_ratio": 0.932,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R31": {
+    "accepted": 35,
+    "overpasses": 52,
+    "dT_ratio": 1.029,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R32": {
+    "accepted": 44,
+    "overpasses": 107,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R33": {
+    "accepted": 44,
+    "overpasses": 105,
+    "dT_ratio": 0.985,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R34": {
+    "accepted": 79,
+    "overpasses": 105,
+    "dT_ratio": 1.389,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R35": {
+    "accepted": 37,
+    "overpasses": 107,
+    "dT_ratio": 0.985,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R36": {
+    "accepted": 35,
+    "overpasses": 51,
+    "dT_ratio": 1.028,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R37": {
+    "accepted": 43,
+    "overpasses": 56,
+    "dT_ratio": 1.089,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R38": {
+    "accepted": 46,
+    "overpasses": 52,
+    "dT_ratio": 0.99,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R39": {
+    "accepted": 85,
+    "overpasses": 105,
+    "dT_ratio": 1.008,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R40": {
+    "accepted": 38,
+    "overpasses": 52,
+    "dT_ratio": 1.014,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R41": {
+    "accepted": 46,
+    "overpasses": 59,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R42": {
+    "accepted": 60,
+    "overpasses": 106,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R43": {
+    "accepted": 42,
+    "overpasses": 57,
+    "dT_ratio": 0.974,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R44": {
+    "accepted": 52,
+    "overpasses": 56,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R45": {
+    "accepted": 44,
+    "overpasses": 56,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R46": {
+    "accepted": 98,
+    "overpasses": 112,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R47": {
+    "accepted": 47,
+    "overpasses": 105,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R48": {
+    "accepted": 38,
+    "overpasses": 106,
+    "dT_ratio": 1.01,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R49": {
+    "accepted": 39,
+    "overpasses": 56,
+    "dT_ratio": 1.186,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R50": {
+    "accepted": 38,
+    "overpasses": 106,
+    "dT_ratio": 0.935,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "region"
+    }
+   },
+   "R51": {
+    "accepted": 43,
+    "overpasses": 54,
+    "dT_ratio": 0.367,
+    "dT_src": "region",
+    "c_src": {
+     "winter": "region",
+     "summer": "national"
+    }
+   },
+   "R52": {
+    "accepted": 42,
+    "overpasses": 54,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R53": {
+    "accepted": 98,
+    "overpasses": 111,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R54": {
+    "accepted": 96,
+    "overpasses": 111,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R55": {
+    "accepted": 50,
+    "overpasses": 111,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R56": {
+    "accepted": 85,
+    "overpasses": 107,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R57": {
+    "accepted": 38,
+    "overpasses": 110,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R58": {
+    "accepted": 47,
+    "overpasses": 54,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "region",
+     "summer": "national"
+    }
+   },
+   "R59": {
+    "accepted": 52,
+    "overpasses": 56,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   },
+   "R60": {
+    "accepted": 43,
+    "overpasses": 53,
+    "dT_ratio": 1.019,
+    "dT_src": "national",
+    "c_src": {
+     "winter": "national",
+     "summer": "national"
+    }
+   }
+  },
+  "eto_adj_mm_median": 2133.0
+ },
+ "energy": {
+  "twh": {
+   "low": 3.078,
+   "central": 6.953,
+   "high": 13.095
+  },
+  "jjas_mw": {
+   "low": 464,
+   "central": 1049,
+   "high": 2002
+  }
+ },
+ "residues": {
+  "winter_cereal_cycle_ha": 211384,
+  "tree_crop_ha_mapped": 77817,
+  "gastat_date_palms": 37565146,
+  "straw_t_dry": {
+   "low": 498867,
+   "central": 672203,
+   "high": 1428959
+  },
+  "fronds_t_dry_national": {
+   "low": 563477,
+   "central": 751303,
+   "high": 1063094
+  },
+  "fronds_t_dry_mapped": {
+   "low": 116726,
+   "central": 188318,
+   "high": 594602
+  },
+  "removal_t_co2_per_t_dry": {
+   "low": {
+    "straw": 0.4616,
+    "fronds": 0.5669
+   },
+   "central": {
+    "straw": 0.5219,
+    "fronds": 0.6075
+   },
+   "high": {
+    "straw": 0.5819,
+    "fronds": 0.6329
+   }
+  },
+  "scenarios": [
+   {
+    "level": "low",
+    "collected_share": 0.25,
+    "straw_t_co2": 57570,
+    "fronds_t_co2": 79858,
+    "total_t_co2": 137427
+   },
+   {
+    "level": "low",
+    "collected_share": 0.5,
+    "straw_t_co2": 115139,
+    "fronds_t_co2": 159716,
+    "total_t_co2": 274855
+   },
+   {
+    "level": "low",
+    "collected_share": 0.75,
+    "straw_t_co2": 172709,
+    "fronds_t_co2": 239573,
+    "total_t_co2": 412282
+   },
+   {
+    "level": "central",
+    "collected_share": 0.25,
+    "straw_t_co2": 87709,
+    "fronds_t_co2": 114110,
+    "total_t_co2": 201818
+   },
+   {
+    "level": "central",
+    "collected_share": 0.5,
+    "straw_t_co2": 175417,
+    "fronds_t_co2": 228220,
+    "total_t_co2": 403637
+   },
+   {
+    "level": "central",
+    "collected_share": 0.75,
+    "straw_t_co2": 263126,
+    "fronds_t_co2": 342330,
+    "total_t_co2": 605455
+   },
+   {
+    "level": "high",
+    "collected_share": 0.25,
+    "straw_t_co2": 207866,
+    "fronds_t_co2": 168196,
+    "total_t_co2": 376062
+   },
+   {
+    "level": "high",
+    "collected_share": 0.5,
+    "straw_t_co2": 415732,
+    "fronds_t_co2": 336392,
+    "total_t_co2": 752124
+   },
+   {
+    "level": "high",
+    "collected_share": 0.75,
+    "straw_t_co2": 623598,
+    "fronds_t_co2": 504588,
+    "total_t_co2": 1128186
+   }
+  ]
+ },
+ "validation": {
+  "split_half_kappa": 0.742,
+  "split_half_same_area_share": 0.798,
+  "bootstrap_stability_median": 0.9,
+  "area_share_stability_ge_0_9": 0.558,
+  "confidence_ha": {
+   "high": 253760,
+   "medium": 371681,
+   "low": 112722
+  },
+  "tier_ha": {
+   "reliable": 694775,
+   "provisional": 36341,
+   "edge_mixed": 7048
+  },
+  "spring_check_agreement": 0.904,
+  "radar_agreement_by_crop": {
+   "autumn_crop": 0.799,
+   "fallow": 0.638,
+   "perennial_forage": 0.652,
+   "spring_crop": 0.66,
+   "summer_crop": 0.708,
+   "tree_crop": 0.904,
+   "winter_cereal": 0.882
+  },
+  "radar_agreement_area_share": 0.747,
+  "gastat_by_region": [
+   {
+    "region": "Al-Jouf",
+    "mapped_winter_cereal_cycle_ha": 49121,
+    "gastat_wheat_ha": 37874,
+    "mapped_perennial_forage_ha": 85051,
+    "gastat_fodder_ha": 82307,
+    "mapped_tree_crop_ha": 12262,
+    "gastat_date_palms": 966180,
+    "water_bn_m3_central": 2.794,
+    "mewa_agri_groundwater_bn_m3": 2.922,
+    "halt_region": true
+   },
+   {
+    "region": "Riyadh",
+    "mapped_winter_cereal_cycle_ha": 55269,
+    "gastat_wheat_ha": 37708,
+    "mapped_perennial_forage_ha": 81316,
+    "gastat_fodder_ha": 38036,
+    "mapped_tree_crop_ha": 11004,
+    "gastat_date_palms": 8177002,
+    "water_bn_m3_central": 3.237,
+    "mewa_agri_groundwater_bn_m3": 1.89,
+    "halt_region": true
+   },
+   {
+    "region": "Hail",
+    "mapped_winter_cereal_cycle_ha": 27708,
+    "gastat_wheat_ha": 26453,
+    "mapped_perennial_forage_ha": 49803,
+    "gastat_fodder_ha": 29088,
+    "mapped_tree_crop_ha": 1845,
+    "gastat_date_palms": 1285882,
+    "water_bn_m3_central": 1.565,
+    "mewa_agri_groundwater_bn_m3": 1.314,
+    "halt_region": true
+   },
+   {
+    "region": "Eastern",
+    "mapped_winter_cereal_cycle_ha": 28400,
+    "gastat_wheat_ha": 18243,
+    "mapped_perennial_forage_ha": 23172,
+    "gastat_fodder_ha": 20834,
+    "mapped_tree_crop_ha": 4865,
+    "gastat_date_palms": 4233498,
+    "water_bn_m3_central": 0.994,
+    "mewa_agri_groundwater_bn_m3": 0.989,
+    "halt_region": true
+   },
+   {
+    "region": "Qassim",
+    "mapped_winter_cereal_cycle_ha": 42937,
+    "gastat_wheat_ha": 25888,
+    "mapped_perennial_forage_ha": 36327,
+    "gastat_fodder_ha": 18993,
+    "mapped_tree_crop_ha": 21429,
+    "gastat_date_palms": 10867246,
+    "water_bn_m3_central": 1.532,
+    "mewa_agri_groundwater_bn_m3": 1.331,
+    "halt_region": true
+   },
+   {
+    "region": "Tabuk",
+    "mapped_winter_cereal_cycle_ha": 7160,
+    "gastat_wheat_ha": 10183,
+    "mapped_perennial_forage_ha": 17065,
+    "gastat_fodder_ha": 14795,
+    "mapped_tree_crop_ha": 927,
+    "gastat_date_palms": 1171905,
+    "water_bn_m3_central": 0.582,
+    "mewa_agri_groundwater_bn_m3": 0.651,
+    "halt_region": true
+   },
+   {
+    "region": "Makkah",
+    "mapped_winter_cereal_cycle_ha": 375,
+    "gastat_wheat_ha": 3697,
+    "mapped_perennial_forage_ha": 896,
+    "gastat_fodder_ha": 3648,
+    "mapped_tree_crop_ha": 1444,
+    "gastat_date_palms": 948800,
+    "water_bn_m3_central": 0.04,
+    "mewa_agri_groundwater_bn_m3": 0.667,
+    "halt_region": false
+   },
+   {
+    "region": "Jazan",
+    "mapped_winter_cereal_cycle_ha": 2751,
+    "gastat_wheat_ha": 10518,
+    "mapped_perennial_forage_ha": 8178,
+    "gastat_fodder_ha": 3419,
+    "mapped_tree_crop_ha": 16497,
+    "gastat_date_palms": 10370,
+    "water_bn_m3_central": 0.781,
+    "mewa_agri_groundwater_bn_m3": 0.387,
+    "halt_region": false
+   },
+   {
+    "region": "Madinah",
+    "mapped_winter_cereal_cycle_ha": 155,
+    "gastat_wheat_ha": 806,
+    "mapped_perennial_forage_ha": 682,
+    "gastat_fodder_ha": 1157,
+    "mapped_tree_crop_ha": 3228,
+    "gastat_date_palms": 8114677,
+    "water_bn_m3_central": 0.091,
+    "mewa_agri_groundwater_bn_m3": 0.667,
+    "halt_region": false
+   },
+   {
+    "region": "Asir",
+    "mapped_winter_cereal_cycle_ha": 164,
+    "gastat_wheat_ha": 8353,
+    "mapped_perennial_forage_ha": 1023,
+    "gastat_fodder_ha": 960,
+    "mapped_tree_crop_ha": 2189,
+    "gastat_date_palms": 1331117,
+    "water_bn_m3_central": 0.104,
+    "mewa_agri_groundwater_bn_m3": 0.39,
+    "halt_region": false
+   },
+   {
+    "region": "Najran",
+    "mapped_winter_cereal_cycle_ha": 151,
+    "gastat_wheat_ha": 405,
+    "mapped_perennial_forage_ha": 308,
+    "gastat_fodder_ha": 946,
+    "mapped_tree_crop_ha": 1536,
+    "gastat_date_palms": 295138,
+    "water_bn_m3_central": 0.038,
+    "mewa_agri_groundwater_bn_m3": 0.206,
+    "halt_region": false
+   },
+   {
+    "region": "Al-Baha",
+    "mapped_winter_cereal_cycle_ha": 152,
+    "gastat_wheat_ha": 327,
+    "mapped_perennial_forage_ha": 376,
+    "gastat_fodder_ha": 312,
+    "mapped_tree_crop_ha": 592,
+    "gastat_date_palms": 141159,
+    "water_bn_m3_central": 0.017,
+    "mewa_agri_groundwater_bn_m3": 0.135,
+    "halt_region": false
+   }
+  ],
+  "blind_check": {
+   "design": "test sample: stratified random by mapped class (fields >= 3 ha, 25 per class), drawn after the crop-rule changes and excluding the 224-card calibration sample used to make them; blind visual interpretation of raw Landsat NDVI looks plus six Sentinel-2 true-colour chips per field by independent interpreters who never saw the mapped label; a random 20% was labelled again by a second interpreter. Visual interpretation, not field visits.",
+   "cards": 226,
+   "labelled": 226,
+   "unsure": 0,
+   "overall_accuracy": 0.757,
+   "overall_ci95": 0.076,
+   "users_accuracy": {
+    "autumn_crop": {
+     "value": 0.68,
+     "ci95": 0.187,
+     "n": 25
+    },
+    "double_crop": {
+     "value": 0.92,
+     "ci95": 0.109,
+     "n": 25
+    },
+    "fallow": {
+     "value": 0.16,
+     "ci95": 0.147,
+     "n": 25
+    },
+    "multi_cycle": {
+     "value": 0.28,
+     "ci95": 0.18,
+     "n": 25
+    },
+    "perennial_forage": {
+     "value": 0.8,
+     "ci95": 0.16,
+     "n": 25
+    },
+    "spring_crop": {
+     "value": 0.56,
+     "ci95": 0.199,
+     "n": 25
+    },
+    "summer_crop": {
+     "value": 0.92,
+     "ci95": 0.109,
+     "n": 25
+    },
+    "tree_crop": {
+     "value": 0.96,
+     "ci95": 0.078,
+     "n": 25
+    },
+    "winter_cereal": {
+     "value": 0.84,
+     "ci95": 0.147,
+     "n": 25
+    },
+    "winter_fodder": {
+     "value": 0.0,
+     "ci95": 0.0,
+     "n": 1
+    }
+   },
+   "producers_accuracy": {
+    "autumn_crop": 0.266,
+    "double_crop": 0.724,
+    "fallow": 0.249,
+    "multi_cycle": 0.581,
+    "not_farmland": 0.0,
+    "perennial_forage": 0.948,
+    "spring_crop": 0.998,
+    "summer_crop": 0.522,
+    "tree_crop": 0.945,
+    "winter_cereal": 0.925,
+    "winter_fodder": 0.0
+   },
+   "error_adjusted_area": {
+    "autumn_crop": {
+     "ha": 69313,
+     "ci95_ha": 32164,
+     "mapped_ha": 27133
+    },
+    "double_crop": {
+     "ha": 53071,
+     "ci95_ha": 14577,
+     "mapped_ha": 41778
+    },
+    "fallow": {
+     "ha": 21955,
+     "ci95_ha": 24636,
+     "mapped_ha": 34230
+    },
+    "multi_cycle": {
+     "ha": 26897,
+     "ci95_ha": 12396,
+     "mapped_ha": 55836
+    },
+    "not_farmland": {
+     "ha": 3768,
+     "ci95_ha": 4284,
+     "mapped_ha": 0
+    },
+    "perennial_forage": {
+     "ha": 256141,
+     "ci95_ha": 49487,
+     "mapped_ha": 303425
+    },
+    "spring_crop": {
+     "ha": 7941,
+     "ci95_ha": 2811,
+     "mapped_ha": 14156
+    },
+    "summer_crop": {
+     "ha": 57880,
+     "ci95_ha": 25947,
+     "mapped_ha": 32826
+    },
+    "tree_crop": {
+     "ha": 75178,
+     "ci95_ha": 6983,
+     "mapped_ha": 73984
+    },
+    "winter_cereal": {
+     "ha": 129487,
+     "ci95_ha": 22367,
+     "mapped_ha": 142523
+    },
+    "winter_fodder": {
+     "ha": 24274,
+     "ci95_ha": 32934,
+     "mapped_ha": 14
+    }
+   },
+   "error_matrix_area_share": {
+    "autumn_crop": {
+     "autumn_crop": 0.0254,
+     "fallow": 0.006,
+     "multi_cycle": 0.003,
+     "not_farmland": 0.0015,
+     "tree_crop": 0.0015
+    },
+    "double_crop": {
+     "double_crop": 0.0529,
+     "multi_cycle": 0.0046
+    },
+    "fallow": {
+     "autumn_crop": 0.0226,
+     "fallow": 0.0075,
+     "multi_cycle": 0.0038,
+     "not_farmland": 0.0019,
+     "summer_crop": 0.0075,
+     "tree_crop": 0.0019,
+     "winter_cereal": 0.0019
+    },
+    "multi_cycle": {
+     "autumn_crop": 0.0031,
+     "double_crop": 0.0123,
+     "multi_cycle": 0.0215,
+     "perennial_forage": 0.0185,
+     "summer_crop": 0.0123,
+     "winter_cereal": 0.0092
+    },
+    "perennial_forage": {
+     "autumn_crop": 0.0167,
+     "fallow": 0.0167,
+     "perennial_forage": 0.3344,
+     "summer_crop": 0.0167,
+     "winter_fodder": 0.0334
+    },
+    "spring_crop": {
+     "multi_cycle": 0.0023,
+     "spring_crop": 0.0109,
+     "summer_crop": 0.0016,
+     "tree_crop": 0.0023,
+     "winter_cereal": 0.0023
+    },
+    "summer_crop": {
+     "multi_cycle": 0.0018,
+     "not_farmland": 0.0018,
+     "summer_crop": 0.0416
+    },
+    "tree_crop": {
+     "autumn_crop": 0.0041,
+     "tree_crop": 0.0978
+    },
+    "winter_cereal": {
+     "autumn_crop": 0.0236,
+     "double_crop": 0.0079,
+     "winter_cereal": 0.1649
+    },
+    "winter_fodder": {
+     "spring_crop": 0.0
+    }
+   },
+   "coarse_legend": {
+    "groups": {
+     "perennial": [
+      "perennial_forage"
+     ],
+     "tree": [
+      "tree_crop"
+     ],
+     "no_crop": [
+      "fallow",
+      "not_farmland"
+     ],
+     "seasonal": "every other class"
+    },
+    "overall_accuracy": 0.843,
+    "users_accuracy": {
+     "no_crop": 0.2,
+     "perennial": 0.8,
+     "seasonal": 0.927,
+     "tree": 0.96
+    }
+   },
+   "interpreter_agreement": {
+    "n": 45,
+    "agreement": 0.956,
+    "kappa": 0.949
+   }
+  }
+ },
+ "insar": {
+  "conclusion": "Not detectable yet. Over the 120-day Jun-Oct 2026 chain the desert noise of 5 km averages is 3.0 mm after the quadratic deramp (5.1 mm without it), while Saq-belt subsidence of 5-12 mm/yr would move the ground only 1.2-2.8 mm along the line of sight in that window; the smallest rate the current record could detect is about 29 mm/yr (vertical, 2 sigma). With 12-day pairs chained, 12 mm/yr becomes detectable after about 2.0 years and 5 mm/yr after more than 6 years of continuous data. Processed as a redundant network with long pairs, 5 mm/yr needs about 1.0-1.1 years, 4 mm/yr about 1.0-1.2 years and 2 mm/yr about 1.2-1.9 years (a year is the shortest record that separates the annual cycle). The deramp hides bowls wider than ~20 km. Irrigated fields sum to a median -32 mm of apparent line-of-sight movement over the same chain (idle fields -3 mm): water in the soil, not ground motion, so short-pair chains cannot monitor subsidence under farms.",
+  "track_frame": {
+   "track": 42,
+   "frame": 15,
+   "direction": "ascending",
+   "look": "left"
+  },
+  "figures": {
+   "noise_floor_map": {
+    "file": "noise_floor_map.png",
+    "alt": "Map of the Qassim box: 12-day line-of-sight noise of 1 km averages over desert, median 2.2 mm; farms, green land and towns are greyed out."
+   },
+   "detectability": {
+    "file": "detectability.png",
+    "alt": "Smallest detectable subsidence rate against record length: the current record detects only about 29 mm/yr; 12-day chains reach 12 mm/yr after about 2.0 years, a long-pair network reaches 5 mm/yr after about 1.0 years to about 1.1 years."
+   },
+   "false_movement": {
+    "file": "false_movement.png",
+    "alt": "Bar chart per 12-day pair: irrigated fields show a few millimetres of apparent movement relative to the desert, idle fields much less."
+   },
+   "false_movement_cumulative": {
+    "file": "false_movement_cumulative.png",
+    "alt": "Histogram of summed apparent movement over the Jun-Oct 2026 chain: irrigated fields median -32 mm, idle fields -3 mm."
+   },
+   "chain_noise": {
+    "file": "chain_noise.png",
+    "alt": "Spread of the summed desert line-of-sight values grows with each 12-day pair, to 3.0 mm for 5 km averages after 120 days."
+   }
+  },
+  "method_notes": [
+   "14 GUNW pairs (12-day nearest-neighbour; one 24-day pair, 2026-07-23 to 08-16) in two disjoint segments: winter 2025-11-01 to 12-31 (BETA, X05010) and summer 2026-06-17 to 10-15 (PROVISIONAL, P05023). GUNW never bridges 2025-12-31 to 2026-06-17, so the segments are analysed separately and never chained together.",
+   "Phase corrected with the product's ionosphere screen (included in GUNW but not applied); troposphere (ECMWF HRES via RAiDER) and solid-earth-tide cubes interpolated at the DEM height and kept only where they lower the desert variance.",
+   "Masks: connected component 0 or fill, coherence < 0.35, GUNW mask invalid/water/anomaly, irrigated land (fields + NDVI > 0.25) buffered 160 m. Noise statistics use desert land cover at least 400 m from irrigated land.",
+   "All values are relative to a stable desert reference (target >= 25 km2, >= 5 km from irrigated land, coherence >= 0.5 in every pair; relaxed along a documented ladder when the target does not exist, see reference_patch).",
+   "LOS mm = -(lambda/4pi) x phase with lambda = c / centerFrequency = 0.24393 m (19.41 mm/rad); vertical-equivalent = LOS / 0.72.",
+   "The quadratic deramp removes wavelengths above about 20 km, so deramped numbers bound only local differential movement; broad regional aquifer bowls are invisible to it (see the no-deramp numbers).",
+   "Minimum detectable rate = 2 sigma of a GLS rate with the noise model var(k) = a + k q calibrated on the summer chain."
+  ],
+  "caveats": [
+   "No subsidence is claimed. The pilot measures the noise floor and the irrigation phase bias only.",
+   "No field-level displacement map is published: on irrigated fields the 12-day phase carries a systematic soil-moisture and vegetation bias that does not close in sequential sums, so chained field values are false movement, not ground motion.",
+   "Sign convention taken from the ISCE3 processor (reference x conj(secondary)) and cross-checked with the hydrostatic troposphere cube against surface pressure; the NISAR product specification does not state it.",
+   "Winter (BETA) and summer (PROVISIONAL) granules come from different processor releases and are kept separate.",
+   "Only one (ascending) geometry: vertical-equivalent values assume no horizontal motion. Literature rates are treated as vertical.",
+   "The detectability curves assume continuous 12-day acquisitions from now on and a noise model calibrated on a single 120-day summer chain; seasonal moisture, residual ionosphere in long pairs and decorrelation in long pairs may raise the network curve.",
+   "The network curves treat per-epoch noise as white, so they keep falling as T^-1.5; real records meet systematic floors (residual long-wavelength ionosphere, long-pair phase bias, reference-frame and seasonal non-sinusoidal signals) of order 1 mm/yr, so values below ~1-2 mm/yr are optimistic.",
+   "Rain: NASA POWER gives 142 mm over the box in the 2025-12-07 -> 2025-12-19 pair (mostly 15-18 Dec 2025). Pairs with desert coherence < 0.3 (2025-12-07: 0.24, 22% of desert valid, 2025-12-19: 0.25, 30% of desert valid) are decorrelated by that rain, which also gives idle fields a moisture offset.",
+   "Ionosphere: the screen leaves long-wavelength residuals in the flagged pairs (2025-11-25: 10 mm at 1 km without deramp, 2026-09-21: 14 mm at 1 km without deramp, 2026-10-03: 12 mm at 1 km without deramp); the PROVISIONAL mask flags the screen as interpolated over 98% of the box (bit 24); the screen-uncertainty layer is not a usable error estimate (median 4420 mm in BETA, 26 mm in PROVISIONAL granules, against 2-5 mm observed residuals).",
+   "Troposphere: the cube lowers the 1 km desert noise in 2025-11-01, 2025-11-13, 2025-11-25, 2025-12-07, 2026-06-29, 2026-07-23, 2026-09-21, 2026-10-03 and raises it in the other 6 pairs; the choice is made per segment (used: winter iono_tropo_set; summer iono), and per-pair numbers for every variant are in pairs[].noise_mm.",
+   "The design reference (>= 25 km2, >= 5 km from irrigated land, coherence >= 0.5 in every pair) does not exist in this farm-dense box: only 45 km2 of desert lies >= 5 km away, with median mean coherence 0.39 (sand). Used: ladder rung 6 (distributed, 112 km2, >= 1000 m from irrigated land). Spreads, deramped residuals, chain spreads and field offsets do not depend on the reference.",
+   "DEM heights are orthometric (EGM2008) used as ellipsoidal for the cube interpolation; the error is small against the 500 m cube spacing."
+  ],
+  "pairs": [
+   {
+    "ref": "2025-11-01",
+    "sec": "2025-11-13",
+    "dt_days": 12.0,
+    "segment": "winter"
+   },
+   {
+    "ref": "2025-11-13",
+    "sec": "2025-11-25",
+    "dt_days": 12.0,
+    "segment": "winter"
+   },
+   {
+    "ref": "2025-11-25",
+    "sec": "2025-12-07",
+    "dt_days": 12.0,
+    "segment": "winter"
+   },
+   {
+    "ref": "2025-12-07",
+    "sec": "2025-12-19",
+    "dt_days": 12.0,
+    "segment": "winter"
+   },
+   {
+    "ref": "2025-12-19",
+    "sec": "2025-12-31",
+    "dt_days": 12.0,
+    "segment": "winter"
+   },
+   {
+    "ref": "2026-06-17",
+    "sec": "2026-06-29",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-06-29",
+    "sec": "2026-07-11",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-07-11",
+    "sec": "2026-07-23",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-07-23",
+    "sec": "2026-08-16",
+    "dt_days": 24.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-08-16",
+    "sec": "2026-08-28",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-08-28",
+    "sec": "2026-09-09",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-09-09",
+    "sec": "2026-09-21",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-09-21",
+    "sec": "2026-10-03",
+    "dt_days": 12.0,
+    "segment": "summer"
+   },
+   {
+    "ref": "2026-10-03",
+    "sec": "2026-10-15",
+    "dt_days": 12.0,
+    "segment": "summer"
+   }
+  ],
+  "full": "insar/insar.json"
+ },
+ "inputs": {
+  "crop_types_sha": "19027164edde3e08",
+  "et_fields_sha": "9211641e7a7a4174",
+  "landsat_fields_sha": "70d20c76138513fd",
+  "fields_national_sha": "df2bb5aa20a9864f",
+  "eto_daily_sha": "c97e314c3b3be037"
+ }
+}

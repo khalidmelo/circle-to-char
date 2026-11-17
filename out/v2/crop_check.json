@@ -1,0 +1,218 @@
+{
+ "design": "test sample: stratified random by mapped class (fields >= 3 ha, 25 per class), drawn after the crop-rule changes and excluding the 224-card calibration sample used to make them; blind visual interpretation of raw Landsat NDVI looks plus six Sentinel-2 true-colour chips per field by independent interpreters who never saw the mapped label; a random 20% was labelled again by a second interpreter. Visual interpretation, not field visits.",
+ "cards": 226,
+ "labelled": 226,
+ "unsure": 0,
+ "overall_accuracy": 0.757,
+ "overall_ci95": 0.076,
+ "users_accuracy": {
+  "autumn_crop": {
+   "value": 0.68,
+   "ci95": 0.187,
+   "n": 25
+  },
+  "double_crop": {
+   "value": 0.92,
+   "ci95": 0.109,
+   "n": 25
+  },
+  "fallow": {
+   "value": 0.16,
+   "ci95": 0.147,
+   "n": 25
+  },
+  "multi_cycle": {
+   "value": 0.28,
+   "ci95": 0.18,
+   "n": 25
+  },
+  "perennial_forage": {
+   "value": 0.8,
+   "ci95": 0.16,
+   "n": 25
+  },
+  "spring_crop": {
+   "value": 0.56,
+   "ci95": 0.199,
+   "n": 25
+  },
+  "summer_crop": {
+   "value": 0.92,
+   "ci95": 0.109,
+   "n": 25
+  },
+  "tree_crop": {
+   "value": 0.96,
+   "ci95": 0.078,
+   "n": 25
+  },
+  "winter_cereal": {
+   "value": 0.84,
+   "ci95": 0.147,
+   "n": 25
+  },
+  "winter_fodder": {
+   "value": 0.0,
+   "ci95": 0.0,
+   "n": 1
+  }
+ },
+ "producers_accuracy": {
+  "autumn_crop": 0.266,
+  "double_crop": 0.724,
+  "fallow": 0.249,
+  "multi_cycle": 0.581,
+  "not_farmland": 0.0,
+  "perennial_forage": 0.948,
+  "spring_crop": 0.998,
+  "summer_crop": 0.522,
+  "tree_crop": 0.945,
+  "winter_cereal": 0.925,
+  "winter_fodder": 0.0
+ },
+ "error_adjusted_area": {
+  "autumn_crop": {
+   "ha": 69313,
+   "ci95_ha": 32164,
+   "mapped_ha": 27133
+  },
+  "double_crop": {
+   "ha": 53071,
+   "ci95_ha": 14577,
+   "mapped_ha": 41778
+  },
+  "fallow": {
+   "ha": 21955,
+   "ci95_ha": 24636,
+   "mapped_ha": 34230
+  },
+  "multi_cycle": {
+   "ha": 26897,
+   "ci95_ha": 12396,
+   "mapped_ha": 55836
+  },
+  "not_farmland": {
+   "ha": 3768,
+   "ci95_ha": 4284,
+   "mapped_ha": 0
+  },
+  "perennial_forage": {
+   "ha": 256141,
+   "ci95_ha": 49487,
+   "mapped_ha": 303425
+  },
+  "spring_crop": {
+   "ha": 7941,
+   "ci95_ha": 2811,
+   "mapped_ha": 14156
+  },
+  "summer_crop": {
+   "ha": 57880,
+   "ci95_ha": 25947,
+   "mapped_ha": 32826
+  },
+  "tree_crop": {
+   "ha": 75178,
+   "ci95_ha": 6983,
+   "mapped_ha": 73984
+  },
+  "winter_cereal": {
+   "ha": 129487,
+   "ci95_ha": 22367,
+   "mapped_ha": 142523
+  },
+  "winter_fodder": {
+   "ha": 24274,
+   "ci95_ha": 32934,
+   "mapped_ha": 14
+  }
+ },
+ "error_matrix_area_share": {
+  "autumn_crop": {
+   "autumn_crop": 0.0254,
+   "fallow": 0.006,
+   "multi_cycle": 0.003,
+   "not_farmland": 0.0015,
+   "tree_crop": 0.0015
+  },
+  "double_crop": {
+   "double_crop": 0.0529,
+   "multi_cycle": 0.0046
+  },
+  "fallow": {
+   "autumn_crop": 0.0226,
+   "fallow": 0.0075,
+   "multi_cycle": 0.0038,
+   "not_farmland": 0.0019,
+   "summer_crop": 0.0075,
+   "tree_crop": 0.0019,
+   "winter_cereal": 0.0019
+  },
+  "multi_cycle": {
+   "autumn_crop": 0.0031,
+   "double_crop": 0.0123,
+   "multi_cycle": 0.0215,
+   "perennial_forage": 0.0185,
+   "summer_crop": 0.0123,
+   "winter_cereal": 0.0092
+  },
+  "perennial_forage": {
+   "autumn_crop": 0.0167,
+   "fallow": 0.0167,
+   "perennial_forage": 0.3344,
+   "summer_crop": 0.0167,
+   "winter_fodder": 0.0334
+  },
+  "spring_crop": {
+   "multi_cycle": 0.0023,
+   "spring_crop": 0.0109,
+   "summer_crop": 0.0016,
+   "tree_crop": 0.0023,
+   "winter_cereal": 0.0023
+  },
+  "summer_crop": {
+   "multi_cycle": 0.0018,
+   "not_farmland": 0.0018,
+   "summer_crop": 0.0416
+  },
+  "tree_crop": {
+   "autumn_crop": 0.0041,
+   "tree_crop": 0.0978
+  },
+  "winter_cereal": {
+   "autumn_crop": 0.0236,
+   "double_crop": 0.0079,
+   "winter_cereal": 0.1649
+  },
+  "winter_fodder": {
+   "spring_crop": 0.0
+  }
+ },
+ "coarse_legend": {
+  "groups": {
+   "perennial": [
+    "perennial_forage"
+   ],
+   "tree": [
+    "tree_crop"
+   ],
+   "no_crop": [
+    "fallow",
+    "not_farmland"
+   ],
+   "seasonal": "every other class"
+  },
+  "overall_accuracy": 0.843,
+  "users_accuracy": {
+   "no_crop": 0.2,
+   "perennial": 0.8,
+   "seasonal": 0.927,
+   "tree": 0.96
+  }
+ },
+ "interpreter_agreement": {
+  "n": 45,
+  "agreement": 0.956,
+  "kappa": 0.949
+ }
+}

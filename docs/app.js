@@ -4,8 +4,6 @@
 
 // Data colours: the same values as the --c-* tokens in style.css (one meaning per colour on every page).
 const COLORS = { winter_only: "#eda100", wheat_rotation: "#b23a00", summer_only: "#3b7dd8", year_round: "#2e9e5b", palm_grove: "#4a2c0f", idle: "#9aa0a6" };
-const MARK = { soil: "#0f6e6a", cement: "#5b2c83" };          // dashed square = hypothetical biochar plant by char outlet; solid ring = real cement plant
-const FEED_COL = { straw: COLORS.winter_only, fronds: COLORS.palm_grove };  // a feed takes the colour of the fields it comes from
 const CLASS_NAME = { winter_only: "Winter only (wheat)", wheat_rotation: "Wheat, then summer crop", summer_only: "Summer only", year_round: "Year-round (fodder)",
   palm_grove: "Palm groves", idle: "Not detected by radar" };
 const CLASS_HELP = {
@@ -32,10 +30,6 @@ const EXAMPLE_FIELD = 3175;
 // rasters for these thresholds by the data audit (tx-4, qd-5). Not in any JSON: validation.desert_exceedance is read
 // first if the pipeline exports it; this fallback is shown only while the published thresholds match.
 const DESERT_EXCEED = { thr: { winter: 2.64, summer: 1.96 }, share: { winter: 0.1515, summer: 0.2046 } };
-// Feeds of the deep-dive siting, and each char's soil-use status (summary.soil_use, Puro.earth 2025 Table 3.3 limits)
-const FEEDS = [["straw", "Wheat straw", "straw char"], ["fronds", "Palm fronds", "frond char"]];
-const SOIL_STATUS = { pass: "passes (measured)", unmeasured: "not yet measured", uncertain: "uncertain", excluded: "excluded" };
-const soilStatus = (s) => SOIL_STATUS[s] || String(s || "–");
 // Colour scale of each overlay group, as scripts/export_web.py renders it (the legend strings do not hold the ends).
 const RAMPS = {
   "NISAR HV backscatter": { stops: ["#000000", "#ffffff"], lo: "−28 dB (bare)", hi: "−12 dB (crop canopy)" },
@@ -57,8 +51,8 @@ const DAY = 864e5;
 const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const MONTH = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
-const state = { level: "central", size: 10, group: null, overlays: [], current: null, layer: null, pending: null, ovSeq: 0, firstImage: false,
-  fieldsLayer: null, plantLayer: null, plantSites: new Map(), cementLayer: null, cementHalo: null, byId: {}, selLyr: null, fieldShown: null,
+const state = { level: "central", group: null, overlays: [], current: null, layer: null, pending: null, ovSeq: 0, firstImage: false,
+  fieldsLayer: null, byId: {}, selLyr: null, fieldShown: null,
   summary: null, fields: null, ts: null, tsPromise: null, charts: [], national: null, idleGreen: undefined,
   autoView: false, userMoved: false, fitSize: null, rzFrame: 0, rzTimer: 0, keyTouched: false };
 
@@ -127,24 +121,21 @@ const map = L.map("map", { zoomControl: true, zoomSnap: 0.25, trackResize: false
 L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
   maxZoom: 17, attribution: "Imagery © Esri, Maxar, Earthstar Geographics",
 }).addTo(map);
-map.createPane("imagery").style.zIndex = 350;   // satellite overlays: above the basemap, below field outlines and plants
+map.createPane("imagery").style.zIndex = 350;   // satellite overlays: above the basemap, below the field outlines
 
 async function getJSON(p) { const r = await fetch(p); if (!r.ok) throw new Error(p); return r.json(); }
 
 async function init() {
-  const [ov, sm, fl, ce] = await Promise.allSettled([getJSON("data/overlays.json"), getJSON("data/summary.json"),
-    getJSON("data/fields.geojson"), getJSON("data/cement.geojson")]);
+  const [ov, sm, fl] = await Promise.allSettled([getJSON("data/overlays.json"), getJSON("data/summary.json"), getJSON("data/fields.geojson")]);
   if (sm.status !== "fulfilled") throw sm.reason;
   if (fl.status !== "fulfilled") throw fl.reason;
   state.summary = sm.value && typeof sm.value === "object" ? sm.value : {};
   state.fields = fl.value;
   if (!state.fields || !Array.isArray(state.fields.features)) throw new Error("data/fields.geojson holds no fields");
   state.overlays = ov.status === "fulfilled" && Array.isArray(ov.value) ? ov.value.filter((o) => o && o.group && o.file && o.bounds) : [];
-  if (ce.status === "fulfilled") safe(() => addCement(ce.value));
 
   wire();
   drawFields();
-  raiseMarkers();   // the cement rings went onto the shared canvas first: keep them above the field outlines
   safe(buildKeys);
   safe(setupGroups, "legendtext");   // fills the colour ramp and legend, so the map-tools card has its final height before the fit
   safe(renderStamp);
@@ -154,7 +145,7 @@ async function init() {
   autoView(fitFields);
   map.on("movestart zoomstart", () => { if (!state.autoView) state.userMoved = true; });
   window.addEventListener("resize", onResize);
-  safe(renderOverview, "lead"); safe(renderValidation, "validation"); safe(renderPlants, "plantlist");
+  safe(renderOverview, "lead"); safe(renderValidation, "validation");
   safe(renderSteps, "steps"); safe(renderDiffers, "differs"); safe(renderHead, "headinfo"); safe(renderParams, "params");
   $("loading")?.remove();
 
@@ -171,11 +162,8 @@ function wire() {
   $("opacity").oninput = () => { if (state.layer) state.layer.setOpacity(opacity()); };
   $("showfields").onchange = (e) => {
     if (!state.fieldsLayer) return;
-    if (e.target.checked) { state.fieldsLayer.addTo(map); raiseMarkers(); } else map.removeLayer(state.fieldsLayer);
+    if (e.target.checked) state.fieldsLayer.addTo(map); else map.removeLayer(state.fieldsLayer);
   };
-  $("showplants").onchange = (e) => [state.cementHalo, state.cementLayer, state.plantLayer].forEach((l) => {
-    if (l) e.target.checked ? l.addTo(map) : map.removeLayer(l);
-  });
   document.addEventListener("click", onDocClick);
   $("examplefield").onclick = () => showExample(true);
   // Phones: the layer select, legend and map key fold under one "Map layers and key" button (desktop shows them all).
@@ -200,10 +188,6 @@ function wireTabs() {
 function onDocClick(e) {
   const lv = e.target.closest(".level button[data-level]");
   if (lv) { setLevel(lv.dataset.level); return; }
-  const sz = e.target.closest(".sizes button[data-size]");
-  if (sz) { setSize(+sz.dataset.size); return; }
-  const pc = e.target.closest("#plantlist .plant[data-plant]");   // a plant card (or its Show on map button): fly to its site
-  if (pc && !e.target.closest("a, summary, details")) { goPlant(pc.dataset.plant); return; }
   const a = e.target.closest('a[href^="#"]');
   const name = a && a.getAttribute("href").slice(1);
   if (!a || !$("tab-" + name)) return;
@@ -215,10 +199,9 @@ function onDocClick(e) {
     if (d) d.open = true;
     target.scrollIntoView({ block: "start" });   // a jump: the tab has just changed, so there is nothing to follow on the way
   }
-  if (a.classList.contains("poplink")) {   // a link in a map popup: the reader asked to go to the panel (a plant: its card)
+  if (a.classList.contains("poplink")) {   // a link in a map popup: the reader asked to go to the panel
     map.closePopup();
-    const card = a.dataset.plant ? highlightPlant(a.dataset.plant, false) : null;
-    (card || document.querySelector("aside"))?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    document.querySelector("aside")?.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   }
 }
 
@@ -254,22 +237,14 @@ function onTabKey(e) {
   e.preventDefault(); tabs[j].focus(); openTab(tabs[j].dataset.tab);
 }
 
-/* ---------- estimate and plant size (S1: every copy of the switch follows the value) ---------- */
+/* ---------- estimate (S1: every copy of the switch follows the value) ---------- */
 function setLevel(lv) {
   if (!LEVEL_NAME[lv]) return;
   state.level = lv;
   document.querySelectorAll(".level button[data-level]").forEach((x) => {
     const on = x.dataset.level === lv; x.classList.toggle("on", on); x.setAttribute("aria-pressed", on);
   });
-  safe(renderOverview, "kpis"); safe(renderPlants, "plantlist"); safe(renderFieldInfo, "fieldinfo");
-}
-function setSize(n) {
-  if (!n) return;
-  state.size = n;
-  document.querySelectorAll(".sizes button[data-size]").forEach((x) => {
-    const on = +x.dataset.size === n; x.classList.toggle("on", on); x.setAttribute("aria-pressed", on);
-  });
-  safe(renderPlants, "plantlist");
+  safe(renderOverview, "kpis"); safe(renderFieldInfo, "fieldinfo");
 }
 
 /* ---------- satellite overlays ---------- */
@@ -454,11 +429,7 @@ function onResize() {   // as Leaflet's own trackResize, then a debounced refit 
 function select(lyr) {
   if (state.selLyr && state.selLyr !== lyr && state.fieldsLayer) state.fieldsLayer.resetStyle(state.selLyr);
   state.selLyr = lyr || null;
-  if (lyr) { lyr.setStyle({ weight: 4, fillOpacity: 0.35 }); lyr.bringToFront(); raiseMarkers(); }
-}
-function raiseMarkers() {   // cement rings stay above field outlines (plant markers are in the marker pane, always on top)
-  if (state.cementHalo && map.hasLayer(state.cementHalo)) state.cementHalo.bringToFront();
-  if (state.cementLayer && map.hasLayer(state.cementLayer)) state.cementLayer.bringToFront();
+  if (lyr) { lyr.setStyle({ weight: 4, fillOpacity: 0.35 }); lyr.bringToFront(); }
 }
 function fieldPopup(p, latlng) {   // phones: a small popup, and the reader chooses to scroll to the panel
   if (!latlng) return;
@@ -467,7 +438,7 @@ function fieldPopup(p, latlng) {   // phones: a small popup, and the reader choo
     .openOn(map);
 }
 
-// Click-to-zoom: fly to a field, plant or list item, clear of the floating map tools; a jump when motion is reduced.
+// Click-to-zoom: fly to a field, clear of the floating map tools; a jump when motion is reduced.
 // keepZoom (a click on the map itself): never zoom out, and do not move at all when the target is already in view.
 // Returns true when the map will fire moveend later (an animated move), so a popup can wait for it.
 function zoomTo(b, maxZ, keepZoom = false) {
@@ -485,42 +456,12 @@ function zoomTo(b, maxZ, keepZoom = false) {
   return true;
 }
 const afterMove = (moved, fn) => { if (moved) map.once("moveend", fn); else fn(); };
-// Phones: the panel sits under the map, so bring the map into view (below the sticky bar) before it moves.
-function showMapThen(fn) {
-  const w = $("mapwrap");
-  if (!narrow() || !w) { fn(); return; }
-  const nav = document.querySelector("nav.site"), top = w.getBoundingClientRect().top - (nav ? nav.offsetHeight : 0);
-  if (Math.abs(top) < 4) { fn(); return; }
-  window.scrollTo({ top: window.scrollY + top, behavior: reduceMotion ? "auto" : "smooth" });
-  setTimeout(fn, reduceMotion ? 0 : 450);
-}
-
-/* ---------- cement plants and map keys ---------- */
-function addCement(gj) {
-  if (!gj || !Array.isArray(gj.features)) return;
-  const pts = gj.features.filter((f) => f && f.geometry && Array.isArray(f.geometry.coordinates));
-  const label = (q) => {
-    const name = [q.owner_name, q.city].filter(Boolean).join(", ");
-    return `<b>Existing cement plant</b> (a real facility)${name ? "<br>" + esc(name) : ""}${num(q.cap) ? `, ${fmt(q.cap, 1)} Mt/y` : ""}`;
-  };
-  const ll = (f) => [f.geometry.coordinates[1], f.geometry.coordinates[0]];
-  state.cementHalo = L.featureGroup(pts.map((f) => L.circleMarker(ll(f), { radius: 7, color: "#fff", weight: 5, opacity: 0.85, fill: false, interactive: false }))).addTo(map);
-  state.cementLayer = L.featureGroup(pts.map((f) => L.circleMarker(ll(f), { radius: 7, color: MARK.cement, weight: 2.5, opacity: 1, fill: false })
-    .bindTooltip(label(f.properties || {}))
-    .on("click", (e) => zoomTo(e.target.getLatLng().toBounds(2000), 14, true)))).addTo(map);
-}
+/* ---------- map key ---------- */
 function buildKeys() {
   const area = get(state.summary, "supply", "area_ha_by_class") || {};
   const seen = new Set(state.fields.features.map((f) => fieldClass(f.properties)));
   const shown = CLASSES.filter((c) => seen.has(c) || num(area[c]) > 0).concat([...seen].filter((c) => !CLASSES.includes(c)));
   $("fieldkey").innerHTML = shown.map((c) => `<li><i class="outline" style="--c:${COLORS[c] || COLORS.idle}" aria-hidden="true"></i>${esc(cname(c))}</li>`).join("");
-  const outlets = new Set();
-  Object.values(get(state.summary, "siting") || {}).forEach((a) => Array.isArray(a) && a.forEach((p) => p && outlets.add(p.best_outlet === "cement" ? "cement" : "soil")));
-  if (!outlets.size) outlets.add("soil");
-  const both = outlets.has("soil") && outlets.has("cement");   // name the outlet only when the map shows both
-  $("plantkey").innerHTML = ["soil", "cement"].filter((o) => outlets.has(o)).map((o) =>
-    `<li><i class="hypo" style="--c:${MARK[o]}" aria-hidden="true"></i>Hypothetical biochar plant site${both ? `, char ${o === "soil" ? "to the fields" : "to cement"}` : " (numbered)"}</li>`).join("") +
-    (state.cementLayer ? `<li><i class="ring" style="--c:${MARK.cement}" aria-hidden="true"></i>Existing cement plant (real facility)</li>` : "");
 }
 
 /* ---------- Overview ---------- */
@@ -539,8 +480,8 @@ function idleGreenHa() {   // 'not detected' area that Sentinel-2 sees green ove
 }
 function regionSentence() {
   const ids = (get(state, "national", "boxes") || []).map((r) => r.id);
-  const where = ids.length ? `national region${ids.length > 1 ? "s" : ""} ${list(ids)}` : "the national run's Qassim regions";
-  return `This 20 m close-up lies inside ${esc(where)}, which map the same area on a 40 m grid, so the two are not added together (<a href="#sources" data-target="differs-h">how they differ</a>).`;
+  const where = ids.length ? `region${ids.length > 1 ? "s" : ""} ${list(ids)} of the v1 national run` : "the v1 national run's Qassim regions";
+  return `This 20 m close-up lies inside ${esc(where)}, which mapped the same area on a 40 m grid, so the two are not added together (<a href="#sources" data-target="differs-h">how they differ</a>).`;
 }
 function farmedOfSupply(S) {
   const area = S && S.area_ha_by_class && typeof S.area_ha_by_class === "object" ? S.area_ha_by_class : {};
@@ -599,7 +540,7 @@ function renderOverview() {
   const mw = S.summer_pumping_avg_mw;
   // [label, keys, divisor, unit, decimals, sub line]. Labels carry no icon: the six are told apart by their words.
   const tiles = [
-    ["Water pumped", ["water_m3"], 1e6, "million m³ / year", 0],
+    ["Irrigation water (estimate)", ["water_m3"], 1e6, "million m³ / year", 0, "Farmed area × published irrigation depth; not metered"],
     ["Pumping electricity", ["elec_kwh"], 1e6, "GWh / year", 0, mw && num(mw[L_]) != null ? `About ${fmt(mw[L_])} MW average June–September` : ""],
     ["Pumping CO₂ (grid)", ["co2_t_electric", "co2_t_grid"], 1e3, "kt CO₂e / year", 0],
     ["Pumping CO₂ (diesel)", ["co2_t_diesel"], 1e3, "kt CO₂e / year", 0],
@@ -694,7 +635,7 @@ function renderSens(S, L_) {
     const credited = num(eff.s2_wheat_ha_credited) != null && num(eff.s2_wheat_ha) > 0 && eff.s2_wheat_ha_credited < eff.s2_wheat_ha ?
       `: straw is counted on ${fmt(eff.s2_wheat_ha_credited)} of the ${fmt(eff.s2_wheat_ha)} ha of wheat-pattern fields the tier adds, as in the row above` : "";
     const capTxt = caps.rule ? ` Its straw is capped at GASTAT${yr ? " " + yr : ""} wheat area per region${capped ? (capped.length ? `; the cap binds in ${esc(list(capped))}${credited}` : "; the cap does not bind here") : ""}.` : "";
-    notes.push(`Radar + Sentinel-2 is a separate tier, never the headline: ${add != null ? `it adds ${fmt(add)} ha on ${fmt(n)} fields that the radar did not detect but Sentinel-2 sees green in winter only, counted as winter-farmed. ` : ""}That area is measured by Sentinel-2, not by the radar.${capTxt}`);
+    notes.push(`Radar + Sentinel-2 is a separate tier, never the headline: ${add != null ? `it adds ${fmt(add)} ha on ${fmt(n)} fields that the radar did not detect but Sentinel-2 sees green in winter only, counted as winter-farmed. ` : ""}That area comes from Sentinel-2, not from the radar.${capTxt}`);
   }
   const fr = rows.map(([, o]) => get(o, "fronds_t_dry", L_)).filter((v) => num(v) != null);
   if (fr.length === rows.length && fr.every((v) => Math.abs(v - fr[0]) < 0.5)) {
@@ -706,7 +647,7 @@ function renderSens(S, L_) {
   const rules = [[CR.rule, "Threshold rows"], [CR.corners_rule, "Corners"], [SF.rule, "Radar + Sentinel-2", tier && tier.scope]].filter(([r]) => r);
   html += notes.map((t) => `<p class="note">${t}</p>`).join("") +
     (rules.length ? `<details class="more"><summary>The rules behind these rows</summary>${rules.map(([r, h, scope]) =>
-      `<p><b>${h}.</b> ${esc(plain(r))}</p>${scope ? `<p><b>Scope of the Radar + Sentinel-2 row:</b> ${esc(plain(scope).replace(/\.$/, ""))}.</p>` : ""}`).join("")}</details>` : "");
+      `<p><b>${h}.</b> ${esc(plain(r).replace(/\bis measured by Sentinel-2\b/g, "comes from Sentinel-2"))}</p>${scope ? `<p><b>Scope of the Radar + Sentinel-2 row:</b> ${esc(plain(scope).replace(/\.$/, ""))}.</p>` : ""}`).join("")}</details>` : "");
   $("sens").innerHTML = html;
   if (wasOpen) $("sens").querySelector("details")?.setAttribute("open", "");   // an estimate change keeps the rules open
 }
@@ -764,7 +705,7 @@ function ruleText(V) {
   const de = V.desert_exceedance && num(V.desert_exceedance.winter) != null && num(V.desert_exceedance.summer) != null ? V.desert_exceedance :
     (t.winter === DESERT_EXCEED.thr.winter && t.summer === DESERT_EXCEED.thr.summer ? DESERT_EXCEED.share : null);
   const rate = de ? `about ${pct(de.winter)} (winter) and ${pct(de.summer)} (summer) of bare-desert patches` : "a share of bare-desert patches";
-  return `its seasonal peak HV backscatter, measured above the bare-desert median of the same date, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks${thr}. Desert peaks have a long bright tail, so ${rate} still beat it: not the near-zero false-alarm rate a “3σ” rule would suggest. The rule uses no Sentinel-2 input; Sentinel-2 (same date windows) is only the check.`;
+  return `its seasonal peak HV backscatter, relative to the bare-desert median of the same date, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks${thr}. Desert peaks have a long bright tail, so ${rate} still beat it: not the near-zero false-alarm rate a “3σ” rule would suggest. The rule uses no Sentinel-2 input; Sentinel-2 (same date windows) is only the check.`;
 }
 function winterMisses() {   // fields Sentinel-2 sees green over the radar's winter dates that the radar calls not farmed in winter
   let all = 0, brown = 0, green = 0;
@@ -807,137 +748,6 @@ function renderValidation() {
     <p class="note">Sentinel-2 also outlines the fields, so these are consistency checks, not an independent ground truth.</p>`;
 }
 
-/* ---------- Biochar plants ---------- */
-function feedMix(straw, fronds) {
-  const tot = straw + fronds;
-  if (!(tot > 0)) return "";
-  const parts = [["straw", straw, "wheat straw"], ["fronds", fronds, "palm fronds"]].filter(([, v]) => v > 0);
-  return `<div class="feedmix">Feed: ${parts.map(([, v, n]) => `<b>${fmt(v)} t</b> ${n}`).join(" + ")} (dry)
-    <div class="feedbar" role="img" aria-label="${parts.map(([, v, n]) => `${pct(v / tot)} ${n}`).join(", ")}">${parts.map(([k, v]) => `<i style="--c:${FEED_COL[k]};flex-grow:${v}"></i>`).join("")}</div></div>`;
-}
-function renderPlants() {
-  const siting = get(state.summary, "siting") || {}, P = get(state.summary, "params") || {}, L_ = state.level, size = state.size;
-  const tag = `${L_}_${size}kt`, plants = Array.isArray(siting[tag]) ? siting[tag].filter((p) => p && typeof p === "object") : null;
-  if (state.plantLayer) map.removeLayer(state.plantLayer);
-  state.plantLayer = L.layerGroup();
-  state.plantSites = new Map();
-  const lvl = LEVEL_NAME[L_].toLowerCase(), minLoad = num(get(P, "min_load_fraction", L_));
-  if (!plants) {
-    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No siting result for hypothetical ${size} kt/y plants at the ${lvl} estimate.</span></p>`;
-  } else if (!plants.length) {
-    $("plantlist").innerHTML = `<p class="callout">${ICO("info")}<span>No site can be filled to ${minLoad != null ? pct(minLoad) : "80%"} of a <b>${size} kt/y</b> plant with the straw and palm fronds radar finds here (${lvl} estimate). The local limit is supply, not distance: pooling a wider region or other residues would be needed.</span></p>`;
-  } else {
-    const tot = sum(plants.map((p) => p.feed_t_dry)), st = sum(plants.map((p) => p.feed_straw)), fr = sum(plants.map((p) => p.feed_fronds));
-    const net = sum(plants.map((p) => p.net_removal_tco2 ?? (p.best_outlet === "cement" ? p.cement_net_tco2 : p.soil_net_tco2)));
-    const ret = P.cement_retention || {}, temp = get(P, "soil_temp_c", L_);
-    const pfS = get(P, "straw_char_persistence", L_), pfF = get(P, "fronds_char_persistence", L_);
-    const pf = [num(pfS) != null ? `straw char ${pct(pfS)}` : "", num(pfF) != null ? `frond char ${pct(pfF)}` : ""].filter(Boolean);
-    const pens = plants.map((p) => 100 * (num(p.penalty) || 0)), pmin = Math.min(...pens), pmax = Math.max(...pens);
-    const rc = num(get(P, "road_circuity", L_));
-    const outletName = (o) => o === "cement" ? "cement" : "soil";
-    // Soil use of each char (summary.soil_use): a feed whose char is not measured as passing is flagged on each card.
-    const SU = obj(get(state.summary, "soil_use")) || obj(get(state.summary, "params", "_soil_use")) || {};
-    const notPass = FEEDS.filter(([f]) => obj(SU[f]) && SU[f].status && SU[f].status !== "pass");
-    const card = (p) => {
-      const cem = num(p.cement_net_tco2) != null ? `, <b>${fmt(p.cement_net_tco2)} t/y</b> in cement at the nearest existing cement plant (${fmt(p.cement_km)} km)` : "";
-      const rem = num(p.soil_removal_tco2);
-      const flags = notPass.map(([f, , ch]) => { const r = num(p[`soil_removal_${f}_tco2`]); return rem > 0 && r > 0 ? `${pct(r / rem)} of the removal comes from ${ch}, ${soilStatus(SU[f].status)} against Puro's soil limits` : ""; }).filter(Boolean);
-      // The number badge matches the plant's pin on the map: a dashed square in the colour of its char outlet.
-      return `<article class="plant" data-plant="${esc(p.plant)}" aria-label="Hypothetical biochar plant site ${esc(p.plant)}">
-        <div class="plant-head"><span class="pnum" style="--c:${MARK[p.best_outlet === "cement" ? "cement" : "soil"]}" aria-hidden="true">${esc(p.plant)}</span>
-          <div class="plant-id"><b class="plant-name">Hypothetical plant ${esc(p.plant)}</b><span class="plant-where">${fmt(p.lat, 3)}°N, ${fmt(p.lon, 3)}°E, ${p.kind === "cement" ? "beside an existing cement plant" : "model grid site"}</span></div>
-          ${num(p.lat) != null && num(p.lon) != null ? `<button type="button" class="showmap">${ICO("target", "sm")}<span>Show on map</span></button>` : ""}</div>
-        <dl class="pfacts"><div><dt>Fields</dt><dd>${fmt(p.fields)}</dd></div><div><dt>Mean haul</dt><dd>${fmt(p.mean_feed_haul_km, 1)} km</dd></div>
-          <div><dt>Load</dt><dd>${pct(p.load_factor)}</dd></div><div><dt>Char</dt><dd>${fmt(p.char_t)} t/y</dd></div></dl>
-        ${feedMix(num(p.feed_straw) || 0, num(p.feed_fronds) || 0)}
-        <p class="pline">Net CO₂ removed after transport: <b>${fmt(p.soil_net_tco2)} t/y</b> spread back on the fields${cem}.</p>
-        <p class="pline">Best outlet: <b>${outletName(p.best_outlet)}</b>; transport uses ${fmt(100 * (num(p.penalty) || 0), 1)}% of its removal.</p>
-        ${flags.length ? `<div class="soilflag">${flags.map((t) => t.charAt(0).toUpperCase() + t.slice(1)).join(". ")} (<a href="#plants" data-target="soiluse-h">soil use</a>).</div>` : ""}</article>`;
-    };
-    const mixKey = st > 0 && fr > 0 ? `<ul class="key feedkey"><li><i style="--c:${FEED_COL.straw}" aria-hidden="true"></i>wheat straw</li><li><i style="--c:${FEED_COL.fronds}" aria-hidden="true"></i>palm fronds</li></ul>` : "";
-    $("plantlist").innerHTML = `<dl class="plant-sum">
-        <div><dt>Hypothetical plant${plants.length > 1 ? "s" : ""} of ${size} kt/y</dt><dd>${plants.length}</dd></div>
-        <div><dt>kt dry feed a year</dt><dd>${fmt(tot / 1e3, 1)}</dd></div>
-        <div><dt>t CO₂ removed a year, net of transport</dt><dd>${fmt(net)}</dd></div></dl>
-      ${st || fr ? `<p class="note plant-feed">Feed: ${fmt(st / 1e3, 1)} kt wheat straw and ${fmt(fr / 1e3, 1)} kt palm fronds, dry, at the ${lvl} estimate.</p>` : ""}
-      <p class="callout">${ICO("info")}<span>This is a technical potential, not a credit volume: stored char carbon × the Puro.earth 2025 soil persistence model, minus truck emissions only; production and embodied emissions and leakage are not subtracted.</span></p>
-      ${mixKey}${plants.map(card).join("")}
-      <p class="note">Char in cement earns the same credit as char spread back on the fields: the Puro.earth 2025 methodology credits both with its soil persistence model (${pf.length ? `${list(pf)} of the char's organic carbon kept over 200 years` : "the char's organic carbon kept over 200 years"}${num(temp) != null ? ` in ${fmt(temp)} °C soil` : ""}), so the shorter char haul picks the outlet. Cement may hold more in service${num(ret.low) != null ? ` (${pct(ret.low)}–${pct(ret.high)} retained)` : ""}; that is reported, not credited. In this cluster haulage costs ${pmin.toFixed(1) === pmax.toFixed(1) ? `${fmt(pmax, 1)}%` : `${fmt(pmin, 1)}–${fmt(pmax, 1)}%`} of the removal: the limit is residue supply, not distance.${rc != null && rc !== 1 ? ` At the ${lvl} estimate every distance is the straight line × ${fmt(rc, 1)} (road circuity, an unsourced sensitivity), so the same site shows longer hauls than at the other estimates.` : ""}</p>${soilUse(SU, plants, size, lvl)}`;
-    // One marker per site: some sizes put two plants on the same grid point.
-    const sites = new Map();
-    plants.forEach((p) => {
-      if (num(p.lat) == null || num(p.lon) == null) return;
-      const k = `${(+p.lat).toFixed(5)},${(+p.lon).toFixed(5)}`;
-      if (!sites.has(k)) sites.set(k, []);
-      sites.get(k).push(p);
-    });
-    sites.forEach((ps) => {
-      const outlet = ps.every((p) => p.best_outlet === "cement") ? "cement" : "soil", ids = ps.map((p) => p.plant);
-      const icon = L.divIcon({ className: "plant-pin", html: `<span style="--c:${MARK[outlet]}">${ids.map(esc).join(", ")}</span>`, iconSize: [0, 0] });
-      const m = L.marker([+ps[0].lat, +ps[0].lon], { icon, keyboard: true, riseOnHover: true });
-      // Touch screens get the popup only: Leaflet also opens a tooltip on tap, and the two would overlap (as drawFields).
-      if (canHover) m.bindTooltip(ps.map((p) => `<b>Hypothetical biochar plant ${esc(p.plant)}</b>: ${size} kt/y, ${plantFacts(p)}`).join("<br>") +
-        `<br><span class="tt-hint">A modelled site: no such plant exists</span>`, { direction: "top", offset: [0, -12] });
-      m.on("click", () => focusPlant(ps, m));
-      m.on("add", () => m.getElement()?.setAttribute("aria-label", `Hypothetical biochar plant site ${ids.join(" and ")}`));
-      m.addTo(state.plantLayer);
-      ids.forEach((id) => state.plantSites.set(String(id), { ps, m }));
-    });
-  }
-  if ($("showplants").checked) state.plantLayer.addTo(map);
-}
-const plantFacts = (p) => `char ${p.best_outlet === "cement" ? "to cement" : "back to the fields"}, transport ${fmt(100 * (num(p.penalty) || 0), 1)}% of removal`;
-const plantBox = (m) => m.getLatLng().toBounds(2500);
-function plantPopup(ps, marker, link) {
-  marker.closeTooltip();
-  L.popup({ maxWidth: 240, autoPanPadding: [16, 16], autoPanPaddingTopLeft: [64, 16], offset: [0, -8] }).setLatLng(marker.getLatLng())
-    .setContent(`${ps.map((p) => `<b>Hypothetical biochar plant ${esc(p.plant)}</b>, ${state.size} kt/y<br>${plantFacts(p).replace(/^./, (c) => c.toUpperCase())}`).join("<br>")}` +
-      `<br><span class="tt-hint">A modelled site: no such plant exists.</span>` +
-      (link ? `<br><a href="#plants" class="poplink" data-plant="${esc(ps[0].plant)}">See it in the list${ICO("chevron", "sm down")}</a>` : "")).openOn(map);
-}
-function focusPlant(ps, marker) {
-  const n = ps[0].plant, moved = zoomTo(plantBox(marker), 13, true);
-  if (narrow()) {   // never scroll away from the map: offer the panel instead, with the tooltip's facts
-    marker.closeTooltip();
-    afterMove(moved, () => plantPopup(ps, marker, true));
-    return;
-  }
-  openTab("plants");
-  highlightPlant(n);
-}
-// A plant card in the list: fly the map to its site and open its facts there (phones: the map comes into view first).
-function goPlant(n) {
-  const site = state.plantSites.get(String(n));
-  if (!site) return;
-  highlightPlant(n, false);
-  const box = $("showplants");
-  if (box && !box.checked) { box.checked = true; box.onchange({ target: box }); }
-  showMapThen(() => afterMove(zoomTo(plantBox(site.m), 13), () => plantPopup(site.ps, site.m, false)));
-}
-// Can the char go on the fields? Each feed's soil-use status against Puro.earth 2025 Table 3.3 (summary.soil_use), the
-// share of this layout's credited removal that rests on a char not measured as passing, and the evidence.
-function soilUse(SU, plants, size, lvl) {
-  const rows = FEEDS.filter(([f]) => obj(SU[f]));
-  if (!rows.length) return "";
-  const tot = sum(plants.map((p) => p.soil_removal_tco2));
-  const flagged = rows.filter(([f]) => SU[f].status && SU[f].status !== "pass").map(([f, , ch]) => {
-    const r = sum(plants.map((p) => p[`soil_removal_${f}_tco2`]));
-    const share = tot > 0 && r > 0 ? `: ${pct(r / tot)} of the removal above (${size} kt/y, ${lvl} estimate) comes from ${ch}` : "";
-    return `${ch.charAt(0).toUpperCase() + ch.slice(1)} is ${soilStatus(SU[f].status)} against these limits; the siting applies no contaminant screen, so it is credited all the same, on the fields or in cement${share}.${SU[f].status === "unmeasured" ? ` It needs a lab analysis before it goes on farmland.` : ""}`;
-  });
-  return `<h3 id="soiluse-h">Can the char go on the fields?</h3>
-    <table class="soiluse"><tr><th>Char from</th><th>Soil use (Puro Table 3.3)</th><th>Outlet</th></tr>${rows.map(([f, label]) =>
-      `<tr><td>${label}</td><td>${esc(soilStatus(SU[f].status))}</td><td>${esc(SU[f].outlet || "–")}</td></tr>`).join("")}</table>
-    ${flagged.length ? `<p class="note">${flagged.join(" ")}</p>` : ""}
-    ${rows.some(([f]) => SU[f].note) ? `<details class="more"><summary>Evidence for each char</summary>${rows.map(([f, label]) => SU[f].note ? `<p><b>${label}:</b> ${esc(plain(SU[f].note).replace(/\.?$/, "."))}</p>` : "").join("")}</details>` : ""}`;
-}
-function highlightPlant(n, scroll = true) {
-  let hit = null;
-  document.querySelectorAll("#plantlist .plant[data-plant]").forEach((el) => { const on = el.dataset.plant === String(n); el.classList.toggle("sel", on); if (on) hit = el; });
-  if (hit && scroll) hit.scrollIntoView({ block: "nearest", behavior: reduceMotion ? "auto" : "smooth" });
-  return hit;
-}
-
 /* ---------- One field ---------- */
 function showField(p, focus = true, lyr = state.byId[p && p.id]) {
   if (!p) return;
@@ -966,7 +776,7 @@ function renderFieldInfo() {
   const rows = [
     ["Class", `<span class="swatch outline" style="--c:${COLORS[c] || COLORS.idle}"></span>${esc(cname(c))}<div class="sub">${esc(CLASS_HELP[c] || "")}</div>`],
     ["Area", `${fmt(p.area_ha, 1)} ha${p.is_pivot ? ", centre pivot" : ""}`],
-    [`Water pumped (${lv})`, none ? "none: not farmed by radar" : `${fmt(val("water_m3") / 1e3)} thousand m³/y`],
+    [`Irrigation water, estimated (${lv})`, none ? "none: not farmed by radar" : `${fmt(val("water_m3") / 1e3)} thousand m³/y`],
     [`Pumping electricity (${lv})`, none ? "none" : `${fmt(val("elec_kwh") / 1e3)} MWh/y`],
   ];
   if (WHEAT.has(c) || val("residue_t_dry") > 0) rows.push([`Collectable straw (${lv})`, `${fmt(val("residue_t_dry"), 1)} t dry/y`]);
@@ -982,7 +792,6 @@ function renderFieldInfo() {
       ? `${p.spring_brown === true ? "brown in late spring" : p.spring_brown === false ? "green in late spring" : none}<div class="sub">Not used for palm groves: tree cover of 30% or more makes the field a palm grove.</div>`
       : p.spring_brown === true ? "brown in late spring (wheat, then a summer crop)" : p.spring_brown === false ? "green in late spring (perennial)" : none]);
   }
-  if (num(p.plant_10kt) != null) rows.push(["Feeds", `Hypothetical biochar plant ${esc(p.plant_10kt)} in the central 10 kt/y layout (a modelled site)`]);
   $("fieldinfo").innerHTML = `<table class="fieldtable">${rows.map(([h, d]) => `<tr><th scope="row">${h}</th><td>${d}</td></tr>`).join("")}</table>`;
 }
 const pts = (a) => (Array.isArray(a) ? a : []).map((q) => Array.isArray(q) ? { x: tOf(q[0]), y: num(q[1]) } : null).filter((q) => q && !isNaN(q.x) && q.y != null);
@@ -1099,7 +908,7 @@ function exampleLayer() {
 function showExample(zoom) {
   const lyr = exampleLayer();
   if (!lyr) { $("examplefield").hidden = true; return; }
-  if (!$("showfields").checked) { $("showfields").checked = true; state.fieldsLayer.addTo(map); raiseMarkers(); }
+  if (!$("showfields").checked) { $("showfields").checked = true; state.fieldsLayer.addTo(map); }
   if (zoom) {
     try { const b = lyr.getBounds(); map.fitBounds(b, { maxZoom: 14, animate: !reduceMotion, ...fitOpts(b, 24, 14) }); } catch (e) { /* keep the view */ }
   }
@@ -1132,8 +941,8 @@ function renderSteps() {
     `<b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.${dates}`,
     `A field is <b>farmed in a season</b> when ${ruleText(V)}`,
     `<b>Classes</b> follow the national rules: a field farmed in winter only is a winter crop, treated as wheat; in summer only, a summer crop; in both seasons, wheat followed by a summer crop where the national Sentinel-2 spring check finds the field brown in late spring, otherwise year-round fodder; with tree cover of 30% or more and farmed in both seasons, a palm grove. The spring check comes from the national field covering at least half of each field${matched}; fields without one stay year-round, as in the national run.`,
-    `<b>Water</b> = farmed area × irrigation depth by class (published for winter and year-round fields; summer crops get half the perennial depth, a rotation gets both) ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency, with ${head ? esc(head) : "the depth to water as the head"}; <b>CO₂</b> for grid or diesel pumps.`,
-    "<b>Wheat straw</b> from winter-only and rotation fields and <b>palm fronds</b> from palm groves feed a model that places <b>hypothetical biochar plants</b> (none exists or is planned), with transport emissions for feed in and char out (back to the fields, or to the nearest existing cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets, each feed with its own char factors; only truck emissions are subtracted, so it is a technical potential.",
+    `<b>Water</b> is a v1 benchmark estimate, not a radar measurement: farmed area × irrigation depth by class (published for winter and year-round fields; summer crops get half the perennial depth, a rotation gets both) ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency, with ${head ? esc(head) : "the depth to water as the head"}; <b>CO₂</b> for grid or diesel pumps.`,
+    "<b>Wheat straw</b> is counted on winter-only and rotation fields and <b>palm fronds</b> on palm groves, as residue estimates from the factors below.",
   ].map((t) => `<li>${t}</li>`).join("");
 }
 function renderDiffers() {
@@ -1141,8 +950,8 @@ function renderDiffers() {
   const S = get(state.summary, "supply") || {}, V = get(state.summary, "validation") || {}, nf = S.national_flags || {}, N = state.national, D = hvDates();
   const t = V.hv_threshold_db || {}, boxes = (N && N.boxes) || [];
   const farmed = num(S.farmed_ha) ?? sum(FARMED.map((k) => get(S, "area_ha_by_class", k)));
-  let intro = boxes.length ? `The national results map this ground too, in regions ${esc(list(boxes.map((r) => r.id)))}, but in a separate run, so their figures for the same fields differ and the two are never added together.` :
-    "The national results map this ground too, in a separate run with fewer radar dates and a coarser grid, so their figures for the same fields differ and the two are never added together.";
+  let intro = boxes.length ? `The v1 national run maps this ground too, in regions ${esc(list(boxes.map((r) => r.id)))}, but in a separate run, so its figures for the same fields differ and the two are never added together.` :
+    "The v1 national run maps this ground too, in a separate run with fewer radar dates and a coarser grid, so its figures for the same fields differ and the two are never added together.";
   const same = N && N.same;
   if (same && same.farmed > 0 && farmed) intro += ` Inside this cluster's bounding box the national run finds <b>${fmt(same.farmed)} ha</b> farmed on ${fmt(same.field_ha)} ha of fields; this run finds <b>${fmt(farmed)} ha</b> on ${fmt(S.field_ha)} ha, ${fmt(Math.abs(100 * (farmed / same.farmed - 1)))}% ${farmed >= same.farmed ? "more" : "less"} farmed area.`;
   const rngTxt = (a, d = 0) => { const v = a.filter((x) => num(x) != null); if (!v.length) return null; const lo = Math.min(...v), hi = Math.max(...v); return lo === hi ? fmt(lo, d) : `${fmt(lo, d)}–${fmt(hi, d)}`; };
@@ -1160,7 +969,7 @@ function renderDiffers() {
     <li><b>Field outlines</b>, about one-third: fields here come from 20 m Sentinel-2 composites of up to 30 scenes per tile and orbit with no WorldCover filter, the national fields from 40 m composites of up to 8 scenes, so the two runs outline partly different fields.</li>
     <li><b>Classes</b> follow the same rules in both runs: this run takes the national spring check${flags} and marks palm groves from each field's own WorldCover tree cover.</li>
     <li><b>Sentinel-2 winter window</b>, used by the radar + Sentinel-2 tier: ${windowText()}.</li></ul>
-    <p class="note">The split of the gap comes from a field-by-field comparison of the two runs on this ground. Use the national results for totals; this page shows what more radar dates and a finer grid add, field by field.</p>`;
+    <p class="note">The split of the gap comes from a field-by-field comparison of the two runs on this ground. Use the national record for totals; this page shows what more radar dates and a finer grid add, field by field.</p>`;
 }
 // The Sentinel-2 winter windows of the two runs: s2_filled.windows when exported, otherwise read from the rule texts
 // (this run's s2_filled.rule and fills.winter_fill.rule; the national summary's s2_filled.rule).
@@ -1208,33 +1017,26 @@ function renderHead() {
 }
 
 const PARAM_GROUPS = [
-  ["Biochar plants", ["plant_sizes_t_dry", "min_load_fraction"]],
   ["Wheat straw", ["wheat_grain_yield_t_ha", "straw_t_dry_per_ha", "collectable_fraction", "straw_dry_matter", "alfalfa_collectable_residue_t_ha"]],
   ["Palm fronds", ["palms_per_ha", "palm_residue_kg_dry_per_palm", "palm_frond_dry_matter"]],
   ["Irrigation water", ["irrigation_mm_winter_only", "irrigation_mm_summer_crop", "irrigation_mm_year_round", "pivot_application_efficiency"]],
   ["Pumping energy and CO₂", ["pumping_lift_m", "drawdown_m", "pivot_pressure_head_m", "pump_wire_to_water_eff", "grid_kgco2e_per_kwh", "diesel_water_kwh_per_litre", "diesel_kgco2e_per_litre"]],
-  ["Transport", ["road_circuity", "truck_kgco2e_per_tkm"]],
-  ["Char and crediting", ["char_yield_dry", "char_c_org", "h_c_org_straw", "palm_char_yield_dry", "palm_char_c_org", "h_c_org_fronds", "soil_temp_c", "straw_char_persistence", "fronds_char_persistence", "cement_retention"]],
 ];
+// Factors of the retired v1 biochar siting: still in the summary file, not shown, since nothing on this page uses them.
+const RETIRED_PARAMS = new Set(["plant_sizes_t_dry", "min_load_fraction", "road_circuity", "truck_kgco2e_per_tkm", "char_yield_dry", "char_c_org",
+  "h_c_org_straw", "palm_char_yield_dry", "palm_char_c_org", "h_c_org_fronds", "soil_temp_c", "straw_char_persistence", "fronds_char_persistence", "cement_retention"]);
 const PARAM_LABEL = {
-  plant_sizes_t_dry: "Plant sizes (kt dry feed / year)", min_load_fraction: "Minimum load to place a plant",
   wheat_grain_yield_t_ha: "Wheat grain yield (t/ha)", straw_t_dry_per_ha: "Collectable straw (t dry/ha)", collectable_fraction: "Collectable share of that straw",
-  straw_dry_matter: "Straw dry matter (for haulage)", alfalfa_collectable_residue_t_ha: "Alfalfa residue collected (t/ha)",
-  palms_per_ha: "Palms per ha", palm_residue_kg_dry_per_palm: "Fronds per palm (kg dry / year)", palm_frond_dry_matter: "Frond dry matter (for haulage)",
+  straw_dry_matter: "Straw dry matter", alfalfa_collectable_residue_t_ha: "Alfalfa residue collected (t/ha)",
+  palms_per_ha: "Palms per ha", palm_residue_kg_dry_per_palm: "Fronds per palm (kg dry / year)", palm_frond_dry_matter: "Frond dry matter",
   irrigation_mm_winter_only: "Irrigation depth, winter crop (mm)", irrigation_mm_summer_crop: "Irrigation depth, summer crop (mm)",
   irrigation_mm_year_round: "Irrigation depth, year-round (mm)", pivot_application_efficiency: "Irrigation application efficiency",
   pumping_lift_m: "Static depth to water (m)", drawdown_m: "Drawdown while pumping (m)", pivot_pressure_head_m: "Pivot pressure head (m)",
   pump_wire_to_water_eff: "Pump wire-to-water efficiency", grid_kgco2e_per_kwh: "Grid electricity (kg CO₂e/kWh)",
   diesel_water_kwh_per_litre: "Diesel pump water work (kWh/litre)", diesel_kgco2e_per_litre: "Diesel (kg CO₂e/litre)",
-  road_circuity: "Road distance ÷ straight line", truck_kgco2e_per_tkm: "Truck (kg CO₂e per tonne-km)",
-  char_yield_dry: "Straw char yield (t char / t dry feed)", char_c_org: "Straw char organic carbon", h_c_org_straw: "Straw char H/C_org (molar)",
-  palm_char_yield_dry: "Frond char yield (t char / t dry feed)", palm_char_c_org: "Frond char organic carbon", h_c_org_fronds: "Frond char H/C_org (molar)",
-  soil_temp_c: "Soil temperature (°C)", straw_char_persistence: "Straw char carbon kept over 200 years", fronds_char_persistence: "Frond char carbon kept over 200 years",
-  cement_retention: "Char carbon kept in cement in service (reported, not credited)",
 };
 const INVERTED = new Set(["pivot_application_efficiency"]);   // model/supply.py: the Low estimate uses the high efficiency
-const AS_PCT = new Set(["min_load_fraction", "collectable_fraction", "straw_dry_matter", "palm_frond_dry_matter", "pivot_application_efficiency",
-  "pump_wire_to_water_eff", "char_c_org", "palm_char_c_org", "straw_char_persistence", "fronds_char_persistence", "cement_retention"]);
+const AS_PCT = new Set(["collectable_fraction", "straw_dry_matter", "palm_frond_dry_matter", "pivot_application_efficiency", "pump_wire_to_water_eff"]);
 function smart(x, asPct) {
   const v = num(x);
   if (v == null) return "–";
@@ -1245,7 +1047,7 @@ function smart(x, asPct) {
 function renderParams() {
   const P = get(state.summary, "params");
   if (!P || typeof P !== "object") { $("params").innerHTML = "<p class='note'>The factor table is missing from the results summary.</p>"; return; }
-  const keys = Object.keys(P).filter((k) => !k.startsWith("_") && P[k] && typeof P[k] === "object");
+  const keys = Object.keys(P).filter((k) => !k.startsWith("_") && !RETIRED_PARAMS.has(k) && P[k] && typeof P[k] === "object");
   const grouped = new Set(PARAM_GROUPS.flatMap(([, ks]) => ks));
   const groups = PARAM_GROUPS.map(([g, ks]) => [g, ks.filter((k) => keys.includes(k))]).concat([["Other", keys.filter((k) => !grouped.has(k))]]).filter(([, ks]) => ks.length);
   const show = (x, k) => Array.isArray(x) ? x.map((y) => smart(num(y) / 1000)).join(", ") : smart(x, AS_PCT.has(k));
@@ -1291,7 +1093,7 @@ async function loadNational() {
 // Method tab (static text) readable.
 function showFailure() {
   const alert = (role) => `<p class="alert"${role ? ' role="alert"' : ""}>${ICO("alert")}<span>The results could not be loaded. Reload the page to try again; the Method tab still explains how they are made.</span></p>`;
-  ["overview", "check", "plants", "field"].forEach((n, i) => {
+  ["overview", "check", "field"].forEach((n, i) => {
     const tab = $("tab-" + n);
     if (!tab) return;
     [...tab.children].forEach((c) => { c.hidden = true; });

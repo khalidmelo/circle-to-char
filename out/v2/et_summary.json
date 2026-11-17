@@ -1,0 +1,2865 @@
+{
+ "season": "2025-11-01..2026-10-31",
+ "fields": 60132,
+ "area_ha": 738163,
+ "water_et_bn_m3": {
+  "low": 9.399,
+  "central": 11.775,
+  "high": 15.822
+ },
+ "water_et_shelf_bn_m3": {
+  "low": 8.579,
+  "central": 10.703,
+  "high": 14.309
+ },
+ "water_et_shield_bn_m3": {
+  "low": 0.82,
+  "central": 1.072,
+  "high": 1.513
+ },
+ "noncrop_et_bn_m3": {
+  "low": 0.191,
+  "central": 0.209,
+  "high": 0.231
+ },
+ "shield_ha": 87874,
+ "net_use_bn_m3": {
+  "low": 8.339,
+  "central": 9.147,
+  "high": 10.286
+ },
+ "water_benchmark_bn_m3": {
+  "low": 3.601,
+  "central": 6.107,
+  "high": 9.836
+ },
+ "elec_twh_et": {
+  "low": 3.078,
+  "central": 6.953,
+  "high": 13.095
+ },
+ "jjas_load_mw_et": {
+  "low": 463.8,
+  "central": 1049.0,
+  "high": 2001.6
+ },
+ "methods_area_share": {
+  "insufficient": 0.0073,
+  "kc_tree": 0.0288,
+  "mixed": 0.0129,
+  "ndvi_calibrated": 0.2609,
+  "thermal": 0.6901
+ },
+ "regions": [
+  {
+   "c_bar": {
+    "winter": 0.9954,
+    "summer": 0.9887
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.795,
+   "dT_obs_over_ssebop": 0.929,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.060945980873611354,
+     0.05083359206113051,
+     0.020537781752141215,
+     0.0
+    ],
+    "winter": [
+     0.1146938070280771,
+     0.06952895328710854,
+     0.018421767140303136,
+     0.0
+    ]
+   },
+   "overpasses": 54,
+   "accepted": 42,
+   "rejected": {
+    "qc_clear": 4,
+    "qc_cold": 2,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 7
+   },
+   "region": "R01",
+   "peff_mm": 31.1,
+   "eto_adj_mm": 2149.4,
+   "fields": 3483,
+   "methods": {
+    "ndvi_calibrated": 2696,
+    "thermal": 787
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9914,
+    "summer": 0.979
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.089,
+   "dT_obs_over_ssebop": 1.011,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07078821284047804,
+     0.021662474892996986,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.018174526380118995,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 111,
+   "accepted": 37,
+   "rejected": {
+    "qc_clear": 60,
+    "qc_cold": 8,
+    "qc_dt": 5,
+    "qc_ratio": 9,
+    "qc_rain": 3
+   },
+   "region": "R02",
+   "peff_mm": 5.4,
+   "eto_adj_mm": 1999.1,
+   "fields": 3571,
+   "methods": {
+    "thermal": 2077,
+    "ndvi_calibrated": 1338,
+    "mixed": 156
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9843
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 4.192,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.06056567519697644,
+     0.0319696821516484,
+     0.0036155483498775376,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 109,
+   "accepted": 34,
+   "rejected": {
+    "qc_clear": 57,
+    "qc_cold": 2,
+    "qc_dt": 16,
+    "qc_ratio": 0,
+    "qc_rain": 13
+   },
+   "region": "R03",
+   "peff_mm": 17.9,
+   "eto_adj_mm": 2194.0,
+   "fields": 1445,
+   "methods": {
+    "ndvi_calibrated": 1225,
+    "thermal": 208,
+    "mixed": 12
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9822,
+    "summer": 0.9828
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.334,
+   "dT_obs_over_ssebop": 1.004,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.06344868166203252,
+     0.02026763678695214,
+     0.005297914532520419,
+     0.0
+    ],
+    "winter": [
+     0.07313408401973352,
+     0.025484989513083343,
+     0.012338287250994943,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 48,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 1
+   },
+   "region": "R04",
+   "peff_mm": 11.1,
+   "eto_adj_mm": 2417.8,
+   "fields": 2639,
+   "methods": {
+    "thermal": 1369,
+    "ndvi_calibrated": 1109,
+    "kc_tree": 161
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9839,
+    "summer": 0.9767
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.813,
+   "dT_obs_over_ssebop": 1.014,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08592228381882892,
+     0.04126059883969457,
+     0.023491350486247314,
+     0.0
+    ],
+    "winter": [
+     0.06254959992630862,
+     0.024735170039497642,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 90,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 41,
+    "qc_cold": 4,
+    "qc_dt": 6,
+    "qc_ratio": 3,
+    "qc_rain": 3
+   },
+   "region": "R05",
+   "peff_mm": 96.9,
+   "eto_adj_mm": 2232.5,
+   "fields": 2036,
+   "methods": {
+    "thermal": 1038,
+    "ndvi_calibrated": 969,
+    "kc_tree": 29
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9929,
+    "summer": 0.9814
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.302,
+   "dT_obs_over_ssebop": 1.038,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08473655859824789,
+     0.04525538486714259,
+     0.004388135392806988,
+     0.0
+    ],
+    "winter": [
+     0.0509839715406257,
+     0.017915630293034585,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 51,
+   "accepted": 39,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 4,
+    "qc_dt": 4,
+    "qc_ratio": 3,
+    "qc_rain": 5
+   },
+   "region": "R06",
+   "peff_mm": 122.7,
+   "eto_adj_mm": 2149.2,
+   "fields": 2007,
+   "methods": {
+    "ndvi_calibrated": 1242,
+    "thermal": 765
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9901,
+    "summer": 0.9787
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.965,
+   "dT_obs_over_ssebop": 1.054,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 33,
+   "rejected": {
+    "qc_clear": 4,
+    "qc_cold": 6,
+    "qc_dt": 3,
+    "qc_ratio": 8,
+    "qc_rain": 5
+   },
+   "region": "R07",
+   "peff_mm": 3.0,
+   "eto_adj_mm": 2042.6,
+   "fields": 1367,
+   "methods": {
+    "thermal": 979,
+    "ndvi_calibrated": 388
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9918,
+    "summer": 0.9851
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.409,
+   "dT_obs_over_ssebop": 1.04,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0523706770604615,
+     0.0026949307533828872,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 104,
+   "accepted": 84,
+   "rejected": {
+    "qc_clear": 7,
+    "qc_cold": 4,
+    "qc_dt": 12,
+    "qc_ratio": 2,
+    "qc_rain": 6
+   },
+   "region": "R08",
+   "peff_mm": 136.9,
+   "eto_adj_mm": 2195.9,
+   "fields": 2335,
+   "methods": {
+    "ndvi_calibrated": 1877,
+    "thermal": 458
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9908,
+    "summer": 0.9778
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.889,
+   "dT_obs_over_ssebop": 0.978,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.044773900158971924,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.019892068900539586,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 107,
+   "accepted": 75,
+   "rejected": {
+    "qc_clear": 8,
+    "qc_cold": 10,
+    "qc_dt": 10,
+    "qc_ratio": 8,
+    "qc_rain": 11
+   },
+   "region": "R09",
+   "peff_mm": 97.2,
+   "eto_adj_mm": 2112.1,
+   "fields": 2178,
+   "methods": {
+    "thermal": 1519,
+    "ndvi_calibrated": 645,
+    "kc_tree": 14
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9911,
+    "summer": 0.9784
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.193,
+   "dT_obs_over_ssebop": 1.039,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.054551738806762715,
+     0.00640436024893328,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.005437143004266854,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 37,
+   "rejected": {
+    "qc_clear": 4,
+    "qc_cold": 6,
+    "qc_dt": 5,
+    "qc_ratio": 5,
+    "qc_rain": 6
+   },
+   "region": "R10",
+   "peff_mm": 9.5,
+   "eto_adj_mm": 2023.8,
+   "fields": 1544,
+   "methods": {
+    "thermal": 893,
+    "ndvi_calibrated": 645,
+    "kc_tree": 6
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9886,
+    "summer": 0.9785
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.793,
+   "dT_obs_over_ssebop": 1.076,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07295104370209504,
+     0.013044558729996764,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.07846665461470839,
+     0.03133165518424322,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 51,
+   "accepted": 39,
+   "rejected": {
+    "qc_clear": 2,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 2,
+    "qc_rain": 5
+   },
+   "region": "R11",
+   "peff_mm": 117.8,
+   "eto_adj_mm": 2213.0,
+   "fields": 1989,
+   "methods": {
+    "ndvi_calibrated": 1283,
+    "thermal": 706
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9853,
+    "summer": 0.9853
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.718,
+   "dT_obs_over_ssebop": 0.988,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07840285175776449,
+     0.02885353651439652,
+     0.011023752057849551,
+     0.0
+    ],
+    "winter": [
+     0.04747940127872118,
+     0.00011532872531168526,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 48,
+   "rejected": {
+    "qc_clear": 2,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 1
+   },
+   "region": "R12",
+   "peff_mm": 10.5,
+   "eto_adj_mm": 2418.0,
+   "fields": 1350,
+   "methods": {
+    "thermal": 830,
+    "ndvi_calibrated": 515,
+    "kc_tree": 5
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9926,
+    "summer": 0.9776
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.986,
+   "dT_obs_over_ssebop": 1.025,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08882255491042378,
+     0.03684112496851709,
+     0.009319050093112347,
+     0.0
+    ],
+    "winter": [
+     0.07195815075611638,
+     0.023544791517105233,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 39,
+   "rejected": {
+    "qc_clear": 5,
+    "qc_cold": 6,
+    "qc_dt": 6,
+    "qc_ratio": 4,
+    "qc_rain": 7
+   },
+   "region": "R13",
+   "peff_mm": 76.9,
+   "eto_adj_mm": 2070.2,
+   "fields": 1544,
+   "methods": {
+    "thermal": 953,
+    "ndvi_calibrated": 571,
+    "kc_tree": 20
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9873,
+    "summer": 0.9809
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.569,
+   "dT_obs_over_ssebop": 0.928,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.061338892970619306,
+     0.033805278454167406,
+     0.008817060717932292,
+     0.0
+    ],
+    "winter": [
+     0.057849813001015285,
+     0.03488511897558757,
+     0.008906964009646483,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 56,
+    "qc_cold": 4,
+    "qc_dt": 13,
+    "qc_ratio": 2,
+    "qc_rain": 2
+   },
+   "region": "R14",
+   "peff_mm": 32.2,
+   "eto_adj_mm": 2264.4,
+   "fields": 1829,
+   "methods": {
+    "ndvi_calibrated": 787,
+    "thermal": 730,
+    "mixed": 304,
+    "kc_tree": 8
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9793,
+    "summer": 0.985
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.78,
+   "dT_obs_over_ssebop": 1.005,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08611514271891596,
+     0.044905973357708434,
+     0.01283470701603132,
+     0.0
+    ],
+    "winter": [
+     0.10832495578708634,
+     0.047886645060843294,
+     0.021026966434428307,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 47,
+   "rejected": {
+    "qc_clear": 2,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 1
+   },
+   "region": "R15",
+   "peff_mm": 11.1,
+   "eto_adj_mm": 2417.1,
+   "fields": 1464,
+   "methods": {
+    "thermal": 862,
+    "ndvi_calibrated": 573,
+    "kc_tree": 29
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9981,
+    "summer": 1.005
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 20.087,
+   "dT_obs_over_ssebop": 0.64,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 54,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 3,
+    "qc_cold": 2,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 6
+   },
+   "region": "R16",
+   "peff_mm": 42.1,
+   "eto_adj_mm": 2016.2,
+   "fields": 1349,
+   "methods": {
+    "ndvi_calibrated": 1117,
+    "thermal": 232
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.991,
+    "summer": 0.9836
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.506,
+   "dT_obs_over_ssebop": 0.97,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08669706318491696,
+     0.051842273295844524,
+     0.016944111381856676,
+     0.0
+    ],
+    "winter": [
+     0.05988064787727662,
+     0.022755447518714344,
+     0.0021645491159300295,
+     0.0
+    ]
+   },
+   "overpasses": 53,
+   "accepted": 44,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 1,
+    "qc_rain": 3
+   },
+   "region": "R17",
+   "peff_mm": 23.1,
+   "eto_adj_mm": 2223.4,
+   "fields": 1866,
+   "methods": {
+    "ndvi_calibrated": 1389,
+    "thermal": 477
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9893,
+    "summer": 0.982
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.643,
+   "dT_obs_over_ssebop": 1.124,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07956477550128681,
+     0.021545986177564782,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.07456389368800762,
+     0.030621635404520318,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 108,
+   "accepted": 77,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 12,
+    "qc_dt": 0,
+    "qc_ratio": 20,
+    "qc_rain": 4
+   },
+   "region": "R18",
+   "peff_mm": 8.1,
+   "eto_adj_mm": 2099.9,
+   "fields": 910,
+   "methods": {
+    "thermal": 528,
+    "ndvi_calibrated": 322,
+    "kc_tree": 60
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9883,
+    "summer": 0.9773
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.692,
+   "dT_obs_over_ssebop": 0.998,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.062207689657063824,
+     0.016465846165532726,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.10915399992456584,
+     0.07239314606026305,
+     0.03310466811673941,
+     0.0
+    ]
+   },
+   "overpasses": 110,
+   "accepted": 86,
+   "rejected": {
+    "qc_clear": 3,
+    "qc_cold": 10,
+    "qc_dt": 3,
+    "qc_ratio": 6,
+    "qc_rain": 3
+   },
+   "region": "R19",
+   "peff_mm": 5.4,
+   "eto_adj_mm": 1999.9,
+   "fields": 1562,
+   "methods": {
+    "thermal": 958,
+    "ndvi_calibrated": 570,
+    "kc_tree": 34
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9945,
+    "summer": 0.9803
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.808,
+   "dT_obs_over_ssebop": 1.033,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08014658397822474,
+     0.0381974752921228,
+     0.005744086512695198,
+     0.0
+    ],
+    "winter": [
+     0.04239220457868576,
+     0.012709481498144642,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 77,
+   "accepted": 36,
+   "rejected": {
+    "qc_clear": 25,
+    "qc_cold": 6,
+    "qc_dt": 4,
+    "qc_ratio": 5,
+    "qc_rain": 7
+   },
+   "region": "R20",
+   "peff_mm": 9.5,
+   "eto_adj_mm": 1991.1,
+   "fields": 1288,
+   "methods": {
+    "thermal": 799,
+    "ndvi_calibrated": 488,
+    "kc_tree": 1
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9953,
+    "summer": 0.9938
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 3.911,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.12892533924294736,
+     0.06481444152810367,
+     0.030606905099265044,
+     0.0
+    ],
+    "winter": [
+     0.08581647210110627,
+     0.04684977931376294,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 40,
+   "rejected": {
+    "qc_clear": 56,
+    "qc_cold": 2,
+    "qc_dt": 4,
+    "qc_ratio": 0,
+    "qc_rain": 15
+   },
+   "region": "R21",
+   "peff_mm": 72.0,
+   "eto_adj_mm": 2101.2,
+   "fields": 463,
+   "methods": {
+    "ndvi_calibrated": 345,
+    "thermal": 118
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9844,
+    "summer": 0.9818
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.747,
+   "dT_obs_over_ssebop": 1.048,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08092331941523506,
+     0.026851264464658776,
+     0.014261764334157798,
+     0.0
+    ],
+    "winter": [
+     0.047588156248551255,
+     0.033305779682963985,
+     0.01154951114406007,
+     0.0
+    ]
+   },
+   "overpasses": 108,
+   "accepted": 44,
+   "rejected": {
+    "qc_clear": 57,
+    "qc_cold": 4,
+    "qc_dt": 5,
+    "qc_ratio": 0,
+    "qc_rain": 7
+   },
+   "region": "R22",
+   "peff_mm": 61.3,
+   "eto_adj_mm": 2250.9,
+   "fields": 1033,
+   "methods": {
+    "thermal": 636,
+    "ndvi_calibrated": 354,
+    "mixed": 26,
+    "kc_tree": 17
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.987,
+    "summer": 0.9744
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.006,
+   "dT_obs_over_ssebop": 0.953,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.05270479678805668,
+     0.012341644099980972,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.014464819524384007,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 112,
+   "accepted": 84,
+   "rejected": {
+    "qc_clear": 6,
+    "qc_cold": 10,
+    "qc_dt": 8,
+    "qc_ratio": 5,
+    "qc_rain": 4
+   },
+   "region": "R23",
+   "peff_mm": 5.4,
+   "eto_adj_mm": 1981.2,
+   "fields": 2583,
+   "methods": {
+    "thermal": 1575,
+    "ndvi_calibrated": 1008
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9921,
+    "summer": 0.9771
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.071,
+   "dT_obs_over_ssebop": 0.998,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07227406701471256,
+     0.027232679740707262,
+     0.003985495992811739,
+     0.0
+    ],
+    "winter": [
+     0.023435313460586873,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 112,
+   "accepted": 77,
+   "rejected": {
+    "qc_clear": 6,
+    "qc_cold": 10,
+    "qc_dt": 3,
+    "qc_ratio": 14,
+    "qc_rain": 8
+   },
+   "region": "R24",
+   "peff_mm": 9.5,
+   "eto_adj_mm": 1991.4,
+   "fields": 1680,
+   "methods": {
+    "thermal": 927,
+    "ndvi_calibrated": 753
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.991,
+    "summer": 0.9865
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.794,
+   "dT_obs_over_ssebop": 1.201,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07589522003113194,
+     0.03428328364176153,
+     0.005470509230014476,
+     0.0
+    ],
+    "winter": [
+     0.08456480974837349,
+     0.05293223240093993,
+     0.0188922313745375,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 40,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 6,
+    "qc_dt": 1,
+    "qc_ratio": 12,
+    "qc_rain": 2
+   },
+   "region": "R25",
+   "peff_mm": 6.1,
+   "eto_adj_mm": 2036.7,
+   "fields": 714,
+   "methods": {
+    "thermal": 398,
+    "ndvi_calibrated": 279,
+    "kc_tree": 37
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9953,
+    "summer": 0.9793
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.851,
+   "dT_obs_over_ssebop": 0.994,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.08498500136351247,
+     0.04178420091210798,
+     0.01252213994579556,
+     0.0
+    ],
+    "winter": [
+     0.09396588185535083,
+     0.05724418441564031,
+     0.020557414494378798,
+     0.0
+    ]
+   },
+   "overpasses": 106,
+   "accepted": 75,
+   "rejected": {
+    "qc_clear": 9,
+    "qc_cold": 8,
+    "qc_dt": 11,
+    "qc_ratio": 7,
+    "qc_rain": 13
+   },
+   "region": "R26",
+   "peff_mm": 76.9,
+   "eto_adj_mm": 2070.2,
+   "fields": 1076,
+   "methods": {
+    "thermal": 586,
+    "ndvi_calibrated": 479,
+    "kc_tree": 11
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.993,
+    "summer": 0.9807
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.278,
+   "dT_obs_over_ssebop": 1.016,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 110,
+   "accepted": 42,
+   "rejected": {
+    "qc_clear": 59,
+    "qc_cold": 4,
+    "qc_dt": 11,
+    "qc_ratio": 2,
+    "qc_rain": 11
+   },
+   "region": "R27",
+   "peff_mm": 88.8,
+   "eto_adj_mm": 2045.1,
+   "fields": 1183,
+   "methods": {
+    "ndvi_calibrated": 615,
+    "thermal": 499,
+    "kc_tree": 69
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 107,
+   "accepted": 76,
+   "rejected": {
+    "qc_clear": 20,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 14
+   },
+   "region": "R28",
+   "peff_mm": 93.6,
+   "eto_adj_mm": 2116.8,
+   "fields": 551,
+   "methods": {
+    "ndvi_calibrated": 402,
+    "kc_tree": 111,
+    "thermal": 38
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9818,
+    "summer": 0.9855
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.052,
+   "dT_obs_over_ssebop": 0.997,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.04470650602466028,
+     0.019730600233317658,
+     0.0035071030644211526,
+     0.0
+    ],
+    "winter": [
+     0.041227724998592445,
+     0.013131840437786547,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 55,
+   "accepted": 46,
+   "rejected": {
+    "qc_clear": 4,
+    "qc_cold": 4,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 1
+   },
+   "region": "R29",
+   "peff_mm": 10.5,
+   "eto_adj_mm": 2427.3,
+   "fields": 716,
+   "methods": {
+    "thermal": 456,
+    "ndvi_calibrated": 256,
+    "kc_tree": 4
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9859,
+    "summer": 0.9799
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.566,
+   "dT_obs_over_ssebop": 0.932,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0700265689040849,
+     0.025073002186244423,
+     0.0024053774455111724,
+     0.0
+    ],
+    "winter": [
+     0.10744179312129765,
+     0.0593917494541155,
+     0.02672764707593911,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 82,
+   "rejected": {
+    "qc_clear": 9,
+    "qc_cold": 6,
+    "qc_dt": 15,
+    "qc_ratio": 5,
+    "qc_rain": 2
+   },
+   "region": "R30",
+   "peff_mm": 32.2,
+   "eto_adj_mm": 2264.4,
+   "fields": 955,
+   "methods": {
+    "thermal": 526,
+    "ndvi_calibrated": 425,
+    "kc_tree": 4
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9933,
+    "summer": 0.9763
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.132,
+   "dT_obs_over_ssebop": 1.029,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.11145512406627621,
+     0.07364236315757698,
+     0.031081261953424526,
+     0.0
+    ]
+   },
+   "overpasses": 52,
+   "accepted": 35,
+   "rejected": {
+    "qc_clear": 6,
+    "qc_cold": 4,
+    "qc_dt": 4,
+    "qc_ratio": 3,
+    "qc_rain": 6
+   },
+   "region": "R31",
+   "peff_mm": 106.7,
+   "eto_adj_mm": 2120.5,
+   "fields": 512,
+   "methods": {
+    "thermal": 273,
+    "ndvi_calibrated": 213,
+    "kc_tree": 26
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 107,
+   "accepted": 44,
+   "rejected": {
+    "qc_clear": 56,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 14
+   },
+   "region": "R32",
+   "peff_mm": 93.6,
+   "eto_adj_mm": 2099.9,
+   "fields": 405,
+   "methods": {
+    "ndvi_calibrated": 346,
+    "kc_tree": 33,
+    "thermal": 26
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9882,
+    "summer": 0.9817
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.397,
+   "dT_obs_over_ssebop": 0.985,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 44,
+   "rejected": {
+    "qc_clear": 54,
+    "qc_cold": 2,
+    "qc_dt": 13,
+    "qc_ratio": 1,
+    "qc_rain": 7
+   },
+   "region": "R33",
+   "peff_mm": 107.3,
+   "eto_adj_mm": 2221.2,
+   "fields": 804,
+   "methods": {
+    "ndvi_calibrated": 402,
+    "thermal": 298,
+    "kc_tree": 80,
+    "mixed": 24
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9876,
+    "summer": 0.9832
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.54,
+   "dT_obs_over_ssebop": 1.389,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 79,
+   "rejected": {
+    "qc_clear": 11,
+    "qc_cold": 2,
+    "qc_dt": 21,
+    "qc_ratio": 0,
+    "qc_rain": 6
+   },
+   "region": "R34",
+   "peff_mm": 148.1,
+   "eto_adj_mm": 2159.9,
+   "fields": 725,
+   "methods": {
+    "ndvi_calibrated": 570,
+    "thermal": 155
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9937,
+    "summer": 0.9788
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.261,
+   "dT_obs_over_ssebop": 0.985,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07538254981442555,
+     0.02771905939194548,
+     0.0007258551205519403,
+     0.0
+    ],
+    "winter": [
+     0.10415794627170467,
+     0.06737443549926786,
+     0.023369887857351297,
+     0.0
+    ]
+   },
+   "overpasses": 107,
+   "accepted": 37,
+   "rejected": {
+    "qc_clear": 59,
+    "qc_cold": 4,
+    "qc_dt": 11,
+    "qc_ratio": 4,
+    "qc_rain": 12
+   },
+   "region": "R35",
+   "peff_mm": 117.4,
+   "eto_adj_mm": 2122.7,
+   "fields": 822,
+   "methods": {
+    "thermal": 404,
+    "ndvi_calibrated": 347,
+    "kc_tree": 63,
+    "mixed": 8
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9936,
+    "summer": 0.9766
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.961,
+   "dT_obs_over_ssebop": 1.028,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.07718734652404602,
+     0.023562258707804307,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.08262084271247963,
+     0.04417510021987817,
+     0.014783955316936919,
+     0.0
+    ]
+   },
+   "overpasses": 51,
+   "accepted": 35,
+   "rejected": {
+    "qc_clear": 3,
+    "qc_cold": 6,
+    "qc_dt": 4,
+    "qc_ratio": 3,
+    "qc_rain": 6
+   },
+   "region": "R36",
+   "peff_mm": 117.4,
+   "eto_adj_mm": 2125.0,
+   "fields": 718,
+   "methods": {
+    "thermal": 385,
+    "ndvi_calibrated": 321,
+    "kc_tree": 12
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9868,
+    "summer": 0.9832
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.345,
+   "dT_obs_over_ssebop": 1.089,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 7,
+    "qc_cold": 4,
+    "qc_dt": 7,
+    "qc_ratio": 1,
+    "qc_rain": 5
+   },
+   "region": "R37",
+   "peff_mm": 73.6,
+   "eto_adj_mm": 2236.5,
+   "fields": 583,
+   "methods": {
+    "thermal": 309,
+    "ndvi_calibrated": 239,
+    "kc_tree": 35
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9874,
+    "summer": 0.9791
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.681,
+   "dT_obs_over_ssebop": 0.99,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0571865474394147,
+     0.040413797862013885,
+     0.020099977616952796,
+     0.0
+    ],
+    "winter": [
+     0.08291765793129158,
+     0.06864095920239682,
+     0.03178161485141518,
+     0.0
+    ]
+   },
+   "overpasses": 52,
+   "accepted": 46,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 4,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 1
+   },
+   "region": "R38",
+   "peff_mm": 24.1,
+   "eto_adj_mm": 2329.1,
+   "fields": 1142,
+   "methods": {
+    "thermal": 765,
+    "ndvi_calibrated": 365,
+    "kc_tree": 12
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9943,
+    "summer": 0.9864
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.901,
+   "dT_obs_over_ssebop": 1.008,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 85,
+   "rejected": {
+    "qc_clear": 6,
+    "qc_cold": 4,
+    "qc_dt": 15,
+    "qc_ratio": 0,
+    "qc_rain": 7
+   },
+   "region": "R39",
+   "peff_mm": 136.9,
+   "eto_adj_mm": 2205.3,
+   "fields": 894,
+   "methods": {
+    "ndvi_calibrated": 641,
+    "thermal": 228,
+    "kc_tree": 25
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9879,
+    "summer": 0.9768
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.418,
+   "dT_obs_over_ssebop": 1.014,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0862252433969161,
+     0.048234677509011954,
+     0.017869373015377873,
+     0.0
+    ]
+   },
+   "overpasses": 52,
+   "accepted": 38,
+   "rejected": {
+    "qc_clear": 5,
+    "qc_cold": 4,
+    "qc_dt": 5,
+    "qc_ratio": 2,
+    "qc_rain": 4
+   },
+   "region": "R40",
+   "peff_mm": 137.3,
+   "eto_adj_mm": 2140.9,
+   "fields": 533,
+   "methods": {
+    "thermal": 251,
+    "ndvi_calibrated": 194,
+    "kc_tree": 88
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 59,
+   "accepted": 46,
+   "rejected": {
+    "qc_clear": 9,
+    "qc_cold": 0,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 4
+   },
+   "region": "R41",
+   "peff_mm": 40.5,
+   "eto_adj_mm": 2315.8,
+   "fields": 988,
+   "methods": {
+    "kc_tree": 834,
+    "insufficient": 127,
+    "thermal": 27
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": -0.175,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 106,
+   "accepted": 60,
+   "rejected": {
+    "qc_clear": 36,
+    "qc_cold": 0,
+    "qc_dt": 1,
+    "qc_ratio": 0,
+    "qc_rain": 16
+   },
+   "region": "R42",
+   "peff_mm": 143.3,
+   "eto_adj_mm": 2108.2,
+   "fields": 1151,
+   "methods": {
+    "ndvi_calibrated": 959,
+    "thermal": 119,
+    "kc_tree": 73
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9902,
+    "summer": 0.9801
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 1.405,
+   "dT_obs_over_ssebop": 0.974,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.05179504266838848,
+     0.006542780989550229,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.1256205535547446,
+     0.0818578502533152,
+     0.047772579368831246,
+     0.0
+    ]
+   },
+   "overpasses": 57,
+   "accepted": 42,
+   "rejected": {
+    "qc_clear": 3,
+    "qc_cold": 6,
+    "qc_dt": 4,
+    "qc_ratio": 3,
+    "qc_rain": 1
+   },
+   "region": "R43",
+   "peff_mm": 9.3,
+   "eto_adj_mm": 1982.2,
+   "fields": 764,
+   "methods": {
+    "thermal": 379,
+    "ndvi_calibrated": 350,
+    "kc_tree": 35
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 52,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 0,
+    "qc_dt": 1,
+    "qc_ratio": 0,
+    "qc_rain": 3
+   },
+   "region": "R44",
+   "peff_mm": 6.6,
+   "eto_adj_mm": 2207.6,
+   "fields": 342,
+   "methods": {
+    "kc_tree": 196,
+    "insufficient": 135,
+    "thermal": 11
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 44,
+   "rejected": {
+    "qc_clear": 7,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 7
+   },
+   "region": "R45",
+   "peff_mm": 70.2,
+   "eto_adj_mm": 2158.2,
+   "fields": 168,
+   "methods": {
+    "insufficient": 80,
+    "kc_tree": 78,
+    "thermal": 10
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.668,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 112,
+   "accepted": 98,
+   "rejected": {
+    "qc_clear": 13,
+    "qc_cold": 0,
+    "qc_dt": 5,
+    "qc_ratio": 0,
+    "qc_rain": 2
+   },
+   "region": "R46",
+   "peff_mm": 9.6,
+   "eto_adj_mm": 1998.0,
+   "fields": 337,
+   "methods": {
+    "ndvi_calibrated": 212,
+    "thermal": 70,
+    "kc_tree": 55
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 105,
+   "accepted": 47,
+   "rejected": {
+    "qc_clear": 56,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 8
+   },
+   "region": "R47",
+   "peff_mm": 39.8,
+   "eto_adj_mm": 2055.9,
+   "fields": 153,
+   "methods": {
+    "insufficient": 90,
+    "kc_tree": 56,
+    "thermal": 7
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9947,
+    "summer": 0.9794
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 2.317,
+   "dT_obs_over_ssebop": 1.01,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.09335292882636623,
+     0.04890195255091133,
+     0.03134159143397002,
+     0.0
+    ]
+   },
+   "overpasses": 106,
+   "accepted": 38,
+   "rejected": {
+    "qc_clear": 56,
+    "qc_cold": 4,
+    "qc_dt": 8,
+    "qc_ratio": 3,
+    "qc_rain": 11
+   },
+   "region": "R48",
+   "peff_mm": 117.4,
+   "eto_adj_mm": 2122.7,
+   "fields": 472,
+   "methods": {
+    "ndvi_calibrated": 223,
+    "thermal": 207,
+    "mixed": 40,
+    "kc_tree": 2
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9929,
+    "summer": 0.9849
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.866,
+   "dT_obs_over_ssebop": 1.186,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.1003717316323937,
+     0.05704215612728645,
+     0.024850711988975743,
+     0.0
+    ],
+    "winter": [
+     0.08056923645151731,
+     0.03186180555730979,
+     0.023954867065091735,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 39,
+   "rejected": {
+    "qc_clear": 1,
+    "qc_cold": 6,
+    "qc_dt": 2,
+    "qc_ratio": 9,
+    "qc_rain": 2
+   },
+   "region": "R49",
+   "peff_mm": 5.5,
+   "eto_adj_mm": 2016.0,
+   "fields": 415,
+   "methods": {
+    "thermal": 232,
+    "ndvi_calibrated": 163,
+    "kc_tree": 20
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9944,
+    "summer": 0.9819
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "region"
+   },
+   "fallow_minus_desert_K": 0.884,
+   "dT_obs_over_ssebop": 0.935,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 106,
+   "accepted": 38,
+   "rejected": {
+    "qc_clear": 59,
+    "qc_cold": 2,
+    "qc_dt": 15,
+    "qc_ratio": 1,
+    "qc_rain": 12
+   },
+   "region": "R50",
+   "peff_mm": 100.6,
+   "eto_adj_mm": 2105.7,
+   "fields": 504,
+   "methods": {
+    "ndvi_calibrated": 271,
+    "thermal": 218,
+    "mixed": 11,
+    "kc_tree": 4
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9901,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.249,
+   "dT_obs_over_ssebop": 0.367,
+   "dT_ratio_source": "region",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 54,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 5,
+    "qc_cold": 2,
+    "qc_dt": 7,
+    "qc_ratio": 1,
+    "qc_rain": 4
+   },
+   "region": "R51",
+   "peff_mm": 97.3,
+   "eto_adj_mm": 2230.4,
+   "fields": 726,
+   "methods": {
+    "ndvi_calibrated": 268,
+    "kc_tree": 243,
+    "thermal": 215
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 54,
+   "accepted": 42,
+   "rejected": {
+    "qc_clear": 4,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 8
+   },
+   "region": "R52",
+   "peff_mm": 125.5,
+   "eto_adj_mm": 1983.8,
+   "fields": 220,
+   "methods": {
+    "insufficient": 119,
+    "kc_tree": 88,
+    "thermal": 13
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 111,
+   "accepted": 98,
+   "rejected": {
+    "qc_clear": 6,
+    "qc_cold": 0,
+    "qc_dt": 5,
+    "qc_ratio": 0,
+    "qc_rain": 4
+   },
+   "region": "R53",
+   "peff_mm": 0.0,
+   "eto_adj_mm": 2335.1,
+   "fields": 705,
+   "methods": {
+    "kc_tree": 547,
+    "insufficient": 129,
+    "thermal": 29
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 111,
+   "accepted": 96,
+   "rejected": {
+    "qc_clear": 12,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 5
+   },
+   "region": "R54",
+   "peff_mm": 11.0,
+   "eto_adj_mm": 2087.1,
+   "fields": 69,
+   "methods": {
+    "insufficient": 43,
+    "kc_tree": 26
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 111,
+   "accepted": 50,
+   "rejected": {
+    "qc_clear": 58,
+    "qc_cold": 0,
+    "qc_dt": 2,
+    "qc_ratio": 0,
+    "qc_rain": 8
+   },
+   "region": "R55",
+   "peff_mm": 36.9,
+   "eto_adj_mm": 2188.0,
+   "fields": 132,
+   "methods": {
+    "insufficient": 87,
+    "kc_tree": 38,
+    "thermal": 7
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 107,
+   "accepted": 85,
+   "rejected": {
+    "qc_clear": 14,
+    "qc_cold": 0,
+    "qc_dt": 9,
+    "qc_ratio": 0,
+    "qc_rain": 7
+   },
+   "region": "R56",
+   "peff_mm": 22.6,
+   "eto_adj_mm": 2251.9,
+   "fields": 423,
+   "methods": {
+    "kc_tree": 310,
+    "insufficient": 92,
+    "thermal": 21
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 110,
+   "accepted": 38,
+   "rejected": {
+    "qc_clear": 60,
+    "qc_cold": 0,
+    "qc_dt": 24,
+    "qc_ratio": 0,
+    "qc_rain": 9
+   },
+   "region": "R57",
+   "peff_mm": 39.8,
+   "eto_adj_mm": 2113.8,
+   "fields": 91,
+   "methods": {
+    "insufficient": 70,
+    "kc_tree": 18,
+    "thermal": 3
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9794,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "region",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.221,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 54,
+   "accepted": 47,
+   "rejected": {
+    "qc_clear": 2,
+    "qc_cold": 2,
+    "qc_dt": 1,
+    "qc_ratio": 0,
+    "qc_rain": 4
+   },
+   "region": "R58",
+   "peff_mm": 35.8,
+   "eto_adj_mm": 2291.9,
+   "fields": 361,
+   "methods": {
+    "ndvi_calibrated": 146,
+    "thermal": 122,
+    "kc_tree": 93
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 1.302,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "national",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 56,
+   "accepted": 52,
+   "rejected": {
+    "qc_clear": 3,
+    "qc_cold": 0,
+    "qc_dt": 0,
+    "qc_ratio": 0,
+    "qc_rain": 2
+   },
+   "region": "R59",
+   "peff_mm": 13.1,
+   "eto_adj_mm": 2231.8,
+   "fields": 394,
+   "methods": {
+    "kc_tree": 285,
+    "insufficient": 96,
+    "thermal": 13
+   }
+  },
+  {
+   "c_bar": {
+    "winter": 0.9894,
+    "summer": 0.9798
+   },
+   "c_source": {
+    "winter": "national",
+    "summer": "national"
+   },
+   "fallow_minus_desert_K": 2.168,
+   "dT_obs_over_ssebop": 1.019,
+   "dT_ratio_source": "national",
+   "fallow_offset_source": "region",
+   "edge_w": {
+    "summer": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ],
+    "winter": [
+     0.0,
+     0.0,
+     0.0,
+     0.0
+    ]
+   },
+   "overpasses": 53,
+   "accepted": 43,
+   "rejected": {
+    "qc_clear": 7,
+    "qc_cold": 0,
+    "qc_dt": 6,
+    "qc_ratio": 0,
+    "qc_rain": 3
+   },
+   "region": "R60",
+   "peff_mm": 97.3,
+   "eto_adj_mm": 2223.1,
+   "fields": 520,
+   "methods": {
+    "ndvi_calibrated": 305,
+    "kc_tree": 133,
+    "thermal": 82
+   }
+  }
+ ],
+ "by_v1_class": {
+  "idle": {
+   "area_ha": 101755,
+   "median_et_mm": 1606.0,
+   "water_et_bn_m3": 1.967,
+   "water_benchmark_bn_m3": 0.0
+  },
+  "palm_grove": {
+   "area_ha": 31127,
+   "median_et_mm": 1637.0,
+   "water_et_bn_m3": 0.609,
+   "water_benchmark_bn_m3": 0.664
+  },
+  "radar_unusable": {
+   "area_ha": 76692,
+   "median_et_mm": 1021.0,
+   "water_et_bn_m3": 0.941,
+   "water_benchmark_bn_m3": 0.0
+  },
+  "summer_only": {
+   "area_ha": 133850,
+   "median_et_mm": 1398.0,
+   "water_et_bn_m3": 2.279,
+   "water_benchmark_bn_m3": 1.508
+  },
+  "unseen": {
+   "area_ha": 89,
+   "median_et_mm": 1171.0,
+   "water_et_bn_m3": 0.001,
+   "water_benchmark_bn_m3": 0.0
+  },
+  "wheat_rotation": {
+   "area_ha": 46522,
+   "median_et_mm": 985.0,
+   "water_et_bn_m3": 0.602,
+   "water_benchmark_bn_m3": 0.771
+  },
+  "winter_only": {
+   "area_ha": 188697,
+   "median_et_mm": 615.0,
+   "water_et_bn_m3": 1.757,
+   "water_benchmark_bn_m3": 0.337
+  },
+  "year_round": {
+   "area_ha": 159431,
+   "median_et_mm": 1784.0,
+   "water_et_bn_m3": 3.618,
+   "water_benchmark_bn_m3": 2.828
+  }
+ },
+ "mewa_agriculture_bn_m3": 11.56,
+ "v1_published": {
+  "low": 3601027031.0,
+  "central": 6107198184.0,
+  "high": 9835516623.0
+ }
+}

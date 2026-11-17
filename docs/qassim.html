@@ -3,13 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Qassim deep dive, SkyMeter</title>
-<meta name="description" content="A 20 m NISAR radar close-up of one Qassim pivot cluster, run separately from the national results: which fields are farmed each season, what they cost in irrigation water and pumping energy, and where their straw and palm fronds could become biochar.">
+<title>Qassim radar deep dive, SkyMeter</title>
+<meta name="description" content="The v1 radar-only analysis of one Qassim pivot cluster, kept for its radar tests: which fields NISAR L-band radar finds farmed each season at 20 m, checked against Sentinel-2, with v1 benchmark estimates of their water, pumping energy and residues.">
 <meta name="theme-color" content="#ffffff">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="SkyMeter">
-<meta property="og:title" content="Qassim deep dive, SkyMeter">
-<meta property="og:description" content="A 20 m NISAR radar close-up of one Qassim pivot cluster: every field's radar record, its water and energy, and where its residue could become biochar.">
+<meta property="og:title" content="Qassim radar deep dive, SkyMeter">
+<meta property="og:description" content="The v1 radar-only analysis of one Qassim pivot cluster: every field's NISAR radar record and how the radar compares with Sentinel-2.">
 <meta property="og:image" content="https://khalidmelo.github.io/circle-to-char/img/hero-1200.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="675">
@@ -21,26 +21,30 @@
 <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
 <link rel="preconnect" href="https://server.arcgisonline.com">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
-<link rel="stylesheet" href="style.css?v=3">
-<link rel="stylesheet" href="qassim.css?v=6">
+<link rel="stylesheet" href="style.css?v=6">
+<link rel="stylesheet" href="qassim.css?v=7">
 <noscript><style>#loading { display: none; }</style></noscript>
 </head>
 <body class="app">
 <a class="skip" href="#results">Skip to the results</a>
 <nav class="site" aria-label="SkyMeter pages">
   <a class="home" href="./"><svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="img/skymeter.svg#mark"/></svg><span class="brand-word">SkyMeter</span></a>
-  <a href="national.html">National<span class="long"> results</span></a>
-  <a href="scenarios.html">Scenarios</a>
-  <a href="qassim.html" aria-current="page">Qassim<span class="long"> deep dive</span></a>
+  <a href="national.html">National<span class="long"> record</span></a>
+  <a href="aquifer.html">Aquifer<span class="long"> outlook</span></a>
+  <a href="qassim.html" aria-current="page">Qassim<span class="long"> radar deep dive</span></a>
   <a class="code" href="https://github.com/khalidmelo/circle-to-char"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-code"/></svg>Code</a>
 </nav>
 <header class="page">
   <div class="brand">
-    <h1>Qassim deep dive</h1>
-    <p><span class="p-main">A 20 m close-up of one pivot cluster, run separately from the national results, so its figures for the same fields differ.</span> <span class="p-more">With more radar dates, it shows which fields are farmed, what they cost in water and energy, and where their straw and palm fronds could become biochar.</span></p>
+    <h1>Qassim radar deep dive</h1>
+    <p><span class="p-main">A 20 m NISAR radar close-up of one pivot cluster, run separately from the national record, so its figures for the same fields differ.</span> <span class="p-more">With more radar dates, it tests which fields the radar finds farmed in each season, checks them against Sentinel-2, and carries the v1 benchmark estimates of water, energy and residues.</span></p>
     <div class="page-meta"><span class="stamp"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-satellite"/></svg><span id="stamptext">NISAR L-band radar, 20 m grid</span></span></div>
   </div>
 </header>
+<div class="v1-note" role="note">
+  <svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-info"/></svg>
+  <p><b>This page is the v1 radar-only analysis of one pivot cluster,</b> kept for its radar tests. The <a href="national.html">national record</a> now uses v2: crop types from the Landsat time series, and water use estimated from satellite heat and NASA weather data. The two are not added together.</p>
+</div>
 
 <main>
   <section id="mapwrap" aria-label="Map of the Qassim pivot cluster">
@@ -70,17 +74,14 @@
           <p class="mt-title"><svg class="ico sm" aria-hidden="true"><use href="img/icons.svg#i-layers"/></svg>On the map</p>
           <div class="mt-toggles">
             <label class="chk"><input id="showfields" type="checkbox" checked> Fields</label>
-            <label class="chk"><input id="showplants" type="checkbox" checked> Biochar and cement plants</label>
           </div>
         </div>
         <details class="more mt-key mt-fold" id="mapkey" open>
           <summary>Map key</summary>
           <p class="key-h">Outline colour shows the field class</p>
           <ul class="key" id="fieldkey" aria-label="Field classes"></ul>
-          <ul class="key" id="plantkey" aria-label="Plants"></ul>
-          <p class="key-note">Dashed squares are hypothetical sites from a siting model; no such plants exist. Solid rings are real cement plants.</p>
         </details>
-        <p class="legend mt-hint">Click or tap a field or plant to zoom in and see its details.</p>
+        <p class="legend mt-hint">Click or tap a field to zoom in and see its radar record.</p>
       </div>
       <button type="button" class="mt-more" id="mtmore" aria-expanded="false" aria-controls="mt-layerrow legend mapkey"><span>Map layers and key</span></button>
     </div>
@@ -90,7 +91,6 @@
     <div class="tabs" role="tablist" aria-label="Qassim deep dive views">
       <button type="button" role="tab" id="tabbtn-overview" data-tab="overview" class="on" aria-selected="true" aria-controls="tab-overview"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-overview"/></svg><span>Overview</span></button>
       <button type="button" role="tab" id="tabbtn-check" data-tab="check" aria-selected="false" aria-controls="tab-check" tabindex="-1"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-check"/></svg><span>Radar check</span></button>
-      <button type="button" role="tab" id="tabbtn-plants" data-tab="plants" aria-selected="false" aria-controls="tab-plants" tabindex="-1"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-flame"/></svg><span>Biochar<span class="long"> plants</span></span></button>
       <button type="button" role="tab" id="tabbtn-field" data-tab="field" aria-selected="false" aria-controls="tab-field" tabindex="-1"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-target"/></svg><span>One field</span></button>
       <button type="button" role="tab" id="tabbtn-sources" data-tab="sources" aria-selected="false" aria-controls="tab-sources" tabindex="-1"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-book"/></svg><span>Method</span></button>
     </div>
@@ -117,32 +117,6 @@
     <div id="tab-check" class="tab" role="tabpanel" aria-labelledby="tabbtn-check" hidden>
       <p class="lead">Does the radar agree with an independent optical satellite? Each field is called farmed or not from NISAR alone, then compared with ESA Sentinel-2 greenness.</p>
       <div id="validation"></div>
-    </div>
-
-    <div id="tab-plants" class="tab" role="tabpanel" aria-labelledby="tabbtn-plants" hidden>
-      <p class="lead">Where could a biochar plant go, and how big could it be? A siting model places <b>hypothetical biochar plants</b> one at a time where the nearest fields can fill them with the least haulage, using wheat straw and palm fronds.</p>
-      <p class="callout hypo-note"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-info"/></svg><span><b>These are hypothetical sites from a siting model; no such plants exist.</b> On the map they are numbered dashed squares. The solid rings are existing cement plants, which are real facilities. Click a plant below to fly to it.</span></p>
-      <div class="controls-row">
-        <div class="estimate">
-          <span class="seg-label" id="est-plants">Estimate</span>
-          <div class="seg level" role="group" aria-labelledby="est-plants">
-            <button type="button" data-level="low" aria-pressed="false">Low</button>
-            <button type="button" data-level="central" class="on" aria-pressed="true">Central</button>
-            <button type="button" data-level="high" aria-pressed="false">High</button>
-          </div>
-        </div>
-        <div class="estimate">
-          <span class="seg-label" id="size-label">Plant size, kt/y</span>
-          <div class="seg sizes" role="group" aria-labelledby="size-label">
-            <button type="button" data-size="5" aria-pressed="false">5</button>
-            <button type="button" data-size="10" class="on" aria-pressed="true">10</button>
-            <button type="button" data-size="25" aria-pressed="false">25</button>
-            <button type="button" data-size="50" aria-pressed="false">50</button>
-            <button type="button" data-size="100" aria-pressed="false">100</button>
-          </div>
-        </div>
-      </div>
-      <div id="plantlist"></div>
     </div>
 
     <div id="tab-field" class="tab" role="tabpanel" aria-labelledby="tabbtn-field" hidden>
@@ -180,12 +154,11 @@
       <ol class="steps" id="steps">
         <li><b>Fields</b> are mapped from ESA Sentinel-2 greenness: seasonal maximum NDVI from offset-corrected surface reflectance, 20 m.</li>
         <li><b>NISAR L-band radar</b> (NASA-ISRO) gives three independent signals per field every 12 days: HV backscatter (crop canopy), 12-day coherence (surface being worked or irrigated) and soil moisture.</li>
-        <li>A field is <b>farmed in a season</b> when its peak HV backscatter, measured above the same date's bare-desert median, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks. The rule uses no Sentinel-2 input; Sentinel-2 is only the check.</li>
-        <li><b>Water</b> = farmed area × irrigation depth by class ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
-        <li><b>Wheat straw</b> and <b>palm fronds</b> feed a model that places <b>hypothetical biochar plants</b> (none exists or is planned), with transport emissions for feed in and char out (back to the fields, or to the nearest existing cement plant). Removal is credited with the Puro.earth 2025 soil persistence model for both outlets.</li>
+        <li>A field is <b>farmed in a season</b> when its peak HV backscatter, relative to the same date's bare-desert median, beats a desert-patch tail threshold: median + 3 × (median − 16th percentile) of field-sized desert patches' seasonal peaks. The rule uses no Sentinel-2 input; Sentinel-2 is only the check.</li>
+        <li><b>Water</b> is a v1 benchmark estimate, not a radar measurement: farmed area × published irrigation depth by class ÷ pivot efficiency; <b>energy</b> = water × pumping head ÷ pump efficiency; <b>CO₂</b> for grid or diesel pumps.</li>
       </ol>
-      <h3 id="differs-h">How this differs from the national run</h3>
-      <div id="differs"><p class="note">The national results map this ground too, in a separate run with fewer radar dates and a coarser grid, so the two are never added together.</p></div>
+      <h3 id="differs-h">How this differs from the v1 national run</h3>
+      <div id="differs"><p class="note">The v1 national run maps this ground too, in a separate run with fewer radar dates and a coarser grid, so the two are never added together.</p></div>
       <div id="headinfo"></div>
       <h3 id="params-h">Factors and sources</h3>
       <div id="params"></div>
@@ -193,19 +166,16 @@
       <ul class="sources">
         <li><b>NASA-ISRO NISAR</b> L-band radar, from the ASF DAAC</li>
         <li><b>ESA Sentinel-2</b> and <b>WorldCover</b>, from the Microsoft Planetary Computer</li>
-        <li><b>Existing cement plants</b> (real facilities) from the Spatial Finance Initiative Global Database of Cement Production Assets (CC BY 4.0)</li>
-        <li><b>Puro.earth 2025</b> biochar methodology</li>
         <li>Map imagery © Esri, Maxar, Earthstar Geographics</li>
       </ul>
       <p class="repo"><a class="btn secondary" href="https://github.com/khalidmelo/circle-to-char"><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-code"/></svg><span>Open-source code and data</span><svg class="ico" aria-hidden="true"><use href="img/icons.svg#i-external"/></svg></a></p>
-      <p class="note ack">Built with AI-assisted coding and writing tools; the team checked the data, sources and results.</p>
     </div>
   </aside>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<script src="app.js?v=6"></script>
+<script src="app.js?v=7"></script>
 <script>
   // app.js sets appStarted on its last line; if a script failed to load or threw first, say so instead of "Loading…"
   if (!window.appStarted) {

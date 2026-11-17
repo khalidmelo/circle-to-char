@@ -1,10 +1,27 @@
 # SkyMeter
 
-**NISAR radar reads Saudi Arabia's farm fields, field by field: which are farmed each season, what they cost in water and pumping energy, what residue they leave, and where biochar plants could turn it into stored carbon.**
-
-**Live site:** https://khalidmelo.github.io/circle-to-char/ (start here)
+**An open, field-by-field record of what Saudi farms grow each season and an estimate of the water they use, from NASA and ESA satellites.**
 
 NASA Space Apps Challenge 2026, challenge *Dancing with the SARs*.
+
+## Version 2 (this branch, `skymeter-v2`)
+
+The live site (https://khalidmelo.github.io/circle-to-char/) shows the version submitted to the challenge and stays unchanged during judging. This branch reworks the method. Satellites already see every field, but meters cover under 2% of farm wells and no public per-field water record exists, so v2 puts its effort where the gap is:
+
+- **Crop type per field** (60,132 fields, 738,163 ha in 60 farming boxes): crop cycles from the Landsat 8/9 NDVI time series at 40 m (Aug 2025 to Nov 2026), with NISAR L-band radar as independent evidence of canopy in winter and summer where its quality check passed (42 boxes).
+- **Perennial-fodder baseline** for MEWA's halt of perennial green fodder in six sedimentary-shelf regions from 16 November 2026: which fields grew it in 2025/26 and the water they used.
+- **Water use from heat**: Landsat surface temperature, corrected for emissivity, elevation and desert blending at field edges, in a two-anchor energy-balance index checked against SSEBop's physics, scaled by FAO-56 reference ET from NASA POWER. Reported as groundwater on the sedimentary shelf, irrigation water on the Arabian Shield (source not determined) and net consumptive use, each with a low/high range; the v1 area x benchmark-depth method stays as a cross-check, with MEWA's figures for context.
+- **Aquifer outlook**: a NISAR InSAR pilot over Qassim measures the noise floor and how long a record must run before pumping-driven ground sinking (5-12 mm a year in published studies) becomes detectable. It is not detectable yet, and irrigated fields show false movement from soil moisture.
+- **Residues and biochar scenarios**: straw from winter-cereal cycles and fronds from GASTAT's palm count; biochar as a technical-potential range by collected share. No plant siting.
+- **Checks**: Landsat 8 vs Landsat 9 split halves, bootstrap stability, Sentinel-2's spring flag, NISAR agreement, GASTAT 2024 regional areas, and a blind visual check of a stratified test sample: 226 fields read from their raw Landsat NDVI looks and six Sentinel-2 images by AI vision models working from a written guide and never shown the mapped labels (a random 20% read twice). Overall agreement 76% (95% interval 68-83%), 84% on broad groups; it is visual interpretation, not field visits, and the interpreters saw the same Landsat record as the map, so it is an upper bound. The crop rules were tuned on a separate 224-field calibration sample before the test sample was drawn.
+
+Run order: `scripts/run_v2.sh`. New code: `model/eto_power.py`, `scripts/landsat_c2.py`, `scripts/landsat_fields.py`, `model/crop_types.py`, `model/et_fields.py`, `model/residues_v2.py`, `scripts/gunw_fetch.py`, `scripts/insar_qassim.py`, `scripts/v2_check_cards.py`, `scripts/v2_check_score.py`, `scripts/export_v2.py`. The v1 modules are not changed; v2 reads their published field table (`data/national/fields_national.csv`). Pages: `index.html`, `national.html`, `aquifer.html` (new) read `docs/data/v2/`; `qassim.html` keeps the v1 radar deep dive. Additional data for v2: Landsat 8/9 Collection 2 Level-2 (USGS/NASA, via Microsoft Planetary Computer), NASA POWER, Copernicus DEM GLO-90.
+
+## Version 1 (submitted)
+
+The sections below describe the submitted version.
+
+**NISAR radar reads Saudi Arabia's farm fields, field by field: which are farmed each season, what they cost in water and pumping energy, what residue they leave, and where biochar plants could turn it into stored carbon.**
 
 ## What it does
 

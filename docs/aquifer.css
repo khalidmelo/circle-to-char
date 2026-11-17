@@ -1,0 +1,167 @@
+/* Aquifer outlook only: a reading page (no map), loaded after style.css. Shared tokens and components (site bar, page
+   header, KPI cards, tables, callouts, disclosures, footer) live in style.css. */
+
+/* A document page: the body grows with its content, so the sticky site bar stays stuck */
+body.doc { height: auto; min-height: 100%; }
+main.doc { display: block; padding-bottom: 48px; }
+main.doc:focus { outline: none; }
+.doc-wrap { width: 100%; max-width: 920px; margin: 0 auto; padding: 0 var(--gutter); }
+
+main.doc section { padding: 40px 0 0; scroll-margin-top: calc(var(--nav-h) + 8px); }
+main.doc section + section { margin-top: 40px; border-top: 1px solid var(--line); }
+main.doc h2 {
+  margin: 0 0 14px; font-size: clamp(22px, 1.1vw + 16px, 28px); font-weight: 650; font-stretch: 106%;
+  line-height: 1.2; letter-spacing: -.02em; color: var(--ink);
+}
+main.doc h3 { margin: 28px 0 10px; font-size: 16px; color: var(--ink); }
+
+/* Running text */
+.prose p, .prose li { max-width: 70ch; font-size: 15.5px; line-height: 1.65; color: var(--ink-2); }
+.prose p { margin: 0 0 14px; }
+.prose b, .prose strong { font-weight: 600; color: var(--ink); }
+.prose .callout { max-width: 70ch; font-size: var(--fs-sm); }
+.prose .callout span { min-width: 0; }
+
+/* =====================================================================================================
+   The answer
+   ===================================================================================================== */
+.verdict { padding-top: 32px; }
+main.doc .verdict-h {
+  margin: 0 0 14px; font-size: clamp(34px, 3.2vw + 18px, 56px); font-weight: 700; font-stretch: 108%;
+  line-height: 1.02; letter-spacing: -.03em; color: var(--ink);
+}
+.verdict-lead { max-width: 64ch; margin: 0; font-size: clamp(16px, .5vw + 14px, 18px); line-height: 1.6; color: var(--ink); }
+.verdict-lead b { font-weight: 650; }
+
+main.doc .kpis { grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 12px; margin: 24px 0 0; }
+main.doc .kpis:empty { display: none; }
+.kpi-sub { margin: 6px 0 0; font-size: var(--fs-cap); line-height: 1.5; color: var(--ink-2); }
+
+/* Signal against noise, on one millimetre scale */
+.sn { margin: 16px 0 0; padding: 14px 18px 12px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); }
+.sn figcaption { margin: 0 0 10px; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); }
+.sn figcaption b { font-weight: 650; color: var(--ink); }
+.sn-row, .sn-axis { display: grid; grid-template-columns: minmax(0, 17em) minmax(0, 1fr) 6.5em; align-items: center; gap: 4px 14px; }
+.sn-row { padding: 6px 0; }
+.sn-l { font-size: var(--fs-sm); line-height: 1.35; color: var(--ink); }
+.sn-track { position: relative; height: 12px; background: var(--panel-3); border-radius: 6px; }
+.sn-track > i {
+  position: absolute; top: 0; bottom: 0; left: var(--a, 0%); width: calc(var(--b, 0%) - var(--a, 0%)); min-width: 3px;
+  background: var(--rb-thr); border-radius: 6px;
+}
+.sn-row.sig .sn-track > i { background: var(--accent); }
+.sn-row.alt .sn-track > i { background: var(--rb-factor); box-shadow: inset 0 0 0 1px var(--line-2); }
+.sn-v { font-size: var(--fs-sm); font-weight: 650; text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); }
+.sn-axis { margin-top: 2px; font-size: var(--fs-micro); color: var(--muted); font-variant-numeric: tabular-nums; }
+.sn-axis > span:nth-child(2) { display: flex; justify-content: space-between; }
+
+.tech { margin: 4px 0 0; max-width: 78ch; font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-2); }
+
+/* On this page */
+.toc { margin: 28px 0 0; padding-top: 16px; border-top: 1px solid var(--line); }
+.toc-h { margin: 0 0 8px; font-size: var(--fs-cap); font-weight: 600; color: var(--muted); }
+.toc ul { display: flex; flex-wrap: wrap; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.toc a {
+  display: inline-flex; align-items: center; min-height: 34px; padding: 4px 12px;
+  font-size: var(--fs-sm); font-weight: 550; color: var(--ink); text-decoration: none;
+  background: var(--panel); border: 1px solid var(--line-2); border-radius: 999px;
+  transition: border-color var(--dur) var(--ease), color var(--dur) var(--ease);
+}
+.toc a:hover { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+
+/* =====================================================================================================
+   Figures: a white frame, an Enlarge button, a caption; a click opens the zoom dialog
+   ===================================================================================================== */
+.figs { display: grid; gap: 28px; margin: 24px 0 0; }
+.figs:empty { display: none; }
+.fig { min-width: 0; margin: 0; }
+.fig-frame { position: relative; overflow: hidden; background: #fff; border: 1px solid var(--line); border-radius: var(--r); }
+.fig-frame img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+.fig-zoom {
+  position: absolute; right: 10px; bottom: 10px; min-height: 32px; padding: 4px 10px;
+  font-size: var(--fs-cap); background: rgba(255, 255, 255, .94); box-shadow: var(--shadow-1);
+}
+.fig figcaption { max-width: 78ch; margin-top: 10px; font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-2); }
+.fig figcaption b { display: block; margin-bottom: 2px; font-weight: 650; color: var(--ink); }
+
+dialog.zoom {
+  width: min(1240px, calc(100vw - 32px)); max-width: none; max-height: calc(100vh - 32px); max-height: calc(100dvh - 32px);
+  padding: 0; color: var(--ink); background: var(--panel); border: 0; border-radius: var(--r-lg); box-shadow: var(--shadow-float); overflow: hidden;
+}
+dialog.zoom[open] { display: flex; flex-direction: column; }
+dialog.zoom::backdrop { background: rgba(14, 26, 38, .62); }
+.zoom-bar { display: flex; flex: none; align-items: center; gap: 8px; padding: 8px 8px 8px 16px; border-bottom: 1px solid var(--line); }
+.zoom-title { flex: 1 1 auto; min-width: 0; margin: 0; font-size: var(--fs-sm); font-weight: 650; line-height: 1.35; }
+.zoom-close { width: 36px; padding: 0; }
+.zoom-body { flex: 1 1 auto; min-height: 0; overflow: auto; overscroll-behavior: contain; padding: 12px; }
+.zoom-body img {
+  display: block; width: auto; max-width: 100%; height: auto; max-height: calc(100vh - 120px); max-height: calc(100dvh - 120px);
+  margin: 0 auto; cursor: zoom-in;
+}
+.zoom-body.actual img { max-width: none; max-height: none; cursor: zoom-out; }
+
+/* =====================================================================================================
+   Cards and tables
+   ===================================================================================================== */
+.card { margin: 20px 0 0; padding: 14px 18px 12px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--r); }
+main.doc .card-h { margin: 0 0 6px; font-size: var(--fs-h3); }
+.card .note { margin: 10px 0 0; max-width: 78ch; }
+.table-scroll { max-width: 100%; overflow-x: auto; background: var(--scroll-shade); }
+.table-scroll:focus-visible { outline-offset: 2px; border-radius: 6px; }   /* scrollable by keyboard: tabindex="0" in the page */
+.table-scroll table { font-size: var(--fs-sm); }
+.table-scroll thead th { vertical-align: bottom; }
+.table-scroll tbody th { font-weight: 600; color: var(--ink); font-size: var(--fs-sm); }
+table.det { min-width: 560px; }
+table.det td { white-space: nowrap; color: var(--ink); }
+table.det .tag { margin-left: 4px; }
+table.pairs { min-width: 860px; }
+table.pairs td { color: var(--ink); }
+table.pairs td:nth-child(-n+2) { white-space: nowrap; }
+.seg-name { font-weight: 600; }
+.seg-rec { display: block; font-size: var(--fs-cap); color: var(--muted); white-space: nowrap; }
+.pnote { min-width: 14em; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2) !important; }
+
+/* Facts: label | value rows */
+dl.kv { display: grid; grid-template-columns: minmax(0, 11em) minmax(0, 1fr); margin: 4px 0 0; font-size: var(--fs-sm); line-height: 1.5; }
+dl.kv > div { display: contents; }
+dl.kv dt, dl.kv dd { padding: 8px 0; border-top: 1px solid var(--line); }
+dl.kv > div:first-child dt, dl.kv > div:first-child dd { border-top: 0; }
+dl.kv dt { padding-right: 14px; font-weight: 600; color: var(--muted); }
+dl.kv dd { margin: 0; min-width: 0; color: var(--ink); overflow-wrap: anywhere; }
+
+/* Lists of points, notes and caveats */
+ul.points { margin: 0; padding-left: 20px; }
+ul.points li + li { margin-top: 10px; }
+ul.points li::marker, ul.notes-list li::marker { color: var(--muted); }
+ul.notes-list { max-width: 78ch; margin: 0; padding-left: 20px; font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-2); }
+ul.notes-list li + li { margin-top: 8px; }
+ul.notes-list li { overflow-wrap: anywhere; }
+.download { display: flex; align-items: flex-start; gap: 8px; max-width: 78ch; margin: 24px 0 0; font-size: var(--fs-sm); color: var(--ink-2); }
+.download .ico { margin-top: 2px; color: var(--muted); }
+
+/* =====================================================================================================
+   Phones
+   ===================================================================================================== */
+@media (max-width: 860px) {
+  main.doc section { padding-top: 32px; }
+  main.doc section + section { margin-top: 32px; }
+}
+@media (max-width: 600px) {
+  .sn { padding: 12px 14px 10px; }
+  .sn-row, .sn-axis { grid-template-columns: minmax(0, 1fr) 6.5em; }   /* one value column width: every track keeps the same scale */
+  .sn-row { row-gap: 6px; padding: 8px 0; }
+  .sn-l { grid-column: 1 / -1; }
+  .sn-axis > span:first-child { display: none; }
+  .card { padding: 12px 14px 10px; }
+  dl.kv { grid-template-columns: minmax(0, 1fr); }
+  dl.kv dt { padding-bottom: 0; }
+  dl.kv dd { padding-top: 2px; border-top: 0; }
+  .prose p, .prose li { font-size: 15px; }
+  .fig-zoom { right: 6px; bottom: 6px; }
+  dialog.zoom { width: calc(100vw - 16px); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: var(--r); }
+}
+@media (pointer: coarse), (max-width: 860px) {
+  .toc a { min-height: 40px; }
+  .fig-zoom { min-height: 40px; }
+  .zoom-close { width: 44px; }
+}

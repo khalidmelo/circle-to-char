@@ -1,6 +1,15 @@
-/* Qassim deep dive only: rules for this page, loaded after style.css. Shared tokens and components live in style.css.
-   The Estimate switch sits next to the figures it changes (Overview, Biochar plants, One field); app.js keeps every copy
-   in step. */
+/* Qassim radar deep dive only: rules for this page, loaded after style.css. Shared tokens and components live in style.css.
+   The Estimate switch sits next to the figures it changes (Overview, One field); app.js keeps every copy in step. */
+
+/* The v1 note under the page header: this page is the v1 radar-only analysis, the national record is v2 */
+.v1-note {
+  display: flex; align-items: flex-start; gap: 10px; padding: 9px var(--gutter);
+  font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); background: var(--accent-wash); border-bottom: 1px solid var(--line);
+}
+.v1-note .ico { width: 16px; height: 16px; margin-top: 2px; color: var(--accent); stroke-width: 2; }
+.v1-note p { margin: 0; max-width: 120ch; }
+.v1-note b { color: var(--ink); font-weight: 600; }
+body.app > .v1-note { flex: none; }
 
 /* =====================================================================================================
    Map tools: one floating panel in two columns (satellite layer and date | what is on the map)
@@ -50,23 +59,6 @@
 .mt-key ul.key + ul.key { margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--line); }
 #maptools .mt-hint { display: flex; align-items: center; gap: 6px; margin: 0; color: var(--muted); }
 
-/* Hypothetical biochar plants on the map: a white square with a dashed outline in the colour of its char outlet and its
-   number, unlike the solid rings of the real cement plants; the hit area reaches 40 px */
-.plant-pin { overflow: visible; }
-.plant-pin > span {
-  position: absolute; left: 0; top: 0; transform: translate(-50%, -50%);
-  display: inline-flex; align-items: center; justify-content: center;
-  min-width: 26px; height: 26px; padding: 0 6px; white-space: nowrap;
-  font: 700 12px/1 var(--font); font-variant-numeric: tabular-nums; color: var(--c, var(--c-soil)); background: #fff;
-  border: 2px dashed var(--c, var(--c-soil)); border-radius: 6px; box-shadow: 0 0 0 1px rgba(14, 26, 38, .35), 0 2px 6px rgba(14, 26, 38, .35);
-}
-.key i.hypo { width: 14px; height: 14px; background: #fff; border: 2px dashed var(--c, var(--c-soil)); border-radius: 3px; }
-.mt-key .key-note { margin: 6px 0 0; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2); }
-.hypo-note b { color: var(--ink); }
-.plant-pin > span::after { content: ""; position: absolute; inset: -9px; }
-.plant-pin:focus-visible { outline: none; }
-.plant-pin:focus-visible > span { outline: 2px solid var(--accent); outline-offset: 2px; }
-
 .leaflet-container a.poplink { display: inline-flex; align-items: center; gap: 4px; margin-top: 6px; padding: 4px 0; font-weight: 600; color: var(--accent); }
 .leaflet-container a.poplink .ico { width: 14px; height: 14px; }
 .tt-hint { color: var(--muted); }
@@ -76,8 +68,6 @@
    ===================================================================================================== */
 .estimate { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 4px 0 8px; }
 .estimate-cap { margin: 0 0 14px; }
-.controls-row { display: flex; flex-wrap: wrap; gap: 4px 24px; margin: 4px 0 8px; }
-.controls-row .estimate { margin: 0; }
 .example { margin: 0 0 14px; }
 
 /* Overview headline: the farmed area as the panel's one large figure, the two seasons between hairlines, the sentence */
@@ -141,66 +131,20 @@ ul.caveats li::marker, ul.differs li::marker { color: var(--muted); }
 .tab > :first-child { margin-top: 0; }   /* every tab starts the same distance under the tab bar (Method opens on an h3) */
 
 /* Sections a link scrolls to: clear the sticky tab strip (and the site bar on phones) */
-#differs-h, #params-h, #soiluse-h, #headinfo { scroll-margin-top: 72px; }
+#differs-h, #params-h, #headinfo { scroll-margin-top: 72px; }
 
-/* =====================================================================================================
-   Biochar plants
-   ===================================================================================================== */
-/* The layout's totals: three figures between hairlines, not cards */
-dl.plant-sum, dl.hl-seasons {
-  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); margin: 12px 0 10px;
+/* The Overview's two seasons: two figures between hairlines, smaller than the headline above them */
+dl.hl-seasons {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0;
   border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line);
 }
-dl.plant-sum > div, dl.hl-seasons > div { display: flex; flex-direction: column; min-width: 0; padding: 10px 12px 12px 0; }
-dl.plant-sum > div + div, dl.hl-seasons > div + div { padding-left: 12px; border-left: 1px solid var(--line); }
-dl.plant-sum dt, dl.hl-seasons dt { order: 2; margin-top: 4px; font-size: var(--fs-cap); line-height: 1.35; color: var(--ink-2); }
-dl.plant-sum dd, dl.hl-seasons dd { order: 1; margin: 0; font-size: 24px; font-weight: 650; font-stretch: 104%; line-height: 1.1; letter-spacing: -.02em; font-variant-numeric: proportional-nums; color: var(--ink); }
-/* the Overview's two seasons: smaller than the headline above them */
-dl.hl-seasons { grid-template-columns: repeat(2, minmax(0, 1fr)); margin: 0; }
+dl.hl-seasons > div { display: flex; flex-direction: column; min-width: 0; padding: 10px 12px 12px 0; }
+dl.hl-seasons > div + div { padding-left: 12px; border-left: 1px solid var(--line); }
+dl.hl-seasons dt { order: 2; margin-top: 4px; font-size: var(--fs-cap); line-height: 1.35; color: var(--ink-2); }
+dl.hl-seasons dd { order: 1; margin: 0; font-size: 24px; font-weight: 650; font-stretch: 104%; line-height: 1.1; letter-spacing: -.02em; font-variant-numeric: proportional-nums; color: var(--ink); }
 dl.hl-seasons > div { padding: 8px 12px 9px 0; }
 dl.hl-seasons dd { font-size: 20px; }
 dl.hl-seasons dd .u { margin-left: 4px; font-size: var(--fs-sm); font-weight: 600; font-stretch: 100%; letter-spacing: 0; color: var(--ink-2); }
-.plant-feed { margin: 0 0 4px; }
-
-/* Plant cards: the number badge matches the map pin */
-#plantlist .plant { margin: 10px 0; padding: 14px 16px 12px; font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-2); transition: background-color var(--dur) var(--ease), border-color var(--dur) var(--ease); }
-.plant.sel { background: var(--accent-wash); border-color: var(--accent); }
-.plant-head { display: flex; align-items: center; gap: 12px; }
-.pnum {
-  display: inline-flex; flex: none; align-items: center; justify-content: center; min-width: 30px; height: 30px; padding: 0 7px;
-  font-size: 14px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; color: var(--c, var(--c-soil)); background: #fff;
-  border: 2px dashed var(--c, var(--c-soil)); border-radius: 7px;
-}
-#plantlist .plant[data-plant] { cursor: pointer; }
-#plantlist .plant[data-plant]:hover { border-color: var(--accent); }
-.showmap {
-  display: inline-flex; flex: none; align-items: center; gap: 5px; margin-left: auto; padding: 6px 10px; min-height: 32px;
-  font: 600 var(--fs-cap)/1 var(--font); color: var(--accent); background: transparent; border: 1px solid var(--line-2); border-radius: 8px; cursor: pointer;
-}
-.showmap:hover { background: var(--accent-wash); border-color: var(--accent); }
-.showmap .ico { width: 14px; height: 14px; }
-.plant-id { display: grid; min-width: 0; }
-.plant-name { font-size: var(--fs-h3); font-weight: 650; line-height: 1.3; color: var(--ink); }
-.plant-where { font: 400 12px/1.5 var(--font-mono); color: var(--muted); }
-dl.pfacts {
-  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; margin: 12px 0 10px;
-  border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
-}
-dl.pfacts > div { display: flex; flex-direction: column; min-width: 0; padding: 7px 8px 7px 0; }
-dl.pfacts > div + div { padding-left: 10px; border-left: 1px solid var(--line); }
-dl.pfacts dt { font-size: var(--fs-micro); font-weight: 600; line-height: 1.3; color: var(--muted); }
-dl.pfacts dd { margin: 2px 0 0; font-size: var(--fs-sm); font-weight: 600; white-space: nowrap; font-variant-numeric: tabular-nums; color: var(--ink); }
-.plant.sel dl.pfacts, .plant.sel dl.pfacts > div + div { border-color: rgba(29, 86, 168, .18); }
-.pline { margin: 6px 0 0; }
-.feedmix { margin: 0 0 4px; }
-.feedbar { display: flex; gap: 2px; height: 8px; margin-top: 6px; }
-.feedbar > i { flex: 1 1 0; min-width: 2px; background: var(--c); }
-.feedbar > i:first-child { border-radius: 4px 0 0 4px; }
-.feedbar > i:last-child { border-radius: 0 4px 4px 0; }
-.feedbar > i:only-child { border-radius: 4px; }
-ul.key.feedkey { grid-template-columns: repeat(auto-fill, minmax(110px, max-content)); margin: 10px 0 0; }
-.soilflag { margin-top: 10px; padding-top: 8px; font-size: var(--fs-cap); line-height: 1.5; color: var(--ink-2); border-top: 1px solid var(--line); }
-
 /* =====================================================================================================
    One field
    ===================================================================================================== */
@@ -277,6 +221,7 @@ ul.sources b { color: var(--ink); font-weight: 600; }
   header.page { padding-top: 10px; padding-bottom: 10px; }
   header.page .brand { row-gap: 4px; }
   header.page .p-more { display: none; }
+  .v1-note { padding-top: 6px; padding-bottom: 6px; font-size: var(--fs-cap); }
   /* one narrow column at the map's left: the fit then draws the fields beside it, where the map is tallest */
   #maptools { grid-template-columns: minmax(0, 1fr); width: min(360px, calc(100% - 32px)); gap: 10px; padding: 12px 0; }
   #maptools .mt-keys { padding-top: 10px; border-left: 0; border-top: 1px solid var(--line); }
@@ -284,7 +229,7 @@ ul.sources b { color: var(--ink); font-weight: 600; }
   #maptools .mt-hint { display: none; }
 }
 
-/* Phones: the date slider and the Fields / Plants switches stay in view; the layer select, its legend and the map key
+/* Phones: the date slider and the Fields switch stay in view; the layer select, its legend and the map key
    fold under one "Map layers and key" button, so the results follow the map closely */
 @media (max-width: 860px) {
   #maptools { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; width: auto; gap: 10px; padding: 12px 16px 6px; }   /* grid, not flex: a flex column sized the key's grids too tall */
@@ -318,21 +263,17 @@ ul.sources b { color: var(--ink); font-weight: 600; }
   #maptools.is-open .mt-key { padding: 8px 0 8px; border-top: 1px solid var(--line); }
   header.page .p-more { display: none; }                   /* the Overview says what the page holds */
   aside { scroll-margin-top: var(--nav-h); }   /* a popup's "see it below" link lands under the sticky site bar */
-  #differs-h, #params-h, #soiluse-h, #headinfo, #plantlist .plant { scroll-margin-top: calc(var(--nav-h) + 72px); }
-  .leaflet-tooltip { width: max-content; max-width: 240px; white-space: normal; }   /* a cement plant's name wraps instead of running off a phone */
+  #differs-h, #params-h, #headinfo { scroll-margin-top: calc(var(--nav-h) + 72px); }
+  .leaflet-tooltip { width: max-content; max-width: 240px; white-space: normal; }   /* a long tooltip wraps instead of running off a phone */
+  .v1-note { padding: 8px 16px; font-size: var(--fs-cap); }
 }
 @media (max-width: 480px) {
   .tab th, .tab td { padding-left: 6px; padding-right: 6px; }
   .tab th:first-child, .tab td:first-child { padding-left: 0; }   /* the first and last columns stay flush with the text */
   .tab th:last-child, .tab td:last-child { padding-right: 0; }
   ul.kpi-key { grid-template-columns: minmax(0, 1fr); }
-  dl.plant-sum dd { font-size: 21px; }
-  dl.pfacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  dl.pfacts > div:nth-child(3) { padding-left: 0; border-left: 0; }
-  dl.pfacts > div:nth-child(n+3) { border-top: 1px solid var(--line); }
 }
 @media (max-width: 420px) {
-  .tabs .long { display: none; }   /* "Biochar plants" reads "Biochar", so five tabs fit a 375 px phone */
   /* Keep the SkyMeter wordmark on phones (style.css hides it at this width): tighter links make the room */
   nav.site .brand-word { position: static; width: auto; height: auto; margin: 0; overflow: visible; clip: auto; font-size: 15px; }
   nav.site { gap: 0; padding: 0 8px; }

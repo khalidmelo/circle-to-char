@@ -1,0 +1,2047 @@
+[
+ {
+  "id": "R01",
+  "bbox": [
+   42.648,
+   16.844,
+   43.196,
+   17.314
+  ],
+  "center": [
+   17.079,
+   42.922
+  ],
+  "admin": "Jazan Region",
+  "fields": 3447,
+  "area_ha": 36934,
+  "crop_ha": {
+   "6": 7756,
+   "3": 6,
+   "10": 11711,
+   "0": 119,
+   "9": 4128,
+   "1": 4587,
+   "7": 281,
+   "4": 379,
+   "5": 7342,
+   "2": 625
+  },
+  "water_bn_m3_central": 0.4043,
+  "median_et_mm": 874,
+  "thermal_share": 0.524,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R02",
+  "bbox": [
+   38.284,
+   29.634,
+   38.63,
+   30.19
+  ],
+  "center": [
+   29.912,
+   38.457
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 3531,
+  "area_ha": 49860,
+  "crop_ha": {
+   "6": 735,
+   "3": 2980,
+   "10": 295,
+   "9": 3580,
+   "1": 10474,
+   "7": 1245,
+   "4": 2859,
+   "5": 10321,
+   "2": 17328,
+   "8": 43
+  },
+  "water_bn_m3_central": 0.6907,
+  "median_et_mm": 855,
+  "thermal_share": 0.808,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R03",
+  "bbox": [
+   42.648,
+   16.374,
+   43.196,
+   16.844
+  ],
+  "center": [
+   16.609,
+   42.922
+  ],
+  "admin": "Jazan Region",
+  "fields": 1270,
+  "area_ha": 10799,
+  "crop_ha": {
+   "6": 1142,
+   "3": 41,
+   "10": 2297,
+   "9": 2900,
+   "1": 1061,
+   "7": 270,
+   "4": 76,
+   "5": 2614,
+   "2": 400
+  },
+  "water_bn_m3_central": 0.141,
+  "median_et_mm": 1054,
+  "thermal_share": 0.407,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R04",
+  "bbox": [
+   44.48,
+   20.205,
+   44.909,
+   20.666
+  ],
+  "center": [
+   20.435,
+   44.694
+  ],
+  "admin": "Riyadh Region",
+  "fields": 2638,
+  "area_ha": 34202,
+  "crop_ha": {
+   "6": 300,
+   "3": 1678,
+   "10": 139,
+   "9": 1488,
+   "1": 26751,
+   "7": 355,
+   "4": 874,
+   "5": 982,
+   "2": 1629,
+   "8": 7
+  },
+  "water_bn_m3_central": 0.9104,
+  "median_et_mm": 2170,
+  "thermal_share": 0.74,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R05",
+  "bbox": [
+   44.032,
+   25.029,
+   44.548,
+   25.585
+  ],
+  "center": [
+   25.307,
+   44.29
+  ],
+  "admin": "Riyadh Region",
+  "fields": 2017,
+  "area_ha": 28338,
+  "crop_ha": {
+   "6": 1814,
+   "3": 3077,
+   "10": 873,
+   "0": 245,
+   "9": 2676,
+   "1": 11368,
+   "7": 877,
+   "4": 1333,
+   "5": 186,
+   "2": 5888
+  },
+  "water_bn_m3_central": 0.4445,
+  "median_et_mm": 1281,
+  "thermal_share": 0.734,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R06",
+  "bbox": [
+   43.114,
+   26.378,
+   43.648,
+   26.912
+  ],
+  "center": [
+   26.645,
+   43.381
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 1956,
+  "area_ha": 23097,
+  "crop_ha": {
+   "6": 444,
+   "3": 1954,
+   "10": 610,
+   "0": 27,
+   "9": 1800,
+   "1": 6775,
+   "7": 582,
+   "4": 778,
+   "5": 4770,
+   "2": 5356
+  },
+  "water_bn_m3_central": 0.3223,
+  "median_et_mm": 1127,
+  "thermal_share": 0.65,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R07",
+  "bbox": [
+   37.938,
+   29.634,
+   38.284,
+   30.19
+  ],
+  "center": [
+   29.912,
+   38.111
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 1336,
+  "area_ha": 19502,
+  "crop_ha": {
+   "6": 326,
+   "3": 707,
+   "10": 123,
+   "9": 1185,
+   "1": 6324,
+   "7": 145,
+   "4": 1605,
+   "5": 1245,
+   "2": 7842
+  },
+  "water_bn_m3_central": 0.2611,
+  "median_et_mm": 808,
+  "thermal_share": 0.861,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R08",
+  "bbox": [
+   43.648,
+   25.844,
+   44.182,
+   26.378
+  ],
+  "center": [
+   26.111,
+   43.915
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 2290,
+  "area_ha": 20813,
+  "crop_ha": {
+   "6": 116,
+   "3": 776,
+   "10": 391,
+   "0": 12,
+   "9": 758,
+   "1": 5338,
+   "7": 439,
+   "4": 228,
+   "5": 9645,
+   "2": 3111
+  },
+  "water_bn_m3_central": 0.3182,
+  "median_et_mm": 1233,
+  "thermal_share": 0.461,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R09",
+  "bbox": [
+   42.453,
+   26.974,
+   42.916,
+   27.526
+  ],
+  "center": [
+   27.25,
+   42.684
+  ],
+  "admin": "Hayel Region",
+  "fields": 2169,
+  "area_ha": 32014,
+  "crop_ha": {
+   "6": 434,
+   "3": 2463,
+   "10": 204,
+   "9": 3146,
+   "1": 16447,
+   "7": 429,
+   "4": 605,
+   "5": 564,
+   "2": 7648,
+   "8": 75
+  },
+  "water_bn_m3_central": 0.5417,
+  "median_et_mm": 1531,
+  "thermal_share": 0.846,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R10",
+  "bbox": [
+   37.938,
+   30.19,
+   38.284,
+   30.746
+  ],
+  "center": [
+   30.468,
+   38.111
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 1523,
+  "area_ha": 19984,
+  "crop_ha": {
+   "6": 470,
+   "3": 634,
+   "10": 171,
+   "9": 1477,
+   "1": 12348,
+   "7": 184,
+   "4": 1323,
+   "5": 28,
+   "2": 3350
+  },
+  "water_bn_m3_central": 0.3407,
+  "median_et_mm": 1474,
+  "thermal_share": 0.762,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R11",
+  "bbox": [
+   43.114,
+   25.844,
+   43.648,
+   26.378
+  ],
+  "center": [
+   26.111,
+   43.381
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 1922,
+  "area_ha": 21848,
+  "crop_ha": {
+   "6": 1260,
+   "3": 1488,
+   "10": 713,
+   "9": 1788,
+   "1": 7711,
+   "7": 937,
+   "4": 746,
+   "5": 2098,
+   "2": 5108
+  },
+  "water_bn_m3_central": 0.3011,
+  "median_et_mm": 1123,
+  "thermal_share": 0.627,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R12",
+  "bbox": [
+   44.48,
+   19.744,
+   44.909,
+   20.205
+  ],
+  "center": [
+   19.974,
+   44.694
+  ],
+  "admin": "Riyadh Region",
+  "fields": 1345,
+  "area_ha": 17574,
+  "crop_ha": {
+   "6": 289,
+   "3": 754,
+   "10": 184,
+   "9": 1181,
+   "1": 8978,
+   "7": 415,
+   "4": 427,
+   "5": 16,
+   "2": 5329
+  },
+  "water_bn_m3_central": 0.3416,
+  "median_et_mm": 1365,
+  "thermal_share": 0.777,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R13",
+  "bbox": [
+   41.991,
+   27.526,
+   42.453,
+   28.078
+  ],
+  "center": [
+   27.802,
+   42.222
+  ],
+  "admin": "Hayel Region",
+  "fields": 1464,
+  "area_ha": 22798,
+  "crop_ha": {
+   "6": 788,
+   "3": 1677,
+   "10": 656,
+   "9": 2122,
+   "1": 13531,
+   "7": 891,
+   "4": 1056,
+   "5": 199,
+   "2": 1877
+  },
+  "water_bn_m3_central": 0.3909,
+  "median_et_mm": 1470,
+  "thermal_share": 0.817,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R14",
+  "bbox": [
+   47.549,
+   27.234,
+   47.89,
+   27.808
+  ],
+  "center": [
+   27.521,
+   47.719
+  ],
+  "admin": "Eastern Region",
+  "fields": 1804,
+  "area_ha": 26483,
+  "crop_ha": {
+   "6": 47,
+   "3": 4096,
+   "10": 447,
+   "0": 14,
+   "9": 1070,
+   "1": 7588,
+   "7": 249,
+   "4": 1004,
+   "5": 54,
+   "2": 11891,
+   "8": 22
+  },
+  "water_bn_m3_central": 0.3585,
+  "median_et_mm": 916,
+  "thermal_share": 0.786,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R15",
+  "bbox": [
+   44.909,
+   20.205,
+   45.338,
+   20.666
+  ],
+  "center": [
+   20.435,
+   45.123
+  ],
+  "admin": "Riyadh Region",
+  "fields": 1463,
+  "area_ha": 22024,
+  "crop_ha": {
+   "6": 190,
+   "3": 2229,
+   "10": 282,
+   "9": 1631,
+   "1": 12928,
+   "7": 514,
+   "4": 568,
+   "5": 124,
+   "2": 3546,
+   "8": 13
+  },
+  "water_bn_m3_central": 0.483,
+  "median_et_mm": 1791,
+  "thermal_share": 0.807,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R16",
+  "bbox": [
+   42.1,
+   16.844,
+   42.648,
+   17.314
+  ],
+  "center": [
+   17.079,
+   42.374
+  ],
+  "admin": "Jazan Region",
+  "fields": 1117,
+  "area_ha": 11094,
+  "crop_ha": {
+   "6": 661,
+   "3": 42,
+   "10": 3298,
+   "0": 56,
+   "9": 145,
+   "1": 1056,
+   "7": 434,
+   "4": 247,
+   "5": 4189,
+   "2": 961,
+   "8": 5
+  },
+  "water_bn_m3_central": 0.13,
+  "median_et_mm": 1042,
+  "thermal_share": 0.471,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R17",
+  "bbox": [
+   46.851,
+   23.812,
+   47.366,
+   24.381
+  ],
+  "center": [
+   24.096,
+   47.108
+  ],
+  "admin": "Riyadh Region",
+  "fields": 1852,
+  "area_ha": 19210,
+  "crop_ha": {
+   "6": 636,
+   "3": 893,
+   "10": 1713,
+   "0": 608,
+   "9": 695,
+   "1": 7155,
+   "7": 228,
+   "4": 506,
+   "5": 4018,
+   "2": 2759
+  },
+  "water_bn_m3_central": 0.3613,
+  "median_et_mm": 1272,
+  "thermal_share": 0.564,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R18",
+  "bbox": [
+   36.514,
+   28.216,
+   37.016,
+   28.548
+  ],
+  "center": [
+   28.382,
+   36.765
+  ],
+  "admin": "Tabuk Region",
+  "fields": 910,
+  "area_ha": 14522,
+  "crop_ha": {
+   "6": 386,
+   "3": 1004,
+   "10": 162,
+   "9": 1529,
+   "1": 7855,
+   "7": 144,
+   "4": 1663,
+   "5": 482,
+   "2": 1297
+  },
+  "water_bn_m3_central": 0.2725,
+  "median_et_mm": 1462,
+  "thermal_share": 0.824,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R19",
+  "bbox": [
+   38.572,
+   29.62,
+   38.938,
+   29.986
+  ],
+  "center": [
+   29.803,
+   38.755
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 1333,
+  "area_ha": 17455,
+  "crop_ha": {
+   "6": 590,
+   "3": 902,
+   "10": 107,
+   "9": 1751,
+   "1": 9859,
+   "7": 220,
+   "4": 1773,
+   "5": 220,
+   "2": 2033
+  },
+  "water_bn_m3_central": 0.2909,
+  "median_et_mm": 1426,
+  "thermal_share": 0.792,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R20",
+  "bbox": [
+   38.284,
+   30.19,
+   38.63,
+   30.746
+  ],
+  "center": [
+   30.468,
+   38.457
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 1263,
+  "area_ha": 16924,
+  "crop_ha": {
+   "6": 539,
+   "3": 403,
+   "10": 64,
+   "9": 1332,
+   "1": 10605,
+   "7": 230,
+   "4": 687,
+   "5": 64,
+   "2": 2991,
+   "8": 9
+  },
+  "water_bn_m3_central": 0.2847,
+  "median_et_mm": 1398,
+  "thermal_share": 0.799,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R21",
+  "bbox": [
+   42.1,
+   17.314,
+   42.648,
+   17.784
+  ],
+  "center": [
+   17.549,
+   42.374
+  ],
+  "admin": "Jazan Region",
+  "fields": 428,
+  "area_ha": 5724,
+  "crop_ha": {
+   "6": 346,
+   "3": 12,
+   "10": 1125,
+   "9": 118,
+   "1": 1474,
+   "7": 59,
+   "4": 60,
+   "5": 2352,
+   "2": 177
+  },
+  "water_bn_m3_central": 0.1056,
+  "median_et_mm": 1379,
+  "thermal_share": 0.652,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R22",
+  "bbox": [
+   44.548,
+   24.472,
+   45.064,
+   25.029
+  ],
+  "center": [
+   24.751,
+   44.806
+  ],
+  "admin": "Riyadh Region",
+  "fields": 1029,
+  "area_ha": 18049,
+  "crop_ha": {
+   "6": 312,
+   "3": 1851,
+   "10": 623,
+   "0": 13,
+   "9": 891,
+   "1": 4759,
+   "7": 258,
+   "4": 1327,
+   "5": 181,
+   "2": 7827,
+   "8": 7
+  },
+  "water_bn_m3_central": 0.2351,
+  "median_et_mm": 870,
+  "thermal_share": 0.842,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R23",
+  "bbox": [
+   38.558,
+   29.944,
+   39.134,
+   30.262
+  ],
+  "center": [
+   30.103,
+   38.846
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 2129,
+  "area_ha": 24642,
+  "crop_ha": {
+   "6": 858,
+   "3": 272,
+   "10": 324,
+   "9": 2326,
+   "1": 17449,
+   "7": 182,
+   "4": 2189,
+   "2": 1005,
+   "8": 36
+  },
+  "water_bn_m3_central": 0.434,
+  "median_et_mm": 1551,
+  "thermal_share": 0.759,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R24",
+  "bbox": [
+   38.558,
+   30.262,
+   39.134,
+   30.58
+  ],
+  "center": [
+   30.421,
+   38.846
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 1424,
+  "area_ha": 16520,
+  "crop_ha": {
+   "6": 762,
+   "3": 170,
+   "10": 118,
+   "9": 2075,
+   "1": 10882,
+   "7": 114,
+   "4": 1689,
+   "2": 709
+  },
+  "water_bn_m3_central": 0.2788,
+  "median_et_mm": 1448,
+  "thermal_share": 0.706,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R25",
+  "bbox": [
+   36.04,
+   28.33,
+   36.556,
+   28.702
+  ],
+  "center": [
+   28.516,
+   36.298
+  ],
+  "admin": "Tabuk Region",
+  "fields": 686,
+  "area_ha": 10501,
+  "crop_ha": {
+   "6": 171,
+   "3": 927,
+   "10": 128,
+   "9": 1180,
+   "1": 5481,
+   "7": 196,
+   "4": 653,
+   "5": 286,
+   "2": 1478
+  },
+  "water_bn_m3_central": 0.1923,
+  "median_et_mm": 1513,
+  "thermal_share": 0.813,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R26",
+  "bbox": [
+   42.453,
+   27.526,
+   42.916,
+   28.078
+  ],
+  "center": [
+   27.802,
+   42.684
+  ],
+  "admin": "Hayel Region",
+  "fields": 1036,
+  "area_ha": 15112,
+  "crop_ha": {
+   "6": 474,
+   "3": 878,
+   "10": 325,
+   "9": 1511,
+   "1": 8172,
+   "7": 658,
+   "4": 1001,
+   "5": 96,
+   "2": 1904,
+   "8": 93
+  },
+  "water_bn_m3_central": 0.2512,
+  "median_et_mm": 1383,
+  "thermal_share": 0.775,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R27",
+  "bbox": [
+   41.528,
+   27.526,
+   41.991,
+   28.078
+  ],
+  "center": [
+   27.802,
+   41.76
+  ],
+  "admin": "Hayel Region",
+  "fields": 1146,
+  "area_ha": 13198,
+  "crop_ha": {
+   "6": 572,
+   "3": 717,
+   "10": 251,
+   "9": 2091,
+   "1": 6724,
+   "7": 592,
+   "4": 839,
+   "5": 367,
+   "2": 1046
+  },
+  "water_bn_m3_central": 0.2132,
+  "median_et_mm": 1419,
+  "thermal_share": 0.639,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R28",
+  "bbox": [
+   41.858,
+   18.6,
+   42.312,
+   19.151
+  ],
+  "center": [
+   18.876,
+   42.085
+  ],
+  "admin": "'Asir Region",
+  "fields": 531,
+  "area_ha": 3217,
+  "crop_ha": {
+   "6": 208,
+   "3": 29,
+   "10": 264,
+   "9": 1258,
+   "1": 220,
+   "7": 10,
+   "4": 542,
+   "5": 642,
+   "2": 44
+  },
+  "water_bn_m3_central": 0.0479,
+  "median_et_mm": 1176,
+  "thermal_share": 0.239,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R29",
+  "bbox": [
+   44.909,
+   19.744,
+   45.338,
+   20.205
+  ],
+  "center": [
+   19.974,
+   45.123
+  ],
+  "admin": "Riyadh Region",
+  "fields": 716,
+  "area_ha": 10926,
+  "crop_ha": {
+   "6": 441,
+   "3": 479,
+   "10": 294,
+   "0": 11,
+   "9": 552,
+   "1": 4523,
+   "7": 274,
+   "4": 148,
+   "5": 9,
+   "2": 4128,
+   "8": 67
+  },
+  "water_bn_m3_central": 0.1696,
+  "median_et_mm": 870,
+  "thermal_share": 0.819,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R30",
+  "bbox": [
+   47.208,
+   27.234,
+   47.549,
+   27.808
+  ],
+  "center": [
+   27.521,
+   47.379
+  ],
+  "admin": "Eastern Region",
+  "fields": 915,
+  "area_ha": 14439,
+  "crop_ha": {
+   "6": 42,
+   "3": 1845,
+   "10": 309,
+   "9": 511,
+   "1": 3335,
+   "7": 101,
+   "4": 894,
+   "5": 35,
+   "2": 7366
+  },
+  "water_bn_m3_central": 0.1767,
+  "median_et_mm": 669,
+  "thermal_share": 0.797,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R31",
+  "bbox": [
+   43.308,
+   27.282,
+   43.75,
+   27.614
+  ],
+  "center": [
+   27.448,
+   43.529
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 499,
+  "area_ha": 7593,
+  "crop_ha": {
+   "6": 284,
+   "3": 380,
+   "10": 166,
+   "9": 162,
+   "1": 2995,
+   "7": 394,
+   "4": 234,
+   "5": 222,
+   "2": 2756
+  },
+  "water_bn_m3_central": 0.0869,
+  "median_et_mm": 657,
+  "thermal_share": 0.789,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R32",
+  "bbox": [
+   41.688,
+   18.717,
+   42.22,
+   19.161
+  ],
+  "center": [
+   18.939,
+   41.954
+  ],
+  "admin": "'Asir Region",
+  "fields": 148,
+  "area_ha": 887,
+  "crop_ha": {
+   "6": 194,
+   "10": 72,
+   "9": 23,
+   "1": 417,
+   "4": 21,
+   "5": 130,
+   "2": 30
+  },
+  "water_bn_m3_central": 0.0113,
+  "median_et_mm": 1009,
+  "thermal_share": 0.172,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R33",
+  "bbox": [
+   44.032,
+   25.585,
+   44.548,
+   26.142
+  ],
+  "center": [
+   25.864,
+   44.29
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 568,
+  "area_ha": 7293,
+  "crop_ha": {
+   "6": 61,
+   "3": 752,
+   "10": 232,
+   "0": 7,
+   "9": 307,
+   "1": 3133,
+   "7": 276,
+   "4": 184,
+   "5": 496,
+   "2": 1845
+  },
+  "water_bn_m3_central": 0.107,
+  "median_et_mm": 1447,
+  "thermal_share": 0.714,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R34",
+  "bbox": [
+   43.648,
+   26.378,
+   44.182,
+   26.912
+  ],
+  "center": [
+   26.645,
+   43.915
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 705,
+  "area_ha": 6487,
+  "crop_ha": {
+   "6": 615,
+   "3": 120,
+   "10": 628,
+   "0": 8,
+   "9": 255,
+   "1": 701,
+   "7": 444,
+   "4": 129,
+   "5": 2686,
+   "2": 890,
+   "8": 10
+  },
+  "water_bn_m3_central": 0.0571,
+  "median_et_mm": 772,
+  "thermal_share": 0.499,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R35",
+  "bbox": [
+   42.866,
+   26.95,
+   43.308,
+   27.282
+  ],
+  "center": [
+   27.116,
+   43.087
+  ],
+  "admin": "Hayel Region",
+  "fields": 752,
+  "area_ha": 10703,
+  "crop_ha": {
+   "6": 172,
+   "3": 887,
+   "10": 342,
+   "9": 803,
+   "1": 4342,
+   "7": 458,
+   "4": 673,
+   "5": 650,
+   "2": 2376
+  },
+  "water_bn_m3_central": 0.1521,
+  "median_et_mm": 1232,
+  "thermal_share": 0.76,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R36",
+  "bbox": [
+   43.08,
+   26.728,
+   43.388,
+   27.054
+  ],
+  "center": [
+   26.891,
+   43.234
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 303,
+  "area_ha": 4966,
+  "crop_ha": {
+   "6": 18,
+   "3": 396,
+   "10": 86,
+   "9": 593,
+   "1": 2288,
+   "7": 55,
+   "4": 162,
+   "5": 97,
+   "2": 1270
+  },
+  "water_bn_m3_central": 0.0715,
+  "median_et_mm": 1167,
+  "thermal_share": 0.796,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R37",
+  "bbox": [
+   44.548,
+   25.029,
+   45.064,
+   25.585
+  ],
+  "center": [
+   25.307,
+   44.806
+  ],
+  "admin": "Riyadh Region",
+  "fields": 578,
+  "area_ha": 8444,
+  "crop_ha": {
+   "6": 194,
+   "3": 701,
+   "10": 262,
+   "0": 80,
+   "9": 582,
+   "1": 2719,
+   "7": 207,
+   "4": 657,
+   "5": 350,
+   "2": 2692
+  },
+  "water_bn_m3_central": 0.1146,
+  "median_et_mm": 1032,
+  "thermal_share": 0.775,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R38",
+  "bbox": [
+   48.954,
+   23.254,
+   49.236,
+   23.598
+  ],
+  "center": [
+   23.426,
+   49.095
+  ],
+  "admin": "Eastern Region",
+  "fields": 1142,
+  "area_ha": 15979,
+  "crop_ha": {
+   "6": 216,
+   "3": 599,
+   "10": 332,
+   "0": 27,
+   "9": 1218,
+   "1": 12105,
+   "7": 103,
+   "4": 347,
+   "5": 90,
+   "2": 926,
+   "8": 16
+  },
+  "water_bn_m3_central": 0.3365,
+  "median_et_mm": 1809,
+  "thermal_share": 0.833,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R39",
+  "bbox": [
+   43.618,
+   25.75,
+   44.044,
+   26.082
+  ],
+  "center": [
+   25.916,
+   43.831
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 147,
+  "area_ha": 1838,
+  "crop_ha": {
+   "6": 4,
+   "3": 196,
+   "10": 10,
+   "9": 96,
+   "1": 650,
+   "7": 21,
+   "4": 42,
+   "5": 332,
+   "2": 488
+  },
+  "water_bn_m3_central": 0.0262,
+  "median_et_mm": 1519,
+  "thermal_share": 0.686,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R40",
+  "bbox": [
+   43.308,
+   26.95,
+   43.75,
+   27.282
+  ],
+  "center": [
+   27.116,
+   43.529
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 422,
+  "area_ha": 6143,
+  "crop_ha": {
+   "6": 130,
+   "3": 205,
+   "10": 392,
+   "9": 109,
+   "1": 1625,
+   "7": 202,
+   "4": 320,
+   "5": 931,
+   "2": 2228
+  },
+  "water_bn_m3_central": 0.0704,
+  "median_et_mm": 1079,
+  "thermal_share": 0.731,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R41",
+  "bbox": [
+   49.518,
+   25.19,
+   49.76,
+   25.676
+  ],
+  "center": [
+   25.433,
+   49.639
+  ],
+  "admin": "Eastern Region",
+  "fields": 988,
+  "area_ha": 5578,
+  "crop_ha": {
+   "6": 320,
+   "10": 350,
+   "1": 144,
+   "7": 12,
+   "4": 20,
+   "5": 4685,
+   "2": 46
+  },
+  "water_bn_m3_central": 0.1218,
+  "median_et_mm": 1853,
+  "thermal_share": 0.094,
+  "radar_qc": {
+   "winter": false,
+   "summer": true
+  }
+ },
+ {
+  "id": "R42",
+  "bbox": [
+   41.688,
+   18.272,
+   42.22,
+   18.717
+  ],
+  "center": [
+   18.494,
+   41.954
+  ],
+  "admin": "'Asir Region",
+  "fields": 892,
+  "area_ha": 6439,
+  "crop_ha": {
+   "6": 1861,
+   "10": 3260,
+   "9": 532,
+   "1": 161,
+   "7": 15,
+   "4": 100,
+   "5": 386,
+   "2": 124
+  },
+  "water_bn_m3_central": 0.0234,
+  "median_et_mm": 292,
+  "thermal_share": 0.352,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R43",
+  "bbox": [
+   39.374,
+   29.748,
+   39.918,
+   29.972
+  ],
+  "center": [
+   29.86,
+   39.646
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 757,
+  "area_ha": 9554,
+  "crop_ha": {
+   "6": 77,
+   "3": 599,
+   "10": 42,
+   "9": 1149,
+   "1": 5905,
+   "7": 42,
+   "4": 762,
+   "5": 188,
+   "2": 792
+  },
+  "water_bn_m3_central": 0.1725,
+  "median_et_mm": 1524,
+  "thermal_share": 0.729,
+  "radar_qc": {
+   "winter": true,
+   "summer": false
+  }
+ },
+ {
+  "id": "R44",
+  "bbox": [
+   40.306,
+   21.146,
+   40.848,
+   21.7
+  ],
+  "center": [
+   21.423,
+   40.577
+  ],
+  "admin": "Makkah Region",
+  "fields": 342,
+  "area_ha": 2048,
+  "crop_ha": {
+   "6": 26,
+   "10": 75,
+   "9": 39,
+   "1": 654,
+   "7": 17,
+   "4": 14,
+   "5": 1159,
+   "2": 64
+  },
+  "water_bn_m3_central": 0.0313,
+  "median_et_mm": 1766,
+  "thermal_share": 0.131,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R45",
+  "bbox": [
+   41.246,
+   19.746,
+   41.75,
+   20.321
+  ],
+  "center": [
+   20.034,
+   41.498
+  ],
+  "admin": "Al Bahah Region",
+  "fields": 166,
+  "area_ha": 984,
+  "crop_ha": {
+   "6": 3,
+   "10": 352,
+   "9": 19,
+   "1": 52,
+   "7": 9,
+   "4": 32,
+   "5": 512,
+   "2": 3
+  },
+  "water_bn_m3_central": 0.0122,
+  "median_et_mm": 1726,
+  "thermal_share": 0.256,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R46",
+  "bbox": [
+   39.936,
+   29.706,
+   40.486,
+   30.28
+  ],
+  "center": [
+   29.993,
+   40.211
+  ],
+  "admin": "Al Jawf Region",
+  "fields": 337,
+  "area_ha": 2719,
+  "crop_ha": {
+   "6": 34,
+   "3": 288,
+   "10": 69,
+   "9": 242,
+   "1": 1205,
+   "7": 50,
+   "4": 241,
+   "5": 197,
+   "2": 393
+  },
+  "water_bn_m3_central": 0.0405,
+  "median_et_mm": 1126,
+  "thermal_share": 0.465,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R47",
+  "bbox": [
+   41.688,
+   19.161,
+   42.22,
+   19.606
+  ],
+  "center": [
+   19.384,
+   41.954
+  ],
+  "admin": "'Asir Region",
+  "fields": 151,
+  "area_ha": 841,
+  "crop_ha": {
+   "6": 163,
+   "10": 100,
+   "9": 27,
+   "1": 170,
+   "7": 15,
+   "4": 9,
+   "5": 337,
+   "2": 20
+  },
+  "water_bn_m3_central": 0.0083,
+  "median_et_mm": 1645,
+  "thermal_share": 0.178,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R48",
+  "bbox": [
+   42.772,
+   26.728,
+   43.08,
+   27.054
+  ],
+  "center": [
+   26.891,
+   42.926
+  ],
+  "admin": "Al-Qassim Region",
+  "fields": 393,
+  "area_ha": 6209,
+  "crop_ha": {
+   "6": 23,
+   "3": 656,
+   "10": 63,
+   "9": 131,
+   "1": 1956,
+   "7": 182,
+   "4": 188,
+   "5": 6,
+   "2": 3005
+  },
+  "water_bn_m3_central": 0.0662,
+  "median_et_mm": 707,
+  "thermal_share": 0.794,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R49",
+  "bbox": [
+   36.04,
+   28.702,
+   36.556,
+   29.074
+  ],
+  "center": [
+   28.888,
+   36.298
+  ],
+  "admin": "Tabuk Region",
+  "fields": 409,
+  "area_ha": 5786,
+  "crop_ha": {
+   "6": 84,
+   "3": 763,
+   "10": 29,
+   "9": 352,
+   "1": 3728,
+   "7": 17,
+   "4": 161,
+   "5": 159,
+   "2": 481,
+   "8": 12
+  },
+  "water_bn_m3_central": 0.1172,
+  "median_et_mm": 1638,
+  "thermal_share": 0.791,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R50",
+  "bbox": [
+   42.866,
+   27.282,
+   43.308,
+   27.614
+  ],
+  "center": [
+   27.448,
+   43.087
+  ],
+  "admin": "Hayel Region",
+  "fields": 480,
+  "area_ha": 5625,
+  "crop_ha": {
+   "6": 43,
+   "3": 294,
+   "10": 149,
+   "0": 7,
+   "9": 314,
+   "1": 2220,
+   "7": 245,
+   "4": 297,
+   "5": 87,
+   "2": 1969
+  },
+  "water_bn_m3_central": 0.0668,
+  "median_et_mm": 719,
+  "thermal_share": 0.673,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R51",
+  "bbox": [
+   44.548,
+   25.585,
+   45.064,
+   26.142
+  ],
+  "center": [
+   25.864,
+   44.806
+  ],
+  "admin": "Riyadh Region",
+  "fields": 724,
+  "area_ha": 7320,
+  "crop_ha": {
+   "6": 68,
+   "3": 321,
+   "10": 409,
+   "0": 18,
+   "9": 135,
+   "1": 1857,
+   "7": 76,
+   "4": 252,
+   "5": 1840,
+   "2": 2344
+  },
+  "water_bn_m3_central": 0.1054,
+  "median_et_mm": 1544,
+  "thermal_share": 0.567,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R52",
+  "bbox": [
+   42.561,
+   17.958,
+   42.936,
+   18.444
+  ],
+  "center": [
+   18.201,
+   42.748
+  ],
+  "admin": "'Asir Region",
+  "fields": 220,
+  "area_ha": 1269,
+  "crop_ha": {
+   "6": 10,
+   "10": 203,
+   "9": 45,
+   "1": 160,
+   "7": 111,
+   "4": 103,
+   "5": 637
+  },
+  "water_bn_m3_central": 0.0139,
+  "median_et_mm": 1587,
+  "thermal_share": 0.221,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R53",
+  "bbox": [
+   37.788,
+   26.544,
+   38.084,
+   26.948
+  ],
+  "center": [
+   26.746,
+   37.936
+  ],
+  "admin": "Al Madinah Region",
+  "fields": 705,
+  "area_ha": 4275,
+  "crop_ha": {
+   "6": 32,
+   "3": 54,
+   "10": 12,
+   "9": 145,
+   "1": 682,
+   "7": 17,
+   "4": 81,
+   "5": 3228,
+   "2": 24
+  },
+  "water_bn_m3_central": 0.0914,
+  "median_et_mm": 1868,
+  "thermal_share": 0.135,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R54",
+  "bbox": [
+   40.742,
+   20.321,
+   41.246,
+   20.896
+  ],
+  "center": [
+   20.608,
+   40.994
+  ],
+  "admin": "Makkah Region",
+  "fields": 69,
+  "area_ha": 346,
+  "crop_ha": {
+   "6": 12,
+   "10": 45,
+   "1": 124,
+   "7": 11,
+   "4": 12,
+   "5": 139,
+   "2": 3
+  },
+  "water_bn_m3_central": 0.0032,
+  "median_et_mm": 1670,
+  "thermal_share": 0.0,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R55",
+  "bbox": [
+   40.966,
+   19.344,
+   41.47,
+   19.672
+  ],
+  "center": [
+   19.508,
+   41.218
+  ],
+  "admin": "Al Bahah Region",
+  "fields": 131,
+  "area_ha": 856,
+  "crop_ha": {
+   "6": 5,
+   "3": 15,
+   "10": 94,
+   "9": 10,
+   "1": 335,
+   "7": 24,
+   "4": 19,
+   "5": 215,
+   "2": 132,
+   "8": 6
+  },
+  "water_bn_m3_central": 0.008,
+  "median_et_mm": 1750,
+  "thermal_share": 0.146,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R56",
+  "bbox": [
+   46.336,
+   24.381,
+   46.851,
+   24.95
+  ],
+  "center": [
+   24.666,
+   46.593
+  ],
+  "admin": "Riyadh Region",
+  "fields": 420,
+  "area_ha": 2591,
+  "crop_ha": {
+   "10": 193,
+   "0": 24,
+   "9": 9,
+   "1": 396,
+   "7": 9,
+   "4": 9,
+   "5": 1771,
+   "2": 179
+  },
+  "water_bn_m3_central": 0.0472,
+  "median_et_mm": 1802,
+  "thermal_share": 0.17,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R57",
+  "bbox": [
+   41.858,
+   19.151,
+   42.312,
+   19.702
+  ],
+  "center": [
+   19.427,
+   42.085
+  ],
+  "admin": "'Asir Region",
+  "fields": 18,
+  "area_ha": 69,
+  "crop_ha": {
+   "5": 69
+  },
+  "water_bn_m3_central": 0.0016,
+  "median_et_mm": 1691,
+  "thermal_share": 0.0,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R58",
+  "bbox": [
+   45.698,
+   24.222,
+   45.988,
+   24.622
+  ],
+  "center": [
+   24.422,
+   45.843
+  ],
+  "admin": "Riyadh Region",
+  "fields": 361,
+  "area_ha": 4054,
+  "crop_ha": {
+   "6": 170,
+   "3": 204,
+   "10": 174,
+   "9": 70,
+   "1": 1092,
+   "4": 181,
+   "5": 898,
+   "2": 1264
+  },
+  "water_bn_m3_central": 0.0549,
+  "median_et_mm": 1181,
+  "thermal_share": 0.615,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ },
+ {
+  "id": "R59",
+  "bbox": [
+   44.024,
+   17.4,
+   44.588,
+   17.634
+  ],
+  "center": [
+   17.517,
+   44.306
+  ],
+  "admin": "Najran Region",
+  "fields": 394,
+  "area_ha": 2093,
+  "crop_ha": {
+   "6": 18,
+   "3": 18,
+   "10": 72,
+   "9": 43,
+   "1": 308,
+   "7": 18,
+   "4": 20,
+   "5": 1536,
+   "2": 61
+  },
+  "water_bn_m3_central": 0.0385,
+  "median_et_mm": 1785,
+  "thermal_share": 0.126,
+  "radar_qc": {
+   "winter": false,
+   "summer": false
+  }
+ },
+ {
+  "id": "R60",
+  "bbox": [
+   44.704,
+   25.934,
+   45.048,
+   26.482
+  ],
+  "center": [
+   26.208,
+   44.876
+  ],
+  "admin": "Riyadh Region",
+  "fields": 221,
+  "area_ha": 1372,
+  "crop_ha": {
+   "3": 22,
+   "10": 57,
+   "9": 24,
+   "1": 313,
+   "7": 28,
+   "4": 25,
+   "5": 655,
+   "2": 248
+  },
+  "water_bn_m3_central": 0.0233,
+  "median_et_mm": 1778,
+  "thermal_share": 0.222,
+  "radar_qc": {
+   "winter": true,
+   "summer": true
+  }
+ }
+]
