@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 196 40" width="196" height="40" role="img" aria-labelledby="sky-t">
+  <title id="sky-t">SkyMeter</title>
+  <!-- SkyMeter brand. The mark: a centre-pivot field (ring and pivot) under the satellite's orbit track (arc and dot).
+       Reuse it inline as <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true"><use href="img/skymeter.svg#mark"/></svg>;
+       it draws in currentColor. The wordmark is set in type (Archivo, 700, 112% width), not outlined. -->
+  <defs>
+    <symbol id="mark" viewBox="0 0 32 32">
+      <path d="M4.5 19A12.5 12.5 0 0 1 20.86 7.11" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
+      <circle cx="25.84" cy="10.16" r="2.6" fill="currentColor"/>
+      <circle cx="17" cy="19" r="6.5" fill="none" stroke="currentColor" stroke-width="2.4"/>
+      <circle cx="17" cy="19" r="2.1" fill="currentColor"/>
+    </symbol>
+  </defs>
+  <use href="#mark" x="0" y="2" width="36" height="36" color="#0b1b2e"/>
+  <text x="44" y="27.5" fill="#0b1b2e" font-family="Archivo, 'Helvetica Neue', Arial, sans-serif" font-size="22" font-weight="700" letter-spacing="-0.2" style="font-stretch:112%">SkyMeter</text>
+</svg>

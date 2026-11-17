@@ -1,0 +1,269 @@
+/* National results page only. Loaded after style.css: tokens and shared components (top bar, page title, icon tabs,
+   floating map panel, KPI cards and range bars, class bars, tables, cases, keys, popups) live there. */
+
+/* =====================================================================================================
+   Page title in short desktop windows: the stamp beside the title, the description on the full width, so the map
+   keeps its height (nothing is hidden)
+   ===================================================================================================== */
+@media (min-width: 861px) and (max-height: 760px) {
+  header.page { padding-block: 10px 11px; }
+  header.page .brand { grid-template-columns: max-content minmax(0, 1fr); align-items: center; gap: 4px 16px; }
+  header.page h1 { grid-column: 1; grid-row: 1; }
+  header.page .page-meta { grid-column: 2; grid-row: 1; }
+  header.page .brand p { grid-column: 1 / -1; grid-row: 2; max-width: none; line-height: 1.5; }
+}
+@media (min-width: 1180px) and (max-height: 760px) {
+  /* wide: title and stamp stacked on the left, the description beside them */
+  header.page .brand { grid-template-columns: max-content minmax(0, 1fr); align-items: start; gap: 6px 40px; }
+  header.page .page-meta { grid-column: 1; grid-row: 2; }
+  header.page .brand p { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+}
+
+/* Status pill on phones: beside the zoom buttons, never over them */
+@media (max-width: 860px) {
+  #hint { left: 64px; right: auto; transform: none; max-width: calc(100% - 76px); }
+}
+
+/* Base-map tiles: a full pixel of overlap (style.css gives half a pixel), which also closes the seams WebKit leaves at
+   fractional zoom */
+.nat-base .leaflet-tile-container img.leaflet-tile { width: 257px !important; height: 257px !important; }
+
+/* =====================================================================================================
+   Map tools: one group per layer (its checkbox heads its key), then the region bar and the field key
+   ===================================================================================================== */
+.maptools.layers {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 18px; align-items: start;
+}
+.maptools.layers > .mt-title { grid-column: 1 / -1; margin-bottom: -2px; }
+@media (min-width: 861px) {
+  /* a floating card over the map's lower left, sized to its three columns; style.css keeps it clear of the
+     attribution line (bottom 28 px) */
+  .maptools.layers {
+    width: auto; max-width: min(720px, calc(100% - 32px)); padding: 12px 16px 14px;
+    grid-template-columns: repeat(3, minmax(140px, max-content));
+  }
+  .maptools .grp > ul.key { max-width: 210px; }   /* a long key line wraps instead of widening its column */
+  /* each layer with a choice reads the same way: its checkbox, then its picker below */
+  .maptools .grp-head { flex-direction: column; align-items: flex-start; gap: 4px; }
+  .maptools .grp-head > label.pick { margin-top: 0; }
+  .maptools .grp > label.pick select { flex: 1 1 150px; width: 150px; }   /* room for "R04 (34,000 ha)" without the optgroup labels widening the card */
+}
+/* Title row: "Map layers" and the keys toggle */
+.mt-title > span { flex: 1 1 auto; }
+.mt-btn {
+  min-height: 26px; padding: 2px 10px; font-size: var(--fs-cap); font-weight: 600; color: var(--accent);
+  background: transparent; border-color: transparent; border-radius: var(--r-sm);
+}
+.mt-btn:hover { color: var(--accent-hover); background: var(--accent-wash); }
+@media (pointer: coarse) { .mt-btn { min-height: 40px; } }
+.maptools .grp { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; min-width: 0; }
+.maptools .grp-pair { gap: 10px; }
+.maptools .grp label.chk { color: var(--ink); }
+.maptools label.chk > input { flex: none; }   /* a long label never squeezes its checkbox */
+.chk-sub { font-weight: 400; color: var(--muted); }
+.maptools .grp > ul.key { width: 100%; grid-template-columns: minmax(0, 1fr); margin-top: 0; padding-left: 24px; }   /* keys indent under their checkbox */
+.maptools .grp-head { display: flex; flex-wrap: wrap; align-items: center; gap: 2px 12px; }
+.maptools label.pick { gap: 8px; }
+.pick-l { font-size: var(--fs-cap); font-weight: 600; color: var(--ink-2); }
+.maptools label.pick select { min-width: 0; height: 30px; font-size: var(--fs-sm); color: var(--ink); }
+.maptools .grp > label.pick { width: 100%; margin-top: 4px; }
+.maptools .grp > label.pick select { flex: 1 1 auto; }   /* the region list takes the column's width */
+.key li.kn { padding-left: 19px; color: var(--muted); }   /* a note under the swatched rows lines up with their labels */
+.key i.dot.edge { box-shadow: 0 0 0 1.5px var(--e, #666); }
+.key i.sq { border-radius: 0; box-shadow: 0 0 0 1px #fff, 0 0 0 2px rgba(14, 26, 38, .3); }   /* manure and litter grid cells: squares, unlike every round mark */
+
+@media (max-width: 860px) {
+  /* phones: the regions group on its own row, so the Region picker shows its whole value; then plants beside cement,
+     and manure (the pair's two groups join the grid) */
+  .maptools.layers > .grp:first-of-type { grid-column: 1 / -1; }
+  .maptools .grp-pair { display: contents; }
+  .maptools.layers > .mt-title { display: none; }   /* the strip under the map needs no title */
+}
+
+/* The region bar: which region is open, its field key toggle and the way back */
+.fieldbar {
+  grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  padding-top: 10px; border-top: 1px solid var(--line);
+}
+#fieldstatus { flex: 1 1 200px; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; color: var(--ink-2); }
+#fieldstatus > b { font-size: var(--fs-body); font-weight: 650; color: var(--ink); }
+.fs-n { font-variant-numeric: tabular-nums; }
+.fieldbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+#backbtn, #keybtn { min-height: 32px; padding: 4px 12px; font-size: var(--fs-sm); }
+#backbtn { padding-left: 8px; }
+.ico.back { transform: rotate(180deg); }
+/* Field key: compact rows (the key button folds it away), so the floating card stays short */
+#fieldkey { grid-column: 1 / -1; margin-top: -4px; }
+#fieldkey .key-h { margin-top: 4px; font-weight: 600; color: var(--ink-2); }
+#fieldkey ul.key { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 1px 12px; line-height: 1.4; }
+#fieldkey .key li { align-items: flex-start; }
+#fieldkey .key li > i { margin-top: 2px; }
+@media (min-width: 861px) {
+  #fieldkey ul.key { grid-template-columns: repeat(auto-fill, minmax(212px, 1fr)); }   /* the longest label on one line */
+  /* while a region's fields are shown, the layer keys fold away (their checkboxes stay); Back brings them back.
+     The keys toggle folds them too (short windows start folded) */
+  .maptools.has-fields .grp > ul.key, .maptools.has-fields .grp-pair ul.key,
+  .maptools.keys-off .grp > ul.key, .maptools.keys-off .grp-pair ul.key { display: none; }
+}
+@media (pointer: coarse), (max-width: 860px) {
+  #backbtn, #keybtn { min-height: 40px; }
+  .maptools label.pick select { height: 40px; }
+}
+
+/* =====================================================================================================
+   Leaflet popups and tooltips: a title, a quiet sub line, then label | value rows on hairlines
+   ===================================================================================================== */
+.leaflet-popup-content { margin: 12px 16px 12px; font-size: var(--fs-sm); line-height: 1.5; }
+.leaflet-popup-content p { margin: 6px 0 0; }
+.leaflet-popup-content p.pop-h { margin: 0; padding-right: 18px; font-size: 15px; font-weight: 650; font-stretch: 104%; line-height: 1.3; letter-spacing: -.01em; color: var(--ink); }
+.leaflet-popup-content p.pop-sub { margin: 2px 0 0; font-size: var(--fs-cap); color: var(--ink-2); }
+.leaflet-popup-content p.pop-sub.warn { font-weight: 600; }
+.leaflet-popup-content table.pop { width: 100%; margin: 8px 0 0; font-size: var(--fs-sm); }
+.leaflet-popup-content table.pop th, .leaflet-popup-content table.pop td { padding: 4px 0; border: 0; border-top: 1px solid var(--line); vertical-align: baseline; }
+.leaflet-popup-content table.pop th { padding-right: 12px; font-size: var(--fs-cap); font-weight: 500; color: var(--muted); }
+.leaflet-popup-content table.pop td { text-align: right; white-space: nowrap; font-weight: 600; font-variant-numeric: tabular-nums; color: var(--ink); }
+.pop-more { margin-top: 8px; color: var(--ink-2); }
+.pop-more > summary {
+  display: inline-flex; align-items: center; gap: 6px; min-height: 28px; cursor: pointer; list-style: none;
+  font-weight: 600; color: var(--accent); border-radius: 6px;
+}
+.pop-more > summary::-webkit-details-marker { display: none; }
+.pop-more > summary::before {
+  content: ""; flex: none; width: 13px; height: 13px; background: currentColor;
+  -webkit-mask: var(--chev-mask) center / contain no-repeat; mask: var(--chev-mask) center / contain no-repeat;
+  transition: transform var(--dur) var(--ease);
+}
+.pop-more[open] > summary::before { transform: rotate(90deg); }
+.pop-more table.pop { margin-top: 4px; }
+.pop-more p { font-size: var(--fs-cap); line-height: 1.5; }
+.leaflet-tooltip .tt-sub { color: var(--ink-2); }
+@media (pointer: coarse) {
+  .pop-more > summary { min-height: 40px; }
+  .leaflet-popup-content { margin-right: 40px; }   /* clear of the 40 px close button */
+}
+
+/* =====================================================================================================
+   Panel
+   ===================================================================================================== */
+aside:focus { outline: none; }   /* the skip link's target; its tabs keep their focus ring */
+aside .tab { overflow-wrap: break-word; }   /* long unbroken source strings wrap instead of widening the page */
+
+/* Overview head: the one big figure of the page, with its companions on hairlines */
+.ov-hero { margin: 2px 0 14px; }
+.ov-k { display: flex; align-items: center; gap: 6px; margin: 0; font-size: var(--fs-cap); font-weight: 600; color: var(--ink-2); }
+.ov-k .ico { color: var(--muted); }
+.ov-num {
+  display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 8px; margin: 8px 0 0;
+  font-size: clamp(38px, 1.4vw + 22px, 46px); font-weight: 680; font-stretch: var(--wide); line-height: 1;
+  letter-spacing: -.035em; font-variant-numeric: proportional-nums; color: var(--ink);
+}
+.ov-unit { font-size: 16px; font-weight: 500; font-stretch: 100%; letter-spacing: 0; color: var(--ink-2); }
+.ov-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; margin: 16px 0 0; border-top: 1px solid var(--line-2); }
+.ov-facts > div { min-width: 0; padding: 8px 0 9px; border-bottom: 1px solid var(--line); }
+.ov-facts dt { font-size: var(--fs-cap); line-height: 1.35; color: var(--muted); }
+.ov-facts dd { margin: 3px 0 0; font-size: 15px; font-weight: 620; line-height: 1.25; color: var(--ink); }
+/* Biochar head: the same figure style, with its corners on a small scale (the shared range bar) */
+.bio-hero { margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--line-2); }
+.bio-hero .rb { margin-top: 14px; }
+.bio-hero .kpi-range { margin-top: 4px; }
+
+/* Estimate switch: the shared segmented control with its label */
+.estimate { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; margin: 18px 0 4px; }
+.est-cap { margin: 6px 0 14px; }
+.est-cap .rk { margin-right: 5px; }
+
+/* Key to the range bars: one compact row above the cards (the caveat that explains them sits under the cards) */
+.rb-key {
+  display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 14px 0 10px; padding: 0; list-style: none;
+  font-size: 11.5px; line-height: 1.4; color: var(--ink-2);
+}
+.rb-key li { display: inline-flex; align-items: center; white-space: nowrap; }
+.rb-key .rk { width: 12px; margin-right: 4px; }
+.rb-key .rk.tick { width: 2px; height: 12px; margin-left: 1px; margin-right: 5px; vertical-align: -2px; background: var(--rb-mid); border-radius: 1px; }
+.kpi-note { margin: 12px 0 0; }
+
+/* KPI cards: the range bar and rows are shared; here only the panel's spacing and the ±1 dB label */
+.kpis + .callout, .kpi-note + .callout { margin-top: 14px; }
+/* Two cards a row: label, figure, bar and rows line up across the row even when one label wraps */
+@supports (grid-template-rows: subgrid) {
+  @media (min-width: 481px) {
+    #ov .kpis { row-gap: 0; }
+    #ov .kpi { display: grid; grid-row: span 5; grid-template-rows: subgrid; row-gap: 0; align-content: start; margin-bottom: 10px; }
+  }
+}
+.kpi-range .lg { display: none; }   /* "±1 dB" is in the caption above; full-width phone cards have room for it */
+@media (max-width: 480px) {
+  #ov .kpis { grid-template-columns: minmax(0, 1fr); }   /* three range rows need a full-width card */
+  #ov .kpis > .kpi:last-child:nth-child(odd) { grid-column: auto; }
+  .kpi-range .lg { display: inline; }
+}
+
+/* Class bars: rings for the one-season classes, a dark edge for the pale ones (as on the map) */
+.swatch.ring { background: #fff; border: 2px solid var(--c); border-radius: 50%; }
+.swatch.edge { box-shadow: 0 0 0 1.5px var(--e); }
+
+/* Why it matters: a list of uses on hairlines, each led by a line icon */
+.lenses { margin: 14px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--line-2); }
+.lens { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; padding: 14px 0 15px; border-bottom: 1px solid var(--line); }
+.lens-ico { padding-top: 1px; color: var(--muted); }
+.lens-ico .ico { width: 20px; height: 20px; }
+.tab .lens-h { margin: 0 0 4px; padding: 0; border: 0; font-size: var(--fs-h3); line-height: 1.3; color: var(--ink); }
+.lens-body > p { margin: 0; font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-2); }
+.lens-body b { color: var(--ink); }
+
+/* Tables whose source or explanation sits on its own line under each row */
+table.stack tr.main > td { border-bottom: 0; padding-bottom: 2px; }
+table.stack tr.src > td { padding-top: 0; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2); }
+table.s2t td:first-child { color: var(--ink-2); }
+
+/* Official stats: the region column stays put while the table scrolls sideways */
+table.off th:first-child, table.off td:first-child { position: sticky; left: 0; z-index: 1; padding-right: 10px; background: var(--panel); box-shadow: inset -1px 0 0 var(--line); }
+table.off tr.total > th { color: var(--ink); border-top: 1px solid var(--line-2); border-bottom: 0; font-size: var(--fs-sm); font-weight: 650; }
+table.off tr.total > th.num { font-variant-numeric: tabular-nums; }
+table.off td.num, table.off tr.total > th.num { white-space: nowrap; }   /* a range such as 2.6–7.1 never breaks */
+
+/* Biochar cases */
+.h-sub { display: block; margin-top: 2px; font-size: var(--fs-cap); font-weight: 400; letter-spacing: 0; color: var(--muted); }
+.cases .case:first-child { border-top: 0; }
+.case.headline { margin: 2px -12px; padding: 12px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; }
+.case.headline + .case { border-top-color: transparent; }
+.case.headline .case-value { color: var(--ink); }
+.case-facts > span:has(> .tag:only-child) { display: inline-flex; align-items: center; }
+.case-facts { display: flex; flex-wrap: wrap; gap: 2px 16px; }
+.case-facts > span { font-variant-numeric: tabular-nums; }
+/* the hypothetical litter upside sits below its own rule, its value in brackets: never read as a credited case (as on the scenarios page) */
+.cases-sub { margin: 16px 0 0; padding-top: 10px; border-top: 1px solid var(--line-2); font-size: var(--fs-cap); font-weight: 600; color: var(--ink-2); }
+.cases.cases-up { margin-top: 0; }
+.case-value .hyp { display: block; text-align: right; }
+.case-value .hyp-l { display: block; text-align: right; font-size: var(--fs-cap); font-weight: 400; line-height: 1.3; color: var(--ink-2); }
+.mate { font-size: var(--fs-cap); color: var(--muted); }
+.steps .sub { color: var(--ink-2); font-size: var(--fs-sm); }
+.steps details.more { margin: 4px 0 0; }
+
+/* Method: numbered steps on hairlines */
+.tab ol.steps { padding-left: 22px; }
+.tab ol.steps > li { margin: 0; padding: 10px 0 11px 4px; border-bottom: 1px solid var(--line); font-size: var(--fs-sm); line-height: 1.6; color: var(--ink-2); }
+.tab ol.steps > li > b:first-child { color: var(--ink); font-weight: 650; }
+
+/* =====================================================================================================
+   Hypothetical biochar plants: a diamond with a dashed edge (as on the map), never a round mark like the cement rings;
+   the plant list's locations fly the map there
+   ===================================================================================================== */
+.key i.dia {
+  width: 10px; height: 10px; margin: 1px; border-radius: 1px; transform: rotate(45deg);
+  border: 1.5px dashed rgba(14, 26, 38, .6);
+}
+.leaflet-tooltip.tip-wrap { white-space: normal; width: max-content; max-width: min(300px, calc(100vw - 32px)); }
+button.fly {
+  display: inline-flex; align-items: center; gap: 5px; min-height: 0; padding: 2px 6px; margin-left: -6px;
+  font: inherit; font-variant-numeric: tabular-nums; color: var(--accent); text-align: left;
+  background: transparent; border: 0; border-radius: var(--r-sm); cursor: pointer;
+}
+button.fly span { text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 2px; }
+button.fly:hover { color: var(--accent-hover); background: var(--accent-wash); }
+button.fly .ico { flex: none; width: 13px; height: 13px; }
+@media (pointer: coarse) { button.fly { min-height: 36px; } }
+/* the plain line under the layer groups: the diamonds are hypothetical, the rings are real */
+.mt-hypo { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: 8px; margin: -2px 0 0; font-size: var(--fs-cap); line-height: 1.45; color: var(--ink-2); }
+.mt-hypo i.dia { flex: none; width: 9px; height: 9px; margin: 3px 2px 0; border-radius: 1px; transform: rotate(45deg); background: var(--c-soil, #0f6e6a); border: 1.5px dashed rgba(14, 26, 38, .6); }
+.mt-hypo[hidden] { display: none; }
