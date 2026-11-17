@@ -1061,8 +1061,3 @@ a.entry.main { border-color: var(--line-2); }
   .rb-lane > i, .rb-mid, .bar-fill, .kpi-range dt::before { forced-color-adjust: none; }
 }
 
-/* Notice on every page: this site changed after the submission deadline; the submitted version is at /submitted/ */
-.post-deadline { margin: 0; padding: 8px var(--gutter); font-size: var(--fs-sm); color: var(--ink); background: var(--accent-wash);
-  border-bottom: 1px solid var(--line); text-align: center; }
-.post-deadline a { color: var(--accent); }
-body.app > .post-deadline { flex: none; }
